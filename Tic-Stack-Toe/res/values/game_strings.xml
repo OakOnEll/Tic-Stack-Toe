@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="invalid_move_need_empty">Play in an empty square.</string>
+    <string name="invalid_move_need_nonempty">Place bomb on an existing marker.</string>
+    
+    <string name="invalid_move_space_has_bigger_piece">Place that piece in an empty space or over a smaller piece already on the board.</string>
+    <string name="invalid_move_source_is_empty">There is no piece at the source to move.</string>
+    
+    
+    <string name="button_send">Send</string>
+    <string name="action_chat">Chat</string>
+    <string name="player_won">%s won!</string>
+    <string name="draw">Draw Game!</string>
+    <string name="play_again">Play again?</string>
+    <string name="exit_waiting_play_again">Leave</string>
+    <string name="opponent_left_exit_play_again">OK</string>
+    <string name="waiting_for_opponent_to_decide_to_play_again">Waiting for %s to decide to play again.</string>
+    <string name="opponent_wants_to_play_again">%s wants to play again.</string>
+    <string name="opponent_does_not_want_to_play_again">%s doesn\'t want to play again.</string>
+    <string name="opponent_is_thinking">%s is thinking.</string>
+    <string name="opponent_is_in_chat">%s is in chat.</string>
+    <string name="peer_left_the_game">%s has left the game.</string>
+    <string name="leave_game_title">Leave game?</string>
+    <string name="leave_game_message">Leave the game in progress?</string>
+    <string name="local_player_name">You</string>
+    <string name="chat_title">Chat with %s</string>
+    <string name="play_again_waiting">Waiting for %s</string>
+    <string name="online_setting_title">Settings</string>
+    <string name="you_left_the_game">You left the game.</string>
+    <string name="chat_actionbar_image_content">Chat action menu</string>
+    <string name="num_move_lbl">Moves</string>
+    <string name="num_games_lbl">Games: </string>
+    <string name="game_stats_title">Game Statistics</string>
+    <string name="player_stat_label">Player</string>
+    <string name="wins_stat_label">Wins</string>
+    <string name="losses_stat_label">Losses</string>
+    <string name="draws_stat_label">Draws</string>
+    <string name="player_black_lbl">Player Black</string>
+    <string name="player_white_lbl">Player White</string>
+
+    <plurals name="num_wins_with_label">
+        <item quantity="zero">No Wins</item>
+        <item quantity="one">1 Win</item>
+        <item quantity="other">%d Wins</item>
+    </plurals>
+    <plurals name="num_draws_with_label">
+        <item quantity="zero">No Draws</item>
+        <item quantity="one">1 Draw</item>
+        <item quantity="other">%d Draws</item>
+    </plurals>
+
+    <string name="onJoinedRoom">Joining Room</string>
+    <string name="onRoomConnected">Connecting to Room</string>
+    <string name="onRoomCreated">Creating Room</string>
+    <string name="sendRealTimeMessage">Sending Message</string>
+    <string name="sendMove">Sending Message</string>
+    <string name="communication_error">Error in communication:</string>
+    <string name="cannot_invite_non_tester">Can\'t invite non-tester from a tester account</string>
+    
+</resources>

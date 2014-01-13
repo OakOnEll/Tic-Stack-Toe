@@ -1,0 +1,42 @@
+//
+// File and path settings
+//
+PathExport 'E:\projects\TicStackToe\Tic-Stack-Toe\rawAssets\icons\drawable'
+PathClear false
+FileFormat png
+
+//
+// Export settings settings
+//
+ExportWidth 100
+ExportHeight 100
+FilePrefix ''
+
+//
+// Execute Converter
+//
+Array MySvgFiles 'filled_circle_icon_12972.svg':'hollowed_circle_icon_12971.svg'
+Array MyExportFiles 'filled_circle_icon_12972':'hollowed_circle_icon_12971'
+Loop MySvgFiles 3
+    FileSvg MySvgFiles:Index
+    FileName MyExportFiles:Index
+    Convert
+
+
+PathExport 'E:\projects\TicStackToe\Tic-Stack-Toe\rawAssets\icons\promos'
+
+// Create the feature graphic
+ExportWidth 1024
+ExportHeight 500
+    FileSvg 'feature_graphic.svg'
+    FileName 'feature_graphic'
+    Convert
+
+// Create the promo  graphic
+ExportWidth 180
+ExportHeight 120
+    FileSvg 'promo_graphic.svg'
+    FileName 'promo_graphic'
+    Convert
+
+

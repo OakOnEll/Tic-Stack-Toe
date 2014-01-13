@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Settings" >
+
+    <PreferenceCategory android:title="Development" >
+        <Preference
+            android:key="reset_achievements"
+            android:title="Reset Achievements" />
+        <Preference
+            android:key="reset_leaderboard"
+            android:title="Reset Leaderboard" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

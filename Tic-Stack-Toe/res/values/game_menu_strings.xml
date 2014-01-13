@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="sign_in_why">Sign in with Google to share achievements and play with your friends.</string>
+    <string name="you_are_signed_in_as">You are signed into Google+ as %s</string>
+    <string name="sign_out">Sign out</string>
+    <string name="signing_in">Signing in with Google</string>
+    <string name="signing_out">Signing out</string>
+    <string name="new_game_same_device">Pass \'N Play</string>
+    <string name="new_game_vs_ai">Beat the Bot</string>
+    <string name="new_quick_game">New Quick Game</string>
+    <string name="new_game_live">Play with a Friend</string>
+    <string name="achievements">View Achievements</string>
+    <string name="leaderboards">View Leaderboards</string>
+    <string name="achievements_not_available">Please sign in to view achievements.</string>
+    <string name="leaderboards_not_available">Please sign in to view leaderboards.</string>
+    <string name="sign_in_to_play_network_game">Please sign in to start a networked game.</string>
+    <string name="sign_in_to_view_invites">Please sign in to view network game invitations.</string>
+    <string name="action_settings">Settings</string>
+    <string name="received_invite_from">Received invitation from %s.</string>
+    <string name="prompt_title_player_name">Enter Player Name</string>
+    <string name="prompt_player_name">Name for player %s</string>
+    <string name="label_player_black_name">Black Player\'s name</string>
+    <string name="label_player_white_name">White Player\'s name</string>
+    <string name="start">Start Game</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="choose_ai_mode_title">Choose AI Game Mode</string>
+    <string name="ai_level">AI Level</string>
+    <string name="ai_random">Random</string>
+    <string name="ai_easy">Easy</string>
+    <string name="ai_medium">Medium</string>
+    <string name="ai_hard">Hard</string>
+    <string name="choose_local_game_mode_title">Choose Game Mode</string>
+    <string name="error_black_name">Enter a name for Black</string>
+    <string name="error_white_name">Enter a name for White</string>
+    <string name="unique_error_o_name">Enter a unique name for O</string>
+    <string name="choose_quick_game_mode_title">Choose Quick Game Mode</string>
+    <string name="choose_online_game_mode_title">Choose Online Game Mode</string>
+    <string name="choose_online_opponent">Find Friend</string>
+    <string name="select_opponent">Select Opponent</string>
+
+</resources>

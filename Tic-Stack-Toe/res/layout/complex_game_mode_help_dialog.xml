@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+<!-- 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal|center_vertical" >
+        <ImageView
+            android:id="@+id/imageView1"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/system_cross" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/arrow_icon_23232" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/system_cross" />
+        <TextView
+            android:id="@+id/player_marker_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal|center_vertical" >
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/system_cross" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/arrow_icon_23232" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/system_dot" />
+
+        <TextView
+            android:id="@+id/opponent_marker_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal|center_vertical" >
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/system_cross" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/arrow_icon_23232" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:scaleType="fitCenter"            
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bomb_icon_1068" />
+
+        <TextView
+            android:id="@+id/remove_marker_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/how_to_play_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+-->
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok" />
+
+</LinearLayout>
