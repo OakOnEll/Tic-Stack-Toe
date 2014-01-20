@@ -28,9 +28,9 @@ public class HumanStrategy extends PlayerStrategy {
 	public static Uri getImage(boolean isBlack) {
 		if (isBlack)
 			return Uri.parse("android.resource://com.oakonell.ticstacktoe/"
-					+ R.drawable.filled_circle_icon_12972);
+					+ R.drawable.black_piece4);
 		return Uri.parse("android.resource://com.oakonell.ticstacktoe/"
-				+ R.drawable.hollowed_circle_icon_12971);
+				+ R.drawable.white_piece4);
 	}
 
 	@Override

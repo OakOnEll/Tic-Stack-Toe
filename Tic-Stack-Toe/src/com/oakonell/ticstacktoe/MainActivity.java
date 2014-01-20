@@ -24,7 +24,7 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.Move;
+import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -341,7 +341,7 @@ public class MainActivity extends BaseGameActivity {
 		getGameFragment().opponentClosedChat();
 	}
 
-	public void onlineMoveReceived(Move move) {
+	public void onlineMoveReceived(AbstractMove move) {
 		getGameFragment().onlineMakeMove(move);
 	}
 

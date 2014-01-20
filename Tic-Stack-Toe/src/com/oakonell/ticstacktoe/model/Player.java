@@ -1,16 +1,20 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.util.List;
+
 import android.net.Uri;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.model.Board.PieceStack;
 
 public class Player {
 	private final String name;
 	private final Uri iconImageUri;
 	private final PlayerStrategy strategy;
 	private Player opponent;
+	private Game game;
 
 	public Player(String name, Uri iconImageUri, PlayerStrategy strategy) {
 		this.name = name;
@@ -53,6 +57,15 @@ public class Player {
 			image.setImageURI(iconImageUri);
 
 		}
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public List<PieceStack> getPlayerPieces() {
+		return isBlack() ? game.getBlackPlayerPieces() : game
+				.getWhitePlayerPieces();
 	}
 
 }

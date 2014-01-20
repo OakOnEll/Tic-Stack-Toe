@@ -19,7 +19,7 @@ public class PlayerStrategy {
 		return isBlack;
 	}
 
-	public Move move(Game game) {
+	public AbstractMove move(Game game) {
 		return null;
 	}
 

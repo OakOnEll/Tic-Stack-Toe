@@ -377,7 +377,7 @@ public class MenuFragment extends SherlockFragment {
 				size + "", 0L);
 
 		Game game = new Game(size, GameMode.PASS_N_PLAY, blackPlayer,
-				whitePlayer);
+				whitePlayer, blackPlayer);
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		gameFragment.startGame(game, score);
 
@@ -407,7 +407,8 @@ public class MenuFragment extends SherlockFragment {
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker.sendEvent(getString(R.string.an_start_game_cat),
 				getString(R.string.an_start_ai_game_action), size + "", 0L);
-		Game game = new Game(size, GameMode.AI, blackPlayer, whitePlayer);
+		Game game = new Game(size, GameMode.AI, blackPlayer, whitePlayer,
+				blackPlayer);
 
 		gameFragment.startGame(game, score);
 

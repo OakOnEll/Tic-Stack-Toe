@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,24 +21,61 @@ public class Game {
 	private Player player;
 	private Map<String, Integer> numVisitsPerState = new HashMap<String, Integer>();
 
-	public Game(int size, GameMode mode, Player blackPlayer, Player whitePlayer) {
+	public Game(int size, GameMode mode, Player blackPlayer,
+			Player whitePlayer, Player startingPlayer) {
 		board = new Board(size);
 		this.blackPlayer = blackPlayer;
 		this.whitePlayer = whitePlayer;
 		blackPlayer.setOpponent(whitePlayer);
 		whitePlayer.setOpponent(blackPlayer);
+		blackPlayer.setGame(this);
+		whitePlayer.setGame(this);
 
-		player = blackPlayer;
+		blackPlayerPieces = new ArrayList<Board.PieceStack>();
+		blackPlayerPieces.add(createBlackPlayerStack());
+		blackPlayerPieces.add(createBlackPlayerStack());
+		blackPlayerPieces.add(createBlackPlayerStack());
+		whitePlayerPieces = new ArrayList<Board.PieceStack>();
+		whitePlayerPieces.add(createWhitePlayerStack());
+		whitePlayerPieces.add(createWhitePlayerStack());
+		whitePlayerPieces.add(createWhitePlayerStack());
+
+		// player = startingPlayer;
+		player = startingPlayer;
 		this.mode = mode;
 	}
 
-	public State placePlayerPiece(Cell cell) {
-		// TODO move from off-board to an empty place on the board
+	private PieceStack createBlackPlayerStack() {
+		PieceStack pieceStack = new PieceStack();
+		pieceStack.add(Piece.BLACK1);
+		pieceStack.add(Piece.BLACK2);
+		pieceStack.add(Piece.BLACK3);
+		pieceStack.add(Piece.BLACK4);
+		return pieceStack;
+	}
 
-		// get the player's next piece
-		//Piece piece = getNextPieceFor(player);
-		Piece piece = null;
-		State outcome = board.placeMarker(cell, player, piece);
+	private PieceStack createWhitePlayerStack() {
+		PieceStack pieceStack = new PieceStack();
+		pieceStack.add(Piece.WHITE1);
+		pieceStack.add(Piece.WHITE2);
+		pieceStack.add(Piece.WHITE3);
+		pieceStack.add(Piece.WHITE4);
+		return pieceStack;
+	}
+
+	public State placePlayerPiece(int stack, Cell cell) {
+		List<PieceStack> playerPieces = getCurrentPlayerPieces();
+		if (stack < 0 || stack >= playerPieces.size()) {
+			throw new IllegalArgumentException("Invalid stack '" + stack
+					+ "', should be in [0," + playerPieces.size() + "]");
+		}
+		// get the piece to try the move
+		PieceStack pieceStack = playerPieces.get(stack);
+		Piece piece = pieceStack.getTopPiece();
+
+		State outcome = board.placePiece(cell, player, piece, stack);
+		// if move was valid, remove the piece, it is now on the board
+		pieceStack.removeTopPiece();
 
 		// switch to next player
 		player = player.opponent();
@@ -47,11 +85,10 @@ public class Game {
 
 		return outcome;
 	}
-	
-	
-	public State movePiece(Cell from, Cell to) {	
+
+	public State movePiece(Cell from, Cell to) {
 		State outcome = board.moveFrom(player, from, to);
-		
+
 		// switch to next player
 		player = player.opponent();
 
@@ -140,7 +177,11 @@ public class Game {
 	public List<PieceStack> getWhitePlayerPieces() {
 		return whitePlayerPieces;
 	}
-	
-	
+
+	public List<PieceStack> getCurrentPlayerPieces() {
+		if (player == blackPlayer)
+			return blackPlayerPieces;
+		return whitePlayerPieces;
+	}
 
 }

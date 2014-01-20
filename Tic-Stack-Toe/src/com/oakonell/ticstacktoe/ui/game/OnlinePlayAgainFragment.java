@@ -23,11 +23,11 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 
 	private Button playAgainButton;
 
-	private GameFragment gameFragment;
+	private AbstractGameFragment gameFragment;
 	boolean willPlayAgain;
 	private Button notPlayAgainButton;
 
-	public void initialize(GameFragment fragment, String opponentName,
+	public void initialize(AbstractGameFragment fragment, String opponentName,
 			String title) {
 		this.opponentName = opponentName;
 		this.title = title;

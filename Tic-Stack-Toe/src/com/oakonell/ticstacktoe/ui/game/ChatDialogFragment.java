@@ -27,7 +27,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 	private List<ChatMessage> messages;
 	private MessagesAdapter adapter;
 	private Participant me;
-	private GameFragment parent;
+	private AbstractGameFragment parent;
 	private String friendName;
 
 	private static class MessagesAdapter extends ArrayAdapter<ChatMessage> {
@@ -93,7 +93,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 		}
 	}
 
-	public void initialize(GameFragment parent, List<ChatMessage> messages,
+	public void initialize(AbstractGameFragment parent, List<ChatMessage> messages,
 			Participant me, String friendName) {
 		this.parent = parent;
 		this.messages = messages;

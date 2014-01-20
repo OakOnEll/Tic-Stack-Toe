@@ -270,7 +270,7 @@ public class RoomListener implements RoomUpdateListener,
 										.getString(R.string.an_start_online_game_action)),
 						size + "", 0L);
 
-		Game game = new Game(size, GameMode.ONLINE, blackPlayer, whitePlayer);
+		Game game = new Game(size, GameMode.ONLINE, blackPlayer, whitePlayer, blackPlayer);
 		gameFragment.startGame(game, score);
 		FragmentManager manager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();

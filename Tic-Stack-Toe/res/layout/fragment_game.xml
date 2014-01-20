@@ -1,417 +1,426 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.oakonell.utils.activity.dragndrop.DragLayer xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drag_layer"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/LinearLayout1"
+    <ImageView android:id="@+id/moving_view"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        />
+    
+    <com.oakonell.utils.activity.dragndrop.DragLayer
+        android:id="@+id/drag_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical|center_horizontal"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/black_name_layout"
+            android:id="@+id/LinearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/current_player"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="right"
+            android:orientation="vertical" >
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/black_name_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:background="@drawable/current_player"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
 
-                <TextView
-                    android:id="@+id/blackName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <ImageView
-                    android:id="@+id/black_back"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@color/abs__background_holo_dark" />
-
-                <TextView
-                    android:id="@+id/num_black_wins"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-            </LinearLayout>
+                    android:orientation="horizontal" >
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:layout_gravity="center_vertical" >
+                    <TextView
+                        android:id="@+id/blackName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="Black name"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <ImageView
-                    android:id="@+id/black_piece_stack1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/filled_circle_icon_12972" />
+                    <TextView
+                        android:id="@+id/num_black_wins"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="right"
+                        android:text="12 wins"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/black_piece_stack2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/filled_circle_icon_12972" />
-
-                <ImageView
-                    android:id="@+id/black_piece_stack3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/filled_circle_icon_12972" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" >
-
-            <TextView
-                android:id="@+id/game_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <LinearLayout
-                android:id="@+id/num_games_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/num_games_lbl"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:layout_gravity="center_vertical" >
 
-                <TextView
-                    android:id="@+id/game_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/black_back"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@color/abs__background_holo_dark" />
 
-            <LinearLayout
-                android:id="@+id/num_moves_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/num_games_container"
-                android:layout_below="@+id/num_games_container"
-                android:orientation="horizontal" >
+                    <LinearLayout
+                        android:id="@+id/blackPieceLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:clipChildren="false"
+                        android:gravity="center_horizontal" >
 
-                <TextView
-                    android:id="@+id/num_moves_lbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:text="@string/num_move_lbl"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/black_piece_stack1"
+                            style="@style/player_stack"
+                            android:src="@drawable/black_piece4" />
 
-                <TextView
-                    android:id="@+id/num_moves"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:gravity="center_vertical" />
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/black_piece_stack2"
+                            style="@style/player_stack"
+                            android:src="@drawable/black_piece4" />
+
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/black_piece_stack3"
+                            style="@style/player_stack"
+                            android:src="@drawable/black_piece4" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/grid_container"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/num_moves_container"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center_horizontal|center_vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" >
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r1c1"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r1c2"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r1c3"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r1c4"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r1c5"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r2c1"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r2c2"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r2c3"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r2c4"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r2c5"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r3c1"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r3c2"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r3c3"
-                            style="@style/game_button" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r3c4"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r3c5"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/button_row4"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" >
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r4c1"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r4c2"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r4c3"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r4c4"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r4c5"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/button_row5"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" >
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r5c1"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r5c2"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r5c3"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r5c4"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-
-                        <com.oakonell.utils.activity.dragndrop.ImageDropTarget
-                            android:id="@+id/button_r5c5"
-                            style="@style/game_button"
-                            android:visibility="gone" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <com.oakonell.ticstacktoe.ui.game.WinOverlayView
-                    android:id="@+id/win_overlay"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_centerInParent="true" >
-                </com.oakonell.ticstacktoe.ui.game.WinOverlayView>
-
-                <LinearLayout
-                    android:id="@+id/thinking"
+                    android:id="@+id/num_games_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@color/abs__background_holo_light"
-                    android:gravity="center_vertical" >
-
-                    <ProgressBar
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/thinking_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/opponent_is_thinking" />
+                        android:layout_marginRight="5dp"
+                        android:text="@string/num_games_lbl"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <TextView
+                        android:id="@+id/game_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
                 </LinearLayout>
-            </RelativeLayout>
-        </RelativeLayout>
 
-        <!--
-          <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+                <RelativeLayout
+                    android:id="@+id/grid_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/num_moves_container"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/wood_grid_4x4"
+                    android:gravity="center_horizontal|center_vertical" >
 
-        <TextView
-            android:id="@+id/num_draws"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-    </LinearLayout>
-        -->
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/white_name_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/inactive_player"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:clipChildren="false"
+                            android:layout_weight="1" >
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:layout_gravity="center_vertical" 
-                >
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r1c1"
+                                style="@style/game_button" />
 
-                <ImageView
-                    android:id="@+id/white_piece_stack1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/hollowed_circle_icon_12971" />
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r1c2"
+                                style="@style/game_button" />
 
-                <ImageView
-                    android:id="@+id/white_piece_stack2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/hollowed_circle_icon_12971" />
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r1c3"
+                                style="@style/game_button" />
 
-                <ImageView
-                    android:id="@+id/white_piece_stack3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/hollowed_circle_icon_12971" />
-            </LinearLayout>
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r1c4"
+                                style="@style/game_button"
+                                android:visibility="gone" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r1c5"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+                        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/whiteName"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                                                        android:clipChildren="false"                           
+                            android:layout_weight="1" >
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r2c1"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r2c2"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r2c3"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r2c4"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r2c5"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:clipChildren="false"
+                            android:layout_weight="1" >
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r3c1"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r3c2"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r3c3"
+                                style="@style/game_button" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r3c4"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r3c5"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_row4"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:clipChildren="false"
+                            android:visibility="gone" >
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r4c1"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r4c2"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r4c3"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r4c4"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r4c5"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_row5"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:clipChildren="false"
+                            android:visibility="gone" >
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r5c1"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r5c2"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r5c3"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r5c4"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+
+                            <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
+                                android:id="@+id/button_r5c5"
+                                style="@style/game_button"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.oakonell.ticstacktoe.ui.game.WinOverlayView
+                        android:id="@+id/win_overlay"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerInParent="true" >
+                    </com.oakonell.ticstacktoe.ui.game.WinOverlayView>
+
+                    <LinearLayout
+                        android:id="@+id/thinking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/abs__background_holo_light"
+                        android:gravity="center_vertical" >
+
+                        <ProgressBar
+                            android:layout_width="50dp"
+                            android:layout_height="50dp" />
+
+                        <TextView
+                            android:id="@+id/thinking_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/opponent_is_thinking" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/num_moves_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:orientation="horizontal" >
 
-                <ImageView
-                    android:id="@+id/white_back"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@color/abs__background_holo_light" />
+                    <TextView
+                        android:id="@+id/num_moves_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/num_move_lbl"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <TextView
-                    android:id="@+id/num_white_wins"
+                    <TextView
+                        android:id="@+id/num_moves"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/white_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inactive_player"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:layout_gravity="center_vertical" >
+
+                    <ImageView
+                        android:id="@+id/white_back"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@color/abs__background_holo_light" />
+
+                    <LinearLayout
+                        android:id="@+id/whitePieceLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:clipChildren="false"
+                        android:gravity="center_horizontal" >
+
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/white_piece_stack1"
+                            style="@style/player_stack"
+                            android:src="@drawable/white_piece4" />
+
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/white_piece_stack2"
+                            style="@style/player_stack"
+                            android:src="@drawable/white_piece4" />
+
+                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                            android:id="@+id/white_piece_stack3"
+                            style="@style/player_stack"
+                            android:src="@drawable/white_piece4" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/whiteName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="White Name"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <TextView
+                        android:id="@+id/num_white_wins"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="4 wins"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </com.oakonell.utils.activity.dragndrop.DragLayer>
 
-</com.oakonell.utils.activity.dragndrop.DragLayer>
+</RelativeLayout>

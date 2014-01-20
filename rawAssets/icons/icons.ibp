@@ -15,8 +15,9 @@ FilePrefix ''
 //
 // Execute Converter
 //
-Array MySvgFiles 'filled_circle_icon_12972.svg':'hollowed_circle_icon_12971.svg'
-Array MyExportFiles 'filled_circle_icon_12972':'hollowed_circle_icon_12971'
+Array MySvgFiles 'filled_circle4_icon_12972 .svg':'filled_circle3_icon_12972 .svg':'filled_circle2_icon_12972 .svg':'filled_circle1_icon_12972 .svg':'hollowed_circle4_icon_12971.svg':'hollowed_circle3_icon_12971.svg':'hollowed_circle2_icon_12971.svg':'hollowed_circle1_icon_12971.svg'
+Array MyExportFiles 'filled_circle4_icon_12972':'filled_circle3_icon_12972':'filled_circle2_icon_12972':'filled_circle1_icon_12972':'hollowed_circle4_icon_12971':'hollowed_circle3_icon_12971':'hollowed_circle2_icon_12971':'hollowed_circle1_icon_12971'
+
 Loop MySvgFiles 3
     FileSvg MySvgFiles:Index
     FileName MyExportFiles:Index

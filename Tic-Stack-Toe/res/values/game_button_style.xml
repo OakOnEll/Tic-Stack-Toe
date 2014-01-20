@@ -5,8 +5,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:padding">20dp</item>
-        <item name="android:background">@drawable/tile</item>
+        <item name="android:scaleType">fitCenter</item>
         </style>
 
 </resources>

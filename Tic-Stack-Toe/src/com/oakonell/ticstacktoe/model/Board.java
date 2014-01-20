@@ -13,7 +13,7 @@ public class Board {
 	private State state = State.open(null);
 
 	public static class PieceStack {
-		List<Piece> pieces;
+		List<Piece> pieces = new ArrayList<Piece>();
 
 		public Piece getTopPiece() {
 			if (pieces.isEmpty())
@@ -27,6 +27,17 @@ public class Board {
 
 		public Piece removeTopPiece() {
 			return pieces.remove(0);
+		}
+
+		public Piece peekNextPiece() {
+			if (pieces.size() <= 1)
+				return null;
+			return pieces.get(1);
+		}
+
+		public int getNumber() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 	}
 
@@ -45,6 +56,16 @@ public class Board {
 	}
 
 	public Piece getVisiblePiece(int x, int y) {
+		boundsCheck(x, y);
+		return board[x][y].getTopPiece();
+	}
+
+	public Piece peekNextPiece(Cell cell) {
+		boundsCheck(cell.x, cell.y);
+		return board[cell.x][cell.y].peekNextPiece();
+	}
+
+	private void boundsCheck(int x, int y) {
 		if (x < 0 || x >= size) {
 			throw new IllegalArgumentException("x value (" + x
 					+ " invalid, should be between [0," + size + "]");
@@ -53,79 +74,60 @@ public class Board {
 			throw new IllegalArgumentException("y value (" + y
 					+ " invalid, should be between [0," + size + "]");
 		}
-		return board[x][y].getTopPiece();
 	}
 
-	public State placeMarker(Cell cell, Player player, Piece mark) {
+	public State placePiece(Cell cell, Player player, Piece piece, int stackNum) {
+		boundsCheck(cell.x, cell.y);
 		if (state.isOver()) {
 			throw new IllegalArgumentException(
 					"Game is already over, unable to make move");
 		}
-		if (cell.x < 0 || cell.x >= size) {
-			throw new IllegalArgumentException("x value (" + cell.x
-					+ " invalid, should be between [0," + size + "]");
-		}
-		if (cell.y < 0 || cell.y >= size) {
-			throw new IllegalArgumentException("y value (" + cell.y
-					+ " invalid, should be between [0," + size + "]");
-		}
 		Piece existing = board[cell.x][cell.y].getTopPiece();
-		if (existing != null && existing.isLargerThan(mark)) {
+		if (existing != null && !piece.isLargerThan(existing)) {
 			throw new InvalidMoveException("Cell " + cell.x + ", " + cell.y
 					+ " already has a larger " + existing
-					+ ", unable to place a " + mark + " there",
+					+ ", unable to place a " + piece + " there",
 					R.string.invalid_move_space_has_bigger_piece);
 		}
-		board[cell.x][cell.y].add(mark);
-		Move move = new Move(player, mark, cell, existing);
+		board[cell.x][cell.y].add(piece);
+		AbstractMove move = new PlaceNewPieceMove(player, piece, stackNum,
+				cell, existing);
 		return evaluateAndStore(move);
 	}
 
 	public State moveFrom(Player player, Cell from, Cell to) {
-		if (from.x < 0 || from.x >= size) {
-			throw new IllegalArgumentException("from x value (" + from.x
-					+ " invalid, should be between [0," + size + "]");
-		}
-		if (from.y < 0 || from.y >= size) {
-			throw new IllegalArgumentException("from y value (" + from.y
-					+ " invalid, should be between [0," + size + "]");
-		}
-		if (to.x < 0 || to.x >= size) {
-			throw new IllegalArgumentException("to x value (" + to.x
-					+ " invalid, should be between [0," + size + "]");
-		}
-		if (to.y < 0 || to.y >= size) {
-			throw new IllegalArgumentException("to y value (" + to.y
-					+ " invalid, should be between [0," + size + "]");
-		}
-		Piece existing = board[from.x][from.y].getTopPiece();
-		if (existing == null) {
+		boundsCheck(from.x, from.y);
+		boundsCheck(to.x, to.y);
+		Piece movedPiece = board[from.x][from.y].getTopPiece();
+		if (movedPiece == null) {
 			throw new InvalidMoveException("Cell " + from.x + ", " + from.y
 					+ " does not have any pieces, unable to move",
 					R.string.invalid_move_source_is_empty);
 		}
-		Piece target = board[to.x][to.y].getTopPiece();
-		if (target != null && target.isLargerThan(existing)) {
+		Piece existingTarget = board[to.x][to.y].getTopPiece();
+		if (existingTarget != null && !movedPiece.isLargerThan(existingTarget)) {
 			throw new InvalidMoveException("Cell " + to.x + ", " + to.y
-					+ " already has a larger " + target + ", unable to place "
-					+ existing + " there",
+					+ " already has a larger " + existingTarget
+					+ ", unable to place " + movedPiece + " there",
 					R.string.invalid_move_space_has_bigger_piece);
 		}
 
 		board[from.x][from.y].removeTopPiece();
 		Piece previousTarget = board[to.x][to.y].getTopPiece();
-		board[to.x][to.y].add(existing);
+		board[to.x][to.y].add(movedPiece);
+		Piece previousSource = board[from.x][from.y].getTopPiece();
 
-		Move move = new Move(player, existing, from, to, previousTarget);
+		AbstractMove move = new ExistingPieceMove(player, movedPiece,
+				previousSource, from, to, previousTarget);
 		return evaluateAndStore(move);
 	}
 
-	private State evaluateAndStore(Move move) {
+	private State evaluateAndStore(AbstractMove move) {
 		state = evaluate(move);
 		return state;
 	}
 
-	private State evaluate(Move move) {
+	private State evaluate(AbstractMove move) {
 		Player player = move.getPlayer();
 		List<Win> wins = new ArrayList<Win>();
 		// Inspect the columns
@@ -216,11 +218,12 @@ public class Board {
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				String squareChar = "0";
-				int val = board[x][y].getTopPiece().getVal();
-				if (board[x][y].getTopPiece().getVal() > 0) {
+				Piece topPiece = board[x][y].getTopPiece();
+				int val = topPiece != null ? topPiece.getVal() : 0;
+				if (val >= 0) {
 					squareChar = val + "";
 				} else {
-					squareChar = (10 - val) + "";
+					squareChar = (10 + val) + "";
 				}
 				builder.append(squareChar);
 			}

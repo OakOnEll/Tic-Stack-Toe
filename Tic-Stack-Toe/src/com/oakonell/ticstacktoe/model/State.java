@@ -37,23 +37,24 @@ public class State {
 
 	private final SimpleState state;
 	private final Player winner;
-	private final Move move;
+	private final AbstractMove move;
 
 	private List<Win> wins = new ArrayList<State.Win>();
 
-	public static State winner(Move move, List<Win> wins, Player winner) {
+	public static State winner(AbstractMove move, List<Win> wins, Player winner) {
 		return new State(move, wins, winner, SimpleState.WIN);
 	}
 
-	public static State draw(Move move) {
+	public static State draw(AbstractMove move) {
 		return new State(move, null, null, SimpleState.DRAW);
 	}
 
-	public static State open(Move move) {
+	public static State open(AbstractMove move) {
 		return new State(move, null, null, SimpleState.OPEN);
 	}
 
-	private State(Move move, List<Win> wins, Player winner, SimpleState state) {
+	private State(AbstractMove move, List<Win> wins, Player winner,
+			SimpleState state) {
 		this.move = move;
 		this.winner = winner;
 		this.state = state;
@@ -70,7 +71,7 @@ public class State {
 
 	public boolean isDraw() {
 		return state == SimpleState.DRAW;
-	} 
+	}
 
 	public List<Win> getWins() {
 		return wins;
@@ -80,7 +81,7 @@ public class State {
 		return state != SimpleState.OPEN;
 	}
 
-	public Move getLastMove() {
+	public AbstractMove getLastMove() {
 		return move;
 	}
 
