@@ -24,7 +24,7 @@ public class MiniMaxAlg {
 	private final int depth;
 
 	private final static Random random = new Random();
-	
+
 	public MiniMaxAlg(Player player, int depth) {
 		this.player = player;
 		if (depth < 0)
@@ -92,10 +92,11 @@ public class MiniMaxAlg {
 					bestMove = move;
 				}
 				if (currentScore == alpha) {
-					// accept the new move with some probability, to not always be deterministic
-					if (random.nextInt(2)==0) {
+					// accept the new move with some probability, to not always
+					// be deterministic
+					if (random.nextInt(2) == 0) {
 						alpha = currentScore;
-						bestMove = move;						
+						bestMove = move;
 					}
 				}
 			} else {
@@ -107,8 +108,9 @@ public class MiniMaxAlg {
 					bestMove = move;
 				}
 				if (currentScore == beta) {
-					// accept the new move with some probability, to not always be deterministic
-					if (random.nextInt(2)==0) {
+					// accept the new move with some probability, to not always
+					// be deterministic
+					if (random.nextInt(2) == 0) {
 						beta = currentScore;
 						bestMove = move;
 					}
@@ -208,7 +210,8 @@ public class MiniMaxAlg {
 				}
 				Cell target = new Cell(x, y);
 				boolean canMoveToOccupied = !type.isStrict()
-						|| board.isPartOfThreeInARow(piece, target);
+						|| (board.isPartOfThreeInARow(piece, target) && piece
+								.isBlack() != playedPiece.isBlack());
 				if (canMoveToOccupied && playedPiece.isLargerThan(piece)) {
 					result.add(new PlaceNewPieceMove(currentPlayer,
 							playedPiece, stackNum, target, piece));

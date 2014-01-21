@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -89,6 +88,8 @@ public class GameFragment extends AbstractGameFragment {
 	boolean exitOnResume;
 
 	private WindowManager mWindowManager;
+
+	private Cell firstPickCell;
 
 	@Override
 	public void onPause() {
@@ -502,6 +503,12 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public boolean allowDrag() {
+				// if we are in strict mode, and a board piece was touched, no
+				// stack moves area allowed
+				if (firstPickCell != null) {
+					return false;
+				}
+
 				boolean isCurrentPlayersPiece = pieceStack.getTopPiece()
 						.isBlack() == game.getCurrentPlayer().isBlack();
 				if (!isCurrentPlayersPiece)
@@ -538,6 +545,10 @@ public class GameFragment extends AbstractGameFragment {
 				boolean isCurrentPlayersPiece = topPiece.isBlack() == game
 						.getCurrentPlayer().isBlack();
 				if (!isCurrentPlayersPiece) {
+					return false;
+				}
+
+				if (!dragSource.allowDrag()) {
 					return false;
 				}
 
@@ -589,6 +600,11 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public boolean allowDrag() {
+				// if we are in strict, and a piece was already chosen, only
+				// that one can be dragged
+				if (firstPickCell != null) {
+					return firstPickCell.equals(cell);
+				}
 				// conditionally alow dragging, if there is a piece and it is my
 				// color
 				Piece visiblePiece = getVisiblePiece();
@@ -609,11 +625,19 @@ public class GameFragment extends AbstractGameFragment {
 			@Override
 			public void onDropCompleted(View target, boolean success) {
 				update();
+				if (firstPickCell == null) {
+					unhighlightStrictFirstTouchedPiece(button);
+				}
 			}
 
 			@Override
 			public void onDropCanceled() {
 				update();
+				// in strict mode, highlight the chosen piece, as only it can be
+				// moved
+				if (game.getType().isStrict()) {
+					highlightStrictFirstTouchedPiece(button);
+				}
 			}
 
 			@Override
@@ -640,6 +664,12 @@ public class GameFragment extends AbstractGameFragment {
 
 				OnDropMove onDropMove = (OnDropMove) dragInfo;
 				if (onDropMove.originatedFrom(cell)) {
+					// if in strict mode and the user already chose this piece,
+					// make sure it remains highlighted
+					if (firstPickCell != null) {
+						highlightStrictFirstTouchedPiece(button);
+					} 
+
 					return;
 				}
 
@@ -659,6 +689,8 @@ public class GameFragment extends AbstractGameFragment {
 					return;
 				}
 				onDropMove.postMove();
+
+				firstPickCell = null;
 
 				updateBoardPiece(cell);
 				postMove(state);
@@ -698,6 +730,10 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
+				if (!dragSource.allowDrag()) {
+					return false;
+				}
+
 				// We are starting a drag. Let the DragController handle it.
 				DragConfig dragConfig = new DragConfig();
 				dragConfig.alpha = 255;
@@ -722,8 +758,16 @@ public class GameFragment extends AbstractGameFragment {
 					}
 				};
 
+				// in case the piece was marked in strict mode, remove the
+				// background highlight
+				unhighlightStrictFirstTouchedPiece(button);
+
 				mDragController.startDrag(v, dragSource, boardToBoardDropMove,
 						DragController.DRAG_ACTION_COPY, dragConfig);
+
+				if (game.getType().isStrict()) {
+					firstPickCell = cell;
+				}
 
 				// for a board move, let's leave the moved/top piece
 				// visible/greyed?
@@ -1207,29 +1251,6 @@ public class GameFragment extends AbstractGameFragment {
 		// View source;
 
 		makeAndDisplayMove(move);
-
-		// if (move.isMoveFromStack()) {
-		// PlaceNewPieceMove theMove = (PlaceNewPieceMove) move;
-		// theMove.getStackNumber();
-		// }else {
-		//
-		// }
-
-		// highlight, then animate moving to target
-
-		// final ImageDropTarget cellButton =
-		// findButtonFor(move.getTargetCell());
-		// final Drawable originalBackGround = cellButton.getBackground();
-		// cellButton.setBackgroundColor(getResources().getColor(
-		// R.color.holo_blue_light));
-		// Handler handler = new Handler();
-		// handler.postDelayed(new Runnable() {
-		// @Override
-		// public void run() {
-		// cellButton.setBackgroundDrawable(originalBackGround);
-		// makeAndDisplayMove(move);
-		// }
-		// }, NON_HUMAN_OPPONENT_HIGHLIGHT_MOVE_PAUSE_MS);
 	}
 
 	private ImageDropTarget findButtonFor(Cell cell) {
@@ -1347,4 +1368,14 @@ public class GameFragment extends AbstractGameFragment {
 
 	}
 
+	private void highlightStrictFirstTouchedPiece(
+			final BoardPieceStackImageView button) {
+		button.setBackgroundColor(getResources().getColor(
+				R.color.holo_blue_light));
+	}
+
+	private void unhighlightStrictFirstTouchedPiece(
+			final BoardPieceStackImageView button) {
+		button.setBackgroundDrawable(null);
+	}
 }
