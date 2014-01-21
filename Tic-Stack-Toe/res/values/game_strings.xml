@@ -6,7 +6,8 @@
     
     <string name="invalid_move_space_has_bigger_piece">Place that piece in an empty space or over a smaller piece already on the board.</string>
     <string name="invalid_move_source_is_empty">There is no piece at the source to move.</string>
-    
+    <string name="invalid_stack_move_in_strict">A piece from the stacj must be moved to either (1) an empty space, or (2) a space to gobble an opponent’s piece that is part of three in a row (for the opponent).</string>
+        
     
     <string name="button_send">Send</string>
     <string name="action_chat">Chat</string>

@@ -26,6 +26,7 @@ import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Cell;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
@@ -270,7 +271,8 @@ public class RoomListener implements RoomUpdateListener,
 										.getString(R.string.an_start_online_game_action)),
 						size + "", 0L);
 
-		Game game = new Game(size, GameMode.ONLINE, blackPlayer, whitePlayer, blackPlayer);
+		// TODO get the game type as a parameter?
+		Game game = new Game(GameType.EASY, GameMode.ONLINE, blackPlayer, whitePlayer, blackPlayer);
 		gameFragment.startGame(game, score);
 		FragmentManager manager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();

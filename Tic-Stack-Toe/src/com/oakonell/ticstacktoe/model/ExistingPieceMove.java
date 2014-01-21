@@ -1,5 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.util.List;
+
+import com.oakonell.ticstacktoe.model.Board.PieceStack;
+
 public class ExistingPieceMove extends AbstractMove {
 	private final Piece exposedSourcePiece;
 	private final Cell source;
@@ -23,6 +27,18 @@ public class ExistingPieceMove extends AbstractMove {
 	@Override
 	public State applyToGame(Game game) {
 		return game.movePiece(source, getTargetCell());
+	}
+
+	@Override
+	public State applyTo(GameType type, Board board,  List<PieceStack> blackPlayerPieces,
+			List<PieceStack> whitePlayerPieces) {
+		return board.moveFrom(getPlayer(), getSource(), getTargetCell());
+	}
+	
+	@Override
+	public void undo(Board board, State originalState,List<PieceStack> blackPlayerPieces,
+			List<PieceStack> whitePlayerPieces) {
+		board.undoBoardMove(this, originalState);
 	}
 
 }

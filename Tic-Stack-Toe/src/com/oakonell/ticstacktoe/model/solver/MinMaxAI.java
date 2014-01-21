@@ -3,9 +3,8 @@ package com.oakonell.ticstacktoe.model.solver;
 import android.net.Uri;
 
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.model.Board;
-import com.oakonell.ticstacktoe.model.Cell;
-import com.oakonell.ticstacktoe.model.Piece;
+import com.oakonell.ticstacktoe.model.AbstractMove;
+import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
@@ -46,10 +45,8 @@ public class MinMaxAI extends PlayerStrategy {
 		return true;
 	}
 
-	public Cell move(Board board, Piece toPlay) {
-		// TODO
-		// return minmax.solve(board, toPlay);
-		return null;
+	public AbstractMove move(Game game) {
+		return minmax.solve(game);
 	}
 
 }

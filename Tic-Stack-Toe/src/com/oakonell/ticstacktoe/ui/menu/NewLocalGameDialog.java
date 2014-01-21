@@ -1,5 +1,8 @@
 package com.oakonell.ticstacktoe.ui.menu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -11,12 +14,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.utils.StringUtils;
 
 public class NewLocalGameDialog extends SherlockDialogFragment {
@@ -24,7 +30,7 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 	private String whiteName;
 
 	public interface LocalGameModeListener {
-		void chosenMode(int size, String blackName, String whiteName);
+		void chosenMode(GameType type, String blackName, String whiteName);
 	}
 
 	private LocalGameModeListener listener;
@@ -105,11 +111,28 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 			}
 		});
 
+		List<TypeDropDownItem> types = new ArrayList<TypeDropDownItem>();
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_junior), GameType.JUNIOR));
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_easy), GameType.EASY));
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_strict), GameType.REGULAR));
+
+		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
+		ArrayAdapter<TypeDropDownItem> typeAdapter = new ArrayAdapter<TypeDropDownItem>(
+				getActivity(), android.R.layout.simple_spinner_dropdown_item,
+				types);
+		typeSpinner.setAdapter(typeAdapter);
+
 		Button start = (Button) view.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
+						.getSelectedItem();
+
 				if (!validate(blackNameText, whiteNameText)) {
 					return;
 				}
@@ -118,11 +141,10 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 				writeNamesToPreferences();
 
 				dismiss();
-				// TODO get size
-				int size = 4;
-				listener.chosenMode(size, blackName, whiteName);
+				listener.chosenMode(typeItem.type, blackName, whiteName);
 			}
 		});
+
 		return view;
 
 	}
@@ -132,12 +154,14 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 		String blackName = blackNameText.getText().toString();
 		if (StringUtils.isEmpty(blackName)) {
 			isValid = false;
-			blackNameText.setError(getResources().getString(R.string.error_black_name));
+			blackNameText.setError(getResources().getString(
+					R.string.error_black_name));
 		}
 		String whiteName = whiteNameText.getText().toString();
 		if (StringUtils.isEmpty(whiteName)) {
 			isValid = false;
-			whiteNameText.setError(getResources().getString(R.string.error_white_name));
+			whiteNameText.setError(getResources().getString(
+					R.string.error_white_name));
 		}
 
 		if (blackName.equals(whiteName)) {

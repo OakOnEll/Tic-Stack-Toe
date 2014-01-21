@@ -170,6 +170,11 @@ public class GameFragment extends AbstractGameFragment {
 		mDragLayer.setDragController(mDragController);
 		mDragController.setDragListener(mDragLayer);
 
+		if (game.getBoard().getSize() == 3) {
+			((ViewGroup) view.findViewById(R.id.grid_container))
+					.setBackgroundResource(R.drawable.wood_grid_3x3);
+		}
+
 		invalidateMenu();
 		setHasOptionsMenu(true);
 		thinkingText = (TextView) view.findViewById(R.id.thinking_text);
@@ -404,7 +409,11 @@ public class GameFragment extends AbstractGameFragment {
 		configurePlayerStack(stackView, 1, game.getBlackPlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack3);
-		configurePlayerStack(stackView, 2, game.getBlackPlayer());
+		if (game.getType().getStackSize() > 2) {
+			configurePlayerStack(stackView, 2, game.getBlackPlayer());
+		} else {
+			stackView.setVisibility(View.GONE);
+		}
 
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack1);
@@ -414,7 +423,11 @@ public class GameFragment extends AbstractGameFragment {
 		configurePlayerStack(stackView, 1, game.getWhitePlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack3);
-		configurePlayerStack(stackView, 2, game.getWhitePlayer());
+		if (game.getType().getStackSize() > 2) {
+			configurePlayerStack(stackView, 2, game.getWhitePlayer());
+		} else {
+			stackView.setVisibility(View.GONE);
+		}
 	}
 
 	private void updatePlayerStack(Player player, int stackNum) {
@@ -771,8 +784,8 @@ public class GameFragment extends AbstractGameFragment {
 
 	public void playAgain() {
 		Player currentPlayer = game.getCurrentPlayer();
-		game = new Game(game.getBoard().getSize(), game.getMode(),
-				game.getBlackPlayer(), game.getWhitePlayer(), currentPlayer);
+		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
+				game.getWhitePlayer(), currentPlayer);
 		addPieceListeners(getView());
 		updateHeader(true);
 		winOverlayView.clearWins();
@@ -782,7 +795,7 @@ public class GameFragment extends AbstractGameFragment {
 			each.setImageDrawable(null);
 		}
 		// reset player stacks
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < game.getType().getStackSize(); i++) {
 			updatePlayerStack(game.getBlackPlayer(), i);
 			updatePlayerStack(game.getWhitePlayer(), i);
 		}
@@ -988,10 +1001,10 @@ public class GameFragment extends AbstractGameFragment {
 		// add new animations to the set
 		replaceAnimation.addAnimation(trans);
 
-//		AlphaAnimation fade = new AlphaAnimation(1, 0);
-//		fade.setStartOffset(800);
-//		fade.setDuration(200);
-//		replaceAnimation.addAnimation(fade);
+		// AlphaAnimation fade = new AlphaAnimation(1, 0);
+		// fade.setStartOffset(800);
+		// fade.setDuration(200);
+		// replaceAnimation.addAnimation(fade);
 
 		Interpolator interpolator = new AnticipateInterpolator();
 		replaceAnimation.setInterpolator(interpolator);
@@ -999,21 +1012,14 @@ public class GameFragment extends AbstractGameFragment {
 		replaceAnimation.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {
-				Toast.makeText(getActivity(), "start anim", Toast.LENGTH_SHORT)
-						.show();
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				Toast.makeText(getActivity(), "repeat anim", Toast.LENGTH_SHORT)
-						.show();
 			}
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				Toast.makeText(getActivity(), "End anim", Toast.LENGTH_SHORT)
-						.show();
-				// mWindowManager.removeView(movingView);
 				movingView.setVisibility(View.GONE);
 				update.run();
 				updateBoardPiece(move.getTargetCell());

@@ -1,5 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.util.List;
+
+import com.oakonell.ticstacktoe.model.Board.PieceStack;
+
 public abstract class AbstractMove {
 	private final Player player;
 	private final Cell target;
@@ -31,5 +35,12 @@ public abstract class AbstractMove {
 	}
 
 	abstract public State applyToGame(Game game);
+
+	public abstract State applyTo(GameType type, Board board,
+			List<PieceStack> blackPlayerPieces,
+			List<PieceStack> whitePlayerPieces);
+
+	public abstract void undo(Board board, State originalState, List<PieceStack> blackPlayerPieces,
+			List<PieceStack> whitePlayerPieces);
 
 }

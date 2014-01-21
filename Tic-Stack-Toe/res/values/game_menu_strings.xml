@@ -38,5 +38,9 @@
     <string name="choose_online_game_mode_title">Choose Online Game Mode</string>
     <string name="choose_online_opponent">Find Friend</string>
     <string name="select_opponent">Select Opponent</string>
+    <string name="game_type">Game Type</string>
+    <string name="type_junior">Junior (3x3)</string>
+    <string name="type_easy">Easy (4x4)</string>
+    <string name="type_strict">Strict (4x4)</string>
 
 </resources>

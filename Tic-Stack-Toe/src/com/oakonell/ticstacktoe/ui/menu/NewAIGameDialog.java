@@ -14,11 +14,12 @@ import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.model.GameType;
 
 public class NewAIGameDialog extends SherlockDialogFragment {
 
 	public interface LocalAIGameModeListener {
-		void chosenMode(int size, String aiName, int level);
+		void chosenMode(GameType type, String aiName, int level);
 	}
 
 	private LocalAIGameModeListener listener;
@@ -67,6 +68,21 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 		aiLevelSpinner.setAdapter(aiLevelAdapter);
 		aiLevelSpinner.setSelection(1);
 
+		List<TypeDropDownItem> types = new ArrayList<TypeDropDownItem>();
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_junior), GameType.JUNIOR));
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_easy), GameType.EASY));
+		types.add(new TypeDropDownItem(getResources().getString(
+				R.string.type_strict), GameType.REGULAR));
+
+		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
+		ArrayAdapter<TypeDropDownItem> typeAdapter = new ArrayAdapter<TypeDropDownItem>(
+				getActivity(), android.R.layout.simple_spinner_dropdown_item,
+				types);
+		typeSpinner.setAdapter(typeAdapter);
+		// typeSpinner.setSelection(1);
+
 		Button start = (Button) view.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {
 
@@ -75,12 +91,14 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 				AiDropDownItem selectedItem = (AiDropDownItem) aiLevelSpinner
 						.getSelectedItem();
 
+				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
+						.getSelectedItem();
+
 				String whiteName = selectedItem.text + " AI";
 
 				dismiss();
-				// TODO get size
-				int size = 4;
-				listener.chosenMode(size, whiteName, selectedItem.level);
+				listener.chosenMode(typeItem.type, whiteName,
+						selectedItem.level);
 			}
 		});
 		return view;

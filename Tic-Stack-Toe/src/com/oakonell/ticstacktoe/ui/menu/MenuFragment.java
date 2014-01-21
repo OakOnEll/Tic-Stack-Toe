@@ -41,6 +41,7 @@ import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.MinMaxAI;
@@ -289,8 +290,8 @@ public class MenuFragment extends SherlockFragment {
 		NewAIGameDialog dialog = new NewAIGameDialog();
 		dialog.initialize(new LocalAIGameModeListener() {
 			@Override
-			public void chosenMode(int size, String aiName, int level) {
-				startAIGame(size, aiName, level);
+			public void chosenMode(GameType type, String aiName, int level) {
+				startAIGame(type, aiName, level);
 			}
 		});
 		dialog.show(getFragmentManager(), "aidialog");
@@ -302,8 +303,8 @@ public class MenuFragment extends SherlockFragment {
 		NewLocalGameDialog dialog = new NewLocalGameDialog();
 		dialog.initialize(new LocalGameModeListener() {
 			@Override
-			public void chosenMode(int size, String xName, String oName) {
-				startLocalTwoPlayerGame(size, xName, oName);
+			public void chosenMode(GameType type, String xName, String oName) {
+				startLocalTwoPlayerGame(type, xName, oName);
 			}
 		});
 		dialog.show(getFragmentManager(), "localgame");
@@ -364,7 +365,7 @@ public class MenuFragment extends SherlockFragment {
 				"gameMode");
 	}
 
-	private void startLocalTwoPlayerGame(int size, String blackName,
+	private void startLocalTwoPlayerGame(GameType type, String blackName,
 			String whiteName) {
 		GameFragment gameFragment = new GameFragment();
 
@@ -374,9 +375,9 @@ public class MenuFragment extends SherlockFragment {
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker.sendEvent(getString(R.string.an_start_game_cat),
 				getString(R.string.an_start_pass_n_play_game_action),
-				size + "", 0L);
+				type + "", 0L);
 
-		Game game = new Game(size, GameMode.PASS_N_PLAY, blackPlayer,
+		Game game = new Game(type, GameMode.PASS_N_PLAY, blackPlayer,
 				whitePlayer, blackPlayer);
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		gameFragment.startGame(game, score);
@@ -389,7 +390,7 @@ public class MenuFragment extends SherlockFragment {
 		transaction.commit();
 	}
 
-	private void startAIGame(int size, String whiteName, int aiDepth) {
+	private void startAIGame(GameType type, String whiteName, int aiDepth) {
 		GameFragment gameFragment = new GameFragment();
 
 		ScoreCard score = new ScoreCard(0, 0, 0);
@@ -406,8 +407,8 @@ public class MenuFragment extends SherlockFragment {
 
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker.sendEvent(getString(R.string.an_start_game_cat),
-				getString(R.string.an_start_ai_game_action), size + "", 0L);
-		Game game = new Game(size, GameMode.AI, blackPlayer, whitePlayer,
+				getString(R.string.an_start_ai_game_action), type + "", 0L);
+		Game game = new Game(type, GameMode.AI, blackPlayer, whitePlayer,
 				blackPlayer);
 
 		gameFragment.startGame(game, score);

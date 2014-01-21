@@ -35,9 +35,12 @@ public class Board {
 			return pieces.get(1);
 		}
 
-		public int getNumber() {
-			// TODO Auto-generated method stub
-			return 0;
+		public PieceStack copy() {
+			PieceStack copy = new PieceStack();
+			for (Piece piece : pieces) {
+				copy.pieces.add(piece);
+			}
+			return copy;
 		}
 	}
 
@@ -76,23 +79,105 @@ public class Board {
 		}
 	}
 
-	public State placePiece(Cell cell, Player player, Piece piece, int stackNum) {
+	public State placePiece(Cell cell, Player player, Piece piece,
+			int stackNum, GameType gameType) {
 		boundsCheck(cell.x, cell.y);
 		if (state.isOver()) {
 			throw new IllegalArgumentException(
 					"Game is already over, unable to make move");
 		}
 		Piece existing = board[cell.x][cell.y].getTopPiece();
-		if (existing != null && !piece.isLargerThan(existing)) {
-			throw new InvalidMoveException("Cell " + cell.x + ", " + cell.y
-					+ " already has a larger " + existing
-					+ ", unable to place a " + piece + " there",
-					R.string.invalid_move_space_has_bigger_piece);
+		if (existing != null) {
+			if (!piece.isLargerThan(existing)) {
+				throw new InvalidMoveException("Cell " + cell.x + ", " + cell.y
+						+ " already has a larger " + existing
+						+ ", unable to place a " + piece + " there",
+						R.string.invalid_move_space_has_bigger_piece);
+			}
+			if (gameType.isStrict()) {
+				// you can only place a new piece over an existing one
+				// if it is part of a three-in-a-row opponent piece
+				if (existing.isBlack() == piece.isBlack()) {
+					throw new InvalidMoveException("Cell " + cell.x + ", "
+							+ cell.y + " already has a piece " + existing
+							+ ", unable to place a new " + piece
+							+ " there in 'strict' game type",
+							R.string.invalid_stack_move_in_strict);
+				}
+				// make sure that the current piece participates in a 3 in a row
+				if (!isPartOfThreeInARow(existing, cell)) {
+					throw new InvalidMoveException("Cell " + cell.x + ", "
+							+ cell.y + " already has a piece " + existing
+							+ ", unable to place a new " + piece
+							+ " there in 'strict' game type",
+							R.string.invalid_stack_move_in_strict);
+				}
+			}
 		}
+
 		board[cell.x][cell.y].add(piece);
 		AbstractMove move = new PlaceNewPieceMove(player, piece, stackNum,
 				cell, existing);
 		return evaluateAndStore(move);
+	}
+
+	public boolean isPartOfThreeInARow(Piece existing, Cell cell) {
+		boolean isBlack = existing.isBlack();
+		// check row
+		int count = 0;
+		for (int x = 0; x < size; x++) {
+			Piece topPiece = board[x][cell.getY()].getTopPiece();
+			if (topPiece != null && topPiece.isBlack() == isBlack) {
+				count++;
+			}
+		}
+		if (count > 2)
+			return true;
+
+		// check col
+		count = 0;
+		for (int y = 0; y < size; y++) {
+			Piece topPiece = board[cell.getX()][y].getTopPiece();
+			if (topPiece != null && topPiece.isBlack() == isBlack) {
+				count++;
+			}
+		}
+		if (count > 2)
+			return true;
+
+		// check diagonals
+		if (cell.getX() == cell.getY()) {
+			return isPartOfTopLeftDiagonalThreeInARow(existing, cell);
+		} else if ((cell.getX() + cell.getY()) % size == 0) {
+			return isPartOfTopRightDiagonalThreeInARow(existing, cell);
+		}
+
+		return false;
+	}
+
+	private boolean isPartOfTopLeftDiagonalThreeInARow(Piece existing, Cell cell) {
+		boolean isBlack = existing.isBlack();
+		int count = 0;
+		for (int x = 0; x < size; x++) {
+			Piece topPiece = board[x][x].getTopPiece();
+			if (topPiece != null && topPiece.isBlack() == isBlack) {
+				count++;
+			}
+		}
+		return count > 2;
+	}
+
+	private boolean isPartOfTopRightDiagonalThreeInARow(Piece existing,
+			Cell cell) {
+		boolean isBlack = existing.isBlack();
+		int count = 0;
+		for (int x = 0; x < size; x++) {
+			Piece topPiece = board[x][size - x - 1].getTopPiece();
+			if (topPiece != null && topPiece.isBlack() == isBlack) {
+				count++;
+			}
+		}
+		return count > 2;
 	}
 
 	public State moveFrom(Player player, Cell from, Cell to) {
@@ -229,6 +314,52 @@ public class Board {
 			}
 		}
 		return builder.toString();
+	}
+
+	public Board copy() {
+		Board copy = new Board(size);
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				PieceStack stack = board[x][y];
+				copy.board[x][y] = stack.copy();
+			}
+		}
+		return copy;
+	}
+
+	protected void setState(State originalState) {
+		state = originalState;
+	}
+
+	public void undoBoardMove(ExistingPieceMove existingPieceMove,
+			State originalState) {
+		state = originalState;
+
+		Cell targetCell = existingPieceMove.getTargetCell();
+		Cell sourceCell = existingPieceMove.getSource();
+
+		Piece playedPiece = board[targetCell.x][targetCell.y].removeTopPiece();
+		board[sourceCell.x][sourceCell.y].add(playedPiece);
+	}
+
+	public void undoStackMove(PlaceNewPieceMove placeNewPieceMove,
+			State originalState, List<PieceStack> blackPlayerPieces,
+			List<PieceStack> whitePlayerPieces) {
+		state = originalState;
+
+		Cell targetCell = placeNewPieceMove.getTargetCell();
+
+		Piece playedPiece = board[targetCell.x][targetCell.y].removeTopPiece();
+
+		List<PieceStack> stacks;
+		if (placeNewPieceMove.getPlayer().isBlack()) {
+			stacks = blackPlayerPieces;
+		} else {
+			stacks = whitePlayerPieces;
+		}
+		int stackNum = placeNewPieceMove.getStackNum();
+		PieceStack stack = stacks.get(stackNum);
+		stack.add(playedPiece);
 	}
 
 }

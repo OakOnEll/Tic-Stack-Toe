@@ -1,6 +1,5 @@
 package com.oakonell.ticstacktoe.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,22 +7,24 @@ import java.util.Map;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
 
 public class Game {
-	private int moves;
 	private final Board board;
+	private final GameType gameType;
 
-	private Player blackPlayer;
-	private Player whitePlayer;
-	private GameMode mode;
+	private final Player blackPlayer;
+	private final Player whitePlayer;
+	private final GameMode mode;
 
-	private List<PieceStack> blackPlayerPieces;
-	private List<PieceStack> whitePlayerPieces;
+	private final List<PieceStack> blackPlayerPieces;
+	private final List<PieceStack> whitePlayerPieces;
+	private final Map<String, Integer> numVisitsPerState = new HashMap<String, Integer>();
 
+	private int moves;
 	private Player player;
-	private Map<String, Integer> numVisitsPerState = new HashMap<String, Integer>();
 
-	public Game(int size, GameMode mode, Player blackPlayer,
+	public Game(GameType gameType, GameMode mode, Player blackPlayer,
 			Player whitePlayer, Player startingPlayer) {
-		board = new Board(size);
+		this.gameType = gameType;
+		board = new Board(gameType.size);
 		this.blackPlayer = blackPlayer;
 		this.whitePlayer = whitePlayer;
 		blackPlayer.setOpponent(whitePlayer);
@@ -31,36 +32,12 @@ public class Game {
 		blackPlayer.setGame(this);
 		whitePlayer.setGame(this);
 
-		blackPlayerPieces = new ArrayList<Board.PieceStack>();
-		blackPlayerPieces.add(createBlackPlayerStack());
-		blackPlayerPieces.add(createBlackPlayerStack());
-		blackPlayerPieces.add(createBlackPlayerStack());
-		whitePlayerPieces = new ArrayList<Board.PieceStack>();
-		whitePlayerPieces.add(createWhitePlayerStack());
-		whitePlayerPieces.add(createWhitePlayerStack());
-		whitePlayerPieces.add(createWhitePlayerStack());
+		blackPlayerPieces = gameType.createBlackPlayerStacks();
+		whitePlayerPieces = gameType.createWhitePlayerStacks();
 
 		// player = startingPlayer;
 		player = startingPlayer;
 		this.mode = mode;
-	}
-
-	private PieceStack createBlackPlayerStack() {
-		PieceStack pieceStack = new PieceStack();
-		pieceStack.add(Piece.BLACK1);
-		pieceStack.add(Piece.BLACK2);
-		pieceStack.add(Piece.BLACK3);
-		pieceStack.add(Piece.BLACK4);
-		return pieceStack;
-	}
-
-	private PieceStack createWhitePlayerStack() {
-		PieceStack pieceStack = new PieceStack();
-		pieceStack.add(Piece.WHITE1);
-		pieceStack.add(Piece.WHITE2);
-		pieceStack.add(Piece.WHITE3);
-		pieceStack.add(Piece.WHITE4);
-		return pieceStack;
 	}
 
 	public State placePlayerPiece(int stack, Cell cell) {
@@ -73,7 +50,7 @@ public class Game {
 		PieceStack pieceStack = playerPieces.get(stack);
 		Piece piece = pieceStack.getTopPiece();
 
-		State outcome = board.placePiece(cell, player, piece, stack);
+		State outcome = board.placePiece(cell, player, piece, stack, gameType);
 		// if move was valid, remove the piece, it is now on the board
 		pieceStack.removeTopPiece();
 
@@ -182,6 +159,10 @@ public class Game {
 		if (player == blackPlayer)
 			return blackPlayerPieces;
 		return whitePlayerPieces;
+	}
+
+	public GameType getType() {
+		return gameType;
 	}
 
 }
