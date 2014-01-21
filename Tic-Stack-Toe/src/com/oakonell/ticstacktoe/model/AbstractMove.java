@@ -43,4 +43,15 @@ public abstract class AbstractMove {
 	public abstract void undo(Board board, State originalState, List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces);
 
+	protected void appendTargetToString(StringBuilder builder) {
+		builder.append(" to ");
+		builder.append(getTargetCell());
+		Piece existingTargetPiece = getExistingTargetPiece();
+		if (existingTargetPiece != null) {
+			builder.append(" (covering ");
+			builder.append(existingTargetPiece);
+			builder.append(")");
+		}
+	}
+
 }

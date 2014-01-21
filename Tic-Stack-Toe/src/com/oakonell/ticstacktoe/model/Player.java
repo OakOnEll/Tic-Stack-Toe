@@ -67,5 +67,7 @@ public class Player {
 		return isBlack() ? game.getBlackPlayerPieces() : game
 				.getWhitePlayerPieces();
 	}
-
+	public String toString() {
+		return getName() + "(" + (isBlack() ?"Black":"White") + ")"; 
+	}
 }

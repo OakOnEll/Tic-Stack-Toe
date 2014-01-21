@@ -43,4 +43,14 @@ public class PlaceNewPieceMove extends AbstractMove {
 			List<PieceStack> whitePlayerPieces) {
 		board.undoStackMove(this, originalState, blackPlayerPieces, whitePlayerPieces);
 	}
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder("Stack Move ");
+		builder.append(getPlayedPiece());
+		builder.append(" from Stack ");
+		builder.append(stackNum);
+		appendTargetToString(builder);
+		return builder.toString();
+	}
+
 }

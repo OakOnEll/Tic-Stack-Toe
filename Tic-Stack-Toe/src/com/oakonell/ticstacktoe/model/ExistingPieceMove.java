@@ -30,15 +30,31 @@ public class ExistingPieceMove extends AbstractMove {
 	}
 
 	@Override
-	public State applyTo(GameType type, Board board,  List<PieceStack> blackPlayerPieces,
+	public State applyTo(GameType type, Board board,
+			List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces) {
 		return board.moveFrom(getPlayer(), getSource(), getTargetCell());
 	}
-	
+
 	@Override
-	public void undo(Board board, State originalState,List<PieceStack> blackPlayerPieces,
+	public void undo(Board board, State originalState,
+			List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces) {
 		board.undoBoardMove(this, originalState);
+	}
+
+	public String toString() {
+		StringBuilder builder = new StringBuilder("Board Move ");
+		builder.append(getPlayedPiece());
+		builder.append(" from ");
+		builder.append(getSource());
+		if (exposedSourcePiece != null) {
+			builder.append(" (exposing ");
+			builder.append(exposedSourcePiece);
+			builder.append(")");
+		}
+		appendTargetToString(builder);
+		return builder.toString();
 	}
 
 }

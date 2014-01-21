@@ -28,7 +28,9 @@ public class State {
 		public WinStyle getWinStyle() {
 			return winStyle;
 		}
-
+		public String toString() {
+			return winStyle.name() + "-" + start + " to " + end;
+		}
 	}
 
 	public enum SimpleState {
@@ -85,4 +87,14 @@ public class State {
 		return move;
 	}
 
+	public String toString() {
+		if (state== SimpleState.OPEN) {
+			return "Open";
+		}
+		if (state == SimpleState.DRAW) {
+			return "Draw";
+		}
+		return winner + " won: " + wins;
+	}
+	
 }

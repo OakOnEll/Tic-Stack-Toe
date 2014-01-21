@@ -1,8 +1,10 @@
 package com.oakonell.ticstacktoe.model.solver;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Board;
@@ -44,8 +46,8 @@ public class MiniMaxAlg {
 				game.getWhitePlayerPieces());
 
 		MoveAndScore solve = solve(game.getType(), copy, blackPlayerPieces,
-				whitePlayerPieces, depth, player, Double.NEGATIVE_INFINITY,
-				Double.POSITIVE_INFINITY);
+				whitePlayerPieces, depth, player, Integer.MIN_VALUE,
+				Integer.MAX_VALUE, true);
 		if (solve.move == null) {
 			throw new RuntimeException("Move should not be null!");
 		}
@@ -55,7 +57,7 @@ public class MiniMaxAlg {
 	private MoveAndScore solve(GameType type, Board board,
 			List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces, int depth,
-			Player currentPlayer, double theAlpha, double theBeta) {
+			Player currentPlayer, int theAlpha, int theBeta, boolean isFirst) {
 		State state = board.getState();
 		if (state.isOver()) {
 			// how can moves be empty is state is not over?!
@@ -73,47 +75,43 @@ public class MiniMaxAlg {
 			return new MoveAndScore(null, getHeuristicScore(board));
 		}
 
-		AbstractMove bestMove = null;
-		double alpha = theAlpha;
-		double beta = theBeta;
+		List<MoveAndScore> bestMoves = null;
+		// AbstractMove bestMove = null;
+		int alpha = theAlpha;
+		int beta = theBeta;
 
 		List<AbstractMove> moves = getValidMoves(type, blackPlayerPieces,
 				whitePlayerPieces, board, currentPlayer);
 		State originalState = board.getState();
 		for (AbstractMove move : moves) {
 			move.applyTo(type, board, blackPlayerPieces, whitePlayerPieces);
-			double currentScore;
-			if (currentPlayer == player) {
-				currentScore = solve(type, board, blackPlayerPieces,
-						whitePlayerPieces, depth - 1, currentPlayer.opponent(),
-						alpha, beta).score;
-				if (currentScore > alpha) {
-					alpha = currentScore;
-					bestMove = move;
-				}
+			int currentScore;
+			MoveAndScore childMoveAndScore = solve(type, board,
+					blackPlayerPieces, whitePlayerPieces, depth - 1,
+					currentPlayer.opponent(), alpha, beta, false);
+			// discount deeper scores, prefer strategies with less moves
+			currentScore = (int) (childMoveAndScore.score - 1);
+			MoveAndScore currentMoveAndScore = new MoveAndScore(move,
+					currentScore);
+			if (currentPlayer.equals(player)) {
 				if (currentScore == alpha) {
-					// accept the new move with some probability, to not always
-					// be deterministic
-					if (random.nextInt(2) == 0) {
-						alpha = currentScore;
-						bestMove = move;
+					if (bestMoves != null) {
+						bestMoves.add(currentMoveAndScore);
 					}
+				} else if (currentScore > alpha) {
+					alpha = currentScore;
+					bestMoves = new ArrayList<MoveAndScore>();
+					bestMoves.add(currentMoveAndScore);
 				}
 			} else {
-				currentScore = solve(type, board, blackPlayerPieces,
-						whitePlayerPieces, depth - 1, currentPlayer.opponent(),
-						alpha, beta).score;
-				if (currentScore < beta) {
-					beta = currentScore;
-					bestMove = move;
-				}
 				if (currentScore == beta) {
-					// accept the new move with some probability, to not always
-					// be deterministic
-					if (random.nextInt(2) == 0) {
-						beta = currentScore;
-						bestMove = move;
+					if (bestMoves != null) {
+						bestMoves.add(currentMoveAndScore);
 					}
+				} else if (currentScore < beta) {
+					beta = currentScore;
+					bestMoves = new ArrayList<MoveAndScore>();
+					bestMoves.add(currentMoveAndScore);
 				}
 			}
 			move.undo(board, originalState, blackPlayerPieces,
@@ -121,7 +119,21 @@ public class MiniMaxAlg {
 			if (alpha >= beta)
 				break;
 		}
-		double bestScore = currentPlayer.equals(player) ? alpha : beta;
+		int bestScore = currentPlayer.equals(player) ? alpha : beta;
+		// pick one of the equal scoring moves at random
+		AbstractMove bestMove = null;
+		if (bestMoves != null) {
+			// if (isFirst) {
+			// Log.i("MiniMax", "MiniMax bestMoves " + bestMoves);
+			// }
+			if (isFirst) {
+				int index = random.nextInt(bestMoves.size());
+				bestMove = bestMoves.get(index).move;
+			} else {
+				bestMove = bestMoves.get(0).move;
+			}
+		}
+
 		return new MoveAndScore(bestMove, bestScore);
 	}
 
@@ -184,11 +196,18 @@ public class MiniMaxAlg {
 			List<PieceStack> stacks, Board board, Player currentPlayer) {
 		// look through each top of the stack piece, and see where it can be
 		// played
+		// optimize to only try new pieces
+		Set<Piece> alreadySeen = new HashSet<Piece>();
 		for (int i = 0; i < stacks.size(); i++) {
 			PieceStack stack = stacks.get(i);
 			Piece piece = stack.getTopPiece();
-			if (piece == null)
+			if (piece == null) {
 				continue;
+			}
+			if (alreadySeen.contains(piece)) {
+				continue;
+			}
+			alreadySeen.add(piece);
 			addMovesFromStack(result, type, piece, i, stack, board,
 					currentPlayer);
 		}
@@ -223,10 +242,10 @@ public class MiniMaxAlg {
 
 	private int scoreLine(int size, int numMine, int numOpponent) {
 		if (numOpponent == 0) {
-			return (int) Math.pow(10, numMine);
+			return (int) Math.pow(10, numMine + 1);
 		}
 		if (numMine == 0) {
-			return (int) -Math.pow(10, numOpponent);
+			return (int) -Math.pow(10, numOpponent + 1);
 		}
 		return 0;
 	}
@@ -311,11 +330,19 @@ public class MiniMaxAlg {
 
 	public static class MoveAndScore {
 		AbstractMove move;
-		double score;
+		int score;
 
-		MoveAndScore(AbstractMove move, double score) {
+		MoveAndScore(AbstractMove move, int score) {
 			this.score = score;
 			this.move = move;
+		}
+
+		public String toString() {
+			StringBuilder builder = new StringBuilder("Move: ");
+			builder.append(move.toString());
+			builder.append(", Score:");
+			builder.append(score);
+			return builder.toString();
 		}
 	}
 
