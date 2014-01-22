@@ -23,7 +23,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.Cell;
+import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -192,13 +192,10 @@ public class RoomListener implements RoomUpdateListener,
 			}
 			checkWhoIsFirstAndAttemptToStart(false);
 		} else if (type == MSG_MOVE) {
-			Piece marker = Piece.fromInt(buffer.getInt());
-			int x = buffer.getInt();
-			int y = buffer.getInt();
+
 			// TODO is it possible that the moveListener is null?
 			// should we store the pending move, until a move listener is set
-			// TODO the move message should contain source stack/cell, target cell, and piece (some redundancy for checksum)
-			activity.onlineMoveReceived(null);
+			activity.onlineMoveReceived(buffer);
 		} else if (type == MSG_MESSAGE) {
 			int numBytes = buffer.getInt();
 			byte[] bytes = new byte[numBytes];
@@ -272,7 +269,8 @@ public class RoomListener implements RoomUpdateListener,
 						size + "", 0L);
 
 		// TODO get the game type as a parameter?
-		Game game = new Game(GameType.EASY, GameMode.ONLINE, blackPlayer, whitePlayer, blackPlayer);
+		Game game = new Game(GameType.EASY, GameMode.ONLINE, blackPlayer,
+				whitePlayer, blackPlayer);
 		gameFragment.startGame(game, score);
 		FragmentManager manager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -507,13 +505,13 @@ public class RoomListener implements RoomUpdateListener,
 		}
 	}
 
-	public void sendMove(Piece marker, Cell cell) {
+	public void sendMove(AbstractMove move) {
 		ByteBuffer buffer = ByteBuffer
 				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 		buffer.put(MSG_MOVE);
-		buffer.putInt(marker.getVal());
-		buffer.putInt(cell.getX());
-		buffer.putInt(cell.getY());
+
+		move.appendBytesToMessage(buffer);
+
 		getGamesClient().sendReliableRealTimeMessage(
 				new RealTimeReliableMessageSentListener() {
 					@Override

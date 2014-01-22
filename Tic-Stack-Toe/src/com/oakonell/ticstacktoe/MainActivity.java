@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe;
 
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -341,8 +342,8 @@ public class MainActivity extends BaseGameActivity {
 		getGameFragment().opponentClosedChat();
 	}
 
-	public void onlineMoveReceived(AbstractMove move) {
-		getGameFragment().onlineMakeMove(move);
+	public void onlineMoveReceived(ByteBuffer buffer) {
+		getGameFragment().onlineMakeMove(buffer);
 	}
 
 	public void messageRecieved(Participant opponentParticipant, String string) {

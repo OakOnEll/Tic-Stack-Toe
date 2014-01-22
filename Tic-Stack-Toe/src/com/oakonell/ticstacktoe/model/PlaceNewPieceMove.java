@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
@@ -39,11 +40,13 @@ public class PlaceNewPieceMove extends AbstractMove {
 	}
 
 	@Override
-	public void undo(Board board,State originalState,List<PieceStack> blackPlayerPieces,
+	public void undo(Board board, State originalState,
+			List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces) {
-		board.undoStackMove(this, originalState, blackPlayerPieces, whitePlayerPieces);
+		board.undoStackMove(this, originalState, blackPlayerPieces,
+				whitePlayerPieces);
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("Stack Move ");
 		builder.append(getPlayedPiece());
@@ -51,6 +54,35 @@ public class PlaceNewPieceMove extends AbstractMove {
 		builder.append(stackNum);
 		appendTargetToString(builder);
 		return builder.toString();
+	}
+
+	public static AbstractMove fromBytes(ByteBuffer buffer, Game game) {
+		int stackNum = buffer.get();
+
+		List<PieceStack> playerPieces = game.getCurrentPlayerPieces();
+		PieceStack stack = playerPieces.get(stackNum);
+		Piece playedPiece = stack.getTopPiece();
+
+		CommonMoveInfo commonInfo = commonFromBytes(buffer, game, playedPiece);
+		
+		return new PlaceNewPieceMove(game.getCurrentPlayer(), commonInfo.playedPiece, stackNum, commonInfo.target, commonInfo.existingTargetPiece);
+	}
+
+	
+	
+	@Override
+	public void privateAppendBytesToMessage(ByteBuffer buffer) {
+		int stackNum = getStackNum();
+		buffer.put((byte) stackNum);
+		
+		appendCommonToMessage(buffer);
+	}
+
+
+
+	@Override
+	protected byte getMoveType() {
+		return STACK_MOVE;
 	}
 
 }

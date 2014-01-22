@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.ui.game;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.Leaderboards;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.AbstractMove;
@@ -225,9 +227,7 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
-		if (savedInstanceState != null) {
-			updateHeader(true);
-		}
+		updateHeader();
 		return view;
 	}
 
@@ -668,7 +668,7 @@ public class GameFragment extends AbstractGameFragment {
 					// make sure it remains highlighted
 					if (firstPickCell != null) {
 						highlightStrictFirstTouchedPiece(button);
-					} 
+					}
 
 					return;
 				}
@@ -695,13 +695,13 @@ public class GameFragment extends AbstractGameFragment {
 				updateBoardPiece(cell);
 				postMove(state);
 
-				// //
-				// TODO // // send move to opponent
-				// // RoomListener appListener =
-				// getMainActivity().getRoomListener();
-				// // if (appListener != null) {
-				// // appListener.sendMove(marker, cell);
-				// // }
+				RoomListener appListener = getMainActivity().getRoomListener();
+				if (appListener != null) {
+					AbstractMove lastMove = state.getLastMove();
+					appListener.sendMove(lastMove);
+					getMainActivity().getGameHelper().showAlert(
+							"Sending move " + lastMove);
+				}
 
 			}
 		});
@@ -756,6 +756,7 @@ public class GameFragment extends AbstractGameFragment {
 					public boolean originatedFrom(Cell otherCell) {
 						return otherCell.equals(cell);
 					}
+
 				};
 
 				// in case the piece was marked in strict mode, remove the
@@ -831,7 +832,7 @@ public class GameFragment extends AbstractGameFragment {
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
 		addPieceListeners(getView());
-		updateHeader(true);
+		updateHeader();
 		winOverlayView.clearWins();
 		winOverlayView.invalidate();
 		// reset board
@@ -879,7 +880,7 @@ public class GameFragment extends AbstractGameFragment {
 	//
 	// }
 
-	private void updateHeader(boolean animateMarker) {
+	private void updateHeader() {
 		Player player = game.getCurrentPlayer();
 		if (player.isBlack()) {
 			blackHeaderLayout.setBackgroundResource(R.drawable.current_player);
@@ -911,7 +912,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void highlightPlayerTurn(View highlight, View dimmed) {
-		float notTurnAlpha = 0.25f;
+		float notTurnAlpha = 0.50f;
 		if (Utils.hasHoneycomb()) {
 			highlight.setAlpha(1f);
 			dimmed.setAlpha(notTurnAlpha);
@@ -1144,7 +1145,7 @@ public class GameFragment extends AbstractGameFragment {
 			endGame(outcome);
 		} else {
 			evaluateInGameAchievements(outcome);
-			updateHeader(true);
+			updateHeader();
 			acceptMove();
 		}
 	}
@@ -1220,7 +1221,8 @@ public class GameFragment extends AbstractGameFragment {
 
 	}
 
-	public void onlineMakeMove(final AbstractMove move) {
+	public void onlineMakeMove(final ByteBuffer buffer) {
+		AbstractMove move = AbstractMove.fromMessageBytes(buffer, game);
 		highlightAndMakeMove(move);
 	}
 

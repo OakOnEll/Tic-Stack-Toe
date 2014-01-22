@@ -28,6 +28,8 @@ public class MiniMaxAlg {
 	private final static Random random = new Random();
 
 	public MiniMaxAlg(Player player, int depth) {
+		// TODO include a memory depth, separate from the search depth?
+		//   when the memory deptch for a particular cell is hit in the search, return the heuristic? 
 		this.player = player;
 		if (depth < 0)
 			throw new RuntimeException("Search-tree depth cannot be negative");

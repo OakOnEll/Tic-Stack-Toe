@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
@@ -55,6 +56,49 @@ public class ExistingPieceMove extends AbstractMove {
 		}
 		appendTargetToString(builder);
 		return builder.toString();
+	}
+
+	public static AbstractMove fromBytes(ByteBuffer buffer, Game game) {
+		int sourceX = buffer.get();
+		int sourceY = buffer.get();
+		Cell source = new Cell(sourceX, sourceY);
+		int exposedSourceVal = buffer.getInt();
+
+		Piece playedPiece = game.getBoard().getVisiblePiece(sourceX, sourceY);
+		Piece exposedSourcePiece = game.getBoard().peekNextPiece(source);
+		int myExposedSourcePieceVal = exposedSourcePiece != null ? exposedSourcePiece
+				.getVal() : 0;
+		if (exposedSourceVal != myExposedSourcePieceVal) {
+			throw new RuntimeException(
+					"Invalid board move message, wrong exposed piece value. Received " + exposedSourceVal + ", but is " + myExposedSourcePieceVal);
+		}
+
+		CommonMoveInfo commonInfo = commonFromBytes(buffer, game, playedPiece);
+
+		return new ExistingPieceMove(game.getCurrentPlayer(),
+				commonInfo.playedPiece, exposedSourcePiece, source,
+				commonInfo.target, commonInfo.existingTargetPiece);
+	}
+
+	@Override
+	protected void privateAppendBytesToMessage(ByteBuffer buffer) {
+		int x = source.getX();
+		int y = source.getY();
+
+		buffer.put((byte) x);
+		buffer.put((byte) y);
+
+		// checksum
+		int sourceVal = exposedSourcePiece != null ? exposedSourcePiece
+				.getVal() : 0;
+		buffer.putInt(sourceVal);
+
+		appendCommonToMessage(buffer);
+	}
+
+	@Override
+	protected byte getMoveType() {
+		return BOARD_MOVE;
 	}
 
 }
