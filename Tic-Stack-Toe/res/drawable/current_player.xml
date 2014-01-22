@@ -10,6 +10,7 @@
         android:right="10dp"
         android:top="10dp" />
 
-    <solid android:color="#ABED9F" />
-
+<!--     <solid android:color="#80ABED9F" />  -->
+	<stroke android:width="5dp" android:color="@color/holo_blue_light"/>
+    
 </shape>

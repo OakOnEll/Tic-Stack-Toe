@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/game_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/wood_10_" 
+    >
 
-    <ImageView android:id="@+id/moving_view"
-        android:visibility="gone"
+    <ImageView
+        android:id="@+id/moving_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
-        />
-    
+        android:visibility="gone" />
+
     <com.oakonell.utils.activity.dragndrop.DragLayer
         android:id="@+id/drag_layer"
         android:layout_width="match_parent"
@@ -39,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/blackName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -49,7 +51,7 @@
                         android:text="Black name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_black_wins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -111,14 +113,14 @@
                     android:layout_alignParentRight="true"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:text="@string/num_games_lbl"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/game_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -145,8 +147,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
-                            android:clipChildren="false"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:clipChildren="false" >
 
                             <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
                                 android:id="@+id/button_r1c1"
@@ -174,8 +176,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
-                                                        android:clipChildren="false"                           
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:clipChildren="false" >
 
                             <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
                                 android:id="@+id/button_r2c1"
@@ -203,8 +205,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
-                            android:clipChildren="false"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:clipChildren="false" >
 
                             <com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView
                                 android:id="@+id/button_r3c1"
@@ -318,7 +320,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp" />
 
-                        <TextView
+                        <com.oakonell.ticstacktoe.ui.CustomFontTextView
                             android:id="@+id/thinking_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -332,7 +334,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_moves_lbl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -340,7 +342,7 @@
                         android:text="@string/num_move_lbl"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_moves"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -401,7 +403,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/whiteName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -411,7 +413,7 @@
                         android:text="White Name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_white_wins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

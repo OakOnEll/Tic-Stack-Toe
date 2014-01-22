@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.MyTheme.ActionBar</item>
+    </style>
+
+    <style name="Widget.MyTheme.ActionBar" parent="Widget.Sherlock.ActionBar">
+        <item name="android:background">@drawable/light_wood_texture</item>
+        <item name="background">@drawable/light_wood_texture</item>
+    </style>
+
+</resources>

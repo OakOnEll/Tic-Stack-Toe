@@ -1121,21 +1121,23 @@ containing a value of this type.
         public static final int invites_icon_15777=0x7f02009d;
         public static final int leaderboard_icon_17975=0x7f02009e;
         public static final int light_bulb_icon_23392=0x7f02009f;
-        public static final int message_available_icon_1332=0x7f0200a0;
-        public static final int message_icon_27709=0x7f0200a1;
-        public static final int no_invites_icon_15776=0x7f0200a2;
-        public static final int online_game_icon_27324=0x7f0200a3;
-        public static final int pass_n_play_icon_27531=0x7f0200a4;
-        public static final int quick_game_icon_18148=0x7f0200a5;
-        public static final int robot_icon_699=0x7f0200a6;
-        public static final int silhouette_icon_4520=0x7f0200a7;
-        public static final int swap_icon_17858=0x7f0200a8;
-        public static final int white_piece1=0x7f0200a9;
-        public static final int white_piece2=0x7f0200aa;
-        public static final int white_piece3=0x7f0200ab;
-        public static final int white_piece4=0x7f0200ac;
-        public static final int wood_grid_3x3=0x7f0200ad;
-        public static final int wood_grid_4x4=0x7f0200ae;
+        public static final int light_wood_texture=0x7f0200a0;
+        public static final int message_available_icon_1332=0x7f0200a1;
+        public static final int message_icon_27709=0x7f0200a2;
+        public static final int no_invites_icon_15776=0x7f0200a3;
+        public static final int online_game_icon_27324=0x7f0200a4;
+        public static final int pass_n_play_icon_27531=0x7f0200a5;
+        public static final int quick_game_icon_18148=0x7f0200a6;
+        public static final int robot_icon_699=0x7f0200a7;
+        public static final int silhouette_icon_4520=0x7f0200a8;
+        public static final int swap_icon_17858=0x7f0200a9;
+        public static final int white_piece1=0x7f0200aa;
+        public static final int white_piece2=0x7f0200ab;
+        public static final int white_piece3=0x7f0200ac;
+        public static final int white_piece4=0x7f0200ad;
+        public static final int wood_10_=0x7f0200ae;
+        public static final int wood_grid_3x3=0x7f0200af;
+        public static final int wood_grid_4x4=0x7f0200b0;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f080055;
@@ -1696,11 +1698,11 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f0d005d;
+        public static final int AppBaseTheme=0x7f0d005f;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f0d005e;
+        public static final int AppTheme=0x7f0d0060;
         public static final int Sherlock___TextAppearance_Small=0x7f0d0046;
         public static final int Sherlock___Theme=0x7f0d0051;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0d0053;
@@ -1738,12 +1740,14 @@ containing a value of this type.
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Large=0x7f0d0040;
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f0d0042;
         public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f0d0044;
+        public static final int Theme_MyTheme=0x7f0d0059;
         public static final int Theme_Sherlock=0x7f0d0054;
         public static final int Theme_Sherlock_Light=0x7f0d0055;
         public static final int Theme_Sherlock_Light_DarkActionBar=0x7f0d0056;
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f0d0058;
         public static final int Theme_Sherlock_NoActionBar=0x7f0d0057;
         public static final int Widget=0x7f0d0000;
+        public static final int Widget_MyTheme_ActionBar=0x7f0d005a;
         public static final int Widget_Sherlock_ActionBar=0x7f0d0002;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f0d0003;
         public static final int Widget_Sherlock_ActionBar_TabBar=0x7f0d000a;
@@ -1790,11 +1794,11 @@ containing a value of this type.
         public static final int Widget_Sherlock_SearchAutoCompleteTextView=0x7f0d0034;
         public static final int Widget_Sherlock_Spinner_DropDown_ActionBar=0x7f0d0024;
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0d0032;
-        public static final int game_button=0x7f0d0059;
-        public static final int game_stats_dialog_Window=0x7f0d005f;
-        public static final int menu_button=0x7f0d005a;
-        public static final int menu_button_text=0x7f0d005b;
-        public static final int player_stack=0x7f0d005c;
+        public static final int game_button=0x7f0d005b;
+        public static final int game_stats_dialog_Window=0x7f0d0061;
+        public static final int menu_button=0x7f0d005c;
+        public static final int menu_button_text=0x7f0d005d;
+        public static final int player_stack=0x7f0d005e;
     }
     public static final class xml {
         public static final int prefs_about=0x7f050000;
