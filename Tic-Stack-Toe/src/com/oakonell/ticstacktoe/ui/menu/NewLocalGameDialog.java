@@ -113,19 +113,8 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 			}
 		});
 
-		List<TypeDropDownItem> types = new ArrayList<TypeDropDownItem>();
-		types.add(new TypeDropDownItem(getResources().getString(
-				R.string.type_junior), GameType.JUNIOR));
-		types.add(new TypeDropDownItem(getResources().getString(
-				R.string.type_easy), GameType.EASY));
-		types.add(new TypeDropDownItem(getResources().getString(
-				R.string.type_strict), GameType.REGULAR));
-
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
-		ArrayAdapter<TypeDropDownItem> typeAdapter = new ArrayAdapter<TypeDropDownItem>(
-				getActivity(), android.R.layout.simple_spinner_dropdown_item,
-				types);
-		typeSpinner.setAdapter(typeAdapter);
+		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 
 		Button start = (Button) view.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {

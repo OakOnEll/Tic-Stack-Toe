@@ -67,7 +67,7 @@ public class MenuFragment extends SherlockFragment {
 	private ProgressBar loading_num_invites;
 
 	private ProgressBar waiting;
-	int onlineSize = 0;
+	GameType onlineType = null;
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
@@ -81,9 +81,9 @@ public class MenuFragment extends SherlockFragment {
 						GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 				int maxAutoMatchPlayers = data.getIntExtra(
 						GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-				int size = onlineSize;
-				onlineSize = 0;
-				createOnlineRoom(invitees, size, minAutoMatchPlayers,
+				GameType type = onlineType;
+				onlineType = null;
+				createOnlineRoom(invitees, type, minAutoMatchPlayers,
 						maxAutoMatchPlayers, true);
 			} else {
 				Log.i(TAG, "Select players canceled");
@@ -314,15 +314,15 @@ public class MenuFragment extends SherlockFragment {
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(true, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(int size) {
+			public void chosenMode(GameType type) {
 				// use the size argument as a variant of the game
-				int variant = size;
+				int variant = type.getVariant();
 
 				final int MIN_OPPONENTS = 1, MAX_OPPONENTS = 1;
 				Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						MIN_OPPONENTS, MAX_OPPONENTS, 0);
 				RoomListener roomListener = new RoomListener(getMainActivity(),
-						getMainActivity().getGameHelper(), size, true, true);
+						getMainActivity().getGameHelper(), type, true, true);
 				getMainActivity().setRoomListener(roomListener);
 				final RoomConfig.Builder rtmConfigBuilder = RoomConfig
 						.builder(roomListener);
@@ -353,8 +353,8 @@ public class MenuFragment extends SherlockFragment {
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(false, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(int size) {
-				MenuFragment.this.onlineSize = size;
+			public void chosenMode(GameType type) {
+				MenuFragment.this.onlineType = type;
 				Intent intent = getMainActivity().getGamesClient()
 						.getSelectPlayersIntent(1, 1);
 				waiting.setVisibility(View.VISIBLE);
@@ -421,8 +421,9 @@ public class MenuFragment extends SherlockFragment {
 		transaction.commit();
 	}
 
-	private void createOnlineRoom(final ArrayList<String> invitees, int size,
-			int minAutoMatchPlayers, int maxAutoMatchPlayers, boolean initiated) {
+	private void createOnlineRoom(final ArrayList<String> invitees,
+			GameType type, int minAutoMatchPlayers, int maxAutoMatchPlayers,
+			boolean initiated) {
 		Log.d(TAG, "Invitee count: " + invitees.size());
 
 		StringBuilder stringBuilder = new StringBuilder();
@@ -443,7 +444,7 @@ public class MenuFragment extends SherlockFragment {
 		}
 
 		RoomListener roomListener = new RoomListener(getMainActivity(),
-				getMainActivity().getGameHelper(), size, false, initiated);
+				getMainActivity().getGameHelper(), type, false, initiated);
 		getMainActivity().setRoomListener(roomListener);
 		// create the room
 		Log.d(TAG, "Creating room...");
@@ -604,7 +605,7 @@ public class MenuFragment extends SherlockFragment {
 	// Accept the given invitation.
 	public void acceptInviteToRoom(String invId) {
 		RoomListener roomListener = new RoomListener(getMainActivity(),
-				getMainActivity().getGameHelper(), 0, false, false);
+				getMainActivity().getGameHelper(), null, false, false);
 		getMainActivity().setRoomListener(roomListener);
 		// accept the invitation
 		Log.d(TAG, "Accepting invitation: " + invId);

@@ -699,8 +699,8 @@ public class GameFragment extends AbstractGameFragment {
 				if (appListener != null) {
 					AbstractMove lastMove = state.getLastMove();
 					appListener.sendMove(lastMove);
-					getMainActivity().getGameHelper().showAlert(
-							"Sending move " + lastMove);
+//					getMainActivity().getGameHelper().showAlert(
+//							"Sending move " + lastMove);
 				}
 
 			}

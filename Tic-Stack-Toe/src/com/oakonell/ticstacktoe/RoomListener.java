@@ -27,7 +27,6 @@ import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
-import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -43,7 +42,7 @@ public class RoomListener implements RoomUpdateListener,
 	private static final byte MSG_WHO_IS_X = 1;
 	private static final byte MSG_MOVE = 2;
 	private static final byte MSG_MESSAGE = 3;
-	private static final byte MSG_SEND_CHANCE = 4;
+	private static final byte MSG_SEND_VARIANT = 4;
 	private static final byte MSG_PLAY_AGAIN = 5;
 	private static final byte MSG_IN_CHAT = 6;
 	private static final byte MSG_CLOSE_CHAT = 7;
@@ -60,21 +59,21 @@ public class RoomListener implements RoomUpdateListener,
 
 	private volatile Long myRandom;
 	private volatile Long theirRandom;
-	private int size;
 
 	private boolean isQuick;
 	private boolean isConnected;
 	private boolean initiatedTheGame;
+	private GameType type;
 
 	private GamesClient getGamesClient() {
 		return helper.getGamesClient();
 	}
 
-	public RoomListener(MainActivity activity, GameHelper helper, int size,
-			boolean isQuick, boolean initiatedTheGame) {
+	public RoomListener(MainActivity activity, GameHelper helper,
+			GameType type, boolean isQuick, boolean initiatedTheGame) {
 		this.activity = activity;
 		this.helper = helper;
-		this.size = size;
+		this.type = type;
 		this.isQuick = isQuick;
 		this.initiatedTheGame = initiatedTheGame;
 	}
@@ -208,17 +207,17 @@ public class RoomListener implements RoomUpdateListener,
 			}
 
 			activity.messageRecieved(getOpponentParticipant(), string);
-		} else if (type == MSG_SEND_CHANCE) {
-			int sentSize = buffer.getInt();
-			if (size != 0) {
+		} else if (type == MSG_SEND_VARIANT) {
+			int sentVariant = buffer.getInt();
+			if (this.type != null) {
 				// verify that the size agree
-				if (size != sentSize) {
+				if (this.type.getVariant() != sentVariant) {
 					throw new RuntimeException(
-							"Opponent's size setting does not match!");
+							"Opponent's variant setting does not match!");
 				}
 			} else {
-				size = sentSize;
-				announce("Received chance");
+				this.type = GameType.fromVariant(sentVariant);
+				announce("Received variant");
 			}
 		} else if (type == MSG_PLAY_AGAIN) {
 			boolean playAgain = buffer.getInt() != 0;
@@ -266,11 +265,10 @@ public class RoomListener implements RoomUpdateListener,
 								.getString(R.string.an_start_quick_game_action)
 								: activity
 										.getString(R.string.an_start_online_game_action)),
-						size + "", 0L);
+						type.getVariant() + "", 0L);
 
-		// TODO get the game type as a parameter?
-		Game game = new Game(GameType.EASY, GameMode.ONLINE, blackPlayer,
-				whitePlayer, blackPlayer);
+		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
+				blackPlayer);
 		gameFragment.startGame(game, score);
 		FragmentManager manager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -404,11 +402,11 @@ public class RoomListener implements RoomUpdateListener,
 		// Toast.LENGTH_SHORT).show();
 
 		sendProtocolVersion();
-		if (size != 0) {
+		if (type != null) {
 			ByteBuffer buffer = ByteBuffer
 					.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
-			buffer.put(MSG_SEND_CHANCE);
-			buffer.putInt(size);
+			buffer.put(MSG_SEND_VARIANT);
+			buffer.putInt(type.getVariant());
 			getGamesClient().sendReliableRealTimeMessage(
 					new RealTimeReliableMessageSentListener() {
 						@Override
@@ -500,7 +498,7 @@ public class RoomListener implements RoomUpdateListener,
 						}
 					}, buffer.array(), getRoomId(), getOpponentId());
 		}
-		if (start && size != 0) {
+		if (start && type != null) {
 			startGame(iAmBlack);
 		}
 	}

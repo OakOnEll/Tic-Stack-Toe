@@ -6,15 +6,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.model.GameType;
 
 public class OnlineGameModeDialog extends SherlockDialogFragment {
 	public static final String SELECT_PLAYER_INTENT_KEY = "select_player";
 
 	public interface OnlineGameModeListener {
-		void chosenMode(int size);
+		void chosenMode(GameType type);
 	}
 
 	private OnlineGameModeListener listener;
@@ -41,14 +43,22 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 		if (isQuick) {
 			start.setText(R.string.choose_online_opponent);
 		}
+		
+		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
+		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
+
+		
 		start.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO get the board size
-				int size = 4;
 				dismiss();
-				listener.chosenMode(size);
+				
+				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
+						.getSelectedItem();
+
+				
+				listener.chosenMode(typeItem.type);
 			}
 		});
 		return view;
