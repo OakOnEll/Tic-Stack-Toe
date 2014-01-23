@@ -13,19 +13,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
-import com.google.ads.AdRequest.ErrorCode;
-import com.google.ads.AdView;
-import com.google.ads.InterstitialAd;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -117,13 +114,14 @@ public class MainActivity extends BaseGameActivity {
 	}
 
 	private void initializeInterstitialAd() {
-		mInterstitialAd = new InterstitialAd(MainActivity.this, getResources()
-				.getString(R.string.admob_id));
+		mInterstitialAd = new InterstitialAd(MainActivity.this);
+		mInterstitialAd
+				.setAdUnitId(getResources().getString(R.string.admob_id));
 		mInterstitialAd.loadAd(createAdRequest());
 	}
 
 	private AdRequest createAdRequest() {
-		return new AdRequest();
+		return new com.google.android.gms.ads.AdRequest.Builder().build();
 	}
 
 	@Override
@@ -269,35 +267,16 @@ public class MainActivity extends BaseGameActivity {
 		if (random.nextInt(10) > 5)
 			return;
 
-		if (mInterstitialAd.isReady()) {
+		if (mInterstitialAd.isLoaded()) {
 			mInterstitialAd.show();
+			
 			mInterstitialAd.setAdListener(new AdListener() {
-
 				@Override
-				public void onReceiveAd(Ad arg0) {
-					// do nothing special
-				}
-
-				@Override
-				public void onPresentScreen(Ad arg0) {
-					// do nothing special
-				}
-
-				@Override
-				public void onLeaveApplication(Ad arg0) {
-					// do nothing special
-				}
-
-				@Override
-				public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
-					// do nothing special
-				}
-
-				@Override
-				public void onDismissScreen(Ad arg0) {
-					// do nothing special
+				public void onAdClosed() {
+					super.onAdClosed();
 					initializeInterstitialAd();
 				}
+
 			});
 		}
 	}

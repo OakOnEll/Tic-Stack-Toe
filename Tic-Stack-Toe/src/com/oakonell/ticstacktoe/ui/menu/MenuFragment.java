@@ -539,6 +539,12 @@ public class MenuFragment extends SherlockFragment {
 												.getDisplayName()),
 								Toast.LENGTH_SHORT).show();
 					}
+
+					@Override
+					public void onInvitationRemoved(String invitationId) {
+						refreshInvites(true);
+						// TODO display invite rescinded?
+					}
 				});
 	}
 
