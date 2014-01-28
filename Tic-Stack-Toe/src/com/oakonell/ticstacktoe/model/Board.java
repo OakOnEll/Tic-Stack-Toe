@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.model.Board.PieceStack;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.game.WinOverlayView.WinStyle;
 
@@ -50,6 +51,11 @@ public class Board {
 		initializeBoard();
 	}
 
+	public Board(PieceStack[][] board) {
+		this.size = board.length;
+		this.board = board;
+	}
+
 	private void initializeBoard() {
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
@@ -61,6 +67,11 @@ public class Board {
 	public Piece getVisiblePiece(int x, int y) {
 		boundsCheck(x, y);
 		return board[x][y].getTopPiece();
+	}
+
+	public PieceStack getStackAt(int x, int y) {
+		boundsCheck(x, y);
+		return board[x][y];
 	}
 
 	public Piece peekNextPiece(Cell cell) {
@@ -148,7 +159,8 @@ public class Board {
 		// check diagonals
 		if (cell.getX() == cell.getY()) {
 			return isPartOfTopLeftDiagonalThreeInARow(existing, cell);
-		} else if ((cell.getX() + cell.getY()) % size == 0) {
+		} else if ((cell.getX() + cell.getY() + 1) % size == 0) {
+			// TODO check this? Didn't seem to allow this diagonal placement
 			return isPartOfTopRightDiagonalThreeInARow(existing, cell);
 		}
 
@@ -271,12 +283,24 @@ public class Board {
 		}
 		if (!wins.isEmpty()) {
 			Player winner;
-			// TODO deal with an exposed opponent win... black picks up black
-			// piece, exposing white underneath for a win that can't be blocked
+			// prefer a win including the opponent's exposed piece at the source cell
+			if (move instanceof ExistingPieceMove) {
+				ExistingPieceMove boardMove = (ExistingPieceMove) move;
+				Cell source = boardMove.getSource();
+				ArrayList<Win> uncoveredOpponentWins = new ArrayList<Win>();
+				for (Win each : wins) {
+					if (each.contains(source, size)) {
+						Piece topPiece = board[source.getX()][source.getY()].getTopPiece();
+						if (topPiece.isBlack() != player.isBlack()) {
+							uncoveredOpponentWins.add(each);
+						}
+					}					
+				}
+				if (!uncoveredOpponentWins.isEmpty()) {
+					return State.winner(move, uncoveredOpponentWins, player.opponent());
+				}
+			}
 			winner = player;
-			// } else {
-			// winner = player.opponent();
-			// }
 			return State.winner(move, wins, winner);
 		}
 

@@ -28,8 +28,30 @@ public class State {
 		public WinStyle getWinStyle() {
 			return winStyle;
 		}
+
 		public String toString() {
 			return winStyle.name() + "-" + start + " to " + end;
+		}
+
+		public boolean contains(Cell source, int size) {
+			// TODO something weird about the row/col x/y numbers.. board is rotated somehow?
+			if ((winStyle == WinStyle.COL1 && source.getY() == 0)
+					|| (winStyle == WinStyle.COL2 && source.getY() == 1)
+					|| (winStyle == WinStyle.COL3 && source.getY() == 2)
+					|| (winStyle == WinStyle.COL4 && source.getY() == 3)
+					|| (winStyle == WinStyle.COL5 && source.getY() == 4)
+					|| (winStyle == WinStyle.ROW1 && source.getX() == 0)
+					|| (winStyle == WinStyle.ROW2 && source.getX() == 1)
+					|| (winStyle == WinStyle.ROW3 && source.getX() == 2)
+					|| (winStyle == WinStyle.ROW4 && source.getX() == 3)
+					|| (winStyle == WinStyle.ROW5 && source.getX() == 4)
+					|| (winStyle == WinStyle.TOP_LEFT_DIAG && source.getY() == source
+							.getX())
+					|| (winStyle == WinStyle.TOP_RIGHT_DIAG && source.getY()  + source.getX() + 1 == size)) {
+				return true;
+			}
+			return false;
+
 		}
 	}
 
@@ -88,7 +110,7 @@ public class State {
 	}
 
 	public String toString() {
-		if (state== SimpleState.OPEN) {
+		if (state == SimpleState.OPEN) {
 			return "Open";
 		}
 		if (state == SimpleState.DRAW) {
@@ -96,5 +118,5 @@ public class State {
 		}
 		return winner + " won: " + wins;
 	}
-	
+
 }
