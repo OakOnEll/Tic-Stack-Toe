@@ -1,9 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public abstract class AbstractMove {
 	public static final byte STACK_MOVE = 0;
@@ -59,76 +59,88 @@ public abstract class AbstractMove {
 		}
 	}
 
-	public void appendBytesToMessage(ByteBuffer buffer) {
-		buffer.put(getMoveType());
+	public void appendBytesToMessage(ByteBufferDebugger buffer) {
+		buffer.put("Move type", getMoveType());
 		privateAppendBytesToMessage(buffer);
 	}
 
 	protected abstract byte getMoveType();
 
-	protected abstract void privateAppendBytesToMessage(ByteBuffer buffer);
+	protected abstract void privateAppendBytesToMessage(
+			ByteBufferDebugger buffer);
 
-	protected void appendCommonToMessage(ByteBuffer buffer) {
+	protected void appendCommonToMessage(ByteBufferDebugger buffer) {
 		int targetX = getTargetCell().getX();
 		int targetY = getTargetCell().getY();
 
-		buffer.put((byte) targetX);
-		buffer.put((byte) targetY);
+		buffer.put("target x", (byte) targetX);
+		buffer.put("target y", (byte) targetY);
 		// checksums
 		Piece existingTargetPiece = getExistingTargetPiece();
-		buffer.putInt(existingTargetPiece != null ? getExistingTargetPiece()
-				.getVal() : 0);
-		buffer.putInt(getPlayedPiece().getVal());
-		buffer.put((byte) (getPlayer().isBlack() ? 1 : 0));
+		buffer.putInt("existing target piece",
+				existingTargetPiece != null ? getExistingTargetPiece().getVal()
+						: 0);
+		buffer.putInt("played piece", getPlayedPiece().getVal());
+		buffer.put("player is black", (byte) (getPlayer().isBlack() ? 1 : 0));
 	}
 
-	static CommonMoveInfo commonFromBytes(ByteBuffer buffer, Game game,
+	static CommonMoveInfo commonFromBytes(ByteBufferDebugger buffer, Game game,
 			Piece playedPiece) {
-		int targetX = buffer.get();
-		int targetY = buffer.get();
+		int targetX = buffer.get("target x");
+		int targetY = buffer.get("targey y");
 
 		// checksums
-		int existingTargetPieceVal = buffer.getInt();
-		int playedPieceVal = buffer.getInt();
-		boolean playerIsBlack = buffer.get() == 1;
-
-		if (game.getCurrentPlayer().isBlack() != playerIsBlack) {
-			throw new RuntimeException(
-					"Invalid common move message, wrong player. Received isBlack=" + playerIsBlack);
+		int existingTargetPieceVal = buffer.getInt("existing target piece");
+		int playedPieceVal = buffer.getInt("player piece");
+		boolean playerIsBlack = buffer.get("player is black") == 1;
+		Player player;
+		if (playerIsBlack) {
+			player = game.getBlackPlayer();
+		} else {
+			player = game.getWhitePlayer();
 		}
+		// TODO realtime validate that the current player equals the player just moved
 		Board board = game.getBoard();
 		Piece existingTargetPiece = board.getVisiblePiece(targetX, targetY);
 		int myExistingTargetPieceVal = existingTargetPiece != null ? existingTargetPiece
 				.getVal() : 0;
-		if (myExistingTargetPieceVal != existingTargetPieceVal) {
-			throw new RuntimeException(
-					"Invalid common move message, wrong exisitng target piece value. Received " + existingTargetPieceVal + ", but is " + myExistingTargetPieceVal);
-		}
-		if (playedPiece.getVal() != playedPieceVal) {
-			throw new RuntimeException(
-					"Invalid common move message, wrong played piece value. Received " + playedPieceVal + ", but is " + playedPiece.getVal());
-		}
+				// TODO these are realtime validations
+//		if (myExistingTargetPieceVal != existingTargetPieceVal) {
+//			throw new RuntimeException(
+//					"Invalid common move message, wrong exisitng target piece value. Received "
+//							+ existingTargetPieceVal + ", but is "
+//							+ myExistingTargetPieceVal);
+//		}
+//		if (playedPiece.getVal() != playedPieceVal) {
+//			throw new RuntimeException(
+//					"Invalid common move message, wrong played piece value. Received "
+//							+ playedPieceVal + ", but is "
+//							+ playedPiece.getVal());
+//		}
 		Cell target = new Cell(targetX, targetY);
-		CommonMoveInfo commonInfo = new CommonMoveInfo(playedPiece, target,
-				existingTargetPiece);
+		CommonMoveInfo commonInfo = new CommonMoveInfo(player, playedPiece,
+				target, existingTargetPiece);
 		return commonInfo;
 	}
 
 	static class CommonMoveInfo {
-		public CommonMoveInfo(Piece playedPiece, Cell target,
+		public CommonMoveInfo(Player player, Piece playedPiece, Cell target,
 				Piece existingTargetPiece) {
+			this.player = player;
 			this.playedPiece = playedPiece;
 			this.target = target;
 			this.existingTargetPiece = existingTargetPiece;
 		}
 
-		Piece playedPiece;
-		Cell target;
-		Piece existingTargetPiece;
+		final Piece playedPiece;
+		final Cell target;
+		final Piece existingTargetPiece;
+		final Player player;
 	}
 
-	public static AbstractMove fromMessageBytes(ByteBuffer buffer, Game game) {
-		if (buffer.get() == STACK_MOVE) {
+	public static AbstractMove fromMessageBytes(ByteBufferDebugger buffer,
+			Game game) {
+		if (buffer.get("move type") == STACK_MOVE) {
 			return PlaceNewPieceMove.fromBytes(buffer, game);
 		}
 		return ExistingPieceMove.fromBytes(buffer, game);

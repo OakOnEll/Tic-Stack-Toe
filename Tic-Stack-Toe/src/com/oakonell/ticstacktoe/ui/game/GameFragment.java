@@ -1,6 +1,5 @@
 package com.oakonell.ticstacktoe.ui.game;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,11 +32,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
+import com.oakonell.ticstacktoe.GameListener;
 import com.oakonell.ticstacktoe.Leaderboards;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.AbstractMove;
@@ -44,6 +45,7 @@ import com.oakonell.ticstacktoe.model.Board.PieceStack;
 import com.oakonell.ticstacktoe.model.Cell;
 import com.oakonell.ticstacktoe.model.ExistingPieceMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Piece;
@@ -64,7 +66,6 @@ import com.oakonell.utils.activity.dragndrop.OnDragListener;
 import com.oakonell.utils.activity.dragndrop.OnDropListener;
 
 public class GameFragment extends AbstractGameFragment {
-	private static final int NON_HUMAN_OPPONENT_HIGHLIGHT_MOVE_PAUSE_MS = 300;
 
 	private DragController mDragController;
 	private DragLayer mDragLayer;
@@ -95,6 +96,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	@Override
 	public void onPause() {
+		// TODO write the game state to the server?
 		mWindowManager = null;
 		exitOnResume = game.getMode() == GameMode.ONLINE;
 		super.onPause();
@@ -156,17 +158,62 @@ public class GameFragment extends AbstractGameFragment {
 		resizePlayerStacks(getView());
 	}
 
-	public void startGame(Game game, ScoreCard score) {
+	Runnable inOnCreate;
+	public void startGame(final Game game, ScoreCard score) {
 		this.score = score;
 		this.game = game;
 		configureNonLocalProgresses();
+		if (getView() != null) {
+			addPieceListeners(getView());
+		}
+		updateHeader();
+
+		if (getMainActivity() == null) {
+			// delay this until onCreate?
+			inOnCreate = new Runnable() {
+				@Override
+				public void run() {
+					postMove(game.getBoard().getState());
+					inOnCreate = null;
+				}
+			};
+		} else {
+			postMove(game.getBoard().getState());
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// if (useUpNavigation()) {
+			// NavUtils.navigateUpFromSameTask(this);
+			// } else {
+			leaveGame();
+			// }
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_game, container, false);
+		// TODO keep screeen on only during realtime
 		view.setKeepScreenOn(game.getMode() == GameMode.ONLINE);
+
+		// Listen for changes in the back stack
+		getMainActivity().getSupportFragmentManager()
+				.addOnBackStackChangedListener(
+						new OnBackStackChangedListener() {
+							@Override
+							public void onBackStackChanged() {
+								configureDisplayHomeUp();
+							}
+						});
+		// Handle when activity is recreated like on orientation Change
+		configureDisplayHomeUp();
 
 		mDragLayer = (DragLayer) view.findViewById(R.id.drag_layer);
 		mDragController = new DragController(getActivity());
@@ -228,7 +275,18 @@ public class GameFragment extends AbstractGameFragment {
 		});
 
 		updateHeader();
+		
+		if (inOnCreate != null) {
+			inOnCreate.run();
+		}
+		
 		return view;
+	}
+
+	private void configureDisplayHomeUp() {
+		if (getMainActivity() == null)
+			return;
+		getMainActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	private void resizePlayerStacks(View view) {
@@ -410,7 +468,7 @@ public class GameFragment extends AbstractGameFragment {
 		configurePlayerStack(stackView, 1, game.getBlackPlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack3);
-		if (game.getType().getStackSize() > 2) {
+		if (game.getType().getNumberOfStacks() > 2) {
 			configurePlayerStack(stackView, 2, game.getBlackPlayer());
 		} else {
 			stackView.setVisibility(View.GONE);
@@ -424,7 +482,7 @@ public class GameFragment extends AbstractGameFragment {
 		configurePlayerStack(stackView, 1, game.getWhitePlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack3);
-		if (game.getType().getStackSize() > 2) {
+		if (game.getType().getNumberOfStacks() > 2) {
 			configurePlayerStack(stackView, 2, game.getWhitePlayer());
 		} else {
 			stackView.setVisibility(View.GONE);
@@ -485,6 +543,13 @@ public class GameFragment extends AbstractGameFragment {
 			final int stackNum, final Player player) {
 		List<PieceStack> playerPieces = player.getPlayerPieces();
 		final PieceStack pieceStack = playerPieces.get(stackNum);
+
+		Piece topPiece = pieceStack.getTopPiece();
+		if (topPiece == null) {
+			stackView.setImageDrawable(null);
+		} else {
+			stackView.setImageResource(topPiece.getImageResourceId());
+		}
 
 		final DragSource dragSource = new DragSource() {
 			@Override
@@ -596,6 +661,13 @@ public class GameFragment extends AbstractGameFragment {
 
 	private void configureUICell(final BoardPieceStackImageView button,
 			final Cell cell) {
+		Piece visiblePiece = game.getBoard().getVisiblePiece(cell.getX(),
+				cell.getY());
+		if (visiblePiece != null) {
+			button.setImageResource(visiblePiece.getImageResourceId());
+		} else {
+			button.setImageDrawable(null);
+		}
 		final DragSource dragSource = new DragSource() {
 
 			@Override
@@ -695,12 +767,12 @@ public class GameFragment extends AbstractGameFragment {
 				updateBoardPiece(cell);
 				postMove(state);
 
-				RoomListener appListener = getMainActivity().getRoomListener();
+				GameListener appListener = getMainActivity().getRoomListener();
 				if (appListener != null) {
 					AbstractMove lastMove = state.getLastMove();
-					appListener.sendMove(lastMove);
-//					getMainActivity().getGameHelper().showAlert(
-//							"Sending move " + lastMove);
+					appListener.sendMove(game, lastMove, score);
+					// getMainActivity().getGameHelper().showAlert(
+					// "Sending move " + lastMove);
 				}
 
 			}
@@ -840,7 +912,7 @@ public class GameFragment extends AbstractGameFragment {
 			each.setImageDrawable(null);
 		}
 		// reset player stacks
-		for (int i = 0; i < game.getType().getStackSize(); i++) {
+		for (int i = 0; i < game.getType().getNumberOfStacks(); i++) {
 			updatePlayerStack(game.getBlackPlayer(), i);
 			updatePlayerStack(game.getWhitePlayer(), i);
 		}
@@ -881,6 +953,10 @@ public class GameFragment extends AbstractGameFragment {
 	// }
 
 	private void updateHeader() {
+		if (blackHeaderLayout == null) {
+			// safely allow calls when UI not created yet
+			return;
+		}
 		Player player = game.getCurrentPlayer();
 		if (player.isBlack()) {
 			blackHeaderLayout.setBackgroundResource(R.drawable.current_player);
@@ -1221,7 +1297,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	}
 
-	public void onlineMakeMove(final ByteBuffer buffer) {
+	public void onlineMakeMove(final ByteBufferDebugger buffer) {
 		AbstractMove move = AbstractMove.fromMessageBytes(buffer, game);
 		highlightAndMakeMove(move);
 	}
@@ -1379,5 +1455,13 @@ public class GameFragment extends AbstractGameFragment {
 	private void unhighlightStrictFirstTouchedPiece(
 			final BoardPieceStackImageView button) {
 		button.setBackgroundDrawable(null);
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public ScoreCard getScore() {
+		return score;
 	}
 }

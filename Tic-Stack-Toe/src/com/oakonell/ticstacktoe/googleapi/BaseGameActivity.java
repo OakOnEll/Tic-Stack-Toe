@@ -21,7 +21,6 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.android.gms.appstate.AppStateClient;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.plus.PlusClient;
 
@@ -60,10 +59,16 @@ public abstract class BaseGameActivity extends SherlockFragmentActivity
 	// Requested clients. By default, that's just the games client.
 	protected int mRequestedClients = CLIENT_GAMES;
 
+	// stores any additional scopes.
+	private String[] mAdditionalScopes;
+
+	protected String mDebugTag = "BaseGameActivity";
+	protected boolean mDebugLog = false;
+
 	/** Constructs a BaseGameActivity with default client (GamesClient). */
 	protected BaseGameActivity() {
 		super();
-		// mHelper = new GameHelper(this);
+		mHelper = new GameHelper(this);
 	}
 
 	/**
@@ -89,16 +94,24 @@ public abstract class BaseGameActivity extends SherlockFragmentActivity
 	 *            A combination of the flags CLIENT_GAMES, CLIENT_PLUS and
 	 *            CLIENT_APPSTATE, or CLIENT_ALL to request all available
 	 *            clients.
+	 * @param additionalScopes
+	 *            . Scopes that should also be requested when the auth request
+	 *            is made.
 	 */
-	protected void setRequestedClients(int requestedClients) {
+	protected void setRequestedClients(int requestedClients,
+			String... additionalScopes) {
 		mRequestedClients = requestedClients;
+		mAdditionalScopes = additionalScopes;
 	}
 
 	@Override
 	protected void onCreate(Bundle b) {
 		super.onCreate(b);
 		mHelper = new GameHelper(this);
-		mHelper.setup(this, mRequestedClients);
+		if (mDebugLog) {
+			mHelper.enableDebugLog(mDebugLog, mDebugTag);
+		}
+		mHelper.setup(this, mRequestedClients, mAdditionalScopes);
 	}
 
 	@Override
@@ -131,28 +144,32 @@ public abstract class BaseGameActivity extends SherlockFragmentActivity
 		return mHelper.getPlusClient();
 	}
 
-	 public boolean isSignedIn() {
+	public boolean isSignedIn() {
 		return mHelper.isSignedIn();
 	}
 
-	 public void beginUserInitiatedSignIn() {
+	public void beginUserInitiatedSignIn() {
 		mHelper.beginUserInitiatedSignIn();
 	}
 
-	 public void signOut() {
+	protected void signOut() {
 		mHelper.signOut();
 	}
 
-	 void showAlert(String title, String message) {
+	protected void showAlert(String title, String message) {
 		mHelper.showAlert(title, message);
 	}
 
-	 public void showAlert(String message) {
+	public void showAlert(String message) {
 		mHelper.showAlert(message);
 	}
 
 	protected void enableDebugLog(boolean enabled, String tag) {
-		mHelper.enableDebugLog(enabled, tag);
+		mDebugLog = true;
+		mDebugTag = tag;
+		if (mHelper != null) {
+			mHelper.enableDebugLog(enabled, tag);
+		}
 	}
 
 	protected String getInvitationId() {
@@ -167,21 +184,27 @@ public abstract class BaseGameActivity extends SherlockFragmentActivity
 		return mHelper.getScopes();
 	}
 
+	protected String[] getScopesArray() {
+		return mHelper.getScopesArray();
+	}
+
 	protected boolean hasSignInError() {
 		return mHelper.hasSignInError();
 	}
 
-	protected ConnectionResult getSignInError() {
+	protected GameHelper.SignInFailureReason getSignInError() {
 		return mHelper.getSignInError();
 	}
 
 	protected void setSignInMessages(String signingInMessage,
 			String signingOutMessage) {
-		mHelper.setSigningInMessage(signingInMessage);
-		mHelper.setSigningOutMessage(signingOutMessage);
+		// TODO ??
+//		mHelper.setSigningInMessage(signingInMessage);
+//		mHelper.setSigningOutMessage(signingOutMessage);
 	}
 
 	protected GameHelper getGameHelper() {
 		return mHelper;
 	}
+
 }

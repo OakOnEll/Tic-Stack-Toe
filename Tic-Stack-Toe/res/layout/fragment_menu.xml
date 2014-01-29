@@ -189,6 +189,15 @@
             android:layout_toRightOf="@+id/view_leaderboards"
             android:text="@string/leaderboards" />
 
+         <Button
+            android:id="@+id/pending_games"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_leaderboards_text"
+            android:layout_alignLeft="@+id/view_leaderboards_text"
+            android:text="Pending Games" />
+        
+        
         <ProgressBar
             android:id="@+id/waiting"
             style="?android:attr/progressBarStyleLarge"
@@ -196,6 +205,31 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="invisible" />
-    </RelativeLayout>
+
+        <ListView
+            android:id="@+id/my_turn_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pending_games"
+            android:layout_centerHorizontal="true"
+            >
+        </ListView>
+        <ListView
+            android:id="@+id/their_turn_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/my_turn_games"
+            android:layout_centerHorizontal="true"
+            >
+        </ListView>        
+        <ListView
+            android:id="@+id/completed_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/my_turn_games"
+            android:layout_centerHorizontal="true"
+            >
+        </ListView>        
+        </RelativeLayout>
 
 </ScrollView>

@@ -1,9 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public class ExistingPieceMove extends AbstractMove {
 	private final Piece exposedSourcePiece;
@@ -58,11 +58,11 @@ public class ExistingPieceMove extends AbstractMove {
 		return builder.toString();
 	}
 
-	public static AbstractMove fromBytes(ByteBuffer buffer, Game game) {
-		int sourceX = buffer.get();
-		int sourceY = buffer.get();
+	public static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
+		int sourceX = buffer.get("source x");
+		int sourceY = buffer.get("source y");
 		Cell source = new Cell(sourceX, sourceY);
-		int exposedSourceVal = buffer.getInt();
+		int exposedSourceVal = buffer.getInt("exposed source piece");
 
 		Piece playedPiece = game.getBoard().getVisiblePiece(sourceX, sourceY);
 		Piece exposedSourcePiece = game.getBoard().peekNextPiece(source);
@@ -81,17 +81,17 @@ public class ExistingPieceMove extends AbstractMove {
 	}
 
 	@Override
-	protected void privateAppendBytesToMessage(ByteBuffer buffer) {
+	protected void privateAppendBytesToMessage(ByteBufferDebugger buffer) {
 		int x = source.getX();
 		int y = source.getY();
 
-		buffer.put((byte) x);
-		buffer.put((byte) y);
+		buffer.put("Source x",(byte) x);
+		buffer.put("Source y", (byte) y);
 
 		// checksum
 		int sourceVal = exposedSourcePiece != null ? exposedSourcePiece
 				.getVal() : 0;
-		buffer.putInt(sourceVal);
+		buffer.putInt("Exposed source piece", sourceVal);
 
 		appendCommonToMessage(buffer);
 	}

@@ -220,7 +220,7 @@ public class Board {
 	}
 
 	private State evaluateAndStore(AbstractMove move) {
-		state = evaluate(move);
+		setState(evaluate(move));
 		return state;
 	}
 
@@ -351,13 +351,13 @@ public class Board {
 		return copy;
 	}
 
-	protected void setState(State originalState) {
+	public void setState(State originalState) {
 		state = originalState;
 	}
 
 	public void undoBoardMove(ExistingPieceMove existingPieceMove,
 			State originalState) {
-		state = originalState;
+		setState(originalState);
 
 		Cell targetCell = existingPieceMove.getTargetCell();
 		Cell sourceCell = existingPieceMove.getSource();
@@ -369,7 +369,7 @@ public class Board {
 	public void undoStackMove(PlaceNewPieceMove placeNewPieceMove,
 			State originalState, List<PieceStack> blackPlayerPieces,
 			List<PieceStack> whitePlayerPieces) {
-		state = originalState;
+		setState(originalState);
 
 		Cell targetCell = placeNewPieceMove.getTargetCell();
 

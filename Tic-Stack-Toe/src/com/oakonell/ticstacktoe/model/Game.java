@@ -1,5 +1,7 @@
 package com.oakonell.ticstacktoe.model;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,17 @@ public class Game {
 
 	public Game(GameType gameType, GameMode mode, Player blackPlayer,
 			Player whitePlayer, Player startingPlayer) {
+		this(gameType, mode, new Board(gameType.size), blackPlayer, gameType
+				.createBlackPlayerStacks(), whitePlayer, gameType
+				.createWhitePlayerStacks(), startingPlayer);
+	}
+
+	private Game(GameType gameType, GameMode mode, Board board,
+			Player blackPlayer, List<PieceStack> blackStacks,
+			Player whitePlayer, List<PieceStack> whiteStacks,
+			Player startingPlayer) {
+		this.board = board;
 		this.gameType = gameType;
-		board = new Board(gameType.size);
 		this.blackPlayer = blackPlayer;
 		this.whitePlayer = whitePlayer;
 		blackPlayer.setOpponent(whitePlayer);
@@ -32,8 +43,8 @@ public class Game {
 		blackPlayer.setGame(this);
 		whitePlayer.setGame(this);
 
-		blackPlayerPieces = gameType.createBlackPlayerStacks();
-		whitePlayerPieces = gameType.createWhitePlayerStacks();
+		blackPlayerPieces = blackStacks;
+		whitePlayerPieces = whiteStacks;
 
 		// player = startingPlayer;
 		player = startingPlayer;
@@ -165,4 +176,119 @@ public class Game {
 		return gameType;
 	}
 
+	public void writeBytes(String blackPlayerId, ByteBufferDebugger buffer) {
+		buffer.putInt("Num Moves", moves);
+		buffer.putInt("Variant", getType().getVariant());
+
+		int boardSize = gameType.getSize();
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize; j++) {
+				PieceStack stack = board.getStackAt(i, j);
+				writeStack(buffer, "Board " + i + "," + j, stack);
+			}
+		}
+
+		int i = 0;
+		for (PieceStack each : getBlackPlayerPieces()) {
+			writeStack(buffer, "Black stack " + i, each);
+			i++;
+		}
+		i = 0;
+		for (PieceStack each : getWhitePlayerPieces()) {
+			writeStack(buffer, "White stack " + i, each);
+			i++;
+		}
+
+		getBoard().getState().toBytes(buffer);
+	}
+
+	private void writeStack(ByteBufferDebugger buffer, String comment,
+			PieceStack stack) {
+		int num = stack.pieces.size();
+		buffer.put("Num pieces " + comment, (byte) num);
+		for (Piece piece : stack.pieces) {
+			buffer.putInt("Piece " + comment, piece.getVal());
+		}
+	}
+
+	public static Game fromBytes(Player blackPlayer, Player whitePlayer,
+			Player currentPlayer, ByteBufferDebugger buffer) {
+		int moves = buffer.getInt("Num Moves");
+		int variant = buffer.getInt("Variant");
+		GameType type = GameType.fromVariant(variant);
+
+		int boardSize = type.getSize();
+		PieceStack[][] board = new PieceStack[boardSize][boardSize];
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize; j++) {
+				board[i][j] = readStack("Board " + i + "," + j, buffer);
+			}
+		}
+		Board theBoard = new Board(board);
+
+		int numStacks = type.getNumberOfStacks();
+		List<PieceStack> blackStacks = new ArrayList<Board.PieceStack>();
+		List<PieceStack> whiteStacks = new ArrayList<Board.PieceStack>();
+		int num = 0;
+		for (int i = 0; i < numStacks; i++) {
+			blackStacks.add(readStack("Black stack " + num, buffer));
+			num++;
+		}
+		num = 0;
+		for (int i = 0; i < numStacks; i++) {
+			whiteStacks.add(readStack("White stack " + num, buffer));
+			num++;
+		}
+
+		Game game = new Game(type, GameMode.TURN_BASED, theBoard, blackPlayer,
+				blackStacks, whitePlayer, whiteStacks, currentPlayer);
+
+		State state = State.fromBytes(buffer, game, blackPlayer, whitePlayer);
+		theBoard.setState(state);
+
+		return game;
+	}
+
+	private static PieceStack readStack(String string, ByteBufferDebugger buffer) {
+		int num = buffer.get("Number pieces " + string);
+		PieceStack stack = new PieceStack();
+		for (int i = 0; i < num; i++) {
+			stack.pieces.add(Piece.fromInt(buffer.getInt("Piece " + string)));
+		}
+		return stack;
+	}
+
+	public static class ByteBufferDebugger {
+		private ByteBuffer buffer;
+
+		public ByteBufferDebugger(ByteBuffer buffer) {
+			this.buffer = buffer;
+		}
+
+		public ByteBuffer getBuffer() {
+			return buffer;
+		}
+
+		public byte get(String string) {
+			byte result = buffer.get();
+			System.out.println("Reading (byte)" + string + ": " + result);
+			return result;
+		}
+
+		public int getInt(String string) {
+			int result = buffer.getInt();
+			System.out.println("Reading (int)" + string + ": " + result);
+			return result;
+		}
+
+		public void put(String comment, byte num) {
+			System.out.println("Writing (byte)" + comment + ": " + num);
+			buffer.put(num);
+		}
+
+		public void putInt(String comment, int i) {
+			System.out.println("Writing (int)" + comment + ": " + i);
+			buffer.putInt(i);
+		}
+	}
 }

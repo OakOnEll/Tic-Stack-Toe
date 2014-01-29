@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -16,7 +17,7 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 	public static final String SELECT_PLAYER_INTENT_KEY = "select_player";
 
 	public interface OnlineGameModeListener {
-		void chosenMode(GameType type);
+		void chosenMode(GameType type, boolean useTurnBased);
 	}
 
 	private OnlineGameModeListener listener;
@@ -43,22 +44,24 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 		if (isQuick) {
 			start.setText(R.string.choose_online_opponent);
 		}
-		
+
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 
-		
+		final CheckBox turnbased = (CheckBox) view
+				.findViewById(R.id.turn_based);
+
 		start.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				dismiss();
-				
+
 				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
 						.getSelectedItem();
+				boolean isTurnBased = turnbased.isChecked();
 
-				
-				listener.chosenMode(typeItem.type);
+				listener.chosenMode(typeItem.type, isTurnBased);
 			}
 		});
 		return view;

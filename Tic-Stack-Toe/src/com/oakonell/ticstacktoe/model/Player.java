@@ -13,13 +13,15 @@ public class Player {
 	private final String name;
 	private final Uri iconImageUri;
 	private final PlayerStrategy strategy;
+	private final String  id;
 	private Player opponent;
 	private Game game;
 
-	public Player(String name, Uri iconImageUri, PlayerStrategy strategy) {
+	public Player(String name, Uri iconImageUri, PlayerStrategy strategy, String id) {
 		this.name = name;
 		this.iconImageUri = iconImageUri;
 		this.strategy = strategy;
+		this.id = id;
 	}
 
 	public void setOpponent(Player opponent) {

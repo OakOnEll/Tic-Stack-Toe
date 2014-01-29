@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +34,18 @@ import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.OnInvitationsLoadedListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.turnbased.LoadMatchesResponse;
+import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
+import com.oakonell.ticstacktoe.GameListener;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
+import com.oakonell.ticstacktoe.TurnListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -67,6 +75,7 @@ public class MenuFragment extends SherlockFragment {
 	private ProgressBar loading_num_invites;
 
 	private ProgressBar waiting;
+	Boolean useTurnBased;
 	GameType onlineType = null;
 
 	@Override
@@ -81,10 +90,22 @@ public class MenuFragment extends SherlockFragment {
 						GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 				int maxAutoMatchPlayers = data.getIntExtra(
 						GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+				// get the automatch criteria
+				Bundle autoMatchCriteria = null;
+				if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
+					autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
+							minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+					Log.d(TAG, "Automatch criteria: " + autoMatchCriteria);
+				}
+
 				GameType type = onlineType;
 				onlineType = null;
-				createOnlineRoom(invitees, type, minAutoMatchPlayers,
-						maxAutoMatchPlayers, true);
+				boolean turnBased = useTurnBased;
+				useTurnBased = null;
+
+				createOnlineRoom(invitees, type, turnBased, autoMatchCriteria,
+						true);
 			} else {
 				Log.i(TAG, "Select players canceled");
 			}
@@ -123,16 +144,42 @@ public class MenuFragment extends SherlockFragment {
 			Invitation inv = data.getExtras().getParcelable(
 					GamesClient.EXTRA_INVITATION);
 
-			// accept invitation
-			acceptInviteToRoom(inv.getInvitationId());
+			int invitationType = inv.getInvitationType();
+			if (invitationType == Invitation.INVITATION_TYPE_REAL_TIME) {
+				// accept realtime invitation
+				acceptInviteToRoom(inv.getInvitationId());
+
+			} else {
+				// accept turn based match
+				acceptTurnBasedInvitation(inv);
+			}
 			break;
+		case MainActivity.RC_LOOK_AT_MATCHES:
+			// Returning from the 'Select Match' dialog
+
+			if (response != Activity.RESULT_OK) {
+				// user canceled
+				return;
+			}
+
+			TurnBasedMatch match = data
+					.getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
+
+			if (match != null) {
+				updateMatch(match);
+			}
+
+			Log.d(TAG, "Match = " + match);
+
+			break;
+
 		}
 		// super.onActivityResult(request, response, data);
 	}
 
 	void leaveRoom() {
 		Log.d(TAG, "Leaving room.");
-		RoomListener roomListener = getMainActivity().getRoomListener();
+		GameListener roomListener = getMainActivity().getRoomListener();
 		if (roomListener != null) {
 			roomListener.leaveRoom();
 			getMainActivity().setRoomListener(null);
@@ -275,11 +322,38 @@ public class MenuFragment extends SherlockFragment {
 			}
 		});
 
+		view.findViewById(R.id.pending_games).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (getMainActivity().getGamesClient().isConnected()) {
+							Intent intent = getMainActivity().getGamesClient()
+									.getMatchInboxIntent();
+							startActivityForResult(intent,
+									MainActivity.RC_LOOK_AT_MATCHES);
+						} else if (getMainActivity().getGamesClient()
+								.isConnecting()) {
+							getMainActivity().showAlert(
+									"Connecting... please try again.");
+						} else {
+							getMainActivity().showAlert(
+									"Please login to see pending matches");
+						}
+
+					}
+				});
+
 		if (getMainActivity().isSignedIn()) {
 			showLogout();
 		} else {
 			showLogin();
 		}
+
+		ListView myTurns = (ListView) view.findViewById(R.id.my_turn_games);
+		ListView theirTurns = (ListView) view
+				.findViewById(R.id.their_turn_games);
+		ListView completeMatches = (ListView) view
+				.findViewById(R.id.completed_games);
 
 		return view;
 	}
@@ -314,32 +388,17 @@ public class MenuFragment extends SherlockFragment {
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(true, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(GameType type) {
-				// use the size argument as a variant of the game
-				int variant = type.getVariant();
-
+			public void chosenMode(GameType type, boolean useTurnBased) {
 				final int MIN_OPPONENTS = 1, MAX_OPPONENTS = 1;
 				Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						MIN_OPPONENTS, MAX_OPPONENTS, 0);
-				RoomListener roomListener = new RoomListener(getMainActivity(),
-						getMainActivity().getGameHelper(), type, true, true);
-				getMainActivity().setRoomListener(roomListener);
-				final RoomConfig.Builder rtmConfigBuilder = RoomConfig
-						.builder(roomListener);
-				rtmConfigBuilder.setVariant(variant);
-				rtmConfigBuilder.setMessageReceivedListener(roomListener);
-				rtmConfigBuilder.setRoomStatusUpdateListener(roomListener);
-				rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
-				waiting.setVisibility(View.VISIBLE);
-				// post delayed so that the progess is shown
-				Handler handler = new Handler();
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						getMainActivity().getGamesClient().createRoom(
-								rtmConfigBuilder.build());
-					}
-				}, 0);
+
+				if (useTurnBased) {
+					createTurnBasedQuickMatch(type, autoMatchCriteria);
+					return;
+				}
+
+				createRealtimeBasedQuickMatch(type, autoMatchCriteria);
 
 			}
 		});
@@ -348,13 +407,57 @@ public class MenuFragment extends SherlockFragment {
 
 	}
 
+	protected void createTurnBasedQuickMatch(GameType type,
+			Bundle autoMatchCriteria) {
+		int variant = type.getVariant();
+
+		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
+				.setAutoMatchCriteria(autoMatchCriteria).build();
+
+		// TODO
+		TurnListener listener = new TurnListener(getMainActivity(),
+				getMainActivity().getGameHelper(), type, true, true);
+		getMainActivity().setRoomListener(listener);
+
+		// Kick the match off
+		getMainActivity().getGamesClient().createTurnBasedMatch(listener, tbmc);
+
+	}
+
+	protected void createRealtimeBasedQuickMatch(GameType type,
+			Bundle autoMatchCriteria) {
+		int variant = type.getVariant();
+
+		RoomListener roomListener = new RoomListener(getMainActivity(),
+				getMainActivity().getGameHelper(), type, true, true);
+		getMainActivity().setRoomListener(roomListener);
+		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
+				.builder(roomListener);
+		rtmConfigBuilder.setVariant(variant);
+		rtmConfigBuilder.setMessageReceivedListener(roomListener);
+		rtmConfigBuilder.setRoomStatusUpdateListener(roomListener);
+		rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+		waiting.setVisibility(View.VISIBLE);
+		// post delayed so that the progess is shown
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getMainActivity().getGamesClient().createRoom(
+						rtmConfigBuilder.build());
+			}
+		}, 0);
+
+	}
+
 	private void selectOnlineGameMode() {
 		// first choose Game mode
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(false, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(GameType type) {
+			public void chosenMode(GameType type, boolean useTurnBased) {
 				MenuFragment.this.onlineType = type;
+				MenuFragment.this.useTurnBased = useTurnBased;
 				Intent intent = getMainActivity().getGamesClient()
 						.getSelectPlayersIntent(1, 1);
 				waiting.setVisibility(View.VISIBLE);
@@ -363,6 +466,75 @@ public class MenuFragment extends SherlockFragment {
 		});
 		dialog.show(getSherlockActivity().getSupportFragmentManager(),
 				"gameMode");
+	}
+
+	private void createOnlineRoom(final ArrayList<String> invitees,
+			GameType type, boolean turnBased, Bundle autoMatchCriteria,
+			boolean initiated) {
+		Log.d(TAG, "Invitee count: " + invitees.size());
+
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String each : invitees) {
+			stringBuilder.append(each);
+			stringBuilder.append(",\n");
+		}
+
+		// new AlertDialog.Builder(this).setTitle("Invited to play...")
+		// .setMessage(stringBuilder.toString()).show();
+
+		if (turnBased) {
+			createTurnBasedMatch(invitees, type, autoMatchCriteria, initiated);
+			return;
+		}
+
+		createRealtimeBasedMatch(invitees, type, autoMatchCriteria, initiated);
+	}
+
+	private void createTurnBasedMatch(ArrayList<String> invitees,
+			GameType type, Bundle autoMatchCriteria, boolean initiated) {
+
+		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
+				.addInvitedPlayers(invitees)
+				.setAutoMatchCriteria(autoMatchCriteria).build();
+
+		// TODO
+		TurnListener listener = new TurnListener(getMainActivity(),
+				getMainActivity().getGameHelper(), type, false, initiated);
+		getMainActivity().setRoomListener(listener);
+
+		// Kick the match off
+		getMainActivity().getGamesClient().createTurnBasedMatch(listener, tbmc);
+
+	}
+
+	private void createRealtimeBasedMatch(final ArrayList<String> invitees,
+			GameType type, Bundle autoMatchCriteria, boolean initiated) {
+
+		RoomListener roomListener = new RoomListener(getMainActivity(),
+				getMainActivity().getGameHelper(), type, false, initiated);
+		getMainActivity().setRoomListener(roomListener);
+		// create the room
+		Log.d(TAG, "Creating room...");
+		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
+				.builder(roomListener);
+		rtmConfigBuilder.addPlayersToInvite(invitees);
+		rtmConfigBuilder.setMessageReceivedListener(roomListener);
+		rtmConfigBuilder.setRoomStatusUpdateListener(roomListener);
+		if (autoMatchCriteria != null) {
+			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+		}
+		waiting.setVisibility(View.VISIBLE);
+		// post delayed so that the progess is shown
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getMainActivity().getGamesClient().createRoom(
+						rtmConfigBuilder.build());
+			}
+		}, 0);
+
+		Log.d(TAG, "Room created, waiting for it to be ready...");
 	}
 
 	private void startLocalTwoPlayerGame(GameType type, String blackName,
@@ -421,55 +593,6 @@ public class MenuFragment extends SherlockFragment {
 		transaction.commit();
 	}
 
-	private void createOnlineRoom(final ArrayList<String> invitees,
-			GameType type, int minAutoMatchPlayers, int maxAutoMatchPlayers,
-			boolean initiated) {
-		Log.d(TAG, "Invitee count: " + invitees.size());
-
-		StringBuilder stringBuilder = new StringBuilder();
-		for (String each : invitees) {
-			stringBuilder.append(each);
-			stringBuilder.append(",\n");
-		}
-
-		// new AlertDialog.Builder(this).setTitle("Invited to play...")
-		// .setMessage(stringBuilder.toString()).show();
-
-		// get the automatch criteria
-		Bundle autoMatchCriteria = null;
-		if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
-			autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
-					minAutoMatchPlayers, maxAutoMatchPlayers, 0);
-			Log.d(TAG, "Automatch criteria: " + autoMatchCriteria);
-		}
-
-		RoomListener roomListener = new RoomListener(getMainActivity(),
-				getMainActivity().getGameHelper(), type, false, initiated);
-		getMainActivity().setRoomListener(roomListener);
-		// create the room
-		Log.d(TAG, "Creating room...");
-		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
-				.builder(roomListener);
-		rtmConfigBuilder.addPlayersToInvite(invitees);
-		rtmConfigBuilder.setMessageReceivedListener(roomListener);
-		rtmConfigBuilder.setRoomStatusUpdateListener(roomListener);
-		if (autoMatchCriteria != null) {
-			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
-		}
-		waiting.setVisibility(View.VISIBLE);
-		// post delayed so that the progess is shown
-		Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getMainActivity().getGamesClient().createRoom(
-						rtmConfigBuilder.build());
-			}
-		}, 0);
-
-		Log.d(TAG, "Room created, waiting for it to be ready...");
-	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -523,6 +646,54 @@ public class MenuFragment extends SherlockFragment {
 		registerInviteListener();
 
 		refreshInvites(true);
+
+		// TODO load matches and display on menu screen
+		getMainActivity().getGamesClient().loadTurnBasedMatches(
+				new OnTurnBasedMatchesLoadedListener() {
+
+					@Override
+					public void onTurnBasedMatchesLoaded(int status,
+							LoadMatchesResponse response) {
+						if (status != GamesClient.STATUS_OK) {
+							// TODO report an error in some way, retry
+							return;
+						}
+						InvitationBuffer invitations = response
+								.getInvitations();
+						TurnBasedMatchBuffer myTurnMatches = response
+								.getMyTurnMatches();
+
+						TurnBasedMatchBuffer theirTurnMatches = response
+								.getTheirTurnMatches();
+						TurnBasedMatchBuffer completedMatches = response
+								.getCompletedMatches();
+
+						int count = myTurnMatches.getCount();
+						for (int i = 0; i < count; i++) {
+							TurnBasedMatch match = myTurnMatches.get(i);
+							match.getLastUpdatedTimestamp();
+							match.getParticipantIds();
+						}
+					}
+				},
+				//
+				TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
+				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN,
+				TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN,
+				TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE);
+
+		TurnBasedMatch aMatch = getMainActivity().getGameHelper()
+				.getTurnBasedMatch();
+		if (aMatch != null) {
+			// GameHelper will cache any connection hint it gets. In this case,
+			// it can cache a TurnBasedMatch that it got from choosing a
+			// turn-based
+			// game notification. If that's the case, you should go straight
+			// into
+			// the game.
+			updateMatch(aMatch);
+			return;
+		}
 	}
 
 	private void registerInviteListener() {
@@ -642,6 +813,90 @@ public class MenuFragment extends SherlockFragment {
 		} else {
 			showLogin();
 		}
+	}
+
+	private void acceptTurnBasedInvitation(Invitation inv) {
+		TurnListener listener = new TurnListener(getMainActivity(),
+				getMainActivity().getGameHelper(), null, false, false);
+
+		getMainActivity().getGamesClient().acceptTurnBasedInvitation(listener,
+				inv.getInvitationId());
+		getMainActivity().setRoomListener(listener);
+
+		listener.showGame();
+
+	}
+
+	// This is the main function that gets called when players choose a match
+	// from the inbox, or else create a match and want to start it.
+	public void updateMatch(TurnBasedMatch match) {
+		// if sign in just succeeded, but another game is in progress, don't
+		// interupt
+		// / may need to check if gameFragment exists?
+		if (getMainActivity().getRoomListener() != null)
+			return;
+
+		int status = match.getStatus();
+		int turnStatus = match.getTurnStatus();
+
+		switch (status) {
+		case TurnBasedMatch.MATCH_STATUS_CANCELED:
+			getMainActivity().getGameHelper().showAlert("Canceled!",
+					"This game was canceled!");
+			return;
+		case TurnBasedMatch.MATCH_STATUS_EXPIRED:
+			getMainActivity().getGameHelper().showAlert("Expired!",
+					"This game is expired.  So sad!");
+			return;
+		case TurnBasedMatch.MATCH_STATUS_AUTO_MATCHING:
+			getMainActivity().getGameHelper().showAlert(
+					"Waiting for auto-match...",
+					"We're still waiting for an automatch partner.");
+			return;
+		case TurnBasedMatch.MATCH_STATUS_COMPLETE:
+			if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
+				getMainActivity()
+						.getGameHelper()
+						.showAlert(
+								"Complete!",
+								"This game is over; someone finished it, and so did you!  There is nothing to be done.");
+				break;
+			}
+
+			// Note that in this state, you must still call "Finish" yourself,
+			// so we allow this to continue.
+			getMainActivity()
+					.getGameHelper()
+					.showAlert("Complete!",
+							"This game is over; someone finished it!  You can only finish it now.");
+		}
+
+		// OK, it's active. Check on turn status.
+		switch (turnStatus) {
+		case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN: {
+			// launch game
+			TurnListener listener = new TurnListener(getMainActivity(),
+					getMainActivity().getGameHelper(), match);
+			getMainActivity().setRoomListener(listener);
+
+			listener.showGame();
+
+			return;
+		}
+		case TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN: {
+			// Should return results.
+			TurnListener listener = new TurnListener(getMainActivity(),
+					getMainActivity().getGameHelper(), match);
+			getMainActivity().setRoomListener(listener);
+
+			listener.showGame();
+			break;
+		}
+		case TurnBasedMatch.MATCH_TURN_STATUS_INVITED:
+			getMainActivity().getGameHelper().showAlert("Good inititative!",
+					"Still waiting for invitations.\n\nBe patient!");
+		}
+
 	}
 
 }

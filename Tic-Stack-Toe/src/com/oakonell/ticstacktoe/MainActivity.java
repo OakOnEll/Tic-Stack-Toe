@@ -23,6 +23,7 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -39,8 +40,9 @@ public class MainActivity extends BaseGameActivity {
 	public final static int RC_SELECT_PLAYERS = 10000;
 	public final static int RC_INVITATION_INBOX = 10001;
 	public final static int RC_WAITING_ROOM = 10002;
+	public final static int RC_LOOK_AT_MATCHES = 10003;
 
-	private RoomListener roomListener;
+	private GameListener roomListener;
 	private InterstitialAd mInterstitialAd;
 	private AdView mAdView;
 	private SoundManager soundManager;
@@ -185,46 +187,67 @@ public class MainActivity extends BaseGameActivity {
 		getMenuFragment().setActive();
 		roomListener = null;
 		mAdView.setVisibility(View.VISIBLE);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 
 	public void hideAd() {
 		mAdView.setVisibility(View.GONE);
 	}
 
-	public RoomListener getRoomListener() {
+	public GameListener getRoomListener() {
 		return roomListener;
 	}
 
-	public void setRoomListener(RoomListener roomListener) {
+	public void setRoomListener(GameListener roomListener) {
 		this.roomListener = roomListener;
 	}
 
 	@Override
 	public void onBackPressed() {
 		if (getGameFragment() != null && getGameFragment().isVisible()) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.leave_game_title);
-			builder.setMessage(R.string.leave_game_message);
-			builder.setPositiveButton(R.string.yes, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
+			// TODO only realtime game should ask to leave
+			// local games can be stored and continued
+			// turn-based games also would be written
+			if (roomListener != null) {
+				if (roomListener.warnToLeave()) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setTitle(R.string.leave_game_title);
+					builder.setMessage(R.string.leave_game_message);
+					builder.setPositiveButton(R.string.yes,
+							new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
 
-					if (roomListener != null) {
-						roomListener.leaveRoom();
-					}
-					getGameFragment().leaveGame();
-					// MainActivity.super.onBackPressed();
+									if (roomListener != null) {
+										roomListener.leaveRoom();
+									}
+									getGameFragment().leaveGame();
+									// MainActivity.super.onBackPressed();
 
+								}
+							});
+					builder.setNegativeButton(R.string.no,
+							new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+								}
+							});
+					builder.show();
 				}
-			});
-			builder.setNegativeButton(R.string.no, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			builder.show();
+			}
+
+			// else listener allows just exiting
+			if (roomListener != null) {
+				roomListener.leaveRoom();
+			} else {
+				// store local game...
+			}
+			getGameFragment().leaveGame();
 			return;
 		}
 		super.onBackPressed();
@@ -269,7 +292,7 @@ public class MainActivity extends BaseGameActivity {
 
 		if (mInterstitialAd.isLoaded()) {
 			mInterstitialAd.show();
-			
+
 			mInterstitialAd.setAdListener(new AdListener() {
 				@Override
 				public void onAdClosed() {
@@ -321,7 +344,7 @@ public class MainActivity extends BaseGameActivity {
 		getGameFragment().opponentClosedChat();
 	}
 
-	public void onlineMoveReceived(ByteBuffer buffer) {
+	public void onlineMoveReceived(ByteBufferDebugger buffer) {
 		getGameFragment().onlineMakeMove(buffer);
 	}
 

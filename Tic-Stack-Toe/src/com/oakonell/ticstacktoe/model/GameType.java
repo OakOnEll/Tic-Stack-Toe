@@ -72,7 +72,7 @@ public class GameType {
 		return pieceStack;
 	}
 
-	public int getStackSize() {
+	public int getNumberOfStacks() {
 		return numStacks;
 	}
 

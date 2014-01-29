@@ -1,9 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public class PlaceNewPieceMove extends AbstractMove {
 	private final int stackNum;
@@ -56,8 +56,8 @@ public class PlaceNewPieceMove extends AbstractMove {
 		return builder.toString();
 	}
 
-	public static AbstractMove fromBytes(ByteBuffer buffer, Game game) {
-		int stackNum = buffer.get();
+	public static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
+		int stackNum = buffer.get("stack number");
 
 		List<PieceStack> playerPieces = game.getCurrentPlayerPieces();
 		PieceStack stack = playerPieces.get(stackNum);
@@ -65,15 +65,15 @@ public class PlaceNewPieceMove extends AbstractMove {
 
 		CommonMoveInfo commonInfo = commonFromBytes(buffer, game, playedPiece);
 		
-		return new PlaceNewPieceMove(game.getCurrentPlayer(), commonInfo.playedPiece, stackNum, commonInfo.target, commonInfo.existingTargetPiece);
+		return new PlaceNewPieceMove(commonInfo.player, commonInfo.playedPiece, stackNum, commonInfo.target, commonInfo.existingTargetPiece);
 	}
 
 	
 	
 	@Override
-	public void privateAppendBytesToMessage(ByteBuffer buffer) {
+	public void privateAppendBytesToMessage(ByteBufferDebugger buffer) {
 		int stackNum = getStackNum();
-		buffer.put((byte) stackNum);
+		buffer.put("stack number", (byte) stackNum);
 		
 		appendCommonToMessage(buffer);
 	}

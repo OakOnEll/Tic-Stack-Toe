@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.ui.game;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public class WinOverlayView extends View {
 	private final int OFFSET = 10;
@@ -52,6 +55,65 @@ public class WinOverlayView extends View {
 			throw new RuntimeException("Invalid row " + y);
 		}
 
+		public static WinStyle fromByte(ByteBufferDebugger buffer) {
+			byte b = buffer.get("Win type");
+			if (b == 'R')
+				return row(buffer.get("win row"));
+			if (b == 'C')
+				return column(buffer.get("win col"));
+			if (b == 'D') {
+				byte diagType = buffer.get("win diag type");
+				if (diagType == 'L')
+					return TOP_LEFT_DIAG;
+				if (diagType == 'R')
+					return TOP_RIGHT_DIAG;
+				throw new RuntimeException("Invalid diagonal type win");
+			}
+			throw new RuntimeException("Invalid win type");
+		}
+
+		public void writeBytes(ByteBufferDebugger dBuffer) {
+			ByteBuffer buffer = dBuffer.getBuffer();
+			if (this == ROW1) {
+				buffer.put((byte) 'R');
+				buffer.put((byte) 0);
+			} else if (this == ROW2) {
+				buffer.put((byte) 'R');
+				buffer.put((byte) 1);
+			} else if (this == ROW3) {
+				buffer.put((byte) 'R');
+				buffer.put((byte) 2);
+			} else if (this == ROW4) {
+				buffer.put((byte) 'R');
+				buffer.put((byte) 3);
+			} else if (this == ROW5) {
+				buffer.put((byte) 'R');
+				buffer.put((byte) 4);
+			} else if (this == COL1) {
+				buffer.put((byte) 'C');
+				buffer.put((byte) 0);
+			} else if (this == COL2) {
+				buffer.put((byte) 'C');
+				buffer.put((byte) 1);
+			} else if (this == COL3) {
+				buffer.put((byte) 'C');
+				buffer.put((byte) 2);
+			} else if (this == COL4) {
+				buffer.put((byte) 'C');
+				buffer.put((byte) 3);
+			} else if (this == COL5) {
+				buffer.put((byte) 'C');
+				buffer.put((byte) 4);
+			} else if (this == TOP_LEFT_DIAG) {
+				buffer.put((byte) 'D');
+				buffer.put((byte) 'L');
+			} else if (this == TOP_RIGHT_DIAG) {
+				buffer.put((byte) 'D');
+				buffer.put((byte) 'R');
+			} else {
+
+			}
+		}
 	}
 
 	private List<WinStyle> styles = new ArrayList<WinStyle>();

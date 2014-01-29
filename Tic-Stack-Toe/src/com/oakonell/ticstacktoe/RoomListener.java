@@ -25,6 +25,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
@@ -34,7 +35,7 @@ import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 
 public class RoomListener implements RoomUpdateListener,
-		RealTimeMessageReceivedListener, RoomStatusUpdateListener {
+		RealTimeMessageReceivedListener, RoomStatusUpdateListener, GameListener {
 	private static final Random random = new Random();
 	private static final String TAG = RoomListener.class.getName();
 
@@ -194,7 +195,7 @@ public class RoomListener implements RoomUpdateListener,
 
 			// TODO is it possible that the moveListener is null?
 			// should we store the pending move, until a move listener is set
-			activity.onlineMoveReceived(buffer);
+			activity.onlineMoveReceived(new ByteBufferDebugger(buffer));
 		} else if (type == MSG_MESSAGE) {
 			int numBytes = buffer.getInt();
 			byte[] bytes = new byte[numBytes];
@@ -248,14 +249,18 @@ public class RoomListener implements RoomUpdateListener,
 		String localPlayerName = activity.getString(R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
-					getMe().getIconImageUri());
-			whitePlayer = OnlineStrategy.createPlayer(getOpponentName(), false,
-					getOpponentParticipant().getIconImageUri());
+					getMe().getIconImageUri(), getMe().getParticipantId());
+			whitePlayer = OnlineStrategy
+					.createPlayer(getOpponentName(), false,
+							getOpponentParticipant().getIconImageUri(),
+							getOpponentId());
 		} else {
 			whitePlayer = HumanStrategy.createPlayer(localPlayerName, false,
-					getMe().getIconImageUri());
-			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
-					getOpponentParticipant().getIconImageUri());
+					getMe().getIconImageUri(), getMe().getParticipantId());
+			blackPlayer = OnlineStrategy
+					.createPlayer(getOpponentName(), true,
+							getOpponentParticipant().getIconImageUri(),
+							getOpponentId());
 		}
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker
@@ -503,10 +508,11 @@ public class RoomListener implements RoomUpdateListener,
 		}
 	}
 
-	public void sendMove(AbstractMove move) {
-		ByteBuffer buffer = ByteBuffer
+	public void sendMove(Game game, AbstractMove move, ScoreCard score) {
+		ByteBuffer theBuffer = ByteBuffer
 				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
-		buffer.put(MSG_MOVE);
+		ByteBufferDebugger buffer = new ByteBufferDebugger(theBuffer);
+		buffer.put("Move", MSG_MOVE);
 
 		move.appendBytesToMessage(buffer);
 
@@ -520,7 +526,7 @@ public class RoomListener implements RoomUpdateListener,
 							leaveRoom();
 						}
 					}
-				}, buffer.array(), getRoomId(), getOpponentId());
+				}, theBuffer.array(), getRoomId(), getOpponentId());
 	}
 
 	public void restartGame() {
@@ -643,6 +649,11 @@ public class RoomListener implements RoomUpdateListener,
 
 	public boolean isInitiatedTheGame() {
 		return initiatedTheGame;
+	}
+
+	@Override
+	public boolean warnToLeave() {
+		return true;
 	}
 
 }

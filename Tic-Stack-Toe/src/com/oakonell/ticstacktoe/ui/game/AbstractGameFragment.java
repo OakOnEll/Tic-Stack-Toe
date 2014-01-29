@@ -305,15 +305,20 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 			// let the play again dialog handle it
 			return;
 		}
+		// TODO show game stats on finish of game sequence
+//		onGameStatsClose = new Runnable() {
+//			@Override
+//			public void run() {
+//				getMainActivity().getSupportFragmentManager().popBackStack();
+//				getMainActivity().gameEnded();
+//			}
+//		};
+//		showGameStats();
 
-		onGameStatsClose = new Runnable() {
-			@Override
-			public void run() {
-				getMainActivity().getSupportFragmentManager().popBackStack();
-				getMainActivity().gameEnded();
-			}
-		};
-		showGameStats();
+		getMainActivity().getSupportFragmentManager().popBackStack();
+		getMainActivity().gameEnded();
+		
+
 	}
 
 	private Runnable onGameStatsClose;

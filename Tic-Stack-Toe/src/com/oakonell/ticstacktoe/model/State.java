@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.WinOverlayView.WinStyle;
 
 public class State {
@@ -34,7 +35,8 @@ public class State {
 		}
 
 		public boolean contains(Cell source, int size) {
-			// TODO something weird about the row/col x/y numbers.. board is rotated somehow?
+			// TODO something weird about the row/col x/y numbers.. board is
+			// rotated somehow?
 			if ((winStyle == WinStyle.COL1 && source.getY() == 0)
 					|| (winStyle == WinStyle.COL2 && source.getY() == 1)
 					|| (winStyle == WinStyle.COL3 && source.getY() == 2)
@@ -47,7 +49,8 @@ public class State {
 					|| (winStyle == WinStyle.ROW5 && source.getX() == 4)
 					|| (winStyle == WinStyle.TOP_LEFT_DIAG && source.getY() == source
 							.getX())
-					|| (winStyle == WinStyle.TOP_RIGHT_DIAG && source.getY()  + source.getX() + 1 == size)) {
+					|| (winStyle == WinStyle.TOP_RIGHT_DIAG && source.getY()
+							+ source.getX() + 1 == size)) {
 				return true;
 			}
 			return false;
@@ -57,6 +60,30 @@ public class State {
 
 	public enum SimpleState {
 		WIN, DRAW, OPEN;
+
+		public static SimpleState from(byte simpleStateByte) {
+			if (simpleStateByte == 'W') {
+				return SimpleState.WIN;
+			}
+			if (simpleStateByte == 'D') {
+				return SimpleState.DRAW;
+			}
+			if (simpleStateByte == 'O') {
+				return SimpleState.OPEN;
+			}
+			throw new RuntimeException("Invalid byte '" + simpleStateByte + "'");
+		}
+
+		public byte toByte() {
+			if (this == DRAW)
+				return 'D';
+			if (this == WIN)
+				return 'W';
+			if (this == OPEN)
+				return 'O';
+			throw new RuntimeException("Invalid simple state" + this);
+
+		}
 	}
 
 	private final SimpleState state;
@@ -119,4 +146,60 @@ public class State {
 		return winner + " won: " + wins;
 	}
 
+	public static State fromBytes(ByteBufferDebugger buffer, Game game,
+			Player blackPlayer, Player whitePlayer) {
+		byte simpleStateByte = buffer.get("simple state");
+		SimpleState simpleState = SimpleState.from(simpleStateByte);
+		Player winner = null;
+		List<Win> wins = null;
+		if (simpleState == SimpleState.WIN) {
+			byte winnerIsBlack = buffer.get("Winner is black");
+			if (winnerIsBlack != 0) {
+				winner = blackPlayer;
+			} else {
+				winner = whitePlayer;
+			}
+			wins = new ArrayList<State.Win>();
+			// get wins
+			int numWins = buffer.get("Num wins");
+			for (int i = 0; i < numWins; i++) {
+				int startX = buffer.get("win start " + i + " x");
+				int startY = buffer.get("win start " + i + " y");
+				int endX = buffer.get("win end " + i + " x");
+				int endY = buffer.get("win end " + i + " y");
+				WinStyle style = WinStyle.fromByte(buffer);
+				Win win = new Win(new Cell(startX, startY),
+						new Cell(endX, endY), style);
+				wins.add(win);
+			}
+		}
+		boolean hasMove = buffer.get("has move") != 0;
+		AbstractMove move = null;
+		if (hasMove) {
+			move = AbstractMove.fromMessageBytes(buffer, game);
+		}
+		return new State(move, wins, winner, simpleState);
+	}
+
+	public void toBytes(ByteBufferDebugger buffer) {
+		buffer.put("Simple state", state.toByte());
+		if (state == SimpleState.WIN) {
+			byte isBlack = (byte) (winner.isBlack() ? 1 : 0);
+			buffer.put("winner is black", isBlack);
+			// put wins
+			buffer.put("Num wins", (byte) wins.size());
+			for (Win each : wins) {
+				buffer.put("win start x", (byte) each.getStart().getX());
+				buffer.put("win start y", (byte) each.getStart().getY());
+				buffer.put("win end x", (byte) each.getEnd().getX());
+				buffer.put("win end y", (byte) each.getEnd().getY());
+				each.getWinStyle().writeBytes(buffer);
+			}
+
+		}
+		buffer.put("has move" , (byte) (move != null ? 1 : 0));
+		if (move != null) {
+			move.appendBytesToMessage(buffer);
+		}
+	}
 }
