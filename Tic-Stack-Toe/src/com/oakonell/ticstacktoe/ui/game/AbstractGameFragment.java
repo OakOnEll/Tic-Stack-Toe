@@ -22,6 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -38,14 +39,15 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 
 	protected View thinking;
 	protected TextView thinkingText;
-	private OnlinePlayAgainFragment onlinePlayAgainDialog;
+
+	// private OnlinePlayAgainFragment onlinePlayAgainDialog;
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.game, menu);
 		chatMenuItem = menu.findItem(R.id.action_chat);
-		handleMenu();
+		handleMenu();		
 	}
 
 	@Override
@@ -160,12 +162,8 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 
 	protected void promptToPlayAgain(String title, boolean online) {
 		if (online) {
-			onlinePlayAgainDialog = new OnlinePlayAgainFragment();
-			onlinePlayAgainDialog.initialize(this, getMainActivity()
-					.getRoomListener().getOpponentName(), title);
-			onlinePlayAgainDialog.show(getChildFragmentManager(), "playAgain");
-			// TODO wire up the play again / not play again message handling via
-			// the dialog
+			((RoomListener) getMainActivity().getRoomListener())
+					.promptToPlayAgain(title);
 			return;
 		}
 
@@ -224,58 +222,6 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 
 	public abstract void playAgain();
 
-	public void opponentWillPlayAgain() {
-		if (onlinePlayAgainDialog == null) {
-			return;
-		}
-		onlinePlayAgainDialog.opponentWillPlayAgain();
-	}
-
-	public void opponentWillNotPlayAgain() {
-		if (onlinePlayAgainDialog == null) {
-			return;
-		}
-		onlinePlayAgainDialog.opponentWillNotPlayAgain();
-	}
-
-	public void playAgainClosed() {
-		onlinePlayAgainDialog = null;
-		getMainActivity().getRoomListener().restartGame();
-	}
-
-	private boolean opponentLeftIsShowing;
-
-	public void opponentLeft() {
-		getView().setKeepScreenOn(false);
-		if (onlinePlayAgainDialog != null) {
-			// the user is in the play again dialog, let him read the info
-			return;
-
-		}
-		opponentLeftIsShowing = true;
-		final MainActivity activity = getMainActivity();
-		String message = activity.getResources().getString(
-				R.string.peer_left_the_game,
-				getMainActivity().getRoomListener().getOpponentName());
-		(new AlertDialog.Builder(getMainActivity())).setMessage(message)
-				.setNeutralButton(android.R.string.ok, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						leaveGame();
-					}
-				}).create().show();
-
-	}
-
-	public void onDisconnectedFromRoom() {
-		if (onlinePlayAgainDialog != null || opponentLeftIsShowing) {
-			// the user is in the play again dialog, let him read the info
-			return;
-
-		}
-	}
-
 	private boolean opponentInChat = false;
 
 	public void opponentInChat() {
@@ -301,24 +247,18 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void leaveGame() {
-		if (onlinePlayAgainDialog != null) {
-			// let the play again dialog handle it
-			return;
-		}
 		// TODO show game stats on finish of game sequence
-//		onGameStatsClose = new Runnable() {
-//			@Override
-//			public void run() {
-//				getMainActivity().getSupportFragmentManager().popBackStack();
-//				getMainActivity().gameEnded();
-//			}
-//		};
-//		showGameStats();
+		// onGameStatsClose = new Runnable() {
+		// @Override
+		// public void run() {
+		// getMainActivity().getSupportFragmentManager().popBackStack();
+		// getMainActivity().gameEnded();
+		// }
+		// };
+		// showGameStats();
 
 		getMainActivity().getSupportFragmentManager().popBackStack();
 		getMainActivity().gameEnded();
-		
-
 	}
 
 	private Runnable onGameStatsClose;

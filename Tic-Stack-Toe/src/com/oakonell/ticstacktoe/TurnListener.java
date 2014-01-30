@@ -550,7 +550,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		blackParticipantId = state.blackPlayerId;
 
 		// this needs to reset all the widgets on the UI
-		// TODO Undo the last move, so it can be reapplied?		
+		// TODO Undo the last move, so it can be reapplied and animated?
+		
 		gameFragment.startGame(state.game, state.score);
 
 		// show if someone won
@@ -570,6 +571,13 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 										&& status != GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
 									showWarning("Error completing match",
 											"Finish match returned " + status);
+									return;
+								}
+								String rematchId=match.getRematchId();
+								if (rematchId==null) {
+									showWarning("no rematch", "no rematch");
+								} else {
+									showWarning("no rematch", "no rematch");
 								}
 							}
 						}, mMatch.getMatchId());

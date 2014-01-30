@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.RoomListener.PlayAgainState;
 
 public class OnlinePlayAgainFragment extends SherlockDialogFragment {
@@ -23,11 +24,11 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 
 	private Button playAgainButton;
 
-	private AbstractGameFragment gameFragment;
+	private RoomListener gameFragment;
 	boolean willPlayAgain;
 	private Button notPlayAgainButton;
 
-	public void initialize(AbstractGameFragment fragment, String opponentName,
+	public void initialize(RoomListener fragment, String opponentName,
 			String title) {
 		this.opponentName = opponentName;
 		this.title = title;
@@ -76,8 +77,7 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 						gameFragment.leaveGame();
 					}
 				};
-				gameFragment.getMainActivity().getRoomListener()
-						.sendNotPlayAgain(success, error);
+				gameFragment.sendNotPlayAgain(success, error);
 			}
 
 		});
@@ -89,8 +89,7 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 					@Override
 					public void run() {
 						willPlayAgain = true;
-						if (gameFragment.getMainActivity().getRoomListener()
-								.getOpponentPlayAgainState() == PlayAgainState.PLAY_AGAIN) {
+						if (gameFragment.getOpponentPlayAgainState() == PlayAgainState.PLAY_AGAIN) {
 							gameFragment.playAgain();
 							gameFragment.playAgainClosed();
 							dismiss();
@@ -103,9 +102,11 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 						TextView playAgainText = (TextView) view
 								.findViewById(R.id.play_again_text);
 						playAgainText.setVisibility(View.GONE);
-						playAgainText.setText(getResources().getString(R.string.play_again_waiting, opponentName));
+						playAgainText.setText(getResources().getString(
+								R.string.play_again_waiting, opponentName));
 						playAgainButton.setVisibility(View.GONE);
-						notPlayAgainButton.setText(R.string.exit_waiting_play_again);
+						notPlayAgainButton
+								.setText(R.string.exit_waiting_play_again);
 					}
 				};
 				Runnable error = new Runnable() {
@@ -116,14 +117,13 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 								"Error sending 'play again' message");
 					}
 				};
-				gameFragment.getMainActivity().getRoomListener()
-						.sendPlayAgain(success, error);
+				gameFragment.sendPlayAgain(success, error);
 			}
 
 		});
 
-		PlayAgainState opponentPlayAgainState = gameFragment.getMainActivity()
-				.getRoomListener().getOpponentPlayAgainState();
+		PlayAgainState opponentPlayAgainState = gameFragment
+				.getOpponentPlayAgainState();
 		if (opponentPlayAgainState != PlayAgainState.WAITING) {
 			updateOpponentPlayAgain(opponentPlayAgainState == PlayAgainState.PLAY_AGAIN);
 		}
@@ -144,8 +144,8 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 							opponentName));
 			opponentPlayAgainImageView
 					.setImageResource(R.drawable.cancel_icon_18932);
-			TextView playAgainText = (TextView) getView()
-					.findViewById(R.id.play_again_text);
+			TextView playAgainText = (TextView) getView().findViewById(
+					R.id.play_again_text);
 			playAgainText.setVisibility(View.GONE);
 
 			playAgainButton.setVisibility(View.GONE);

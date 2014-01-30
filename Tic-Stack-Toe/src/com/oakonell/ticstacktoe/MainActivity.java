@@ -1,6 +1,5 @@
 package com.oakonell.ticstacktoe;
 
-import java.nio.ByteBuffer;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -238,6 +237,7 @@ public class MainActivity extends BaseGameActivity {
 								}
 							});
 					builder.show();
+					return;
 				}
 			}
 
@@ -316,23 +316,9 @@ public class MainActivity extends BaseGameActivity {
 		soundManager.stopSound(streamId);
 	}
 
-	public void onDisconnectedFromRoom() {
-		if (getGameFragment() != null) {
-			getGameFragment().onDisconnectedFromRoom();
-		}
-	}
-
-	public void opponentWillPlayAgain() {
-		getGameFragment().opponentWillPlayAgain();
-	}
-
-	public void opponentWillNotPlayAgain() {
-		getGameFragment().opponentWillNotPlayAgain();
-	}
-
 	public void opponentLeft() {
-		if (getGameFragment() != null) {
-			getGameFragment().opponentLeft();
+		if (getRoomListener() instanceof RoomListener) {
+			((RoomListener) getRoomListener()).opponentLeft();
 		}
 	}
 

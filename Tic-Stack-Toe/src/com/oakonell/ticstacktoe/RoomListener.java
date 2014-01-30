@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +35,7 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
+import com.oakonell.ticstacktoe.ui.game.OnlinePlayAgainFragment;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 
 public class RoomListener implements RoomUpdateListener,
@@ -65,6 +69,8 @@ public class RoomListener implements RoomUpdateListener,
 	private boolean isConnected;
 	private boolean initiatedTheGame;
 	private GameType type;
+
+	private OnlinePlayAgainFragment onlinePlayAgainDialog;
 
 	private GamesClient getGamesClient() {
 		return helper.getGamesClient();
@@ -105,7 +111,6 @@ public class RoomListener implements RoomUpdateListener,
 	public void onDisconnectedFromRoom(Room arg0) {
 		announce("onDisconnectedFromRoom");
 		isConnected = false;
-		activity.onDisconnectedFromRoom();
 	}
 
 	// We treat most of the room update callbacks in the same way: we update our
@@ -539,9 +544,9 @@ public class RoomListener implements RoomUpdateListener,
 		opponentSendPlayAgain = playAgain ? PlayAgainState.PLAY_AGAIN
 				: PlayAgainState.NOT_PLAY_AGAIN;
 		if (playAgain) {
-			activity.opponentWillPlayAgain();
+			opponentWillPlayAgain();
 		} else {
-			activity.opponentWillNotPlayAgain();
+			opponentWillNotPlayAgain();
 		}
 	}
 
@@ -654,6 +659,70 @@ public class RoomListener implements RoomUpdateListener,
 	@Override
 	public boolean warnToLeave() {
 		return true;
+	}
+
+	public void promptToPlayAgain(String title) {
+		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
+		onlinePlayAgainDialog.initialize(this, getOpponentName(), title);
+		onlinePlayAgainDialog.show(activity.getGameFragment()
+				.getChildFragmentManager(), "playAgain");
+		// TODO wire up the play again / not play again message handling via
+		// the dialog
+	}
+
+	public void opponentWillPlayAgain() {
+		if (onlinePlayAgainDialog == null) {
+			return;
+		}
+		onlinePlayAgainDialog.opponentWillPlayAgain();
+	}
+
+	public void opponentWillNotPlayAgain() {
+		if (onlinePlayAgainDialog == null) {
+			return;
+		}
+		onlinePlayAgainDialog.opponentWillNotPlayAgain();
+	}
+
+	public void playAgainClosed() {
+		onlinePlayAgainDialog = null;
+		activity.getRoomListener().restartGame();
+	}
+
+	private boolean opponentLeftIsShowing;
+
+	public void opponentLeft() {
+		activity.getGameFragment().getView().setKeepScreenOn(false);
+		if (onlinePlayAgainDialog != null) {
+			// the user is in the play again dialog, let him read the info
+			return;
+
+		}
+		opponentLeftIsShowing = true;
+		String message = activity.getResources().getString(
+				R.string.peer_left_the_game, getOpponentName());
+		(new AlertDialog.Builder(activity)).setMessage(message)
+				.setNeutralButton(android.R.string.ok, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						leaveGame();
+					}
+				}).create().show();
+
+	}
+
+	public void leaveGame() {
+		if (onlinePlayAgainDialog != null) {
+			// let the play again dialog handle it
+			return;
+		}
+
+		activity.getGameFragment().leaveGame();
+	}
+
+	public void playAgain() {
+		activity.getGameFragment().playAgain();
 	}
 
 }
