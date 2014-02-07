@@ -14,7 +14,7 @@ public class MinMaxAI extends PlayerStrategy {
 	public static Player createPlayer(String whiteName, boolean isBlack,
 			int aiDepth) {
 		MinMaxAI strategy = new MinMaxAI(isBlack);
-		Player player = new Player(whiteName, getImageUri(aiDepth), strategy, "AI");
+		Player player = new Player(whiteName, getImageUri(aiDepth), strategy);
 		strategy.setAlg(new MiniMaxAlg(player, aiDepth));
 
 		return player;

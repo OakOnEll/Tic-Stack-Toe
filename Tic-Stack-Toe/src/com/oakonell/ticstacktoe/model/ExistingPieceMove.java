@@ -3,7 +3,6 @@ package com.oakonell.ticstacktoe.model;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public class ExistingPieceMove extends AbstractMove {
 	private final Piece exposedSourcePiece;
@@ -64,16 +63,12 @@ public class ExistingPieceMove extends AbstractMove {
 		Cell source = new Cell(sourceX, sourceY);
 		int exposedSourceVal = buffer.getInt("exposed source piece");
 
-		Piece playedPiece = game.getBoard().getVisiblePiece(sourceX, sourceY);
-		Piece exposedSourcePiece = game.getBoard().peekNextPiece(source);
-		int myExposedSourcePieceVal = exposedSourcePiece != null ? exposedSourcePiece
-				.getVal() : 0;
-		if (exposedSourceVal != myExposedSourcePieceVal) {
-			throw new RuntimeException(
-					"Invalid board move message, wrong exposed piece value. Received " + exposedSourceVal + ", but is " + myExposedSourcePieceVal);
+		Piece exposedSourcePiece = null;
+		if (exposedSourceVal != 0) {
+			exposedSourcePiece = Piece.fromInt(exposedSourceVal);
 		}
 
-		CommonMoveInfo commonInfo = commonFromBytes(buffer, game, playedPiece);
+		CommonMoveInfo commonInfo = commonFromBytes(buffer, game);
 
 		return new ExistingPieceMove(game.getCurrentPlayer(),
 				commonInfo.playedPiece, exposedSourcePiece, source,
@@ -85,7 +80,7 @@ public class ExistingPieceMove extends AbstractMove {
 		int x = source.getX();
 		int y = source.getY();
 
-		buffer.put("Source x",(byte) x);
+		buffer.put("Source x", (byte) x);
 		buffer.put("Source y", (byte) y);
 
 		// checksum

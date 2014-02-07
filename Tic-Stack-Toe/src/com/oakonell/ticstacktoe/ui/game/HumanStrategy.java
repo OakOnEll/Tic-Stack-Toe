@@ -10,14 +10,14 @@ public class HumanStrategy extends PlayerStrategy {
 
 	public static Player createPlayer(String name, boolean isBlack) {
 		Player player = new Player(name, getImage(isBlack), new HumanStrategy(
-				isBlack), "Human");
+				isBlack));
 		return player;
 	}
 
 	public static Player createPlayer(String name, boolean isBlack,
-			Uri iconImageUri, String id) {
+			Uri iconImageUri) {
 		Player player = new Player(name, iconImageUri, new HumanStrategy(
-				isBlack), id);
+				isBlack));
 		return player;
 	}
 

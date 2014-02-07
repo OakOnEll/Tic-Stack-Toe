@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.view.Gravity;
@@ -37,15 +36,17 @@ import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameListener;
 import com.oakonell.ticstacktoe.Leaderboards;
+import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Cell;
 import com.oakonell.ticstacktoe.model.ExistingPieceMove;
 import com.oakonell.ticstacktoe.model.Game;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Piece;
@@ -55,6 +56,8 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
+import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
 import com.oakonell.utils.activity.dragndrop.DragController;
@@ -88,17 +91,14 @@ public class GameFragment extends AbstractGameFragment {
 
 	private boolean disableButtons;
 
-	boolean exitOnResume;
-
 	private WindowManager mWindowManager;
 
-	private Cell firstPickCell;
+	// private Cell firstPickCell;
 
 	@Override
 	public void onPause() {
 		// TODO write the game state to the server?
 		mWindowManager = null;
-		exitOnResume = game.getMode() == GameMode.ONLINE;
 		super.onPause();
 	}
 
@@ -109,19 +109,6 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (exitOnResume) {
-			(new AlertDialog.Builder(getMainActivity()))
-					.setMessage(R.string.you_left_the_game)
-					.setNeutralButton(android.R.string.ok,
-							new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									leaveGame();
-									dialog.dismiss();
-								}
-							}).create().show();
-		}
 		final FragmentActivity activity = getActivity();
 		// adjust the width or height to make sure the board is a square
 		activity.findViewById(R.id.grid_container).getViewTreeObserver()
@@ -156,29 +143,88 @@ public class GameFragment extends AbstractGameFragment {
 					}
 				});
 		resizePlayerStacks(getView());
+		if (inOnResume != null) {
+			inOnResume.run();
+		}
 	}
 
+	Runnable inOnResume;
 	Runnable inOnCreate;
-	public void startGame(final Game game, ScoreCard score) {
-		this.score = score;
-		this.game = game;
-		configureNonLocalProgresses();
-		if (getView() != null) {
-			addPieceListeners(getView());
-		}
-		updateHeader();
 
-		if (getMainActivity() == null) {
-			// delay this until onCreate?
-			inOnCreate = new Runnable() {
-				@Override
-				public void run() {
-					postMove(game.getBoard().getState());
-					inOnCreate = null;
+	public void startGame(final Game game, final ScoreCard score,
+			final String waitingText, final boolean showMove) {
+
+		inOnCreate = new Runnable() {
+			@Override
+			public void run() {
+				boolean undoAndAnimateMove = false;
+				final State endState = game.getBoard().getState();
+				AbstractMove move = null;
+				if (showMove) {
+					move = game.getBoard().getState().getLastMove();
+					undoAndAnimateMove = move != null;
 				}
-			};
-		} else {
-			postMove(game.getBoard().getState());
+				if (undoAndAnimateMove) {
+					GameFragment.this.score = score;
+					GameFragment.this.game = game;
+
+					game.switchPlayer();
+					move.undo(game.getBoard(), State.open(null),
+							game.getBlackPlayerPieces(),
+							game.getWhitePlayerPieces());
+
+					configureNonLocalProgresses();
+					if (getView() != null) {
+						addPieceListeners(getView());
+					}
+					updateHeader(getView());
+
+					winOverlayView.clearWins();
+					winOverlayView.invalidate();
+
+					// update the
+					final AbstractMove theMove = move;
+					inOnResume = new Runnable() {
+						@Override
+						public void run() {
+							inOnResume = null;
+							Handler handler = new Handler();
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									highlightAndMakeMove(theMove);
+								}
+							});
+						}
+					};
+					if (getView() != null) {
+						inOnResume.run();
+					}
+				} else {
+					GameFragment.this.score = score;
+					GameFragment.this.game = game;
+					configureNonLocalProgresses();
+					if (getView() != null) {
+						addPieceListeners(getView());
+					}
+					updateHeader(getView());
+
+					winOverlayView.clearWins();
+					winOverlayView.invalidate();
+
+					postMove(game.getBoard().getState(), showMove);
+				}
+				inOnCreate = null;
+				if (waitingText != null) {
+					setThinkingText(waitingText);
+				} else {
+					resetThinkingText();
+				}
+
+			}
+		};
+		if (getMainActivity() != null) {
+			inOnCreate.run();
 		}
 	}
 
@@ -192,6 +238,31 @@ public class GameFragment extends AbstractGameFragment {
 			leaveGame();
 			// }
 			return true;
+		case R.id.action_settings:
+			if (game.getMode() == GameMode.ONLINE) {
+
+				// show an abbreviated "settings"- notably the sound fx and
+				// other immediate game play settings
+				OnlineSettingsDialogFragment onlineSettingsFragment = new OnlineSettingsDialogFragment();
+				onlineSettingsFragment.show(getChildFragmentManager(),
+						"settings");
+				return true;
+			}
+			// create special intent
+			Intent prefIntent = new Intent(getActivity(),
+					SettingsActivity.class);
+
+			GameHelper helper = getMainActivity().getGameHelper();
+			Info info = null;
+			TicStackToe app = (TicStackToe) getActivity().getApplication();
+			if (helper.isSignedIn()) {
+				info = new Info(helper);
+			}
+			app.setDevelopInfo(info);
+			// ugh.. does going to preferences leave the room!?
+			getActivity().startActivityForResult(prefIntent,
+					MainActivity.RC_UNUSED);
+			return true;
 		}
 		return false;
 	}
@@ -200,8 +271,6 @@ public class GameFragment extends AbstractGameFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_game, container, false);
-		// TODO keep screeen on only during realtime
-		view.setKeepScreenOn(game.getMode() == GameMode.ONLINE);
 
 		// Listen for changes in the back stack
 		getMainActivity().getSupportFragmentManager()
@@ -220,49 +289,21 @@ public class GameFragment extends AbstractGameFragment {
 		mDragLayer.setDragController(mDragController);
 		mDragController.setDragListener(mDragLayer);
 
-		if (game.getBoard().getSize() == 3) {
-			((ViewGroup) view.findViewById(R.id.grid_container))
-					.setBackgroundResource(R.drawable.wood_grid_3x3);
-		}
-
 		invalidateMenu();
 		setHasOptionsMenu(true);
-		thinkingText = (TextView) view.findViewById(R.id.thinking_text);
-		if (game.getMode() != GameMode.PASS_N_PLAY) {
-			thinkingText.setText(getResources().getString(
-					R.string.opponent_is_thinking,
-					game.getNonLocalPlayer().getName()));
-		}
-		thinking = view.findViewById(R.id.thinking);
-		configureNonLocalProgresses();
 
 		imgManager = ImageManager.create(getMainActivity());
-
-		TextView blackName = (TextView) view.findViewById(R.id.blackName);
-		blackName.setText(game.getBlackPlayer().getName());
-		TextView whiteName = (TextView) view.findViewById(R.id.whiteName);
-		whiteName.setText(game.getWhitePlayer().getName());
-
-		ImageView blackImage = (ImageView) view.findViewById(R.id.black_back);
-		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);
-
-		game.getBlackPlayer().updatePlayerImage(imgManager, blackImage);
-		game.getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
 
 		blackHeaderLayout = view.findViewById(R.id.black_name_layout);
 		whiteHeaderLayout = view.findViewById(R.id.white_name_layout);
 
 		winOverlayView = (WinOverlayView) view.findViewById(R.id.win_overlay);
-		winOverlayView.setBoardSize(game.getBoard().getSize());
-
-		addPieceListeners(view);
 
 		blackWins = (TextView) view.findViewById(R.id.num_black_wins);
 		whiteWins = (TextView) view.findViewById(R.id.num_white_wins);
 		// draws = (TextView) view.findViewById(R.id.num_draws);
 
 		gameNumber = (TextView) view.findViewById(R.id.game_number);
-		gameNumber.setText("" + score.getTotalGames());
 
 		numMoves = (TextView) view.findViewById(R.id.num_moves);
 
@@ -274,12 +315,27 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
-		updateHeader();
-		
 		if (inOnCreate != null) {
 			inOnCreate.run();
 		}
-		
+
+		gameNumber.setText("" + score.getTotalGames());
+		winOverlayView.setBoardSize(game.getBoard().getSize());
+		addPieceListeners(view);
+
+		view.setKeepScreenOn(game.getMode() == GameMode.ONLINE);
+		if (game.getBoard().getSize() == 3) {
+			((ViewGroup) view.findViewById(R.id.grid_container))
+					.setBackgroundResource(R.drawable.wood_grid_3x3);
+		}
+		if (game.getMode() != GameMode.PASS_N_PLAY) {
+			initThinkingText(view, game.getNonLocalPlayer().getName());
+			setOpponentThinking();
+		}
+		configureNonLocalProgresses();
+
+		updateHeader(view);
+
 		return view;
 	}
 
@@ -570,7 +626,7 @@ public class GameFragment extends AbstractGameFragment {
 			public boolean allowDrag() {
 				// if we are in strict mode, and a board piece was touched, no
 				// stack moves area allowed
-				if (firstPickCell != null) {
+				if (game.getFirstPickedCell() != null) {
 					return false;
 				}
 
@@ -668,14 +724,21 @@ public class GameFragment extends AbstractGameFragment {
 		} else {
 			button.setImageDrawable(null);
 		}
+
+		if (cell.equals(game.getFirstPickedCell())) {
+			highlightStrictFirstTouchedPiece(button);
+		} else {
+			unhighlightStrictFirstTouchedPiece(button);
+		}
+
 		final DragSource dragSource = new DragSource() {
 
 			@Override
 			public boolean allowDrag() {
 				// if we are in strict, and a piece was already chosen, only
 				// that one can be dragged
-				if (firstPickCell != null) {
-					return firstPickCell.equals(cell);
+				if (game.getFirstPickedCell() != null) {
+					return game.getFirstPickedCell().equals(cell);
 				}
 				// conditionally alow dragging, if there is a piece and it is my
 				// color
@@ -697,7 +760,7 @@ public class GameFragment extends AbstractGameFragment {
 			@Override
 			public void onDropCompleted(View target, boolean success) {
 				update();
-				if (firstPickCell == null) {
+				if (game.getFirstPickedCell() == null) {
 					unhighlightStrictFirstTouchedPiece(button);
 				}
 			}
@@ -738,7 +801,7 @@ public class GameFragment extends AbstractGameFragment {
 				if (onDropMove.originatedFrom(cell)) {
 					// if in strict mode and the user already chose this piece,
 					// make sure it remains highlighted
-					if (firstPickCell != null) {
+					if (game.getFirstPickedCell() != null) {
 						highlightStrictFirstTouchedPiece(button);
 					}
 
@@ -762,10 +825,10 @@ public class GameFragment extends AbstractGameFragment {
 				}
 				onDropMove.postMove();
 
-				firstPickCell = null;
+				game.setFirstPickedCell(null);
 
 				updateBoardPiece(cell);
-				postMove(state);
+				postMove(state, true);
 
 				GameListener appListener = getMainActivity().getRoomListener();
 				if (appListener != null) {
@@ -839,7 +902,7 @@ public class GameFragment extends AbstractGameFragment {
 						DragController.DRAG_ACTION_COPY, dragConfig);
 
 				if (game.getType().isStrict()) {
-					firstPickCell = cell;
+					game.setFirstPickedCell(cell);
 				}
 
 				// for a board move, let's leave the moved/top piece
@@ -904,7 +967,7 @@ public class GameFragment extends AbstractGameFragment {
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
 		addPieceListeners(getView());
-		updateHeader();
+		updateHeader(getView());
 		winOverlayView.clearWins();
 		winOverlayView.invalidate();
 		// reset board
@@ -952,11 +1015,22 @@ public class GameFragment extends AbstractGameFragment {
 	//
 	// }
 
-	private void updateHeader() {
-		if (blackHeaderLayout == null) {
+	private void updateHeader(View view) {
+		if (view == null) {
 			// safely allow calls when UI not created yet
 			return;
 		}
+		TextView blackName = (TextView) view.findViewById(R.id.blackName);
+		blackName.setText(game.getBlackPlayer().getName());
+		TextView whiteName = (TextView) view.findViewById(R.id.whiteName);
+		whiteName.setText(game.getWhitePlayer().getName());
+
+		ImageView blackImage = (ImageView) view.findViewById(R.id.black_back);
+		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);
+
+		game.getBlackPlayer().updatePlayerImage(imgManager, blackImage);
+		game.getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
+
 		Player player = game.getCurrentPlayer();
 		if (player.isBlack()) {
 			blackHeaderLayout.setBackgroundResource(R.drawable.current_player);
@@ -1144,7 +1218,7 @@ public class GameFragment extends AbstractGameFragment {
 				movingView.setVisibility(View.GONE);
 				update.run();
 				updateBoardPiece(move.getTargetCell());
-				postMove(outcome);
+				postMove(outcome, true);
 			}
 
 		});
@@ -1215,22 +1289,23 @@ public class GameFragment extends AbstractGameFragment {
 		return animatorImage;
 	}
 
-	private void postMove(State outcome) {
+	private void postMove(State outcome, boolean playSound) {
 		if (outcome.isOver()) {
 			updateGameStatDisplay();
-			endGame(outcome);
+			endGame(outcome, playSound);
 		} else {
 			evaluateInGameAchievements(outcome);
-			updateHeader();
+			updateHeader(getView());
 			acceptMove();
 		}
 	}
 
-	private void endGame(State outcome) {
+	private void endGame(State outcome, boolean playSound) {
 		numMoves.setText("" + game.getNumberOfMoves());
 		evaluateGameEndAchievements(outcome);
 		evaluateLeaderboards(outcome);
 		Player winner = outcome.getWinner();
+		String title;
 		if (winner != null) {
 			winOverlayView.clearWins();
 			score.incrementScore(winner);
@@ -1239,27 +1314,27 @@ public class GameFragment extends AbstractGameFragment {
 			}
 			winOverlayView.invalidate();
 
-			if (game.getMode() == GameMode.PASS_N_PLAY) {
-				getMainActivity().playSound(Sounds.GAME_WON);
-			} else {
-				// the player either won or lost
-				if (winner.equals(game.getLocalPlayer())) {
+			if (playSound) {
+				if (game.getMode() == GameMode.PASS_N_PLAY) {
 					getMainActivity().playSound(Sounds.GAME_WON);
 				} else {
-					getMainActivity().playSound(Sounds.GAME_LOST);
+					// the player either won or lost
+					if (winner.equals(game.getLocalPlayer())) {
+						getMainActivity().playSound(Sounds.GAME_WON);
+					} else {
+						getMainActivity().playSound(Sounds.GAME_LOST);
+					}
 				}
 			}
 
-			String title = getString(R.string.player_won, winner.getName());
+			title = getString(R.string.player_won, winner.getName());
 
-			promptToPlayAgain(title, game.getMode() == GameMode.ONLINE);
 		} else {
 			score.incrementScore(null);
 			getMainActivity().playSound(Sounds.GAME_DRAW);
-			String title = getString(R.string.draw);
-
-			promptToPlayAgain(title, game.getMode() == GameMode.ONLINE);
+			title = getString(R.string.draw);
 		}
+		promptToPlayAgain(title);
 	}
 
 	private void acceptMove() {
@@ -1281,19 +1356,19 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void configureNonLocalProgresses() {
-		if (thinking == null || thinkingText == null) {
-			// safety for when start called before activity is created
-			return;
-		}
+		// if (thinking == null || thinkingText == null) {
+		// // safety for when start called before activity is created
+		// return;
+		// }
 		PlayerStrategy strategy = game.getCurrentPlayer().getStrategy();
 		if (strategy.isHuman()) {
-			thinking.setVisibility(View.GONE);
+			hideStatusText();
 			disableButtons = false;
 			return;
 		}
 		disableButtons = true;
-		thinking.setVisibility(View.VISIBLE);
-		thinkingText.setVisibility(View.VISIBLE);
+		setOpponentThinking();
+		showStatusText();
 
 	}
 
@@ -1319,7 +1394,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	private void highlightAndMakeMove(final AbstractMove move) {
 		// hide the progress icon
-		thinking.setVisibility(View.GONE);
+		hideStatusText();
 
 		// delay and highlight the move so the human player has a
 		// chance to see it
@@ -1464,4 +1539,5 @@ public class GameFragment extends AbstractGameFragment {
 	public ScoreCard getScore() {
 		return score;
 	}
+
 }

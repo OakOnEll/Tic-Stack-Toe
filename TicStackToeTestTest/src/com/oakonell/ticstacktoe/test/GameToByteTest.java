@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import junit.framework.TestCase;
 
+import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Game;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
@@ -14,8 +14,8 @@ import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 public class GameToByteTest extends TestCase{
 public void testGameToBytes() {
 	
-	Player blackPlayer = HumanStrategy.createPlayer("Black", true, null, "123");
-	Player whitePlayer = HumanStrategy.createPlayer("White", true, null, "456");
+	Player blackPlayer = HumanStrategy.createPlayer("Black", true, null);
+	Player whitePlayer = HumanStrategy.createPlayer("White", true, null);
 	
 	Game game = new Game(GameType.REGULAR, GameMode.ONLINE, blackPlayer, whitePlayer, blackPlayer);
 	

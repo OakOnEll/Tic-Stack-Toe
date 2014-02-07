@@ -8,9 +8,9 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 public class OnlineStrategy extends PlayerStrategy {
 
 	public static Player createPlayer(String name, boolean isBlack,
-			Uri iconImageUri, String id) {
+			Uri iconImageUri) {
 		Player player = new Player(name, iconImageUri, new OnlineStrategy(
-				isBlack), id);
+				isBlack));
 		return player;
 	}
 

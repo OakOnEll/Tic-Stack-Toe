@@ -27,8 +27,8 @@ import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListene
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
+import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Game;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
@@ -254,18 +254,14 @@ public class RoomListener implements RoomUpdateListener,
 		String localPlayerName = activity.getString(R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
-					getMe().getIconImageUri(), getMe().getParticipantId());
-			whitePlayer = OnlineStrategy
-					.createPlayer(getOpponentName(), false,
-							getOpponentParticipant().getIconImageUri(),
-							getOpponentId());
+					getMe().getIconImageUri());
+			whitePlayer = OnlineStrategy.createPlayer(getOpponentName(), false,
+					getOpponentParticipant().getIconImageUri());
 		} else {
 			whitePlayer = HumanStrategy.createPlayer(localPlayerName, false,
-					getMe().getIconImageUri(), getMe().getParticipantId());
-			blackPlayer = OnlineStrategy
-					.createPlayer(getOpponentName(), true,
-							getOpponentParticipant().getIconImageUri(),
-							getOpponentId());
+					getMe().getIconImageUri());
+			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
+					getOpponentParticipant().getIconImageUri());
 		}
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker
@@ -279,7 +275,7 @@ public class RoomListener implements RoomUpdateListener,
 
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
 				blackPlayer);
-		gameFragment.startGame(game, score);
+		gameFragment.startGame(game, score, null, true);
 		FragmentManager manager = activity.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
@@ -686,7 +682,7 @@ public class RoomListener implements RoomUpdateListener,
 
 	public void playAgainClosed() {
 		onlinePlayAgainDialog = null;
-		activity.getRoomListener().restartGame();
+		restartGame();
 	}
 
 	private boolean opponentLeftIsShowing;
@@ -723,6 +719,32 @@ public class RoomListener implements RoomUpdateListener,
 
 	public void playAgain() {
 		activity.getGameFragment().playAgain();
+	}
+
+	@Override
+	public void reassociate(MainActivity theActivity) {
+		// real time game is broken when onResumed, nothing to do here
+		this.activity = theActivity;
+	}
+
+	@Override
+	public void onResume(MainActivity theActivity) {
+		activity = theActivity;
+		(new AlertDialog.Builder(activity))
+				.setMessage(R.string.you_left_the_game)
+				.setNeutralButton(android.R.string.ok, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						leaveGame();
+						dialog.dismiss();
+					}
+				}).create().show();
+
+	}
+
+	@Override
+	public void onSignInFailed(MainActivity mainActivity) {
+		// Real time game, we already disconnected, this won't matter	
 	}
 
 }

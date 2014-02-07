@@ -3,7 +3,6 @@ package com.oakonell.ticstacktoe.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.WinOverlayView.WinStyle;
 
 public class State {

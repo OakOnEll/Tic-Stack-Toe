@@ -22,7 +22,7 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
+import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -130,6 +130,10 @@ public class MainActivity extends BaseGameActivity {
 		if (getMenuFragment() != null) {
 			getMenuFragment().onSignInFailed();
 		}
+		if (getRoomListener() != null) {
+			getRoomListener().onSignInFailed(this);
+		}
+		
 	}
 
 	@Override
@@ -158,6 +162,10 @@ public class MainActivity extends BaseGameActivity {
 		if (invitationId != null) {
 			getMenuFragment().acceptInviteToRoom(invitationId);
 			return;
+		}
+
+		if (getRoomListener() != null) {
+			getRoomListener().reassociate(this);
 		}
 	}
 
@@ -275,6 +283,13 @@ public class MainActivity extends BaseGameActivity {
 	protected void onResume() {
 		super.onResume();
 		// mAdView.resume();
+		if (getGameFragment() != null) {
+			GameListener appListener = getRoomListener();
+			if (appListener != null) {
+				appListener.onResume(this);
+			}
+		}
+
 	}
 
 	@Override

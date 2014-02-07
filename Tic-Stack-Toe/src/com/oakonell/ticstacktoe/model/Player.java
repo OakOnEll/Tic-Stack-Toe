@@ -13,15 +13,13 @@ public class Player {
 	private final String name;
 	private final Uri iconImageUri;
 	private final PlayerStrategy strategy;
-	private final String  id;
 	private Player opponent;
 	private Game game;
 
-	public Player(String name, Uri iconImageUri, PlayerStrategy strategy, String id) {
+	public Player(String name, Uri iconImageUri, PlayerStrategy strategy) {
 		this.name = name;
 		this.iconImageUri = iconImageUri;
 		this.strategy = strategy;
-		this.id = id;
 	}
 
 	public void setOpponent(Player opponent) {
@@ -69,7 +67,8 @@ public class Player {
 		return isBlack() ? game.getBlackPlayerPieces() : game
 				.getWhitePlayerPieces();
 	}
+
 	public String toString() {
-		return getName() + "(" + (isBlack() ?"Black":"White") + ")"; 
+		return getName() + "(" + (isBlack() ? "Black" : "White") + ")";
 	}
 }

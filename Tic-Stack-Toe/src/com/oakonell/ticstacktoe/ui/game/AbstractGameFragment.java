@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,7 +23,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -37,17 +37,24 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	private ChatDialogFragment chatDialog;
 	private MenuItem chatMenuItem;
 
-	protected View thinking;
-	protected TextView thinkingText;
-
 	// private OnlinePlayAgainFragment onlinePlayAgainDialog;
+
+	private static class StatusText {
+		private View thinking;
+		private TextView thinkingText;
+		private String thinkingString;
+		public String opponentName;
+
+	}
+
+	private StatusText statusText = new StatusText();
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.game, menu);
 		chatMenuItem = menu.findItem(R.id.action_chat);
-		handleMenu();		
+		handleMenu();
 	}
 
 	@Override
@@ -151,6 +158,32 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 
 	protected abstract boolean isOnline();
 
+	protected void initThinkingText(View view, String opponentName) {
+		statusText = new StatusText();
+		statusText.thinkingText = (TextView) view
+				.findViewById(R.id.thinking_text);
+		statusText.thinking = view.findViewById(R.id.thinking);
+		statusText.opponentName = opponentName;
+		
+		if (statusText.thinkingString != null) {
+			statusText.thinkingText.setText(statusText.thinkingString);
+		}
+	}
+
+	public void hideStatusText() {
+		if (statusText.thinking != null) {
+			statusText.thinking.setVisibility(View.GONE);
+		}
+
+	}
+
+	public void showStatusText() {
+		if (statusText.thinking == null)
+			return;
+		statusText.thinking.setVisibility(View.VISIBLE);
+		statusText.thinkingText.setVisibility(View.VISIBLE);
+	}
+
 	private void openChatDialog() {
 		getMainActivity().getRoomListener().sendInChat(true);
 		chatDialog = new ChatDialogFragment();
@@ -160,10 +193,9 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		chatDialog.show(getChildFragmentManager(), "chat");
 	}
 
-	protected void promptToPlayAgain(String title, boolean online) {
-		if (online) {
-			((RoomListener) getMainActivity().getRoomListener())
-					.promptToPlayAgain(title);
+	protected void promptToPlayAgain(String title) {
+		if (getMainActivity().getRoomListener() != null) {
+			getMainActivity().getRoomListener().promptToPlayAgain(title);
 			return;
 		}
 
@@ -230,7 +262,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		invalidateMenu();
 
 		// update the display text
-		thinkingText.setText(getResources().getString(
+		statusText.thinkingText.setText(getResources().getString(
 				R.string.opponent_is_in_chat,
 				getMainActivity().getRoomListener().getOpponentName()));
 	}
@@ -241,9 +273,44 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		invalidateMenu();
 
 		// update the display text
-		thinkingText.setText(getResources().getString(
-				R.string.opponent_is_thinking,
-				getMainActivity().getRoomListener().getOpponentName()));
+		resetThinkingText();
+	}
+
+	public void setThinkingText(String text, boolean visible) {
+		setThinkingText(text);
+		if (visible) {
+			showStatusText();
+		}else {
+			hideStatusText();
+		}
+	}
+
+	public void setThinkingText(String text) {
+		Log.i("AbstractGameFragment", "set text " + text);
+		statusText.thinkingString = text;
+		if (statusText.thinkingText == null) {
+			return;
+		}
+		statusText.thinkingText.setText(text);
+	}
+
+	public void setOpponentThinking() {
+		if (statusText.thinkingString != null ) {
+			return;
+		}
+		if (statusText.thinking == null) {
+			return;
+		}
+		setThinkingText(getResources().getString(R.string.opponent_is_thinking,
+				statusText.opponentName));
+	}
+
+	public void resetThinkingText() {
+		Log.i("AbstractGameFragment", "reset text ");
+		if (statusText.thinkingText == null) {
+			return;
+		}
+		statusText.thinkingText.setText(statusText.thinkingString);
 	}
 
 	public void leaveGame() {

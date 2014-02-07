@@ -20,7 +20,7 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 public class RandomAI extends PlayerStrategy {
 
 	public static Player createPlayer(String name, boolean isBlack) {
-		Player player = new Player(name, getImageUri(), new RandomAI(isBlack), "AI");
+		Player player = new Player(name, getImageUri(), new RandomAI(isBlack));
 		return player;
 	}
 

@@ -3,7 +3,6 @@ package com.oakonell.ticstacktoe.model;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
-import com.oakonell.ticstacktoe.model.Game.ByteBufferDebugger;
 
 public abstract class AbstractMove {
 	public static final byte STACK_MOVE = 0;
@@ -84,14 +83,14 @@ public abstract class AbstractMove {
 		buffer.put("player is black", (byte) (getPlayer().isBlack() ? 1 : 0));
 	}
 
-	static CommonMoveInfo commonFromBytes(ByteBufferDebugger buffer, Game game,
-			Piece playedPiece) {
+	static CommonMoveInfo commonFromBytes(ByteBufferDebugger buffer, Game game) {
 		int targetX = buffer.get("target x");
 		int targetY = buffer.get("targey y");
 
 		// checksums
 		int existingTargetPieceVal = buffer.getInt("existing target piece");
 		int playedPieceVal = buffer.getInt("player piece");
+		Piece playedPiece = Piece.fromInt(playedPieceVal);
 		boolean playerIsBlack = buffer.get("player is black") == 1;
 		Player player;
 		if (playerIsBlack) {
@@ -99,24 +98,10 @@ public abstract class AbstractMove {
 		} else {
 			player = game.getWhitePlayer();
 		}
-		// TODO realtime validate that the current player equals the player just moved
-		Board board = game.getBoard();
-		Piece existingTargetPiece = board.getVisiblePiece(targetX, targetY);
-		int myExistingTargetPieceVal = existingTargetPiece != null ? existingTargetPiece
-				.getVal() : 0;
-				// TODO these are realtime validations
-//		if (myExistingTargetPieceVal != existingTargetPieceVal) {
-//			throw new RuntimeException(
-//					"Invalid common move message, wrong exisitng target piece value. Received "
-//							+ existingTargetPieceVal + ", but is "
-//							+ myExistingTargetPieceVal);
-//		}
-//		if (playedPiece.getVal() != playedPieceVal) {
-//			throw new RuntimeException(
-//					"Invalid common move message, wrong played piece value. Received "
-//							+ playedPieceVal + ", but is "
-//							+ playedPiece.getVal());
-//		}
+		Piece existingTargetPiece = null;
+		if (existingTargetPieceVal != 0) {
+			existingTargetPiece = Piece.fromInt(existingTargetPieceVal);
+		}
 		Cell target = new Cell(targetX, targetY);
 		CommonMoveInfo commonInfo = new CommonMoveInfo(player, playedPiece,
 				target, existingTargetPiece);
