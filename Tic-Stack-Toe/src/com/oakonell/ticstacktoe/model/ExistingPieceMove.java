@@ -70,7 +70,7 @@ public class ExistingPieceMove extends AbstractMove {
 
 		CommonMoveInfo commonInfo = commonFromBytes(buffer, game);
 
-		return new ExistingPieceMove(game.getCurrentPlayer(),
+		return new ExistingPieceMove(commonInfo.player,
 				commonInfo.playedPiece, exposedSourcePiece, source,
 				commonInfo.target, commonInfo.existingTargetPiece);
 	}

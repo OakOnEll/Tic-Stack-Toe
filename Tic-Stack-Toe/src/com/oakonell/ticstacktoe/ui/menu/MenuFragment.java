@@ -947,7 +947,7 @@ public class MenuFragment extends SherlockFragment {
 				getMainActivity().getGameHelper(), match);
 		getMainActivity().setRoomListener(listener);
 
-		listener.showGame();
+		listener.showFromMenu();
 	}
 
 }

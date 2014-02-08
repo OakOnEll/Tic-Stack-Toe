@@ -124,6 +124,7 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 				InputMethodManager imm = (InputMethodManager) getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+				dismiss();
 
 				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
 						.getSelectedItem();
@@ -135,7 +136,6 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 				whiteName = whiteNameText.getText().toString();
 				writeNamesToPreferences();
 
-				dismiss();
 				listener.chosenMode(typeItem.type, blackName, whiteName);
 			}
 		});

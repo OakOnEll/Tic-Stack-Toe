@@ -175,6 +175,11 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		if (!checkStatusCode(match, statusCode)) {
 			return;
 		}
+		showOrStartMatch(match);
+	}
+
+	private void showOrStartMatch(TurnBasedMatch match) {
+		mMatch = match;
 		if (match.getData() != null) {
 			// This is a game that has already started, so I'll just start
 			updateMatch(match);
@@ -182,6 +187,10 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		}
 
 		startMatch(match);
+	}
+
+	public void showFromMenu() {
+		showOrStartMatch(mMatch);
 	}
 
 	private void startMatch(TurnBasedMatch match) {
@@ -194,8 +203,15 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		if (previousMatchData != null) {
 			GameState state = fromBytes(previousMatchData, true);
 			score = state.score;
+			if (type == null) {
+				type = state.game.getType();
+			}
 		} else {
 			score = new ScoreCard(0, 0, 0);
+			if (type == null) {
+				throw new RuntimeException(
+						"Can't start a new game of unknown type?!");
+			}
 		}
 
 		boolean iAmBlack = blackParticipantId == null
@@ -976,7 +992,7 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 						if (turnInvitesFromPlayer.isEmpty()) {
 							alreadyLoadingRematch = false;
 							invites.close();
-							
+
 							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 									activity);
 
@@ -1028,7 +1044,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		Log.i("TurnListener", "  promptAndGoToRematch");
 		// attempt to get the re-match
 		if (alreadyLoadingRematch) {
-			Log.i("TurnListener", "  promptAndGoToRematch- already loading rematch");
+			Log.i("TurnListener",
+					"  promptAndGoToRematch- already loading rematch");
 			return;
 		}
 		if (prompt != null) {
@@ -1087,13 +1104,14 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 												updateMatch(match);
 											}
 										});
-//						alertDialogBuilder.setOnDismissListener(new OnDismissListener() {
-//							@Override
-//							public void onDismiss(DialogInterface dialog) {
-//								// TODO Auto-generated method stub
-//								
-//							}
-//						});
+						// alertDialogBuilder.setOnDismissListener(new
+						// OnDismissListener() {
+						// @Override
+						// public void onDismiss(DialogInterface dialog) {
+						// // TODO Auto-generated method stub
+						//
+						// }
+						// });
 						sawRematch = true;
 						sawRematch = false;
 						prompt = new PlayAgainPrompt();
@@ -1106,7 +1124,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 	}
 
 	private void askToAcceptRematchInvite(final String title,
-			List<Invitation> turnInvitesFromPlayer, final InvitationBuffer invites) {
+			List<Invitation> turnInvitesFromPlayer,
+			final InvitationBuffer invites) {
 		Log.i("TurnListener", "  askToAcceptRematchInvite");
 		if (turnInvitesFromPlayer.size() == 1) {
 			Log.i("TurnListener", "  askToAcceptRematchInvite one invite");
@@ -1152,8 +1171,7 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 															}
 															updateMatch(match);
 														}
-													},
-													inviteId);
+													}, inviteId);
 								}
 							}).setNegativeButton("No", new OnClickListener() {
 						@Override
@@ -1186,9 +1204,9 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 	public void promptToPlayAgain(String title) {
 		promptToPlayAgain(title, activity.getGameFragment());
 	}
-	
-	
-	public void promptToPlayAgain(final String title, final GameFragment fragment) {
+
+	public void promptToPlayAgain(final String title,
+			final GameFragment fragment) {
 		Log.i("TurnListener", "promptToPlayAgain");
 		fragment.setThinkingText(title, true);
 		if (mMatch.getStatus() != TurnBasedMatch.MATCH_STATUS_COMPLETE) {

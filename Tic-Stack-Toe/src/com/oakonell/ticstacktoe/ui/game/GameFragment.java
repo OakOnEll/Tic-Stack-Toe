@@ -219,6 +219,7 @@ public class GameFragment extends AbstractGameFragment {
 					setThinkingText(waitingText);
 				} else {
 					resetThinkingText();
+					hideStatusText();
 				}
 
 			}
@@ -331,6 +332,8 @@ public class GameFragment extends AbstractGameFragment {
 		if (game.getMode() != GameMode.PASS_N_PLAY) {
 			initThinkingText(view, game.getNonLocalPlayer().getName());
 			setOpponentThinking();
+		} else {
+			initThinkingText(view, null);			
 		}
 		configureNonLocalProgresses();
 
