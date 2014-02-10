@@ -1,12 +1,11 @@
 package com.oakonell.ticstacktoe.ui.menu;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -123,10 +121,9 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 			public void onClick(View v) {
 				InputMethodManager imm = (InputMethodManager) getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 				dismiss();
 
-				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
+				final TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
 						.getSelectedItem();
 
 				if (!validate(blackNameText, whiteNameText)) {
@@ -135,14 +132,41 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 				blackName = blackNameText.getText().toString();
 				whiteName = whiteNameText.getText().toString();
 				writeNamesToPreferences();
+				
+				Handler handler = new Handler();
+				imm.hideSoftInputFromWindow(v.getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS, new ResultReceiver(
+								handler) {
 
-				listener.chosenMode(typeItem.type, blackName, whiteName);
+							@Override
+							protected void onReceiveResult(int resultCode,
+									Bundle resultData) {
+								if (wasLaunched)
+									return;
+								wasLaunched = true;
+								listener.chosenMode(typeItem.type, blackName,
+										whiteName);
+							}
+
+						});
+
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						if (wasLaunched)
+							return;
+						wasLaunched = true;
+						listener.chosenMode(typeItem.type, blackName, whiteName);
+					}
+				}, 500);
 			}
 		});
 
 		return view;
 
 	}
+
+	boolean wasLaunched;
 
 	protected boolean validate(EditText blackNameText, EditText whiteNameText) {
 		boolean isValid = true;

@@ -48,8 +48,8 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 
-		final CheckBox turnbased = (CheckBox) view
-				.findViewById(R.id.turn_based);
+		final CheckBox realtime = (CheckBox) view
+				.findViewById(R.id.realtime);
 
 		start.setOnClickListener(new OnClickListener() {
 
@@ -59,7 +59,7 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 
 				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
 						.getSelectedItem();
-				boolean isTurnBased = turnbased.isChecked();
+				boolean isTurnBased = !realtime.isChecked();
 
 				listener.chosenMode(typeItem.type, isTurnBased);
 			}

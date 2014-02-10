@@ -193,9 +193,9 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		chatDialog.show(getChildFragmentManager(), "chat");
 	}
 
-	protected void promptToPlayAgain(String title) {
+	protected void promptToPlayAgain(String winner, String title) {
 		if (getMainActivity().getRoomListener() != null) {
-			getMainActivity().getRoomListener().promptToPlayAgain(title);
+			getMainActivity().getRoomListener().promptToPlayAgain(winner, title);
 			return;
 		}
 

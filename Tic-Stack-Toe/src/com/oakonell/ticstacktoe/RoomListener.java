@@ -657,7 +657,7 @@ public class RoomListener implements RoomUpdateListener,
 		return true;
 	}
 
-	public void promptToPlayAgain(String title) {
+	public void promptToPlayAgain(String winner, String title) {
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
 		onlinePlayAgainDialog.initialize(this, getOpponentName(), title);
 		onlinePlayAgainDialog.show(activity.getGameFragment()
@@ -745,6 +745,11 @@ public class RoomListener implements RoomUpdateListener,
 	@Override
 	public void onSignInFailed(MainActivity mainActivity) {
 		// Real time game, we already disconnected, this won't matter	
+	}
+
+	@Override
+	public void onFragmentResume() {
+		// nothing
 	}
 
 }

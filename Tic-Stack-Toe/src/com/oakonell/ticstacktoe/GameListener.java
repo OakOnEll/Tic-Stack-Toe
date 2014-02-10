@@ -20,7 +20,7 @@ public interface GameListener {
 
 	boolean warnToLeave();
 
-	void promptToPlayAgain(String title);
+	void promptToPlayAgain(String winner, String title);
 
 	void sendInChat(boolean b);
 
@@ -31,5 +31,7 @@ public interface GameListener {
 	void onResume(MainActivity activity);
 
 	void onSignInFailed(MainActivity mainActivity);
+
+	void onFragmentResume();
 
 }

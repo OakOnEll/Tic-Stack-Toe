@@ -1216,8 +1216,8 @@ containing a value of this type.
         public static final int abs__textButton=0x7f080017;
         public static final int abs__title=0x7f08001f;
         public static final int abs__up=0x7f08000f;
-        public static final int action_chat=0x7f0800cd;
-        public static final int action_settings=0x7f0800ce;
+        public static final int action_chat=0x7f0800d1;
+        public static final int action_settings=0x7f0800d2;
         public static final int actionbar_notifcation_imageview=0x7f08003b;
         public static final int actionbar_notifcation_progress=0x7f08003d;
         public static final int actionbar_notifcation_textview=0x7f08003c;
@@ -1274,6 +1274,7 @@ containing a value of this type.
         public static final int hybrid=0x7f080004;
         public static final int icon=0x7f0800ca;
         public static final int icon_image=0x7f0800b6;
+        public static final int image=0x7f0800ce;
         public static final int increment=0x7f0800c0;
         public static final int invites=0x7f080099;
         public static final int label=0x7f0800cb;
@@ -1285,6 +1286,7 @@ containing a value of this type.
         public static final int messages=0x7f080037;
         public static final int moving_view=0x7f080054;
         public static final int my_turn_games=0x7f0800a2;
+        public static final int negative=0x7f0800d0;
         public static final int new_game_live=0x7f080097;
         public static final int new_game_live_text=0x7f080098;
         public static final int new_game_same_device=0x7f080090;
@@ -1324,12 +1326,14 @@ containing a value of this type.
         public static final int player_pic=0x7f0800a6;
         public static final int player_x=0x7f0800aa;
         public static final int player_x_name=0x7f08004e;
+        public static final int positive=0x7f0800cf;
         public static final int pref_sound_fx_key=0x7f0800c2;
         public static final int rate_bar=0x7f080045;
         public static final int rate_no_thanks=0x7f080048;
         public static final int rate_redirect_comment=0x7f080046;
         public static final int rate_remind_later=0x7f080047;
         public static final int rate_text=0x7f080044;
+        public static final int realtime=0x7f080052;
         public static final int remember_checkbox=0x7f080043;
         public static final int satellite=0x7f080002;
         public static final int send=0x7f080039;
@@ -1360,7 +1364,7 @@ containing a value of this type.
         public static final int thinking=0x7f08007f;
         public static final int thinking_text=0x7f080080;
         public static final int timestamp=0x7f0800a5;
-        public static final int turn_based=0x7f080052;
+        public static final int title=0x7f0800cd;
         public static final int urlId=0x7f0800b9;
         public static final int useLogo=0x7f080008;
         public static final int version=0x7f0800b8;
@@ -1433,6 +1437,7 @@ containing a value of this type.
         public static final int sherlock_spinner_dropdown_item=0x7f03002a;
         public static final int sherlock_spinner_item=0x7f03002b;
         public static final int simple_game_mode_help_dialog=0x7f03002c;
+        public static final int turn_play_again_dialog=0x7f03002d;
     }
     public static final class menu {
         public static final int game=0x7f100000;

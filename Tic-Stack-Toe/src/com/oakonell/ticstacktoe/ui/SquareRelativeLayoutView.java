@@ -1,22 +1,23 @@
-package com.oakonell.ticstacktoe.ui.game;
+package com.oakonell.ticstacktoe.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-public class PieceStackImageView extends ImageView {
+public class SquareRelativeLayoutView extends RelativeLayout {
 
-	public PieceStackImageView(Context context) {
-		super(context);
-	}
-
-	public PieceStackImageView(Context context, AttributeSet attrs, int defStyle) {
+	public SquareRelativeLayoutView(Context context, AttributeSet attrs,
+			int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public PieceStackImageView(Context context, AttributeSet attrs) {
+	public SquareRelativeLayoutView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+	}
+
+	public SquareRelativeLayoutView(Context context) {
+		super(context);
 	}
 
 	@Override
@@ -39,15 +40,14 @@ public class PieceStackImageView extends ImageView {
 
 		setMeasuredDimension(size + getPaddingLeft() + getPaddingRight(), size
 				+ getPaddingTop() + getPaddingBottom());
+		Log.i("SquareRelativeLayoutView", "onMeasure, size = " + size);
 		if (listener != null) {
 			listener.onMeasureCalled(this, size, width, height);
 		}
-		Log.i("PieceStackImageView", "onMeasure, size=" + size);
-
 	}
 
 	public interface OnMeasureDependent {
-		void onMeasureCalled(PieceStackImageView squareRelativeLayoutView,
+		void onMeasureCalled(SquareRelativeLayoutView squareRelativeLayoutView,
 				int size, int origWidth, int origHeight);
 
 	}
@@ -57,4 +57,5 @@ public class PieceStackImageView extends ImageView {
 	public void setOnMeasureDependent(OnMeasureDependent listener) {
 		this.listener = listener;
 	}
+
 }

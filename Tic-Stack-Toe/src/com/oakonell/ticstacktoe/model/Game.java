@@ -293,4 +293,13 @@ public class Game {
 		this.firstPickedCell = firstPickCell;
 	}
 
+	public void undo(AbstractMove move) {
+		moves--;
+		switchPlayer();
+		move.undo(getBoard(), State.open(null),
+				getBlackPlayerPieces(),
+				getWhitePlayerPieces());
+
+	}
+
 }

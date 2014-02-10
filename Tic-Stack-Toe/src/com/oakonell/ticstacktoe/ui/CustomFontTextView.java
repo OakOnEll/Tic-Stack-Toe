@@ -1,7 +1,6 @@
 package com.oakonell.ticstacktoe.ui;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -22,10 +21,10 @@ public class CustomFontTextView extends TextView {
 	}
 
 	public void init() {
-		if (isInEditMode())
-			return;
-		Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-				"fonts/CabinSketch-Bold.ttf");
-		setTypeface(tf);
+//		if (isInEditMode())
+//			return;
+//		Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
+//				"fonts/CabinSketch-Bold.ttf");
+//		setTypeface(tf);
 	}
 }

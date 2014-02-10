@@ -9,8 +9,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -57,6 +56,8 @@ import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
+import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
@@ -109,40 +110,12 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		final FragmentActivity activity = getActivity();
-		// adjust the width or height to make sure the board is a square
-		activity.findViewById(R.id.grid_container).getViewTreeObserver()
-				.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-					@Override
-					public void onGlobalLayout() {
-						View squareView = activity
-								.findViewById(R.id.grid_container);
-						if (squareView == null) {
-							// We get this when we are leaving the game?
-							return;
-						}
-						LayoutParams layout = squareView.getLayoutParams();
-						int min = Math.min(squareView.getWidth(),
-								squareView.getHeight());
-						if (squareView.getWidth() == squareView.getHeight())
-							return;
-						if (min == 0)
-							return;
 
-						layout.height = min;
-						layout.width = min;
-						squareView.setLayoutParams(layout);
-						squareView.getViewTreeObserver()
-								.removeGlobalOnLayoutListener(this);
+		if (getMainActivity().getRoomListener() != null) {
+			getMainActivity().getRoomListener().onFragmentResume();
+		}
+		Log.i("GameFragment", "onResume");
 
-						LayoutParams params = winOverlayView.getLayoutParams();
-						params.height = layout.height;
-						params.width = layout.width;
-						winOverlayView.setLayoutParams(params);
-						resizePlayerStacks(getView());
-					}
-				});
-		resizePlayerStacks(getView());
 		if (inOnResume != null) {
 			inOnResume.run();
 		}
@@ -168,10 +141,7 @@ public class GameFragment extends AbstractGameFragment {
 					GameFragment.this.score = score;
 					GameFragment.this.game = game;
 
-					game.switchPlayer();
-					move.undo(game.getBoard(), State.open(null),
-							game.getBlackPlayerPieces(),
-							game.getWhitePlayerPieces());
+					game.undo(move);
 
 					configureNonLocalProgresses();
 					if (getView() != null) {
@@ -271,7 +241,8 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_game, container, false);
+		final View view = inflater.inflate(R.layout.fragment_game, container,
+				false);
 
 		// Listen for changes in the back stack
 		getMainActivity().getSupportFragmentManager()
@@ -333,14 +304,73 @@ public class GameFragment extends AbstractGameFragment {
 			initThinkingText(view, game.getNonLocalPlayer().getName());
 			setOpponentThinking();
 		} else {
-			initThinkingText(view, null);			
+			initThinkingText(view, null);
 		}
 		configureNonLocalProgresses();
 
 		updateHeader(view);
 
+		PieceStackImageView stackView = (PieceStackImageView) view
+				.findViewById(R.id.black_piece_stack1);
+		stackView
+				.setOnMeasureDependent(new PieceStackImageView.OnMeasureDependent() {
+					@Override
+					public void onMeasureCalled(
+							PieceStackImageView squareRelativeLayoutView,
+							int size, int origWidth, int origHeight) {
+						pieceStackHeight = origHeight;
+						resizeBoardAndStacks(view);
+
+					}
+				});
+
+		squareView = (SquareRelativeLayoutView) view
+				.findViewById(R.id.grid_container);
+		squareView.setOnMeasureDependent(new OnMeasureDependent() {
+			@Override
+			public void onMeasureCalled(
+					SquareRelativeLayoutView squareRelativeLayoutView,
+					int size, int origWidth, int origHeight) {
+				boardHeight = origHeight;
+				boardWidth = origWidth;
+				boardSize = size;
+				resizeBoardAndStacks(view);
+			}
+		});
+
 		return view;
 	}
+
+	protected void resizeBoardAndStacks(View view) {
+		if (wasResized) {
+			return;
+		}
+		if (boardSize == 0 || pieceStackHeight == 0) {
+			return;
+		}
+		wasResized = true;
+
+		int boardSize = game.getBoard().getSize();
+		int size = (boardHeight + 2 * pieceStackHeight) / (boardSize + 2);
+		int newBoardPixSize = size * boardSize;
+		Log.i("GameFragment", "resizing: Board height = " + boardHeight
+				+ ", piece height = " + pieceStackHeight
+				+ ", calculated single piece size =" + size + ", new board = "
+				+ newBoardPixSize);
+
+		resizePlayerStacks(getView(), size);
+
+		LayoutParams layoutParams = squareView.getLayoutParams();
+		layoutParams.height = newBoardPixSize;
+		squareView.requestLayout();
+
+	}
+
+	boolean wasResized;
+	int boardWidth;
+	int boardHeight;
+	int boardSize;
+	int pieceStackHeight;
 
 	private void configureDisplayHomeUp() {
 		if (getMainActivity() == null)
@@ -348,18 +378,8 @@ public class GameFragment extends AbstractGameFragment {
 		getMainActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
-	private void resizePlayerStacks(View view) {
-		// if (true) return;
-		if (view == null)
-			return;
-		BoardPieceStackImageView button = (BoardPieceStackImageView) view
-				.findViewById(R.id.button_r1c1);
-		int width = button.getWidth();
-		int height = button.getHeight();
-		if (width == 0 || height == 0) {
-			return;
-		}
-		int size = Math.min(width, height);
+	private void resizePlayerStacks(final View view, int size) {
+		Log.i("GameFragment", "resizePlayerStacks, size = " + size);
 
 		PieceStackImageView stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack1);
@@ -380,6 +400,15 @@ public class GameFragment extends AbstractGameFragment {
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack3);
 		resize(stackView, size, size);
+
+		View whitePieces = view.findViewById(R.id.whitePieceLayout);
+		LayoutParams layoutParams = whitePieces.getLayoutParams();
+		layoutParams.height = size;
+
+		View blackPieces = view.findViewById(R.id.blackPieceLayout);
+		layoutParams = blackPieces.getLayoutParams();
+		layoutParams.height = size;
+
 	}
 
 	private void resize(View view, int height, int width) {
@@ -617,12 +646,26 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public void onDropCompleted(View target, boolean success) {
-				update();
+				if (!hadInvaldMove) {
+					update();
+				}
 			}
 
 			@Override
-			public void onDropCanceled() {
-				update();
+			public void onDropCanceled(DragView dragView) {
+				Piece topPiece = pieceStack.getTopPiece();
+				int resId = 0;
+				// if it is 0... how?
+				if (topPiece != null) {
+					resId = topPiece.getImageResourceId();
+				}
+				animateInvalidMoveReturn(dragView, resId, stackView,
+						new Runnable() {
+							@Override
+							public void run() {
+								update();
+							}
+						});
 			}
 
 			@Override
@@ -699,6 +742,21 @@ public class GameFragment extends AbstractGameFragment {
 						return false;
 					}
 
+					@Override
+					public int getMovedImageResourceId() {
+						return pieceStack.getTopPiece().getImageResourceId();
+					}
+
+					@Override
+					public ImageView getSourceView() {
+						return stackView;
+					}
+
+					@Override
+					public void update() {
+						postMove();
+					}
+
 				};
 
 				mDragController.startDrag(v, dragSource, newPieceOnDrop,
@@ -717,6 +775,65 @@ public class GameFragment extends AbstractGameFragment {
 		stackView.setOnTouchListener(onTouchListener);
 
 	}
+
+	protected void animateInvalidMoveReturn(final DragView dragView,
+			int movedResourceId, ImageView target, final Runnable runnable) {
+		hadInvaldMove = true;
+
+		final ImageView movingView = creatInvalidDragMovingView(dragView,
+				movedResourceId);
+
+		disableButtons = true;
+		AnimationSet replaceAnimation = new AnimationSet(false);
+		// animations should be applied on the finish line
+		replaceAnimation.setFillAfter(false);
+
+		int[] targetPost = new int[2];
+		int[] sourcePost = new int[2];
+		target.getLocationOnScreen(targetPost);
+		dragView.getLocationOnScreen(sourcePost);
+		int xChange = targetPost[0] - sourcePost[0];
+		int yChange = targetPost[1] - sourcePost[1];
+
+		// create translation animation
+		TranslateAnimation trans = new TranslateAnimation(0, xChange, 0,
+				yChange);
+		trans.setDuration(400);
+
+		// add new animations to the set
+		replaceAnimation.addAnimation(trans);
+
+		Interpolator interpolator = new AnticipateInterpolator();
+		replaceAnimation.setInterpolator(interpolator);
+
+		replaceAnimation.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				disableButtons = false;
+				hadInvaldMove = false;
+				movingView.setVisibility(View.GONE);
+				runnable.run();
+			}
+
+		});
+		//
+		// // start our animation
+		movingView.startAnimation(replaceAnimation);
+
+	}
+
+	// used while dropping, in case an invalid move was made, to NOT update UI,
+	// and let the animation take place
+	private boolean hadInvaldMove;
+	private SquareRelativeLayoutView squareView;
 
 	private void configureUICell(final BoardPieceStackImageView button,
 			final Cell cell) {
@@ -762,20 +879,35 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public void onDropCompleted(View target, boolean success) {
-				update();
+				if (!hadInvaldMove) {
+					update();
+				}
 				if (game.getFirstPickedCell() == null) {
 					unhighlightStrictFirstTouchedPiece(button);
 				}
 			}
 
 			@Override
-			public void onDropCanceled() {
-				update();
+			public void onDropCanceled(DragView dragView) {
+				int resId = 0;
+				Piece visiblePiece = getVisiblePiece();
+				if (visiblePiece != null) {
+					resId = visiblePiece.getImageResourceId();
+				}
+				animateInvalidMoveReturn(dragView, resId, button,
+						new Runnable() {
+							public void run() {
+								update();
+								// TODO animateInvalidMoveReturn( onDropMove,
+								// x,y);
+								if (game.getType().isStrict()) {
+									highlightStrictFirstTouchedPiece(button);
+								}
+							}
+						});
 				// in strict mode, highlight the chosen piece, as only it can be
 				// moved
-				if (game.getType().isStrict()) {
-					highlightStrictFirstTouchedPiece(button);
-				}
+
 			}
 
 			@Override
@@ -800,7 +932,7 @@ public class GameFragment extends AbstractGameFragment {
 				// if same piece is droped on its original spot..
 				// TODO mark that this piece MUST be moved?
 
-				OnDropMove onDropMove = (OnDropMove) dragInfo;
+				final OnDropMove onDropMove = (OnDropMove) dragInfo;
 				if (onDropMove.originatedFrom(cell)) {
 					// if in strict mode and the user already chose this piece,
 					// make sure it remains highlighted
@@ -816,14 +948,27 @@ public class GameFragment extends AbstractGameFragment {
 					state = onDropMove.droppedOn(cell);
 					// TODO play valid move sound, based on previous target
 					// exist, new piece ?
-				} catch (InvalidMoveException e) {
+				} catch (final InvalidMoveException e) {
+					int resId = onDropMove.getMovedImageResourceId();
+					animateInvalidMoveReturn(dragView, resId,
+							onDropMove.getSourceView(), new Runnable() {
+								@Override
+								public void run() {
+									updateBoardPiece(cell);
+									onDropMove.update();
+									if (game.getFirstPickedCell() != null) {
+										BoardPieceStackImageView source = (BoardPieceStackImageView) findButtonFor(game
+												.getFirstPickedCell());
+										highlightStrictFirstTouchedPiece(source);
+									}
+									int messageId = e.getErrorResourceId();
+									Toast toast = Toast.makeText(getActivity(),
+											messageId, Toast.LENGTH_SHORT);
+									toast.setGravity(Gravity.CENTER, 0, 0);
+									toast.show();
+								}
+							});
 					getMainActivity().playSound(Sounds.INVALID_MOVE);
-					int messageId = e.getErrorResourceId();
-					Toast toast = Toast.makeText(getActivity(), messageId,
-							Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-					updateBoardPiece(cell);
 					return;
 				}
 				onDropMove.postMove();
@@ -842,6 +987,13 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 			}
+
+			@Override
+			public boolean acceptDrop(View target, DragSource source, int x,
+					int y, int xOffset, int yOffset, DragView dragView,
+					Object dragInfo) {
+				return true;
+			}
 		});
 		button.setOnTouchListener(new OnTouchListener() {
 			@Override
@@ -859,7 +1011,7 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
-				Piece visiblePiece = game.getBoard().getVisiblePiece(
+				final Piece visiblePiece = game.getBoard().getVisiblePiece(
 						cell.getX(), cell.getY());
 				if (visiblePiece == null) {
 					return false;
@@ -893,6 +1045,21 @@ public class GameFragment extends AbstractGameFragment {
 					@Override
 					public boolean originatedFrom(Cell otherCell) {
 						return otherCell.equals(cell);
+					}
+
+					@Override
+					public int getMovedImageResourceId() {
+						return visiblePiece.getImageResourceId();
+					}
+
+					@Override
+					public ImageView getSourceView() {
+						return button;
+					}
+
+					@Override
+					public void update() {
+						postMove();
 					}
 
 				};
@@ -1230,7 +1397,33 @@ public class GameFragment extends AbstractGameFragment {
 		movingView.startAnimation(replaceAnimation);
 	}
 
-	private ImageView creatMovingView(ImageView markerToPlayView, int resource) {
+	private ImageView creatInvalidDragMovingView(View markerToPlayView,
+			int resource) {
+		ImageView animatorImage = (ImageView) getView().findViewById(
+				R.id.moving_view);
+		animatorImage.setImageResource(resource);
+
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				markerToPlayView.getWidth(), markerToPlayView.getHeight());
+		int[] windowLocation = new int[2];
+		markerToPlayView.getLocationOnScreen(windowLocation);
+
+		View main = getView().findViewById(R.id.drag_layer);
+		int[] rootLocation = new int[2];
+		main.getLocationOnScreen(rootLocation);
+
+		params.leftMargin = windowLocation[0] - rootLocation[0];
+		params.topMargin = windowLocation[1] - rootLocation[1];
+
+		animatorImage.setLayoutParams(params);
+		animatorImage.setVisibility(View.VISIBLE);
+
+		animatorImage.bringToFront();
+
+		return animatorImage;
+	}
+
+	private ImageView creatMovingView(View markerToPlayView, int resource) {
 		ImageView animatorImage = (ImageView) getView().findViewById(
 				R.id.moving_view);
 		animatorImage.setImageResource(resource);
@@ -1246,48 +1439,11 @@ public class GameFragment extends AbstractGameFragment {
 
 		params.leftMargin = windowLocation[0] - rootLocation[0];
 		params.topMargin = windowLocation[1] - rootLocation[1];
-		// ??- (getActivity()).getSupportActionBar().getHeight() -
-		// getStatusBarHeight(); // Subtract the ActionBar height and the
-		// StatusBar height if they're visible
 
 		animatorImage.setLayoutParams(params);
 		animatorImage.setVisibility(View.VISIBLE);
 
 		animatorImage.bringToFront();
-
-		// layoutParams.
-
-		// if (mWindowManager == null) {
-		// // mWindowManager = (ViewGroup)
-		// // getView().findViewById(R.id.drag_layer);
-		// mWindowManager = (WindowManager) getActivity().getSystemService(
-		// Context.WINDOW_SERVICE);
-		//
-		// }
-		//
-		// WindowManager.LayoutParams lp;
-		// int pixelFormat = PixelFormat.TRANSLUCENT;
-		//
-		// int[] sourcePost = new int[2];
-		// markerToPlayView.getLocationOnScreen(sourcePost);
-		//
-		// lp = new WindowManager.LayoutParams(
-		// ViewGroup.LayoutParams.WRAP_CONTENT,
-		// ViewGroup.LayoutParams.WRAP_CONTENT, sourcePost[0],
-		// sourcePost[1],
-		// WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL,
-		// WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-		// | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-		// /* | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM */,
-		// pixelFormat);
-		// // lp.token = mStatusBarView.getWindowToken();
-		// lp.gravity = Gravity.LEFT | Gravity.TOP;
-		// lp.token = null;
-		// lp.setTitle("DragView");
-		//
-		// mWindowManager.addView(view, lp);
-
-		// mWindowManager.addView(view);
 
 		return animatorImage;
 	}
@@ -1337,7 +1493,7 @@ public class GameFragment extends AbstractGameFragment {
 			getMainActivity().playSound(Sounds.GAME_DRAW);
 			title = getString(R.string.draw);
 		}
-		promptToPlayAgain(title);
+		promptToPlayAgain(winner.getName(), title);
 	}
 
 	private void acceptMove() {
@@ -1517,6 +1673,12 @@ public class GameFragment extends AbstractGameFragment {
 	public interface OnDropMove {
 
 		State droppedOn(Cell cell);
+
+		void update();
+
+		ImageView getSourceView();
+
+		int getMovedImageResourceId();
 
 		boolean originatedFrom(Cell cell);
 

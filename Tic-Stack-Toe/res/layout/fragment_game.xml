@@ -75,7 +75,7 @@
                     <LinearLayout
                         android:id="@+id/blackPieceLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="75dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:clipChildren="false"
@@ -127,7 +127,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </LinearLayout>
 
-                <RelativeLayout
+                <com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView
                     android:id="@+id/grid_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -326,7 +326,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/opponent_is_thinking" />
                     </LinearLayout>
-                </RelativeLayout>
+                </com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView>
 
                 <LinearLayout
                     android:id="@+id/num_moves_container"
@@ -374,7 +374,7 @@
                     <LinearLayout
                         android:id="@+id/whitePieceLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="75dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:clipChildren="false"

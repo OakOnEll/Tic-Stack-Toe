@@ -33,12 +33,12 @@
             android:gravity="center_vertical" >
 
 
-            <CheckBox
-                android:id="@+id/turn_based"
+            <CheckBox android:visibility="gone"
+                android:id="@+id/realtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" 
                 android:layout_weight="2"
-                android:text="Turn-based"
+                android:text="Real-time"
                 />
         </TableRow>
         

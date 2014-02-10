@@ -24,7 +24,7 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 
 	private Button playAgainButton;
 
-	private RoomListener gameFragment;
+	private RoomListener listener;
 	boolean willPlayAgain;
 	private Button notPlayAgainButton;
 
@@ -32,7 +32,7 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 			String title) {
 		this.opponentName = opponentName;
 		this.title = title;
-		this.gameFragment = fragment;
+		this.listener = fragment;
 	}
 
 	@Override
@@ -63,21 +63,21 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 					@Override
 					public void run() {
 						dismiss();
-						gameFragment.playAgainClosed();
+						listener.playAgainClosed();
 						// and leave immediately
-						gameFragment.leaveGame();
+						listener.leaveGame();
 					}
 				};
 				Runnable error = new Runnable() {
 					@Override
 					public void run() {
 						dismiss();
-						gameFragment.playAgainClosed();
+						listener.playAgainClosed();
 						// TODO show error message?
-						gameFragment.leaveGame();
+						listener.leaveGame();
 					}
 				};
-				gameFragment.sendNotPlayAgain(success, error);
+				listener.sendNotPlayAgain(success, error);
 			}
 
 		});
@@ -89,9 +89,9 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 					@Override
 					public void run() {
 						willPlayAgain = true;
-						if (gameFragment.getOpponentPlayAgainState() == PlayAgainState.PLAY_AGAIN) {
-							gameFragment.playAgain();
-							gameFragment.playAgainClosed();
+						if (listener.getOpponentPlayAgainState() == PlayAgainState.PLAY_AGAIN) {
+							listener.playAgain();
+							listener.playAgainClosed();
 							dismiss();
 						} else {
 							playAgainButton.setEnabled(true);
@@ -117,12 +117,12 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 								"Error sending 'play again' message");
 					}
 				};
-				gameFragment.sendPlayAgain(success, error);
+				listener.sendPlayAgain(success, error);
 			}
 
 		});
 
-		PlayAgainState opponentPlayAgainState = gameFragment
+		PlayAgainState opponentPlayAgainState = listener
 				.getOpponentPlayAgainState();
 		if (opponentPlayAgainState != PlayAgainState.WAITING) {
 			updateOpponentPlayAgain(opponentPlayAgainState == PlayAgainState.PLAY_AGAIN);
@@ -159,8 +159,8 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 		// choose
 		if (willPlayAgain) {
 			dismiss();
-			gameFragment.playAgainClosed();
-			gameFragment.playAgain();
+			listener.playAgainClosed();
+			listener.playAgain();
 		}
 	}
 
