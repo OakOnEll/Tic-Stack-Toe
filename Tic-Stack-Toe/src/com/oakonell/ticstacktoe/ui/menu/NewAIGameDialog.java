@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.ui.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 	public interface LocalAIGameModeListener {
 		void chosenMode(GameType type, String aiName, int level);
+
+		void cancel();
 	}
 
 	private LocalAIGameModeListener listener;
@@ -90,6 +93,12 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 			}
 		});
 		return view;
+	}
+
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		super.onCancel(dialog);
+		listener.cancel();
 	}
 
 }

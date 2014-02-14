@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_margin="5dp"
+    android:background="@drawable/border"
+    android:orientation="horizontal"
+    android:padding="5dp" >
 
     <ImageView
         android:id="@+id/opponnet_image"
@@ -11,8 +14,9 @@
         android:src="@drawable/silhouette_icon_4520" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
         <TextView
@@ -27,7 +31,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_menu"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_item_menu" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.oakonell.ticstacktoe.ui.menu;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 
 	public interface LocalGameModeListener {
 		void chosenMode(GameType type, String blackName, String whiteName);
+
+		void cancel();
 	}
 
 	private LocalGameModeListener listener;
@@ -132,7 +135,7 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 				blackName = blackNameText.getText().toString();
 				whiteName = whiteNameText.getText().toString();
 				writeNamesToPreferences();
-				
+
 				Handler handler = new Handler();
 				imm.hideSoftInputFromWindow(v.getWindowToken(),
 						InputMethodManager.HIDE_NOT_ALWAYS, new ResultReceiver(
@@ -211,6 +214,12 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 		edit.putString(PREF_X_NAME, blackName);
 		edit.putString(PREF_O_NAME, whiteName);
 		edit.commit();
+	}
+
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		super.onCancel(dialog);
+		listener.cancel();
 	}
 
 }

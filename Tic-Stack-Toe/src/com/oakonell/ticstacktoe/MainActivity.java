@@ -26,12 +26,14 @@ import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
+import com.oakonell.ticstacktoe.ui.menu.StartAGameFragment;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.AppLaunchUtils;
 
 public class MainActivity extends BaseGameActivity {
 	public static final String FRAG_TAG_GAME = "game";
 	private static final String FRAG_TAG_MENU = "menu";
+	public static final String FRAG_TAG_START_GAME = "startGame";
 
 	// Request codes for the UIs that we show with startActivityForResult:
 	public final static int RC_UNUSED = 1;
@@ -133,7 +135,7 @@ public class MainActivity extends BaseGameActivity {
 		if (getRoomListener() != null) {
 			getRoomListener().onSignInFailed(this);
 		}
-		
+
 	}
 
 	@Override
@@ -145,6 +147,11 @@ public class MainActivity extends BaseGameActivity {
 	@Override
 	public void onSignInSucceeded() {
 		getMenuFragment().onSignInSucceeded();
+
+		StartAGameFragment startFragment = getStartFragment();
+		if (startFragment!= null) {
+			startFragment.onSignInSucceeded();
+		}
 
 		TicStackToe app = (TicStackToe) getApplication();
 
@@ -182,6 +189,11 @@ public class MainActivity extends BaseGameActivity {
 	public MenuFragment getMenuFragment() {
 		return (MenuFragment) getSupportFragmentManager().findFragmentByTag(
 				FRAG_TAG_MENU);
+	}
+
+	public StartAGameFragment getStartFragment() {
+		return (StartAGameFragment) getSupportFragmentManager()
+				.findFragmentByTag(FRAG_TAG_START_GAME);
 	}
 
 	public GameFragment getGameFragment() {

@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/new_game"
+            style="@style/menu_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/pass_n_play_icon_27531" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/new_game_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/new_game"
+            android:layout_toRightOf="@+id/new_game"
+            android:text="Start a Game" />
+
+        <ImageButton
+            android:id="@+id/view_achievements"
+            style="@style/menu_button"
+            android:layout_alignLeft="@id/new_game"
+            android:layout_below="@id/new_game"
+            android:src="@drawable/achievements_icon_16419" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/view_achievements_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/view_achievements"
+            android:layout_toRightOf="@+id/view_achievements"
+            android:text="@string/achievements" />
+
+        <ImageButton
+            android:id="@+id/view_leaderboards"
+            style="@style/menu_button"
+            android:layout_alignLeft="@id/view_achievements"
+            android:layout_below="@id/view_achievements"
+            android:src="@drawable/leaderboard_icon_17975"
+            android:text="@string/leaderboards" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/view_leaderboards_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/view_leaderboards"
+            android:layout_toRightOf="@+id/view_leaderboards"
+            android:text="@string/leaderboards" />
+
+        <Button
+            android:id="@+id/pending_games"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/view_leaderboards_text"
+            android:layout_below="@+id/view_leaderboards_text"
+            android:text="Pending Games" />
+    </RelativeLayout>
+
+</LinearLayout>

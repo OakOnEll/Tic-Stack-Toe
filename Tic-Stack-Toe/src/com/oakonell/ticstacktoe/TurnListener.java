@@ -5,9 +5,11 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
@@ -89,8 +92,10 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 
 		mMatch = match;
 
-		mMyParticipantId = match.getParticipantId(helper.getGamesClient()
-				.getCurrentPlayerId());
+		if (match != null) {
+			mMyParticipantId = match.getParticipantId(helper.getGamesClient()
+					.getCurrentPlayerId());
+		}
 
 		// GameState state = GameState.fromMatch(match);
 		// // need to do this now?
@@ -202,7 +207,9 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		byte[] previousMatchData = match.getPreviousMatchData();
 		ScoreCard score;
 		if (previousMatchData != null) {
-			GameState state = fromBytes(previousMatchData, true);
+			GameState state = GameState.fromBytes(activity,
+					activity.getGamesClient(), mMatch, previousMatchData, true);
+			blackParticipantId = state.blackPlayerId;
 			score = state.score;
 			if (type == null) {
 				type = state.game.getType();
@@ -607,7 +614,7 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 						activity.getGameFragment().resetThinkingText();
 						activity.getGameFragment().hideStatusText();
 						TurnListener.this.onTurnBasedMatchInitiated(statusCode,
-								match);						
+								match);
 					}
 				}, mMatch.getMatchId());
 		mMatch = null;
@@ -626,12 +633,12 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		showGame();
 	}
 
-	private static class GameState {
-		private final Game game;
-		private final ScoreCard score;
-		private final String blackPlayerId;
-		private final boolean isQuick;
-		private boolean wasSeen;
+	public static class GameState {
+		public final Game game;
+		public final ScoreCard score;
+		public final String blackPlayerId;
+		public final boolean isQuick;
+		public boolean wasSeen;
 
 		public GameState(Game game, ScoreCard score, String blackPlayerId,
 				boolean isQuick, boolean wasSeen) {
@@ -669,75 +676,98 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 			return theBuffer.array();
 		}
 
-	}
-
-	public GameState fromMatch(TurnBasedMatch match, boolean myTurn) {
-		byte[] data = match.getData();
-		return fromBytes(data, myTurn);
-	}
-
-	private GameState fromBytes(byte[] data, boolean myTurn) {
-		ByteBuffer theBuffer = ByteBuffer.wrap(data);
-		ByteBufferDebugger buffer = new ByteBufferDebugger(theBuffer);
-
-		int protocolVersion = buffer.getInt("Protocol version");
-		if (protocolVersion != PROTOCOL_VERSION) {
-			// TODO uh oh...
-		}
-		boolean wasSeen = buffer.get("wasSeen") == 1;
-		boolean isQuick = buffer.get("isQuick") == 1;
-
-		int len = buffer.getInt("Black player Id num bytes");
-		byte[] blackplayerIdBytes = new byte[len];
-		buffer.get("Black player id bytes", blackplayerIdBytes);
-		String blackPlayerIdString;
-		try {
-			blackPlayerIdString = new String(blackplayerIdBytes, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Unsupported UTF-8!");
+		public static GameState fromMatch(Context context, GamesClient client,
+				TurnBasedMatch match) {
+			byte[] data = match.getData();
+			boolean myTurn = match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
+			return GameState.fromBytes(context, client, match, data, myTurn);
 		}
 
-		int blackWins = buffer.getInt("Black wins");
-		int whiteWins = buffer.getInt("White wins");
-		int totalGames = buffer.getInt("Draws");
-		ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
-				- (blackWins + whiteWins));
+		public static GameState fromBytes(Context context, GamesClient client,
+				TurnBasedMatch match, byte[] data, boolean myTurn) {
+			ByteBuffer theBuffer = ByteBuffer.wrap(data);
+			ByteBufferDebugger buffer = new ByteBufferDebugger(theBuffer);
 
-		Player blackPlayer;
-		Player whitePlayer;
-		String localPlayerName = activity.getString(R.string.local_player_name);
-		Player currentPlayer;
-		if (blackPlayerIdString.equals(getMe().getParticipantId())) {
-			blackParticipantId = getMe().getParticipantId();
-			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
-					getMe().getIconImageUri());
-			whitePlayer = OnlineStrategy.createPlayer(getOpponentName(), false,
-					getOpponentParticipant().getIconImageUri());
-			if (myTurn) {
-				currentPlayer = blackPlayer;
-			} else {
-				currentPlayer = whitePlayer;
+			int protocolVersion = buffer.getInt("Protocol version");
+			if (protocolVersion != PROTOCOL_VERSION) {
+				// TODO uh oh...
 			}
-		} else {
-			blackParticipantId = getOpponentParticipant().getParticipantId();
-			whitePlayer = HumanStrategy.createPlayer(localPlayerName, false,
-					getMe().getIconImageUri());
-			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
-					getOpponentParticipant().getIconImageUri());
-			if (!myTurn) {
-				currentPlayer = blackPlayer;
-			} else {
-				currentPlayer = whitePlayer;
+			boolean wasSeen = buffer.get("wasSeen") == 1;
+			boolean isQuick = buffer.get("isQuick") == 1;
+
+			int len = buffer.getInt("Black player Id num bytes");
+			byte[] blackplayerIdBytes = new byte[len];
+			buffer.get("Black player id bytes", blackplayerIdBytes);
+			String blackPlayerIdString;
+			try {
+				blackPlayerIdString = new String(blackplayerIdBytes, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException("Unsupported UTF-8!");
 			}
+
+			int blackWins = buffer.getInt("Black wins");
+			int whiteWins = buffer.getInt("White wins");
+			int totalGames = buffer.getInt("Draws");
+			ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
+					- (blackWins + whiteWins));
+
+			Player blackPlayer;
+			Player whitePlayer;
+			String localPlayerName = context
+					.getString(R.string.local_player_name);
+			Player currentPlayer;
+
+			OpponentWrapper opponent;
+			Participant me;
+			Participant participant = match.getParticipants().get(0);
+			if (participant.getPlayer() != null && participant.getPlayer().getPlayerId()
+					.equals(client.getCurrentPlayerId())) {
+				me = participant;
+				// TODO what about auto matching..
+				if (match.getParticipants().size() == 1) {
+					opponent = new OpponentWrapper(null, false);
+				} else {
+					opponent = new OpponentWrapper(match.getParticipants().get(
+							1), false);
+				}
+			} else {
+				me = match.getParticipants().get(1);
+				opponent = new OpponentWrapper(participant, false);
+			}
+
+			if (blackPlayerIdString.equals(me.getParticipantId())) {
+				blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
+						me.getIconImageUri());
+				whitePlayer = OnlineStrategy.createPlayer(
+						opponent.getDisplayName(), false,
+						opponent.getIconImageUri());
+				if (myTurn) {
+					currentPlayer = blackPlayer;
+				} else {
+					currentPlayer = whitePlayer;
+				}
+			} else {
+				whitePlayer = HumanStrategy.createPlayer(localPlayerName,
+						false, me.getIconImageUri());
+				blackPlayer = OnlineStrategy.createPlayer(
+						opponent.getDisplayName(), true,
+						opponent.getIconImageUri());
+				if (!myTurn) {
+					currentPlayer = blackPlayer;
+				} else {
+					currentPlayer = whitePlayer;
+				}
+			}
+
+			Game game = Game.fromBytes(blackPlayer, whitePlayer, currentPlayer,
+					buffer);
+
+			GameState gameState = new GameState(game, score,
+					blackPlayerIdString, isQuick, wasSeen);
+
+			return gameState;
 		}
 
-		Game game = Game.fromBytes(blackPlayer, whitePlayer, currentPlayer,
-				buffer);
-
-		GameState gameState = new GameState(game, score, blackPlayerIdString,
-				isQuick, wasSeen);
-
-		return gameState;
 	}
 
 	public void showGame() {
@@ -792,8 +822,9 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		}
 		isVisible = true;
 
-		GameState state = fromMatch(mMatch,
-				turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+		GameState state = GameState.fromMatch(activity,
+				activity.getGamesClient(), mMatch);
+		blackParticipantId = state.blackPlayerId;
 		type = state.game.getType();
 		isQuick = state.isQuick;
 		if (!state.game.getBoard().getState().isOver()
@@ -883,7 +914,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 	}
 
 	private boolean completeMatch(int status, int turnStatus) {
-		if (status == TurnBasedMatch.MATCH_STATUS_COMPLETE && turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
+		if (status == TurnBasedMatch.MATCH_STATUS_COMPLETE
+				&& turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
 			helper.getGamesClient().finishTurnBasedMatch(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
@@ -910,8 +942,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 
 	protected String rematchId;
 
-	private void lookForInviteForRematch(final String winner, final String title,
-			final String rematchId) {
+	private void lookForInviteForRematch(final String winner,
+			final String title, final String rematchId) {
 		activity.getGameFragment().setThinkingText(
 				title + "Rematch requested, looking for match invite.", true);
 		helper.getGamesClient().loadInvitations(
@@ -942,7 +974,6 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 						}
 						if (turnInvitesFromPlayer.isEmpty()) {
 							alreadyLoadingRematch = false;
-							invites.close();
 
 							openPlayAgain(activity.getGameFragment(), winner);
 							playAgainDialog.displayWaitingForInvite();
@@ -963,6 +994,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 							askToAcceptRematchInvite(winner, title,
 									turnInvitesFromPlayer, invites);
 						}
+						invites.close();
+
 					}
 
 				});
@@ -970,7 +1003,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 
 	private boolean alreadyLoadingRematch = false;
 
-	private void promptAndGoToRematch(final String winner, final String title, final String rematchId) {
+	private void promptAndGoToRematch(final String winner, final String title,
+			final String rematchId) {
 		Log.i("TurnListener", "  promptAndGoToRematch");
 		// attempt to get the re-match
 		if (alreadyLoadingRematch) {
@@ -1012,8 +1046,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 
 	}
 
-	private void askToAcceptRematchInvite(final String winner, final String title,
-			List<Invitation> turnInvitesFromPlayer,
+	private void askToAcceptRematchInvite(final String winner,
+			final String title, List<Invitation> turnInvitesFromPlayer,
 			final InvitationBuffer invites) {
 		Log.i("TurnListener", "  askToAcceptRematchInvite");
 		if (turnInvitesFromPlayer.size() == 1) {
@@ -1022,9 +1056,8 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 					title + "A possible rematch invite exists.", true);
 			Invitation theInvite = turnInvitesFromPlayer.get(0);
 			final String inviteId = theInvite.getInvitationId();
-			invites.close();
 
-			openPlayAgain( activity.getGameFragment(),winner);
+			openPlayAgain(activity.getGameFragment(), winner);
 			playAgainDialog.displayAcceptInvite(inviteId);
 
 		} else {
@@ -1035,7 +1068,6 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 							+ getOpponentName() + "...", true);
 			showWarning("Multiple invites", "Multiple invites from "
 					+ getOpponentName() + ", can't tell which is the rematch.");
-			invites.close();
 		}
 	}
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.ui.ImageHelper;
 
 public class Player {
 	private final String name;
@@ -49,14 +50,8 @@ public class Player {
 	public void updatePlayerImage(ImageManager imgManager, ImageView image) {
 		int defaultResource = strategy.isBlack() ? R.color.abs__background_holo_dark
 				: R.color.abs__background_holo_light;
-		if (iconImageUri == null
-				|| iconImageUri.getEncodedSchemeSpecificPart().contains(
-						"gms.games")) {
-			imgManager.loadImage(image, iconImageUri, defaultResource);
-		} else {
-			image.setImageURI(iconImageUri);
-
-		}
+		ImageHelper.displayImage(imgManager, image, iconImageUri,
+				defaultResource);
 	}
 
 	public void setGame(Game game) {

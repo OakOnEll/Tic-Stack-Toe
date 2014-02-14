@@ -1,235 +1,73 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wood_10_"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/sign_out_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center|right"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
-        <LinearLayout
-            android:id="@+id/sign_out_bar"
-            android:layout_width="match_parent"
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/signed_in_as_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center|right"
-            android:orientation="horizontal"
-            android:padding="10dp" >
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:textColor="#808080" />
 
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/signed_in_as_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:textColor="#808080" />
-
-            <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_out"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sign_in_bar"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp" >
+            android:text="@string/sign_out"
+            android:textSize="12sp" />
+    </LinearLayout>
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/sign_in_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:text="@string/sign_in_why"
-                android:textColor="#808080" />
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/new_game_same_device"
-            style="@style/menu_button"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/sign_in_bar"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/pass_n_play_icon_27531" />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/new_game_same_device_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/new_game_same_device"
-            android:layout_toRightOf="@+id/new_game_same_device"
-            android:text="@string/new_game_same_device" />
-
-        <ImageButton
-            android:id="@+id/new_game_vs_ai"
-            style="@style/menu_button"
-            android:layout_alignLeft="@+id/new_game_same_device"
-            android:layout_below="@+id/new_game_same_device"
-            android:src="@drawable/robot_icon_699" />
-
-        <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/new_game_vs_ai_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/new_game_vs_ai"
-            android:layout_toRightOf="@+id/new_game_vs_ai"
-            android:text="@string/new_game_vs_ai" />
-
-        <ImageView
-            android:id="@+id/play_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/new_game_vs_ai"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/games_controller_green_med" />
-
-        <ImageButton
-            android:id="@+id/new_quick_play"
-            style="@style/menu_button"
-            android:layout_alignLeft="@+id/new_game_vs_ai"
-            android:layout_below="@+id/play_icon"
-            android:src="@drawable/quick_game_icon_18148" />
-
-        <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/new_quick_play_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/new_quick_play"
-            android:layout_toRightOf="@+id/new_quick_play"
-            android:text="@string/new_quick_game" />
-
-        <ImageButton
-            android:id="@+id/new_game_live"
-            style="@style/menu_button"
-            android:layout_alignLeft="@+id/new_quick_play"
-            android:layout_below="@+id/new_quick_play"
-            android:src="@drawable/online_game_icon_27324" />
-
-        <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/new_game_live_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/new_game_live"
-            android:layout_toRightOf="@+id/new_game_live"
-            android:text="@string/new_game_live" />
-
-        <ImageButton
-            android:id="@+id/invites"
-            style="@style/menu_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@+id/new_game_live_text"
-            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/new_game_live_text"
-            android:src="@drawable/no_invites_icon_15776" />
+            android:layout_weight="1"
+            android:text="@string/sign_in_why"
+            android:textColor="#808080" />
+    </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/loading_num_invites"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignLeft="@+id/invites"
-            android:layout_alignTop="@+id/invites"
-            android:visibility="invisible" />
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/sign_in_bar" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/invites"
-            android:layout_alignEnd="@+id/invites"
-            android:layout_alignRight="@+id/invites"
-            android:background="@android:color/black" >
+    <ProgressBar
+        android:id="@+id/waiting"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/num_invites"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <ImageButton
-            android:id="@+id/view_achievements"
-            style="@style/menu_button"
-            android:layout_alignLeft="@id/new_game_live"
-            android:layout_below="@id/new_game_live"
-            android:src="@drawable/achievements_icon_16419" />
-
-        <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/view_achievements_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/view_achievements"
-            android:layout_toRightOf="@+id/view_achievements"
-            android:text="@string/achievements" />
-
-        <ImageButton
-            android:id="@+id/view_leaderboards"
-            style="@style/menu_button"
-            android:layout_alignLeft="@id/view_achievements"
-            android:layout_below="@id/view_achievements"
-            android:src="@drawable/leaderboard_icon_17975"
-            android:text="@string/leaderboards" />
-
-        <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/view_leaderboards_text"
-            style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/view_leaderboards"
-            android:layout_toRightOf="@+id/view_leaderboards"
-            android:text="@string/leaderboards" />
-
-         <Button
-            android:id="@+id/pending_games"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_leaderboards_text"
-            android:layout_alignLeft="@+id/view_leaderboards_text"
-            android:text="Pending Games" />
-        
-        
-        <ProgressBar
-            android:id="@+id/waiting"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ListView
-            android:id="@+id/my_turn_games"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pending_games"
-            android:layout_centerHorizontal="true"
-            >
-        </ListView>
-        <ListView
-            android:id="@+id/their_turn_games"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/my_turn_games"
-            android:layout_centerHorizontal="true"
-            >
-        </ListView>        
-        <ListView
-            android:id="@+id/completed_games"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/my_turn_games"
-            android:layout_centerHorizontal="true"
-            >
-        </ListView>        
-        </RelativeLayout>
-
-</ScrollView>
+</RelativeLayout>

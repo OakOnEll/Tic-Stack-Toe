@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wood_10_"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/new_game_same_device"
+            style="@style/menu_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/pass_n_play_icon_27531" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/new_game_same_device_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/new_game_same_device"
+            android:layout_toRightOf="@+id/new_game_same_device"
+            android:text="@string/new_game_same_device" />
+
+        <ImageButton
+            android:id="@+id/new_game_vs_ai"
+            style="@style/menu_button"
+            android:layout_alignLeft="@+id/new_game_same_device"
+            android:layout_below="@+id/new_game_same_device"
+            android:src="@drawable/robot_icon_699" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/new_game_vs_ai_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/new_game_vs_ai"
+            android:layout_toRightOf="@+id/new_game_vs_ai"
+            android:text="@string/new_game_vs_ai" />
+
+        <ImageView
+            android:id="@+id/play_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/new_game_vs_ai"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/games_controller_green_med" />
+
+        <ImageButton
+            android:id="@+id/new_quick_play"
+            style="@style/menu_button"
+            android:layout_alignLeft="@+id/new_game_vs_ai"
+            android:layout_below="@+id/play_icon"
+            android:src="@drawable/quick_game_icon_18148" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/new_quick_play_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/new_quick_play"
+            android:layout_toRightOf="@+id/new_quick_play"
+            android:text="@string/new_quick_game" />
+
+        <ImageButton
+            android:id="@+id/new_game_live"
+            style="@style/menu_button"
+            android:layout_alignLeft="@+id/new_quick_play"
+            android:layout_below="@+id/new_quick_play"
+            android:src="@drawable/online_game_icon_27324" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/new_game_live_text"
+            style="@style/menu_button_text"
+            android:layout_alignBottom="@+id/new_game_live"
+            android:layout_toRightOf="@+id/new_game_live"
+            android:text="@string/new_game_live" />
+
+        <ProgressBar
+            android:id="@+id/waiting"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+</LinearLayout>
