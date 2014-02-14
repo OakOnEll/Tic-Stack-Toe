@@ -478,7 +478,7 @@ public class StartAGameFragment extends SherlockFragment {
 					@Override
 					public void onTurnBasedMatchInitiated(int status,
 							TurnBasedMatch match) {
-						if (status == GamesClient.STATUS_OK) {
+						if (status != GamesClient.STATUS_OK) {
 							getMainActivity().getGameHelper().showAlert(
 									"Error starting a match: " + status);
 							exitStartMenu();
