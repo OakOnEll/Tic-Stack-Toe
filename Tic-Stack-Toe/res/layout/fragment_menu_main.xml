@@ -52,14 +52,6 @@
             android:layout_alignBottom="@+id/view_leaderboards"
             android:layout_toRightOf="@+id/view_leaderboards"
             android:text="@string/leaderboards" />
-
-        <Button
-            android:id="@+id/pending_games"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/view_leaderboards_text"
-            android:layout_below="@+id/view_leaderboards_text"
-            android:text="Pending Games" />
     </RelativeLayout>
 
 </LinearLayout>

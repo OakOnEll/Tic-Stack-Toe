@@ -149,7 +149,7 @@ public class MainActivity extends BaseGameActivity {
 		getMenuFragment().onSignInSucceeded();
 
 		StartAGameFragment startFragment = getStartFragment();
-		if (startFragment!= null) {
+		if (startFragment != null) {
 			startFragment.onSignInSucceeded();
 		}
 

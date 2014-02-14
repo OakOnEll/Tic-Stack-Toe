@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,6 +72,8 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	private List<MatchInfo> myTurns = new ArrayList<MatchInfo>();
 	private List<MatchInfo> theirTurns = new ArrayList<MatchInfo>();
 	private List<MatchInfo> completedMatches = new ArrayList<MatchInfo>();
+
+	private PullToRefreshLayout mPullToRefreshLayout;
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
@@ -215,6 +220,23 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 		} else {
 			showLogin();
 		}
+
+		mPullToRefreshLayout = (PullToRefreshLayout) view
+				.findViewById(R.id.ptr_layout);
+
+		// Now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+		// Mark All Children as pullable
+				.allChildrenArePullable()
+				// Set the OnRefreshListener
+				.listener(new OnRefreshListener() {
+					@Override
+					public void onRefreshStarted(View view) {
+						refreshMatches();
+					}
+				})
+				// Finally commit the setup to our PullToRefreshLayout
+				.setup(mPullToRefreshLayout);
 
 		ListView listView = (ListView) view.findViewById(R.id.list);
 		MergeAdapter adapter = new MergeAdapter();
@@ -562,6 +584,16 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	}
 
 	public void refreshMatches() {
+		if (mPullToRefreshLayout != null) {
+			mPullToRefreshLayout.setRefreshing(true);
+		}
+		if (!getMainActivity().isSignedIn()) {
+			if (!getMainActivity().getGamesClient().isConnecting()
+					&& mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.setRefreshComplete();
+			}
+			return;
+		}
 		getMainActivity().getGamesClient().loadTurnBasedMatches(
 				new OnTurnBasedMatchesLoadedListener() {
 
@@ -599,6 +631,10 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 								.getCompletedMatches();
 						populateMatches(completedMatchesBuffer,
 								completedMatchesAdapter, completedMatches);
+
+						if (mPullToRefreshLayout != null) {
+							mPullToRefreshLayout.setRefreshComplete();
+						}
 					}
 
 					private void populateMatches(
