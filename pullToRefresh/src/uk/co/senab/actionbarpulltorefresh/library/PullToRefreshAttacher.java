@@ -123,7 +123,11 @@ public class PullToRefreshAttacher {
         decorView.post(new Runnable() {
             @Override
             public void run() {
-                if (decorView.getWindowToken() != null) {
+            	if (isDestroyed()) {
+            	    // give up, end the loop.
+            	    return;
+            	}                
+            	if (decorView.getWindowToken() != null) {
                     // The Decor View has a Window Token, so we can add the HeaderView!
                     addHeaderViewToActivity(mHeaderView);
                 } else {
