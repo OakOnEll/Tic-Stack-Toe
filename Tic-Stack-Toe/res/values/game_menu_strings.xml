@@ -40,7 +40,7 @@
     <string name="select_opponent">Select Opponent</string>
     <string name="game_type">Game Type</string>
     <string name="type_junior">Junior (3x3)</string>
-    <string name="type_easy">Easy (4x4)</string>
+    <string name="type_normal">Normal (4x4)</string>
     <string name="type_strict">Strict (4x4)</string>
 
 </resources>

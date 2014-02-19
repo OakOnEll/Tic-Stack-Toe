@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.menu;
+package com.oakonell.ticstacktoe.ui.turn;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
+import com.oakonell.ticstacktoe.ui.menu.TypeDropDownItem;
 
 public class OnlineGameModeDialog extends SherlockDialogFragment {
 	public static final String SELECT_PLAYER_INTENT_KEY = "select_player";

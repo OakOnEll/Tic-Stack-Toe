@@ -17,14 +17,13 @@ public class GameTypeSpinnerHelper {
 		types.add(new TypeDropDownItem(activity.getResources().getString(
 				R.string.type_junior), GameType.JUNIOR));
 		types.add(new TypeDropDownItem(activity.getResources().getString(
-				R.string.type_easy), GameType.EASY));
+				R.string.type_normal), GameType.NORMAL));
 		types.add(new TypeDropDownItem(activity.getResources().getString(
-				R.string.type_strict), GameType.REGULAR));
+				R.string.type_strict), GameType.STRICT));
 
 		ArrayAdapter<TypeDropDownItem> typeAdapter = new ArrayAdapter<TypeDropDownItem>(
 				activity, android.R.layout.simple_spinner_dropdown_item, types);
 		typeSpinner.setAdapter(typeAdapter);
-
 	}
 
 }

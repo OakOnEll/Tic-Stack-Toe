@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.menu;
+package com.oakonell.ticstacktoe.ui.local;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
+import com.oakonell.ticstacktoe.ui.menu.TypeDropDownItem;
 
 public class NewAIGameDialog extends SherlockDialogFragment {
 

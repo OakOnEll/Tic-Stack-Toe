@@ -1,12 +1,12 @@
 package com.oakonell.ticstacktoe.model;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class Game {
 	private final Board board;
@@ -26,7 +26,7 @@ public class Game {
 
 	public Game(GameType gameType, GameMode mode, Player blackPlayer,
 			Player whitePlayer, Player startingPlayer) {
-		this(gameType, mode, new Board(gameType.size), 0, blackPlayer, gameType
+		this(gameType, mode, new Board(gameType.getSize()), 0, blackPlayer, gameType
 				.createBlackPlayerStacks(), whitePlayer, gameType
 				.createWhitePlayerStacks(), null, startingPlayer);
 	}
@@ -89,10 +89,9 @@ public class Game {
 	}
 
 	public void switchPlayer() {
-		player = player.opponent();		
+		player = player.opponent();
 	}
 
-	
 	private void recordVisitToState() {
 		String state = board.getVisibleBoardStateAsLong();
 		Integer number = numVisitsPerState.get(state);
@@ -132,6 +131,7 @@ public class Game {
 	 * @return
 	 */
 	public Player getLocalPlayer() {
+		// TODO move this to game strategy?
 		if (getMode() == GameMode.PASS_N_PLAY) {
 			return null;
 		}
@@ -148,6 +148,7 @@ public class Game {
 	 * @return
 	 */
 	public Player getNonLocalPlayer() {
+		// TODO move this to game strategy?
 		if (getMode() == GameMode.PASS_N_PLAY) {
 			return null;
 		}
@@ -195,7 +196,6 @@ public class Game {
 			}
 		}
 
-
 		int i = 0;
 		for (PieceStack each : getBlackPlayerPieces()) {
 			writeStack(buffer, "Black stack " + i, each);
@@ -215,7 +215,6 @@ public class Game {
 			buffer.put("has first picked cell", (byte) 0);
 		}
 
-		
 		getBoard().getState().toBytes(buffer);
 	}
 
@@ -258,17 +257,16 @@ public class Game {
 		}
 
 		boolean hasFirstPickedCell = buffer.get("has first picked cell") != 0;
-		Cell firstPickedCell = null; 
+		Cell firstPickedCell = null;
 		if (hasFirstPickedCell) {
 			byte x = buffer.get("first picked cell X");
 			byte y = buffer.get("first picked cell Y");
 			firstPickedCell = new Cell(x, y);
-		} 
+		}
 
-		
 		Game game = new Game(type, GameMode.TURN_BASED, theBoard, moves,
-				blackPlayer, blackStacks, whitePlayer, whiteStacks,firstPickedCell,
-				currentPlayer);
+				blackPlayer, blackStacks, whitePlayer, whiteStacks,
+				firstPickedCell, currentPlayer);
 
 		State state = State.fromBytes(buffer, game, blackPlayer, whitePlayer);
 		theBoard.setState(state);
@@ -296,8 +294,7 @@ public class Game {
 	public void undo(AbstractMove move) {
 		moves--;
 		switchPlayer();
-		move.undo(getBoard(), State.open(null),
-				getBlackPlayerPieces(),
+		move.undo(getBoard(), State.open(null), getBlackPlayerPieces(),
 				getWhitePlayerPieces());
 
 	}

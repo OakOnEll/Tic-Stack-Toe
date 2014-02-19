@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe;
+package com.oakonell.ticstacktoe.ui.local;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.ChatHelper;
+import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.R.id;
+import com.oakonell.ticstacktoe.R.string;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -22,7 +28,6 @@ import com.oakonell.ticstacktoe.model.solver.RandomAI;
 import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.menu.LocalMatchInfo;
 
 public class AiListener implements GameListener {
 

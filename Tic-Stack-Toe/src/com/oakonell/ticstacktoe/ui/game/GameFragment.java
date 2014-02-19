@@ -38,7 +38,6 @@ import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Cell;
 import com.oakonell.ticstacktoe.model.ExistingPieceMove;
 import com.oakonell.ticstacktoe.model.Game;
@@ -53,6 +52,7 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
 import com.oakonell.utils.activity.dragndrop.DragController;
@@ -64,7 +64,6 @@ import com.oakonell.utils.activity.dragndrop.OnDragListener;
 import com.oakonell.utils.activity.dragndrop.OnDropListener;
 
 public class GameFragment extends AbstractGameFragment {
-
 	private DragController mDragController;
 	private DragLayer mDragLayer;
 
@@ -792,8 +791,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	private void configureUICell(final BoardPieceStackImageView button,
 			final Cell cell) {
-		Piece visiblePiece = game.getBoard().getVisiblePiece(cell.getX(),
-				cell.getY());
+		Piece visiblePiece = game.getBoard().getVisiblePiece(cell);
 		if (visiblePiece != null) {
 			button.setImageResource(visiblePiece.getImageResourceId());
 		} else {
@@ -828,8 +826,7 @@ public class GameFragment extends AbstractGameFragment {
 			}
 
 			public Piece getVisiblePiece() {
-				return game.getBoard()
-						.getVisiblePiece(cell.getX(), cell.getY());
+				return game.getBoard().getVisiblePiece(cell);
 			}
 
 			@Override
@@ -961,8 +958,8 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
-				final Piece visiblePiece = game.getBoard().getVisiblePiece(
-						cell.getX(), cell.getY());
+				final Piece visiblePiece = game.getBoard()
+						.getVisiblePiece(cell);
 				if (visiblePiece == null) {
 					return false;
 				}
@@ -1065,8 +1062,7 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	protected void updateBoardPiece(Cell cell) {
-		Piece visiblePiece = game.getBoard().getVisiblePiece(cell.getX(),
-				cell.getY());
+		Piece visiblePiece = game.getBoard().getVisiblePiece(cell);
 		ImageDropTarget button = findButtonFor(cell);
 		if (visiblePiece == null) {
 			button.setImageDrawable(null);
@@ -1192,8 +1188,7 @@ public class GameFragment extends AbstractGameFragment {
 			final ExistingPieceMove theMove = (ExistingPieceMove) move;
 			ImageDropTarget source = findButtonFor(theMove.getSource());
 			Cell source2 = theMove.getSource();
-			Piece nextPiece = game.getBoard().getVisiblePiece(source2.getX(),
-					source2.getY());
+			Piece nextPiece = game.getBoard().getVisiblePiece(source2);
 			exposedSourceResId = nextPiece != null ? nextPiece
 					.getImageResourceId() : 0;
 

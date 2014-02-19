@@ -22,11 +22,12 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.menu.StartAGameFragment;
+import com.oakonell.ticstacktoe.ui.realtime.RoomListener;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.AppLaunchUtils;
 
@@ -163,6 +164,10 @@ public class MainActivity extends BaseGameActivity {
 			achievements.pushToGoogle(getGameHelper(), this);
 		}
 
+		if (getRoomListener() != null) {
+			getRoomListener().reassociate(this);
+		}
+
 		// if we received an invite via notification, accept it; otherwise, go
 		// to main screen
 		String invitationId = getInvitationId();
@@ -171,9 +176,6 @@ public class MainActivity extends BaseGameActivity {
 			return;
 		}
 
-		if (getRoomListener() != null) {
-			getRoomListener().reassociate(this);
-		}
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.oakonell.ticstacktoe.model.db;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,12 @@ import android.util.Log;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.model.GameMode;
-import com.oakonell.ticstacktoe.ui.menu.LocalMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
+	private static final String MATCH_FILENAME_PREFIX = "match_";
+
+	private static final String TAG = "DatabaseHandler";
 
 	// All Static variables
 	// Database Version
@@ -40,6 +45,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_LAST_UPDATED = "last_updated";
 
 	private static final String KEY_FILENAME = "filename";
+	// TODO add rematch column...
+	// TODO add score columns
+	// TODO add winner column
 
 	private final Context context;
 
@@ -67,8 +75,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Upgrading database
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO do a better upgrade
+
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCAL_MATCHES);
+		// delete the existing match files as well?
+		File dir = context.getFilesDir();
+		String[] matchFiles = dir.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.startsWith(MATCH_FILENAME_PREFIX);
+			}
+		});
+		for (String each : matchFiles) {
+			context.deleteFile(each);
+		}
 
 		// Create tables again
 		onCreate(db);
@@ -88,9 +109,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			protected Long doInBackground(Void... params) {
 				SQLiteDatabase db = getWritableDatabase();
 				try {
-					// updating row
+					// deleting the row
 					long id = db.delete(TABLE_LOCAL_MATCHES, KEY_ID + "=?",
 							new String[] { Long.toString(matchInfo.getId()) });
+
+					// also delete the corresponding match file
+					String filename = matchInfo.getFilename();
+					boolean deleted = context.deleteFile(filename);
+					if (!deleted) {
+						File file = new File(context.getFilesDir(), filename);
+						if (file.exists()) {
+							Log.w(TAG, "File '" + filename
+									+ "' could not be deleted");
+						}
+					}
+
 					return id;
 				} finally {
 					db.close();
@@ -131,9 +164,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					long id = db.insertOrThrow(TABLE_LOCAL_MATCHES, null,
 							values);
 
-					// write file name
-					String fileName = "match_" + id;
+					// set and write the game bytes file
+					String fileName = MATCH_FILENAME_PREFIX + id;
 					matchInfo.setFileName(fileName);
+
+					ContentValues fileNameValue = new ContentValues();
+					fileNameValue.put(KEY_FILENAME, fileName);
+					int updated = db.update(TABLE_LOCAL_MATCHES, values, KEY_ID
+							+ "=?", new String[] { Long.toString(id) });
+					if (updated != 1) {
+						throw new RuntimeException(
+								"Error updating match record");
+					}
+
 					matchInfo.writeGame(context);
 					return id;
 				} finally {
@@ -168,6 +211,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					int updated = db.update(TABLE_LOCAL_MATCHES, values, KEY_ID
 							+ " = ?",
 							new String[] { String.valueOf(matchInfo.getId()) });
+
+					// update the game bytes file
 					matchInfo.writeGame(context);
 					return updated;
 				} finally {
@@ -211,7 +256,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					if (!query.moveToFirst()) {
 						return null;
 					}
-					return readMatch(query);
+					LocalMatchInfo match = readMatch(query);
+					match.readGame(context);
+					return match;
 				} finally {
 					if (query != null) {
 						query.close();
@@ -297,8 +344,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				Cursor cursor = null;
 				try {
 					Log.i("DB", "getting matches");
-					cursor = db.query(TABLE_LOCAL_MATCHES, columnsNames,
-							null, null, null, null, null);
+					cursor = db.query(TABLE_LOCAL_MATCHES, columnsNames, null,
+							null, null, null, null);
 
 					List<LocalMatchInfo> myTurns = new ArrayList<LocalMatchInfo>();
 					List<LocalMatchInfo> theirTurns = new ArrayList<LocalMatchInfo>();
@@ -310,7 +357,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							LocalMatchInfo readMatch = readMatch(cursor);
 							if (readMatch.getMatchStatus() == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
 								completed.add(readMatch);
-							} else  if (readMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
+							} else if (readMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
 								myTurns.add(readMatch);
 							} else {
 								theirTurns.add(readMatch);
@@ -319,8 +366,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					}
 					LocalMatchesBuffer buffer = new LocalMatchesBuffer(myTurns,
 							theirTurns, completed);
-
-					// return contact list
 					return buffer;
 				} finally {
 					if (cursor != null) {
@@ -360,6 +405,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				.getLong(query.getColumnIndex(KEY_LAST_UPDATED));
 		String fileName = query.getString(query.getColumnIndex(KEY_FILENAME));
 
+		if (fileName == null) {
+			throw new RuntimeException("Got a null file name?");
+		}
+		
 		GameMode mode = modeNum == 1 ? GameMode.AI : GameMode.PASS_N_PLAY;
 		return new LocalMatchInfo(id, mode, matchStatus, turnStatus, blackName,
 				whiteName, aiLevel, lastupdated, fileName);

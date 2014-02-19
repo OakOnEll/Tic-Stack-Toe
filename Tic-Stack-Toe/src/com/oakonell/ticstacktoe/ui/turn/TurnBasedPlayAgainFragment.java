@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.game;
+package com.oakonell.ticstacktoe.ui.turn;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.TurnListener;
 
 public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 	private String opponentName;

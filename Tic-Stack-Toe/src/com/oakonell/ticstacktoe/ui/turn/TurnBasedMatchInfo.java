@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.menu;
+package com.oakonell.ticstacktoe.ui.turn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,13 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.oakonell.ticstacktoe.TurnListener.GameState;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
+import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
+import com.oakonell.ticstacktoe.ui.turn.TurnListener.GameState;
 
 public class TurnBasedMatchInfo implements MatchInfo {
 
@@ -66,7 +68,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 
 	}
 
-	public Uri getOpponentIconImageUri() {
+	public Uri getIconImageUri() {
 		return opponentPicUri;
 	}
 
@@ -76,9 +78,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 
 	public List<MatchMenuItem> getMenuItems() {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem();
-		dismiss.text = "Dismiss";
-		dismiss.execute = new ItemExecute() {
+		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
 				GamesClient gamesClient = fragment.getMainActivity()
@@ -86,38 +86,38 @@ public class TurnBasedMatchInfo implements MatchInfo {
 				gamesClient.dismissTurnBasedMatch(matchId);
 				matches.remove(TurnBasedMatchInfo.this);
 			}
-		};
+		});
 		result.add(dismiss);
 
 		if (canRematch) {
-			MatchMenuItem rematch = new MatchMenuItem();
-			rematch.text = "Rematch";
-			rematch.execute = new ItemExecute() {
-				@Override
-				public void execute(final MenuFragment fragment,
-						List<MatchInfo> matches) {
-					fragment.setInactive();
-					GamesClient gamesClient = fragment.getMainActivity()
-							.getGamesClient();
-					gamesClient.rematchTurnBasedMatch(
-							new OnTurnBasedMatchInitiatedListener() {
-								@Override
-								public void onTurnBasedMatchInitiated(
-										int status, TurnBasedMatch match) {
-									if (status != GamesClient.STATUS_OK) {
-										fragment.getMainActivity()
-												.getGameHelper()
-												.showAlert(
-														"Error starting rematch");
-										fragment.refreshMatches();
-										fragment.setActive();
-										return;
-									}
-									fragment.showMatch(match.getMatchId());
-								}
-							}, matchId);
-				}
-			};
+			MatchMenuItem rematch = new MatchMenuItem("Rematch",
+					new ItemExecute() {
+						@Override
+						public void execute(final MenuFragment fragment,
+								List<MatchInfo> matches) {
+							fragment.setInactive();
+							GamesClient gamesClient = fragment
+									.getMainActivity().getGamesClient();
+							gamesClient.rematchTurnBasedMatch(
+									new OnTurnBasedMatchInitiatedListener() {
+										@Override
+										public void onTurnBasedMatchInitiated(
+												int status, TurnBasedMatch match) {
+											if (status != GamesClient.STATUS_OK) {
+												fragment.getMainActivity()
+														.getGameHelper()
+														.showAlert(
+																"Error starting rematch");
+												fragment.refreshMatches();
+												fragment.setActive();
+												return;
+											}
+											fragment.showMatch(match
+													.getMatchId());
+										}
+									}, matchId);
+						}
+					});
 			result.add(rematch);
 		}
 

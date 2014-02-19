@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.menu;
+package com.oakonell.ticstacktoe.ui.local;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,15 +13,18 @@ import android.text.format.DateUtils;
 
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
+import com.oakonell.ticstacktoe.ui.menu.MatchAdapter;
+import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class LocalMatchInfo implements MatchInfo {
 
@@ -91,16 +94,14 @@ public class LocalMatchInfo implements MatchInfo {
 	}
 
 	@Override
-	public Uri getOpponentIconImageUri() {
+	public Uri getIconImageUri() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<MatchMenuItem> getMenuItems() {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem();
-		dismiss.text = "Dismiss";
-		dismiss.execute = new ItemExecute() {
+		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
 			@Override
 			public void execute(final MenuFragment fragment,
 					List<MatchInfo> matches) {
@@ -121,7 +122,7 @@ public class LocalMatchInfo implements MatchInfo {
 
 				matches.remove(LocalMatchInfo.this);
 			}
-		};
+		});
 		result.add(dismiss);
 
 		// if (canRematch) {

@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.menu;
+package com.oakonell.ticstacktoe.ui.turn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +12,16 @@ import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
+import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 
 public class InviteMatchInfo implements MatchInfo {
-	private String opponentName;
-	private Uri opponentPicUri;
-	private long created;
-	private String inviteId;
+	private final String opponentName;
+	private final Uri opponentPicUri;
+	private final long created;
+	private final String inviteId;
 
 	public InviteMatchInfo(GamesClient client, Invitation invite) {
-
 		created = invite.getCreationTimestamp();
 		inviteId = invite.getInvitationId();
 
@@ -34,7 +35,7 @@ public class InviteMatchInfo implements MatchInfo {
 	}
 
 	@Override
-	public Uri getOpponentIconImageUri() {
+	public Uri getIconImageUri() {
 		return opponentPicUri;
 	}
 
@@ -48,9 +49,7 @@ public class InviteMatchInfo implements MatchInfo {
 
 	public List<MatchMenuItem> getMenuItems() {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem();
-		dismiss.text = "Decline";
-		dismiss.execute = new ItemExecute() {
+		MatchMenuItem dismiss = new MatchMenuItem("Decline", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
 				GamesClient gamesClient = fragment.getMainActivity()
@@ -58,7 +57,7 @@ public class InviteMatchInfo implements MatchInfo {
 				gamesClient.declineTurnBasedInvitation(inviteId);
 				matches.remove(InviteMatchInfo.this);
 			}
-		};
+		});
 		result.add(dismiss);
 		return result;
 	}

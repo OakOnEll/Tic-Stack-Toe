@@ -13,17 +13,16 @@ public interface MatchInfo {
 
 	public CharSequence getSubtext(Context context);
 
-	public long getUpdatedTimestamp();
+	public Uri getIconImageUri();
 
-	public Uri getOpponentIconImageUri();
+	public long getUpdatedTimestamp();
 
 	public List<MatchMenuItem> getMenuItems();
 
 	public void onClick(MenuFragment fragment);
 
-	public class Factory {
+	public class MatchUtils {
 		private static Comparator<MatchInfo> comparator = new Comparator<MatchInfo>() {
-
 			@Override
 			public int compare(MatchInfo lhs, MatchInfo rhs) {
 				return (int) (lhs.getUpdatedTimestamp() - rhs

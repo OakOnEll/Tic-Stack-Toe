@@ -86,13 +86,11 @@ public class RandomAI extends PlayerStrategy {
 	}
 
 	private AbstractMove moveFromBoard(Game game, Player player, Cell source) {
-		Piece playedPiece = game.getBoard().getVisiblePiece(source.getX(),
-				source.getY());
+		Piece playedPiece = game.getBoard().getVisiblePiece(source);
 		Piece exposedSourcePiece = game.getBoard().peekNextPiece(source);
 
 		Cell target = getValidTargetForPiece(game, playedPiece, source);
-		Piece existingTargetPiece = game.getBoard().getVisiblePiece(
-				target.getX(), target.getY());
+		Piece existingTargetPiece = game.getBoard().getVisiblePiece(target);
 
 		return new ExistingPieceMove(player, playedPiece, exposedSourcePiece,
 				source, target, existingTargetPiece);
@@ -106,8 +104,7 @@ public class RandomAI extends PlayerStrategy {
 			throw new RuntimeException("Got no piece from a stack");
 		}
 		Cell target = getValidTargetForPiece(game, playedPiece, null);
-		Piece existingTargetPiece = game.getBoard().getVisiblePiece(
-				target.getX(), target.getY());
+		Piece existingTargetPiece = game.getBoard().getVisiblePiece(target);
 
 		return new PlaceNewPieceMove(player, playedPiece, stackNum, target,
 				existingTargetPiece);
@@ -122,7 +119,8 @@ public class RandomAI extends PlayerStrategy {
 			for (int y = 0; y < size; y++) {
 				Piece piece = board.getVisiblePiece(x, y);
 				if (piece == null || playedPiece.isLargerThan(piece)) {
-					if (excluded == null || excluded.getX() != x || excluded.getY() != y) {
+					if (excluded == null || excluded.getX() != x
+							|| excluded.getY() != y) {
 						numOnBoard++;
 					}
 				}
@@ -134,7 +132,8 @@ public class RandomAI extends PlayerStrategy {
 			for (int y = 0; y < size; y++) {
 				Piece piece = board.getVisiblePiece(x, y);
 				if (piece == null || playedPiece.isLargerThan(piece)) {
-					if (excluded == null || excluded.getX() != x || excluded.getY() != y) {
+					if (excluded == null || excluded.getX() != x
+							|| excluded.getY() != y) {
 						if (count == 0) {
 							return new Cell(x, y);
 						}

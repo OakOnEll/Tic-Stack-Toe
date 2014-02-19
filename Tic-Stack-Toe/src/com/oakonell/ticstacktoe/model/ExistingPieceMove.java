@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.model;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class ExistingPieceMove extends AbstractMove {
 	private final Piece exposedSourcePiece;
@@ -57,7 +58,7 @@ public class ExistingPieceMove extends AbstractMove {
 		return builder.toString();
 	}
 
-	public static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
+	 static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
 		int sourceX = buffer.get("source x");
 		int sourceY = buffer.get("source y");
 		Cell source = new Cell(sourceX, sourceY);

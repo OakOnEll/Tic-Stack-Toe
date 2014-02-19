@@ -1912,8 +1912,8 @@ containing a value of this type.
         public static final int start=0x7f0b0065;
         public static final int status_multiplayer_error_not_trusted_tester=0x7f0b00b0;
         public static final int title_game=0x7f0b00a9;
-        public static final int type_easy=0x7f0b0077;
         public static final int type_junior=0x7f0b0076;
+        public static final int type_normal=0x7f0b0077;
         public static final int type_strict=0x7f0b0078;
         public static final int unexpected_status=0x7f0b00b5;
         public static final int unique_error_o_name=0x7f0b0070;

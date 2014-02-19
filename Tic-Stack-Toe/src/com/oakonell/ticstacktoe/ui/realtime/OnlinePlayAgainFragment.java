@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.game;
+package com.oakonell.ticstacktoe.ui.realtime;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.RoomListener;
-import com.oakonell.ticstacktoe.RoomListener.PlayAgainState;
+import com.oakonell.ticstacktoe.ui.realtime.RoomListener.PlayAgainState;
 
 public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 	private String opponentName;

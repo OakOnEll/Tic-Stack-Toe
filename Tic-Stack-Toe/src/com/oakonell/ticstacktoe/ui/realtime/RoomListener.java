@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe;
+package com.oakonell.ticstacktoe.ui.realtime;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -27,9 +25,12 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeReliableMessage
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.oakonell.ticstacktoe.ChatHelper;
+import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -38,9 +39,8 @@ import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.game.OnlinePlayAgainFragment;
-import com.oakonell.ticstacktoe.ui.game.OnlineSettingsDialogFragment;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class RoomListener implements RoomUpdateListener,
 		RealTimeMessageReceivedListener, RoomStatusUpdateListener,
@@ -690,8 +690,6 @@ public class RoomListener implements RoomUpdateListener,
 		restartGame();
 	}
 
-	private boolean opponentLeftIsShowing;
-
 	public void opponentLeft() {
 		activity.getGameFragment().getView().setKeepScreenOn(false);
 		if (onlinePlayAgainDialog != null) {
@@ -699,7 +697,6 @@ public class RoomListener implements RoomUpdateListener,
 			return;
 
 		}
-		opponentLeftIsShowing = true;
 		String message = activity.getResources().getString(
 				R.string.peer_left_the_game, getOpponentName());
 		(new AlertDialog.Builder(activity)).setMessage(message)

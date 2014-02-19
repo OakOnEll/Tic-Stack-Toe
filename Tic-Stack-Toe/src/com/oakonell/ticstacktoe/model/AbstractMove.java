@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.model;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public abstract class AbstractMove {
 	public static final byte STACK_MOVE = 0;
@@ -37,7 +38,7 @@ public abstract class AbstractMove {
 		return playedPiece;
 	}
 
-	abstract public State applyToGame(Game game);
+	public abstract State applyToGame(Game game);
 
 	public abstract State applyTo(GameType type, Board board,
 			List<PieceStack> blackPlayerPieces,

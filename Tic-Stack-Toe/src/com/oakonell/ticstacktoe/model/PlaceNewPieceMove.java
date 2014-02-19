@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.model;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class PlaceNewPieceMove extends AbstractMove {
 	private final int stackNum;
@@ -55,25 +56,22 @@ public class PlaceNewPieceMove extends AbstractMove {
 		return builder.toString();
 	}
 
-	public static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
+	static AbstractMove fromBytes(ByteBufferDebugger buffer, Game game) {
 		int stackNum = buffer.get("stack number");
 
 		CommonMoveInfo commonInfo = commonFromBytes(buffer, game);
-		
-		return new PlaceNewPieceMove(commonInfo.player, commonInfo.playedPiece, stackNum, commonInfo.target, commonInfo.existingTargetPiece);
+
+		return new PlaceNewPieceMove(commonInfo.player, commonInfo.playedPiece,
+				stackNum, commonInfo.target, commonInfo.existingTargetPiece);
 	}
 
-	
-	
 	@Override
 	public void privateAppendBytesToMessage(ByteBufferDebugger buffer) {
 		int stackNum = getStackNum();
 		buffer.put("stack number", (byte) stackNum);
-		
+
 		appendCommonToMessage(buffer);
 	}
-
-
 
 	@Override
 	protected byte getMoveType() {

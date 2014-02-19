@@ -13,7 +13,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class WinOverlayView extends View {
 	private final int OFFSET = 10;

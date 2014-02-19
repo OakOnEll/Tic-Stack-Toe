@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe;
+package com.oakonell.ticstacktoe.ui.turn;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -30,9 +30,12 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoaded
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
+import com.oakonell.ticstacktoe.ChatHelper;
+import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
-import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -43,7 +46,7 @@ import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
-import com.oakonell.ticstacktoe.ui.game.TurnBasedPlayAgainFragment;
+import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class TurnListener implements TurnBasedMultiplayerListener,
 		GameListener, ChatHelper {

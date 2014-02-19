@@ -7,7 +7,6 @@ import java.util.List;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -44,23 +43,25 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdate
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
-import com.oakonell.ticstacktoe.AiListener;
-import com.oakonell.ticstacktoe.GameListener;
-import com.oakonell.ticstacktoe.LocalListener;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.RoomListener;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
-import com.oakonell.ticstacktoe.TurnListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.local.AiListener;
+import com.oakonell.ticstacktoe.ui.local.LocalListener;
+import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
+import com.oakonell.ticstacktoe.ui.realtime.RoomListener;
+import com.oakonell.ticstacktoe.ui.turn.InviteMatchInfo;
+import com.oakonell.ticstacktoe.ui.turn.TurnBasedMatchInfo;
+import com.oakonell.ticstacktoe.ui.turn.TurnListener;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
-public class MenuFragment extends SherlockFragment implements MatchShower,
+public class MenuFragment extends SherlockFragment implements 
 		OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
 
 	private DatabaseHandler dbHandler;
@@ -86,89 +87,10 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 		return dbHandler;
 	}
 
-	@Override
-	public void onActivityResult(int request, int response, Intent data) {
-		setActive();
-		switch (request) {
-
-		case MainActivity.RC_INVITATION_INBOX: {
-			Log.i(TAG, "RC_INVITATION_INBOX start");
-			refreshInvites(false);
-			if (response != Activity.RESULT_OK) {
-				setActive();
-				// getMainActivity().getGameHelper().showAlert(
-				// "Bad response on return from accept invite (request="
-				// + request + " ): " + response + ", intent: "
-				// + data);
-				Log.i(TAG, "Returned from invitation- Canceled/Error "
-						+ response);
-				return;
-			}
-			Log.i(TAG, "RC_INVITATION_INBOX got here1");
-			Invitation inv = data.getExtras().getParcelable(
-					GamesClient.EXTRA_INVITATION);
-			if (inv == null) {
-				Log.i(TAG,
-						"RC_INVITATION_INBOX no invite, assume a turn based!");
-				TurnBasedMatch match = data.getExtras().getParcelable(
-						GamesClient.EXTRA_TURN_BASED_MATCH);
-				if (match == null) {
-					getMainActivity()
-							.getGameHelper()
-							.showAlert(
-									"No invite NOR match. What kind of invite was accepted?");
-					return;
-				}
-				updateMatch(match);
-				break;
-			}
-			Log.i(TAG, "RC_INVITATION_INBOX got here2");
-			int invitationType = inv.getInvitationType();
-			if (invitationType == Invitation.INVITATION_TYPE_REAL_TIME) {
-				Log.i(TAG, "RC_INVITATION_INBOX got here3");
-				// accept realtime invitation
-				acceptInviteToRoom(inv.getInvitationId());
-
-			} else {
-				Log.i(TAG, "RC_INVITATION_INBOX got here4");
-				// getMainActivity().getGameHelper().showAlert("No invite NOR match. What kind of invite was accepted?");
-				// accept turn based match
-				acceptTurnBasedInvitation(inv.getInvitationId());
-			}
-			Log.i(TAG, "RC_INVITATION_INBOX got here5");
-		}
-			break;
-		case MainActivity.RC_LOOK_AT_MATCHES:
-			// Returning from the 'Select Match' dialog
-
-			if (response != Activity.RESULT_OK) {
-				// user canceled
-				return;
-			}
-
-			TurnBasedMatch match = data
-					.getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
-
-			if (match != null) {
-				updateMatch(match);
-			}
-
-			Log.d(TAG, "Match = " + match);
-
-			break;
-
-		}
-		// super.onActivityResult(request, response, data);
-	}
-
 	public void leaveRoom() {
 		Log.d(TAG, "Leaving room.");
-		// GameListener roomListener = getMainActivity().getRoomListener();
-		// if (roomListener != null) {
-		// roomListener.leaveRoom();
 		getMainActivity().setRoomListener(null);
 		registerMatchListeners();
-		// }
 		refreshMatches();
 	}
 
@@ -398,13 +320,25 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 		signOutView.setVisibility(View.INVISIBLE);
 	}
 
+	private void showLogout() {
+		// disable/hide login button
+		signInView.setVisibility(View.INVISIBLE);
+		// show sign out button
+		signOutView.setVisibility(View.VISIBLE);
+		TextView signedInAsText = (TextView) getActivity().findViewById(
+				R.id.signed_in_as_text);
+		if (signedInAsText == null)
+			return;
+		signedInAsText.setText(getResources().getString(
+				R.string.you_are_signed_in_as,
+				getMainActivity().getGamesClient().getCurrentAccountName()));
+	}
+
 	public void onSignInSucceeded() {
 		showLogout();
 
 		registerMatchListeners();
-
 		refreshInvites(true);
-
 		refreshMatches();
 
 		TurnBasedMatch aMatch = getMainActivity().getGameHelper()
@@ -423,20 +357,6 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 
 	public void signOut() {
 
-	}
-
-	private void showLogout() {
-		// disable/hide login button
-		signInView.setVisibility(View.INVISIBLE);
-		// show sign out button
-		signOutView.setVisibility(View.VISIBLE);
-		TextView signedInAsText = (TextView) getActivity().findViewById(
-				R.id.signed_in_as_text);
-		if (signedInAsText == null)
-			return;
-		signedInAsText.setText(getResources().getString(
-				R.string.you_are_signed_in_as,
-				getMainActivity().getGamesClient().getCurrentAccountName()));
 	}
 
 	private void refreshInvites(final boolean shouldFlashNumber) {
@@ -511,7 +431,7 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	@Override
 	public void onPause() {
 		if (getMainActivity().isSignedIn()) {
-			getMainActivity().getGamesClient().registerInvitationListener(null);
+			unregisterMatchListeners();
 		}
 		super.onPause();
 	}
@@ -530,6 +450,11 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	private void registerMatchListeners() {
 		getMainActivity().getGamesClient().registerInvitationListener(this);
 		getMainActivity().getGamesClient().registerMatchUpdateListener(this);
+	}
+
+	private void unregisterMatchListeners() {
+		getMainActivity().getGamesClient().registerInvitationListener(null);
+		getMainActivity().getGamesClient().registerMatchUpdateListener(null);
 	}
 
 	public void acceptTurnBasedInvitation(final String inviteId) {

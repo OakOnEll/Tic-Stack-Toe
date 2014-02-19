@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.model;
+package com.oakonell.ticstacktoe.utils;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
