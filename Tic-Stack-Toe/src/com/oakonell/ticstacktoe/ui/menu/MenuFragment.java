@@ -44,7 +44,9 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdate
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
+import com.oakonell.ticstacktoe.AiListener;
 import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.LocalListener;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.RoomListener;
@@ -52,11 +54,16 @@ import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.TurnListener;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public class MenuFragment extends SherlockFragment implements MatchShower,
 		OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
+
+	private DatabaseHandler dbHandler;
 
 	private String TAG = MenuFragment.class.getName();
 
@@ -74,6 +81,10 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	private List<MatchInfo> completedMatches = new ArrayList<MatchInfo>();
 
 	private PullToRefreshLayout mPullToRefreshLayout;
+
+	public DatabaseHandler getDbHandler() {
+		return dbHandler;
+	}
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
@@ -150,14 +161,14 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 		// super.onActivityResult(request, response, data);
 	}
 
-	void leaveRoom() {
+	public void leaveRoom() {
 		Log.d(TAG, "Leaving room.");
-		GameListener roomListener = getMainActivity().getRoomListener();
-		if (roomListener != null) {
-			roomListener.leaveRoom();
-			getMainActivity().setRoomListener(null);
-			registerMatchListeners();
-		}
+		// GameListener roomListener = getMainActivity().getRoomListener();
+		// if (roomListener != null) {
+		// roomListener.leaveRoom();
+		getMainActivity().setRoomListener(null);
+		registerMatchListeners();
+		// }
 		refreshMatches();
 	}
 
@@ -171,6 +182,7 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		dbHandler = new DatabaseHandler(getMainActivity());
 		final View view = inflater.inflate(R.layout.fragment_menu, container,
 				false);
 		setHasOptionsMenu(true);
@@ -583,14 +595,62 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 		listener.showFromMenu();
 	}
 
+	private boolean localRefreshed;
+	private boolean networkRefreshed;
+
 	public void refreshMatches() {
 		if (mPullToRefreshLayout != null) {
 			mPullToRefreshLayout.setRefreshing(true);
 		}
+		localRefreshed = false;
+		networkRefreshed = false;
+		Log.i(TAG, "about to refresh DB");
+		dbHandler.getMatches(new OnLocalMatchesLoadListener() {
+			@Override
+			public void onLoadSuccess(LocalMatchesBuffer localMatchesBuffer) {
+				// remove existing local matches from my,their, completed
+				clearLocalMatches(myTurns);
+				clearLocalMatches(theirTurns);
+				clearLocalMatches(completedMatches);
+
+				myTurns.addAll(localMatchesBuffer.getMyTurn());
+				myTurnsAdapter.notifyDataSetChanged();
+
+				theirTurns.addAll(localMatchesBuffer.getTheirTurn());
+				theirTurnsAdapter.notifyDataSetChanged();
+
+				completedMatches.addAll(localMatchesBuffer
+						.getCompletedMatches());
+				completedMatchesAdapter.notifyDataSetChanged();
+
+				localRefreshed = true;
+				if (localRefreshed && networkRefreshed) {
+					mPullToRefreshLayout.setRefreshComplete();
+				}
+			}
+
+			private void clearLocalMatches(List<MatchInfo> list) {
+				for (Iterator<MatchInfo> iter = list.iterator(); iter.hasNext();) {
+					MatchInfo each = iter.next();
+					if (each instanceof LocalMatchInfo) {
+						iter.remove();
+					}
+				}
+			}
+
+			@Override
+			public void onLoadFailure() {
+				Log.w(TAG, "Error loading local matches");
+				localRefreshed = true;
+				if (localRefreshed && networkRefreshed) {
+					mPullToRefreshLayout.setRefreshComplete();
+				}
+			}
+		});
 		if (!getMainActivity().isSignedIn()) {
 			if (!getMainActivity().getGamesClient().isConnecting()
 					&& mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.setRefreshComplete();
+				networkRefreshed = true;
 			}
 			return;
 		}
@@ -601,13 +661,18 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 					public void onTurnBasedMatchesLoaded(int status,
 							LoadMatchesResponse response) {
 						if (status != GamesClient.STATUS_OK) {
+							networkRefreshed = true;
+							if (localRefreshed && networkRefreshed) {
+								mPullToRefreshLayout.setRefreshComplete();
+							}
 							// TODO report an error in some way, retry
 							return;
 						}
 						InvitationBuffer invitations = response
 								.getInvitations();
-						// put invites into my turns?
-						myTurns.clear();
+
+						// put invites into my turns
+						clearNonLocalMatches(myTurns);
 						int max = invitations.getCount();
 						for (int i = 0; i < max; i++) {
 							Invitation invitation = invitations.get(i);
@@ -620,20 +685,31 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 								.getMyTurnMatches();
 						populateMatches(myTurnMatches, myTurnsAdapter, myTurns);
 
-						theirTurns.clear();
+						clearNonLocalMatches(theirTurns);
 						TurnBasedMatchBuffer theirTurnMatches = response
 								.getTheirTurnMatches();
 						populateMatches(theirTurnMatches, theirTurnsAdapter,
 								theirTurns);
 
-						completedMatches.clear();
+						clearNonLocalMatches(completedMatches);
 						TurnBasedMatchBuffer completedMatchesBuffer = response
 								.getCompletedMatches();
 						populateMatches(completedMatchesBuffer,
 								completedMatchesAdapter, completedMatches);
 
-						if (mPullToRefreshLayout != null) {
+						networkRefreshed = true;
+						if (localRefreshed && networkRefreshed) {
 							mPullToRefreshLayout.setRefreshComplete();
+						}
+					}
+
+					private void clearNonLocalMatches(List<MatchInfo> list) {
+						for (Iterator<MatchInfo> iter = list.iterator(); iter
+								.hasNext();) {
+							MatchInfo each = iter.next();
+							if (each instanceof LocalMatchInfo)
+								continue;
+							iter.remove();
 						}
 					}
 
@@ -683,6 +759,24 @@ public class MenuFragment extends SherlockFragment implements MatchShower,
 	@Override
 	public void onInvitationRemoved(String invitationId) {
 		refreshInvites(true);
+	}
+
+	public void showLocalMatch(LocalMatchInfo localMatchInfo) {
+		setInactive();
+
+		if (localMatchInfo.getWhiteAILevel() != 0) {
+			AiListener listener = new AiListener(getMainActivity(),
+					localMatchInfo);
+			getMainActivity().setRoomListener(listener);
+			listener.showFromMenu();
+			return;
+		}
+
+		LocalListener listener = new LocalListener(getMainActivity(),
+				localMatchInfo);
+		getMainActivity().setRoomListener(listener);
+		listener.showFromMenu();
+
 	}
 
 }

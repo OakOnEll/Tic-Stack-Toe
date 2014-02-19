@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -80,9 +77,10 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	private void handleMenu() {
 		if (chatMenuItem == null)
 			return;
-		boolean isOnline = getMainActivity().getRoomListener() != null;
-		chatMenuItem.setVisible(isOnline);
-		if (!isOnline) {
+		boolean supportsChat = getMainActivity().getRoomListener()
+				.getChatHelper() != null;
+		chatMenuItem.setVisible(supportsChat);
+		if (!supportsChat) {
 			return;
 		}
 		RelativeLayout actionView = (RelativeLayout) chatMenuItem
@@ -129,34 +127,27 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 			break;
 
 		case R.id.action_settings:
-			if (isOnline()) {
-				// show an abbreviated "settings"- notably the sound fx and
-				// other immediate game play settings
-				OnlineSettingsDialogFragment onlineSettingsFragment = new OnlineSettingsDialogFragment();
-				onlineSettingsFragment.show(getChildFragmentManager(),
-						"settings");
-				return true;
-			}
-			// create special intent
-			Intent prefIntent = new Intent(getActivity(),
-					SettingsActivity.class);
-
-			GameHelper helper = getMainActivity().getGameHelper();
-			Info info = null;
-			TicStackToe app = (TicStackToe) getActivity().getApplication();
-			if (helper.isSignedIn()) {
-				info = new Info(helper);
-			}
-			app.setDevelopInfo(info);
-			// ugh.. does going to preferences leave the room!?
-			getActivity().startActivityForResult(prefIntent,
-					MainActivity.RC_UNUSED);
+			getMainActivity().getRoomListener().showSettings(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	protected abstract boolean isOnline();
+	public void showFullSettingsPreference() {
+		// create special intent
+		Intent prefIntent = new Intent(getActivity(), SettingsActivity.class);
+
+		GameHelper helper = getMainActivity().getGameHelper();
+		Info info = null;
+		TicStackToe app = (TicStackToe) getActivity().getApplication();
+		if (helper.isSignedIn()) {
+			info = new Info(helper);
+		}
+		app.setDevelopInfo(info);
+		// ugh.. does going to preferences leave the room!?
+		getActivity()
+				.startActivityForResult(prefIntent, MainActivity.RC_UNUSED);
+	}
 
 	protected void initThinkingText(View view, String opponentName) {
 		statusText = new StatusText();
@@ -164,7 +155,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 				.findViewById(R.id.thinking_text);
 		statusText.thinking = view.findViewById(R.id.thinking);
 		statusText.opponentName = opponentName;
-		
+
 		if (statusText.thinkingString != null) {
 			statusText.thinkingText.setText(statusText.thinkingString);
 		}
@@ -185,48 +176,17 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	private void openChatDialog() {
-		getMainActivity().getRoomListener().sendInChat(true);
+		getMainActivity().getRoomListener().getChatHelper().sendInChat(true);
 		chatDialog = new ChatDialogFragment();
 		chatDialog.initialize(this, messages, getMainActivity()
-				.getRoomListener().getMe(), getMainActivity().getRoomListener()
-				.getOpponentName());
+				.getRoomListener().getChatHelper().getMeForChat(),
+				getMainActivity().getRoomListener().getChatHelper()
+						.getOpponentName());
 		chatDialog.show(getChildFragmentManager(), "chat");
 	}
 
 	protected void promptToPlayAgain(String winner, String title) {
-		if (getMainActivity().getRoomListener() != null) {
-			getMainActivity().getRoomListener().promptToPlayAgain(winner, title);
-			return;
-		}
-
-		OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				leaveGame();
-			}
-
-		};
-		OnClickListener playAgainListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				playAgain();
-			}
-
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(title);
-		builder.setMessage(R.string.play_again);
-		builder.setCancelable(false);
-
-		builder.setNegativeButton(R.string.no, cancelListener);
-		builder.setPositiveButton(R.string.yes, playAgainListener);
-
-		AlertDialog dialog = builder.create();
-
-		dialog.show();
+		getMainActivity().getRoomListener().promptToPlayAgain(winner, title);
 	}
 
 	public MainActivity getMainActivity() {
@@ -246,13 +206,11 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void chatClosed() {
-		getMainActivity().getRoomListener().sendInChat(false);
+		getMainActivity().getRoomListener().getChatHelper().sendInChat(false);
 		chatDialog = null;
 		numNewMessages = 0;
 		invalidateMenu();
 	}
-
-	public abstract void playAgain();
 
 	private boolean opponentInChat = false;
 
@@ -264,7 +222,8 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		// update the display text
 		statusText.thinkingText.setText(getResources().getString(
 				R.string.opponent_is_in_chat,
-				getMainActivity().getRoomListener().getOpponentName()));
+				getMainActivity().getRoomListener().getChatHelper()
+						.getOpponentName()));
 	}
 
 	public void opponentClosedChat() {
@@ -280,7 +239,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		setThinkingText(text);
 		if (visible) {
 			showStatusText();
-		}else {
+		} else {
 			hideStatusText();
 		}
 	}
@@ -295,7 +254,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void setOpponentThinking() {
-		if (statusText.thinkingString != null ) {
+		if (statusText.thinkingString != null) {
 			return;
 		}
 		if (statusText.thinking == null) {

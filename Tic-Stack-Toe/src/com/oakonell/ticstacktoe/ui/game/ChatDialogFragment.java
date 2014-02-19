@@ -147,7 +147,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 	}
 
 	protected void sendMessage(String string) {
-		((MainActivity) getActivity()).getRoomListener().sendMessage(string);
+		((MainActivity) getActivity()).getRoomListener().getChatHelper().sendMessage(string);
 
 		messages.add(new ChatMessage(me, string, true, System
 				.currentTimeMillis()));

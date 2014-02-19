@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -33,13 +35,16 @@ import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlinePlayAgainFragment;
+import com.oakonell.ticstacktoe.ui.game.OnlineSettingsDialogFragment;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 
 public class RoomListener implements RoomUpdateListener,
-		RealTimeMessageReceivedListener, RoomStatusUpdateListener, GameListener {
+		RealTimeMessageReceivedListener, RoomStatusUpdateListener,
+		GameListener, ChatHelper {
 	private static final Random random = new Random();
 	private static final String TAG = RoomListener.class.getName();
 
@@ -254,12 +259,12 @@ public class RoomListener implements RoomUpdateListener,
 		String localPlayerName = activity.getString(R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
-					getMe().getIconImageUri());
+					getMeForChat().getIconImageUri());
 			whitePlayer = OnlineStrategy.createPlayer(getOpponentName(), false,
 					getOpponentParticipant().getIconImageUri());
 		} else {
 			whitePlayer = HumanStrategy.createPlayer(localPlayerName, false,
-					getMe().getIconImageUri());
+					getMeForChat().getIconImageUri());
 			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
 					getOpponentParticipant().getIconImageUri());
 		}
@@ -619,7 +624,7 @@ public class RoomListener implements RoomUpdateListener,
 
 	}
 
-	public Participant getMe() {
+	public Participant getMeForChat() {
 		if (mParticipants.get(0).getParticipantId().equals(mMyParticipantId)) {
 			return mParticipants.get(0);
 		}
@@ -715,10 +720,17 @@ public class RoomListener implements RoomUpdateListener,
 		}
 
 		activity.getGameFragment().leaveGame();
+		activity.getMenuFragment().leaveRoom();
 	}
 
 	public void playAgain() {
-		activity.getGameFragment().playAgain();
+		Game game = activity.getGameFragment().getGame();
+		Player currentPlayer = game.getCurrentPlayer();
+		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
+				game.getWhitePlayer(), currentPlayer);
+
+		activity.getGameFragment().startGame(game,
+				activity.getGameFragment().getScore(), null, false);
 	}
 
 	@Override
@@ -744,12 +756,31 @@ public class RoomListener implements RoomUpdateListener,
 
 	@Override
 	public void onSignInFailed(MainActivity mainActivity) {
-		// Real time game, we already disconnected, this won't matter	
+		// Real time game, we already disconnected, this won't matter
 	}
 
 	@Override
 	public void onFragmentResume() {
 		// nothing
+	}
+
+	@Override
+	public void showSettings(AbstractGameFragment fragment) {
+		// show an abbreviated "settings"- notably the sound fx and
+		// other immediate game play settings
+		OnlineSettingsDialogFragment onlineSettingsFragment = new OnlineSettingsDialogFragment();
+		onlineSettingsFragment.show(fragment.getChildFragmentManager(),
+				"settings");
+	}
+
+	@Override
+	public boolean shouldKeepScreenOn() {
+		return true;
+	}
+
+	@Override
+	public ChatHelper getChatHelper() {
+		return this;
 	}
 
 }

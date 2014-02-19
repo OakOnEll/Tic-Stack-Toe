@@ -1,9 +1,12 @@
 package com.oakonell.ticstacktoe;
 
+import android.support.v4.app.Fragment;
+
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 
 public interface GameListener {
@@ -12,9 +15,6 @@ public interface GameListener {
 
 	void sendMove(Game game, AbstractMove lastMove, ScoreCard score);
 
-	Participant getMe();
-
-	String getOpponentName();
 
 	void backFromWaitingRoom();
 
@@ -22,9 +22,7 @@ public interface GameListener {
 
 	void promptToPlayAgain(String winner, String title);
 
-	void sendInChat(boolean b);
 
-	void sendMessage(String string);
 
 	void reassociate(MainActivity activity);
 
@@ -33,5 +31,12 @@ public interface GameListener {
 	void onSignInFailed(MainActivity mainActivity);
 
 	void onFragmentResume();
+
+	void showSettings(AbstractGameFragment fragment);
+
+
+	boolean shouldKeepScreenOn();
+
+	ChatHelper getChatHelper();
 
 }

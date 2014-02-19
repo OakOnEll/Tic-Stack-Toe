@@ -47,6 +47,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 
 		if (match.getStatus() == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
 			canRematch = match.canRematch();
+			// TODO offload this from the main thread
 			if (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
 				GameState state = GameState.fromMatch(context, client, match);
 				State state2 = state.game.getBoard().getState();

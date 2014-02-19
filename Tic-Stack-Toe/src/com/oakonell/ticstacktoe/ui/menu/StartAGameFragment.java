@@ -28,6 +28,8 @@ import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
+import com.oakonell.ticstacktoe.AiListener;
+import com.oakonell.ticstacktoe.LocalListener;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.RoomListener;
@@ -223,76 +225,7 @@ public class StartAGameFragment extends SherlockFragment {
 				exitStartMenu();
 			}
 			break;
-		// case MainActivity.RC_INVITATION_INBOX: {
-		// Log.i(TAG, "RC_INVITATION_INBOX start");
-		// refreshInvites(false);
-		// if (response != Activity.RESULT_OK) {
-		// setActive();
-		// // getMainActivity().getGameHelper().showAlert(
-		// // "Bad response on return from accept invite (request="
-		// // + request + " ): " + response + ", intent: "
-		// // + data);
-		// Log.i(TAG, "Returned from invitation- Canceled/Error "
-		// + response);
-		// return;
-		// }
-		// Log.i(TAG, "RC_INVITATION_INBOX got here1");
-		// Invitation inv = data.getExtras().getParcelable(
-		// GamesClient.EXTRA_INVITATION);
-		// if (inv == null) {
-		// Log.i(TAG,
-		// "RC_INVITATION_INBOX no invite, assume a turn based!");
-		// TurnBasedMatch match = data.getExtras().getParcelable(
-		// GamesClient.EXTRA_TURN_BASED_MATCH);
-		// if (match == null) {
-		// getMainActivity()
-		// .getGameHelper()
-		// .showAlert(
-		// "No invite NOR match. What kind of invite was accepted?");
-		// return;
-		// }
-		// updateMatch(match);
-		// break;
-		// }
-		// Log.i(TAG, "RC_INVITATION_INBOX got here2");
-		// int invitationType = inv.getInvitationType();
-		// if (invitationType == Invitation.INVITATION_TYPE_REAL_TIME) {
-		// Log.i(TAG, "RC_INVITATION_INBOX got here3");
-		// // accept realtime invitation
-		// acceptInviteToRoom(inv.getInvitationId());
-		//
-		// } else {
-		// Log.i(TAG, "RC_INVITATION_INBOX got here4");
-		// //
-		// getMainActivity().getGameHelper().showAlert("No invite NOR match. What kind of invite was accepted?");
-		// // accept turn based match
-		// acceptTurnBasedInvitation(inv.getInvitationId());
-		// }
-		// Log.i(TAG, "RC_INVITATION_INBOX got here5");
-		// }
-		// break;
-
-		// case MainActivity.RC_LOOK_AT_MATCHES:
-		// // Returning from the 'Select Match' dialog
-		//
-		// if (response != Activity.RESULT_OK) {
-		// // user canceled
-		// return;
-		// }
-		//
-		// TurnBasedMatch match = data
-		// .getParcelableExtra(GamesClient.EXTRA_TURN_BASED_MATCH);
-		//
-		// if (match != null) {
-		// updateMatch(match);
-		// }
-		//
-		// Log.d(TAG, "Match = " + match);
-		//
-		// break;
-
 		}
-		// super.onActivityResult(request, response, data);
 	}
 
 	private void exitStartMenu() {
@@ -523,60 +456,26 @@ public class StartAGameFragment extends SherlockFragment {
 
 	private void startLocalTwoPlayerGame(GameType type, String blackName,
 			String whiteName) {
-		GameFragment gameFragment = new GameFragment();
 
-		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
-		Player whitePlayer = HumanStrategy.createPlayer(whiteName, false);
+		setInactive();
 
-		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(getString(R.string.an_start_game_cat),
-				getString(R.string.an_start_pass_n_play_game_action),
-				type + "", 0L);
+		LocalListener listener = new LocalListener(getMainActivity());
+		getMainActivity().setRoomListener(listener);
 
-		Game game = new Game(type, GameMode.PASS_N_PLAY, blackPlayer,
-				whitePlayer, blackPlayer);
-		ScoreCard score = new ScoreCard(0, 0, 0);
-		gameFragment.startGame(game, score, null, true);
-
+		listener.startGame(blackName, whiteName, type);
 		exitStartMenu();
-		FragmentManager manager = getActivity().getSupportFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.replace(R.id.main_frame, gameFragment,
-				MainActivity.FRAG_TAG_GAME);
-		transaction.addToBackStack(null);
-		transaction.commit();
 	}
 
 	private void startAIGame(GameType type, String whiteName, int aiDepth) {
-		GameFragment gameFragment = new GameFragment();
+		setInactive();
 
-		ScoreCard score = new ScoreCard(0, 0, 0);
 		String blackName = getResources().getString(R.string.local_player_name);
 
-		Player whitePlayer;
-		if (aiDepth < 0) {
-			whitePlayer = RandomAI.createPlayer(whiteName, false);
-		} else {
-			whitePlayer = MinMaxAI.createPlayer(whiteName, false, aiDepth);
-		}
+		AiListener listener = new AiListener(getMainActivity());
+		getMainActivity().setRoomListener(listener);
 
-		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
-
-		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(getString(R.string.an_start_game_cat),
-				getString(R.string.an_start_ai_game_action), type + "", 0L);
-		Game game = new Game(type, GameMode.AI, blackPlayer, whitePlayer,
-				blackPlayer);
-
-		gameFragment.startGame(game, score, null, true);
-
+		listener.startGame(blackName, whiteName, type, aiDepth);
 		exitStartMenu();
-		FragmentManager manager = getActivity().getSupportFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.replace(R.id.main_frame, gameFragment,
-				MainActivity.FRAG_TAG_GAME);
-		transaction.addToBackStack(null);
-		transaction.commit();
 	}
 
 	public MainActivity getMainActivity() {

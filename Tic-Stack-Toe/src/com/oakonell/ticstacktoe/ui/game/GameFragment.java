@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -35,11 +33,9 @@ import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameListener;
 import com.oakonell.ticstacktoe.Leaderboards;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
 import com.oakonell.ticstacktoe.model.ByteBufferDebugger;
@@ -55,10 +51,8 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
-import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
-import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
 import com.oakonell.utils.activity.dragndrop.DragController;
@@ -92,28 +86,17 @@ public class GameFragment extends AbstractGameFragment {
 
 	private boolean disableButtons;
 
-	private WindowManager mWindowManager;
-
-	// private Cell firstPickCell;
-
 	@Override
 	public void onPause() {
 		// TODO write the game state to the server?
-		mWindowManager = null;
 		super.onPause();
-	}
-
-	protected boolean isOnline() {
-		return game.getMode() == GameMode.ONLINE;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if (getMainActivity().getRoomListener() != null) {
-			getMainActivity().getRoomListener().onFragmentResume();
-		}
+		getMainActivity().getRoomListener().onFragmentResume();
 		Log.i("GameFragment", "onResume");
 
 		if (inOnResume != null) {
@@ -203,39 +186,10 @@ public class GameFragment extends AbstractGameFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// if (useUpNavigation()) {
-			// NavUtils.navigateUpFromSameTask(this);
-			// } else {
 			leaveGame();
-			// }
-			return true;
-		case R.id.action_settings:
-			if (game.getMode() == GameMode.ONLINE) {
-
-				// show an abbreviated "settings"- notably the sound fx and
-				// other immediate game play settings
-				OnlineSettingsDialogFragment onlineSettingsFragment = new OnlineSettingsDialogFragment();
-				onlineSettingsFragment.show(getChildFragmentManager(),
-						"settings");
-				return true;
-			}
-			// create special intent
-			Intent prefIntent = new Intent(getActivity(),
-					SettingsActivity.class);
-
-			GameHelper helper = getMainActivity().getGameHelper();
-			Info info = null;
-			TicStackToe app = (TicStackToe) getActivity().getApplication();
-			if (helper.isSignedIn()) {
-				info = new Info(helper);
-			}
-			app.setDevelopInfo(info);
-			// ugh.. does going to preferences leave the room!?
-			getActivity().startActivityForResult(prefIntent,
-					MainActivity.RC_UNUSED);
 			return true;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -295,7 +249,8 @@ public class GameFragment extends AbstractGameFragment {
 		winOverlayView.setBoardSize(game.getBoard().getSize());
 		addPieceListeners(view);
 
-		view.setKeepScreenOn(game.getMode() == GameMode.ONLINE);
+		view.setKeepScreenOn(getMainActivity().getRoomListener()
+				.shouldKeepScreenOn());
 		if (game.getBoard().getSize() == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
 					.setBackgroundResource(R.drawable.wood_grid_3x3);
@@ -979,13 +934,8 @@ public class GameFragment extends AbstractGameFragment {
 				postMove(state, true);
 
 				GameListener appListener = getMainActivity().getRoomListener();
-				if (appListener != null) {
-					AbstractMove lastMove = state.getLastMove();
-					appListener.sendMove(game, lastMove, score);
-					// getMainActivity().getGameHelper().showAlert(
-					// "Sending move " + lastMove);
-				}
-
+				AbstractMove lastMove = state.getLastMove();
+				appListener.sendMove(game, lastMove, score);
 			}
 
 			@Override
@@ -1131,59 +1081,6 @@ public class GameFragment extends AbstractGameFragment {
 		dialog.initialize(this, game, score);
 		dialog.show(getChildFragmentManager(), "stats");
 	}
-
-	public void playAgain() {
-		Player currentPlayer = game.getCurrentPlayer();
-		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
-				game.getWhitePlayer(), currentPlayer);
-		addPieceListeners(getView());
-		updateHeader(getView());
-		winOverlayView.clearWins();
-		winOverlayView.invalidate();
-		// reset board
-		for (ImageDropTarget each : buttons) {
-			each.setImageDrawable(null);
-		}
-		// reset player stacks
-		for (int i = 0; i < game.getType().getNumberOfStacks(); i++) {
-			updatePlayerStack(game.getBlackPlayer(), i);
-			updatePlayerStack(game.getWhitePlayer(), i);
-		}
-		acceptMove();
-	}
-
-	// private final class ButtonPressListener implements View.OnClickListener {
-	// private final Cell cell;
-	//
-	// public ButtonPressListener(Cell cell) {
-	// this.cell = cell;
-	// }
-	//
-	// @Override
-	// public void onClick(View view) {
-	// if (disableButtons) {
-	// return;
-	// }
-	// if (!game.getCurrentPlayer().getStrategy().isHuman()) {
-	// // ignore button clicks if the current player is not a human
-	// return;
-	// }
-	// // TODO button click is wrong event here... needs to be drop event
-	// // Piece marker = game.getMarkerToPlay();
-	// //
-	// // boolean wasValid = makeAndDisplayMove(marker, cell);
-	// // if (!wasValid)
-	// // return;
-	// //
-	// // // send move to opponent
-	// // RoomListener appListener = getMainActivity().getRoomListener();
-	// // if (appListener != null) {
-	// // appListener.sendMove(marker, cell);
-	// // }
-	//
-	// }
-	//
-	// }
 
 	private void updateHeader(View view) {
 		if (view == null) {

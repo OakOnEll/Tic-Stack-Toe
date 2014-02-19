@@ -39,12 +39,14 @@ import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 import com.oakonell.ticstacktoe.ui.game.TurnBasedPlayAgainFragment;
 
-public class TurnListener implements TurnBasedMultiplayerListener, GameListener {
+public class TurnListener implements TurnBasedMultiplayerListener,
+		GameListener, ChatHelper {
 	private static final int TOAST_DELAY = Toast.LENGTH_SHORT;
 	private static final String TAG = "TurnListener";
 	private static final int PROTOCOL_VERSION = 1;
@@ -231,13 +233,13 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		if (iAmBlack) {
 			blackParticipantId = mMyParticipantId;
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
-					getMe().getIconImageUri());
+					getMeForChat().getIconImageUri());
 			whitePlayer = OnlineStrategy.createPlayer(getOpponentName(), false,
 					getOpponentParticipant().getIconImageUri());
 		} else {
 			blackParticipantId = getOpponentParticipant().getParticipantId();
 			whitePlayer = HumanStrategy.createPlayer(localPlayerName, false,
-					getMe().getIconImageUri());
+					getMeForChat().getIconImageUri());
 			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
 					getOpponentParticipant().getIconImageUri());
 		}
@@ -448,9 +450,9 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 					blackParticipantId, isQuick, true);
 			byte[] bytes = gameState.toBytes(helper);
 			helper.getGamesClient().takeTurn(this, mMatch.getMatchId(), bytes,
-					getMe().getParticipantId());
+					getMeForChat().getParticipantId());
 		}
-		helper.getGamesClient().registerMatchUpdateListener(null);
+		activity.getMenuFragment().leaveRoom();
 	}
 
 	@Override
@@ -496,11 +498,11 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 			// ParticipantResult result = new ParticipantResult(, result,
 			// placing);
 			boolean iWon = false;
-			if (blackParticipantId.equals(getMe().getParticipantId())
+			if (blackParticipantId.equals(getMeForChat().getParticipantId())
 					&& blackWon) {
 				iWon = true;
-			} else if (!blackParticipantId.equals(getMe().getParticipantId())
-					&& !blackWon) {
+			} else if (!blackParticipantId.equals(getMeForChat()
+					.getParticipantId()) && !blackWon) {
 				iWon = true;
 			}
 
@@ -529,7 +531,7 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 	}
 
 	@Override
-	public Participant getMe() {
+	public Participant getMeForChat() {
 		ArrayList<Participant> mParticipants = mMatch.getParticipants();
 
 		if (!mParticipants.get(0).getParticipantId().equals(mMyParticipantId)) {
@@ -720,8 +722,9 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 			OpponentWrapper opponent;
 			Participant me;
 			Participant participant = match.getParticipants().get(0);
-			if (participant.getPlayer() != null && participant.getPlayer().getPlayerId()
-					.equals(client.getCurrentPlayerId())) {
+			if (participant.getPlayer() != null
+					&& participant.getPlayer().getPlayerId()
+							.equals(client.getCurrentPlayerId())) {
 				me = participant;
 				// TODO what about auto matching..
 				if (match.getParticipants().size() == 1) {
@@ -895,13 +898,13 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		// TODO
 		String winnerName;
 		if (state.game.getBoard().getState().getWinner().isBlack()) {
-			if (blackParticipantId.equals(getMe().getParticipantId())) {
+			if (blackParticipantId.equals(getMeForChat().getParticipantId())) {
 				winnerName = "You";
 			} else {
 				winnerName = getOpponentName();
 			}
 		} else {
-			if (!blackParticipantId.equals(getMe().getParticipantId())) {
+			if (!blackParticipantId.equals(getMeForChat().getParticipantId())) {
 				winnerName = "You";
 			} else {
 				winnerName = getOpponentName();
@@ -1161,4 +1164,18 @@ public class TurnListener implements TurnBasedMultiplayerListener, GameListener 
 		});
 	}
 
+	@Override
+	public void showSettings(AbstractGameFragment fragment) {
+		fragment.showFullSettingsPreference();
+	}
+
+	@Override
+	public boolean shouldKeepScreenOn() {
+		return false;
+	}
+
+	@Override
+	public ChatHelper getChatHelper() {
+		return this;
+	}
 }
