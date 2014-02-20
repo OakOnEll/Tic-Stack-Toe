@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.turn;
+package com.oakonell.ticstacktoe.ui.network.turn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
-import com.oakonell.ticstacktoe.ui.turn.TurnListener.GameState;
+import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy.GameState;
 
 public class TurnBasedMatchInfo implements MatchInfo {
 

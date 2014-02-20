@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
-import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.Leaderboards;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
@@ -95,7 +95,7 @@ public class GameFragment extends AbstractGameFragment {
 	public void onResume() {
 		super.onResume();
 
-		getMainActivity().getRoomListener().onFragmentResume();
+		getMainActivity().getGameStrategy().onFragmentResume();
 		Log.i("GameFragment", "onResume");
 
 		if (inOnResume != null) {
@@ -248,7 +248,7 @@ public class GameFragment extends AbstractGameFragment {
 		winOverlayView.setBoardSize(game.getBoard().getSize());
 		addPieceListeners(view);
 
-		view.setKeepScreenOn(getMainActivity().getRoomListener()
+		view.setKeepScreenOn(getMainActivity().getGameStrategy()
 				.shouldKeepScreenOn());
 		if (game.getBoard().getSize() == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
@@ -920,7 +920,8 @@ public class GameFragment extends AbstractGameFragment {
 									toast.show();
 								}
 							});
-					getMainActivity().playSound(Sounds.INVALID_MOVE);
+					getMainActivity().getGameStrategy().playSound(
+							Sounds.INVALID_MOVE);
 					return;
 				}
 				onDropMove.postMove();
@@ -930,7 +931,7 @@ public class GameFragment extends AbstractGameFragment {
 				updateBoardPiece(cell);
 				postMove(state, true);
 
-				GameListener appListener = getMainActivity().getRoomListener();
+				GameStrategy appListener = getMainActivity().getGameStrategy();
 				AbstractMove lastMove = state.getLastMove();
 				appListener.sendMove(game, lastMove, score);
 			}
@@ -1137,7 +1138,7 @@ public class GameFragment extends AbstractGameFragment {
 		try {
 			outcome = move.applyToGame(game);
 		} catch (InvalidMoveException e) {
-			getMainActivity().playSound(Sounds.INVALID_MOVE);
+			getMainActivity().getGameStrategy().playSound(Sounds.INVALID_MOVE);
 			int messageId = e.getErrorResourceId();
 			Toast toast = Toast.makeText(getActivity(), messageId,
 					Toast.LENGTH_SHORT);
@@ -1367,13 +1368,16 @@ public class GameFragment extends AbstractGameFragment {
 
 			if (playSound) {
 				if (game.getMode() == GameMode.PASS_N_PLAY) {
-					getMainActivity().playSound(Sounds.GAME_WON);
+					getMainActivity().getGameStrategy().playSound(
+							Sounds.GAME_WON);
 				} else {
 					// the player either won or lost
 					if (winner.equals(game.getLocalPlayer())) {
-						getMainActivity().playSound(Sounds.GAME_WON);
+						getMainActivity().getGameStrategy().playSound(
+								Sounds.GAME_WON);
 					} else {
-						getMainActivity().playSound(Sounds.GAME_LOST);
+						getMainActivity().getGameStrategy().playSound(
+								Sounds.GAME_LOST);
 					}
 				}
 			}
@@ -1382,7 +1386,7 @@ public class GameFragment extends AbstractGameFragment {
 
 		} else {
 			score.incrementScore(null);
-			getMainActivity().playSound(Sounds.GAME_DRAW);
+			getMainActivity().getGameStrategy().playSound(Sounds.GAME_DRAW);
 			title = getString(R.string.draw);
 		}
 		promptToPlayAgain(winner.getName(), title);

@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.realtime;
+package com.oakonell.ticstacktoe.ui.network.realtime;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -26,7 +26,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.oakonell.ticstacktoe.ChatHelper;
-import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -40,13 +40,14 @@ import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
+import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
-public class RoomListener implements RoomUpdateListener,
-		RealTimeMessageReceivedListener, RoomStatusUpdateListener,
-		GameListener, ChatHelper {
+public class RealtimeGameStrategy extends GameStrategy implements
+		RoomUpdateListener, RealTimeMessageReceivedListener,
+		RoomStatusUpdateListener, ChatHelper {
 	private static final Random random = new Random();
-	private static final String TAG = RoomListener.class.getName();
+	private static final String TAG = RealtimeGameStrategy.class.getName();
 
 	private static final int PROTOCOL_VERSION = 1;
 	private static final byte MSG_WHO_IS_X = 1;
@@ -60,7 +61,6 @@ public class RoomListener implements RoomUpdateListener,
 
 	private int opponentProtocolVersion;
 
-	private MainActivity activity;
 	private GameHelper helper;
 
 	private String mRoomId;
@@ -81,9 +81,10 @@ public class RoomListener implements RoomUpdateListener,
 		return helper.getGamesClient();
 	}
 
-	public RoomListener(MainActivity activity, GameHelper helper,
-			GameType type, boolean isQuick, boolean initiatedTheGame) {
-		this.activity = activity;
+	public RealtimeGameStrategy(MainActivity activity,
+			SoundManager soundManager, GameHelper helper, GameType type,
+			boolean isQuick, boolean initiatedTheGame) {
+		super(activity, soundManager);
 		this.helper = helper;
 		this.type = type;
 		this.isQuick = isQuick;
@@ -179,7 +180,7 @@ public class RoomListener implements RoomUpdateListener,
 	@Override
 	public void onPeerLeft(Room room, List<String> peersWhoLeft) {
 		// opponent left, notify the main game
-		activity.opponentLeft();
+		opponentLeft();
 
 		announce("onPeerLeft");
 		updateRoom(room);
@@ -202,10 +203,7 @@ public class RoomListener implements RoomUpdateListener,
 			}
 			checkWhoIsFirstAndAttemptToStart(false);
 		} else if (type == MSG_MOVE) {
-
-			// TODO is it possible that the moveListener is null?
-			// should we store the pending move, until a move listener is set
-			activity.onlineMoveReceived(new ByteBufferDebugger(buffer));
+			onlineMoveReceived(new ByteBufferDebugger(buffer));
 		} else if (type == MSG_MESSAGE) {
 			int numBytes = buffer.getInt();
 			byte[] bytes = new byte[numBytes];
@@ -217,7 +215,7 @@ public class RoomListener implements RoomUpdateListener,
 				throw new RuntimeException("UTF-8 charset not present!?");
 			}
 
-			activity.messageRecieved(getOpponentParticipant(), string);
+			getMainActivity().messageRecieved(getOpponentParticipant(), string);
 		} else if (type == MSG_SEND_VARIANT) {
 			int sentVariant = buffer.getInt();
 			if (this.type != null) {
@@ -234,9 +232,9 @@ public class RoomListener implements RoomUpdateListener,
 			boolean playAgain = buffer.getInt() != 0;
 			receivePlayAgain(playAgain);
 		} else if (type == MSG_IN_CHAT) {
-			activity.opponentInChat();
+			opponentInChat();
 		} else if (type == MSG_CLOSE_CHAT) {
-			activity.opponentClosedChat();
+			opponentClosedChat();
 		} else {
 			// handle later version future support
 			if (opponentProtocolVersion > PROTOCOL_VERSION) {
@@ -252,11 +250,12 @@ public class RoomListener implements RoomUpdateListener,
 		GameFragment gameFragment = new GameFragment();
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
-		activity.hideAd();
+		getMainActivity().hideAd();
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		Player blackPlayer;
 		Player whitePlayer;
-		String localPlayerName = activity.getString(R.string.local_player_name);
+		String localPlayerName = getMainActivity()
+				.getString(R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
 					getMeForChat().getIconImageUri());
@@ -271,17 +270,17 @@ public class RoomListener implements RoomUpdateListener,
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker
 				.sendEvent(
-						activity.getString(R.string.an_start_game_cat),
-						(isQuick ? activity
+						getMainActivity().getString(R.string.an_start_game_cat),
+						(isQuick ? getMainActivity()
 								.getString(R.string.an_start_quick_game_action)
-								: activity
+								: getMainActivity()
 										.getString(R.string.an_start_online_game_action)),
 						type.getVariant() + "", 0L);
 
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
 				blackPlayer);
 		gameFragment.startGame(game, score, null, true);
-		FragmentManager manager = activity.getSupportFragmentManager();
+		FragmentManager manager = getMainActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
 				MainActivity.FRAG_TAG_GAME);
@@ -296,7 +295,7 @@ public class RoomListener implements RoomUpdateListener,
 			Log.e(TAG, "*** Error: onJoinedRoom, status " + statusCode);
 			showGameError(R.string.onJoinedRoom, statusCode);
 			leaveRoom();
-			activity.getMenuFragment().setActive();
+			getMainActivity().getMenuFragment().setActive();
 			return;
 		}
 
@@ -311,7 +310,7 @@ public class RoomListener implements RoomUpdateListener,
 	@Override
 	public void onLeftRoom(int arg0, String arg1) {
 		announce("onLeftRoom");
-		activity.getSupportFragmentManager().popBackStack();
+		getMainActivity().getSupportFragmentManager().popBackStack();
 	}
 
 	// Called when room is fully connected.
@@ -323,7 +322,7 @@ public class RoomListener implements RoomUpdateListener,
 			Log.e(TAG, "*** Error: onRoomConnected, status " + statusCode);
 			showGameError(R.string.onRoomConnected, statusCode);
 			leaveRoom();
-			activity.getMenuFragment().setActive();
+			getMainActivity().getMenuFragment().setActive();
 			return;
 		}
 		updateRoom(room);
@@ -338,7 +337,7 @@ public class RoomListener implements RoomUpdateListener,
 			Log.e(TAG, "*** Error: onRoomCreated, status " + statusCode);
 			showGameError(R.string.onRoomCreated, statusCode);
 			leaveRoom();
-			activity.getMenuFragment().setActive();
+			getMainActivity().getMenuFragment().setActive();
 			return;
 		}
 
@@ -354,10 +353,11 @@ public class RoomListener implements RoomUpdateListener,
 		String message = GooglePlayServicesUtil.getErrorString(errorNum);
 		if (message.startsWith("UNKNOWN")) {
 			if (errorNum == 6001) {
-				message = activity.getString(R.string.cannot_invite_non_tester);
+				message = getMainActivity()
+						.getString(R.string.cannot_invite_non_tester);
 			}
 		}
-		helper.showAlert(activity.getString(R.string.communication_error)
+		helper.showAlert(getMainActivity().getString(R.string.communication_error)
 				+ " (" + errorNum + ") " + message);
 	}
 
@@ -373,7 +373,8 @@ public class RoomListener implements RoomUpdateListener,
 				minPlayersToStart);
 
 		// show waiting room UI
-		activity.startActivityForResult(intent, MainActivity.RC_WAITING_ROOM);
+		getMainActivity().startActivityForResult(intent,
+				MainActivity.RC_WAITING_ROOM);
 	}
 
 	public void leaveRoom() {
@@ -665,7 +666,7 @@ public class RoomListener implements RoomUpdateListener,
 	public void promptToPlayAgain(String winner, String title) {
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
 		onlinePlayAgainDialog.initialize(this, getOpponentName(), title);
-		onlinePlayAgainDialog.show(activity.getGameFragment()
+		onlinePlayAgainDialog.show(getMainActivity().getGameFragment()
 				.getChildFragmentManager(), "playAgain");
 		// TODO wire up the play again / not play again message handling via
 		// the dialog
@@ -691,15 +692,15 @@ public class RoomListener implements RoomUpdateListener,
 	}
 
 	public void opponentLeft() {
-		activity.getGameFragment().getView().setKeepScreenOn(false);
+		getMainActivity().getGameFragment().getView().setKeepScreenOn(false);
 		if (onlinePlayAgainDialog != null) {
 			// the user is in the play again dialog, let him read the info
 			return;
 
 		}
-		String message = activity.getResources().getString(
+		String message = getMainActivity().getResources().getString(
 				R.string.peer_left_the_game, getOpponentName());
-		(new AlertDialog.Builder(activity)).setMessage(message)
+		(new AlertDialog.Builder(getMainActivity())).setMessage(message)
 				.setNeutralButton(android.R.string.ok, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -716,30 +717,31 @@ public class RoomListener implements RoomUpdateListener,
 			return;
 		}
 
-		activity.getGameFragment().leaveGame();
-		activity.getMenuFragment().leaveRoom();
+		getMainActivity().getGameFragment().leaveGame();
+		getMainActivity().getMenuFragment().leaveRoom();
 	}
 
 	public void playAgain() {
-		Game game = activity.getGameFragment().getGame();
+		Game game = getMainActivity().getGameFragment().getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
 
-		activity.getGameFragment().startGame(game,
-				activity.getGameFragment().getScore(), null, false);
+		getMainActivity().getGameFragment().startGame(game,
+				getMainActivity().getGameFragment().getScore(), null, false);
 	}
 
 	@Override
-	public void reassociate(MainActivity theActivity) {
+	public void onSignInSuccess(MainActivity theActivity) {
 		// real time game is broken when onResumed, nothing to do here
-		this.activity = theActivity;
+		setMainActivity(theActivity);
 	}
+
 
 	@Override
 	public void onResume(MainActivity theActivity) {
-		activity = theActivity;
-		(new AlertDialog.Builder(activity))
+		setMainActivity(theActivity);
+		(new AlertDialog.Builder(getMainActivity()))
 				.setMessage(R.string.you_left_the_game)
 				.setNeutralButton(android.R.string.ok, new OnClickListener() {
 					@Override
@@ -780,4 +782,15 @@ public class RoomListener implements RoomUpdateListener,
 		return this;
 	}
 
+	public void onlineMoveReceived(ByteBufferDebugger buffer) {
+		getMainActivity().getGameFragment().onlineMakeMove(buffer);
+	}
+
+	public void opponentInChat() {
+		getMainActivity().getGameFragment().opponentInChat();
+	}
+
+	public void opponentClosedChat() {
+		getMainActivity().getGameFragment().opponentClosedChat();
+	}
 }

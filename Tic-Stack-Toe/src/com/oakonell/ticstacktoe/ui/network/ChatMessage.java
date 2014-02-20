@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.game;
+package com.oakonell.ticstacktoe.ui.network;
 
 import android.content.Context;
 import android.text.format.DateUtils;

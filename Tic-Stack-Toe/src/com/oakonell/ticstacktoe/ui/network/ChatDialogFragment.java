@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.game;
+package com.oakonell.ticstacktoe.ui.network;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.utils.StringUtils;
 
 public class ChatDialogFragment extends SherlockDialogFragment {
@@ -147,7 +148,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 	}
 
 	protected void sendMessage(String string) {
-		((MainActivity) getActivity()).getRoomListener().getChatHelper().sendMessage(string);
+		((MainActivity) getActivity()).getGameStrategy().getChatHelper().sendMessage(string);
 
 		messages.add(new ChatMessage(me, string, true, System
 				.currentTimeMillis()));

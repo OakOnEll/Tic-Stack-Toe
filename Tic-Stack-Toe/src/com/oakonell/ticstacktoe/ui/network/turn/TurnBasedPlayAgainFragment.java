@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.turn;
+package com.oakonell.ticstacktoe.ui.network.turn;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,10 +26,10 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 	private Button positiveButton;
 	private Button negativeButton;
 
-	private TurnListener listener;
+	private TurnBasedMatchGameStrategy listener;
 	private Runnable configure;
 
-	public void initialize(TurnListener listener, String opponentName,
+	public void initialize(TurnBasedMatchGameStrategy listener, String opponentName,
 			String winner) {
 		this.opponentName = opponentName;
 		this.listener = listener;

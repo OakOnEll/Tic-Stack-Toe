@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.realtime;
+package com.oakonell.ticstacktoe.ui.network.realtime;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

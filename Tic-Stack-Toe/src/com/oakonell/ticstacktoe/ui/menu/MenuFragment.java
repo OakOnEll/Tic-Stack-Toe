@@ -52,16 +52,16 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
-import com.oakonell.ticstacktoe.ui.local.AiListener;
-import com.oakonell.ticstacktoe.ui.local.LocalListener;
+import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
-import com.oakonell.ticstacktoe.ui.realtime.RoomListener;
-import com.oakonell.ticstacktoe.ui.turn.InviteMatchInfo;
-import com.oakonell.ticstacktoe.ui.turn.TurnBasedMatchInfo;
-import com.oakonell.ticstacktoe.ui.turn.TurnListener;
+import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
+import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
+import com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo;
+import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
+import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
-public class MenuFragment extends SherlockFragment implements 
+public class MenuFragment extends SherlockFragment implements
 		OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
 
 	private DatabaseHandler dbHandler;
@@ -89,7 +89,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	public void leaveRoom() {
 		Log.d(TAG, "Leaving room.");
-		getMainActivity().setRoomListener(null);
+		getMainActivity().setGameStrategy(null);
 		registerMatchListeners();
 		refreshMatches();
 	}
@@ -401,9 +401,10 @@ public class MenuFragment extends SherlockFragment implements
 
 	// Accept the given invitation.
 	public void acceptInviteToRoom(String invId) {
-		RoomListener roomListener = new RoomListener(getMainActivity(),
+		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(
+				getMainActivity(), getMainActivity().getSoundManager(),
 				getMainActivity().getGameHelper(), null, false, false);
-		getMainActivity().setRoomListener(roomListener);
+		getMainActivity().setGameStrategy(roomListener);
 		// accept the invitation
 		Log.d(TAG, "Accepting invitation: " + invId);
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(roomListener);
@@ -471,10 +472,11 @@ public class MenuFragment extends SherlockFragment implements
 											+ ": error=" + status);
 							return;
 						}
-						TurnListener listener = new TurnListener(
+						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
 								getMainActivity(), getMainActivity()
+										.getSoundManager(), getMainActivity()
 										.getGameHelper(), match);
-						getMainActivity().setRoomListener(listener);
+						getMainActivity().setGameStrategy(listener);
 
 						listener.showGame();
 					}
@@ -509,13 +511,14 @@ public class MenuFragment extends SherlockFragment implements
 		// if sign in just succeeded, but another game is in progress, don't
 		// interupt
 		// / may need to check if gameFragment exists?
-		if (getMainActivity().getRoomListener() != null)
+		if (getMainActivity().getGameStrategy() != null)
 			return;
 
 		setInactive();
-		TurnListener listener = new TurnListener(getMainActivity(),
+		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
+				getMainActivity(), getMainActivity().getSoundManager(),
 				getMainActivity().getGameHelper(), match);
-		getMainActivity().setRoomListener(listener);
+		getMainActivity().setGameStrategy(listener);
 
 		listener.showFromMenu();
 	}
@@ -672,7 +675,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	@Override
 	public void onInvitationReceived(Invitation invite) {
-		getMainActivity().playSound(Sounds.INVITE_RECEIVED);
+		getMainActivity().getSoundManager().playSound(Sounds.INVITE_RECEIVED);
 		refreshInvites(true);
 		Toast.makeText(
 				getActivity(),
@@ -690,16 +693,17 @@ public class MenuFragment extends SherlockFragment implements
 		setInactive();
 
 		if (localMatchInfo.getWhiteAILevel() != 0) {
-			AiListener listener = new AiListener(getMainActivity(),
-					localMatchInfo);
-			getMainActivity().setRoomListener(listener);
+			AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
+					getMainActivity().getSoundManager(), localMatchInfo);
+			getMainActivity().setGameStrategy(listener);
 			listener.showFromMenu();
 			return;
 		}
 
-		LocalListener listener = new LocalListener(getMainActivity(),
+		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(
+				getMainActivity(), getMainActivity().getSoundManager(),
 				localMatchInfo);
-		getMainActivity().setRoomListener(listener);
+		getMainActivity().setGameStrategy(listener);
 		listener.showFromMenu();
 
 	}

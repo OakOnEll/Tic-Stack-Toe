@@ -24,6 +24,8 @@ import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.network.ChatDialogFragment;
+import com.oakonell.ticstacktoe.ui.network.ChatMessage;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 import com.oakonell.utils.StringUtils;
 
@@ -77,7 +79,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	private void handleMenu() {
 		if (chatMenuItem == null)
 			return;
-		boolean supportsChat = getMainActivity().getRoomListener()
+		boolean supportsChat = getMainActivity().getGameStrategy()
 				.getChatHelper() != null;
 		chatMenuItem.setVisible(supportsChat);
 		if (!supportsChat) {
@@ -127,7 +129,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 			break;
 
 		case R.id.action_settings:
-			getMainActivity().getRoomListener().showSettings(this);
+			getMainActivity().getGameStrategy().showSettings(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -176,17 +178,17 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	private void openChatDialog() {
-		getMainActivity().getRoomListener().getChatHelper().sendInChat(true);
+		getMainActivity().getGameStrategy().getChatHelper().sendInChat(true);
 		chatDialog = new ChatDialogFragment();
 		chatDialog.initialize(this, messages, getMainActivity()
-				.getRoomListener().getChatHelper().getMeForChat(),
-				getMainActivity().getRoomListener().getChatHelper()
+				.getGameStrategy().getChatHelper().getMeForChat(),
+				getMainActivity().getGameStrategy().getChatHelper()
 						.getOpponentName());
 		chatDialog.show(getChildFragmentManager(), "chat");
 	}
 
 	protected void promptToPlayAgain(String winner, String title) {
-		getMainActivity().getRoomListener().promptToPlayAgain(winner, title);
+		getMainActivity().getGameStrategy().promptToPlayAgain(winner, title);
 	}
 
 	public MainActivity getMainActivity() {
@@ -196,7 +198,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	public void messageRecieved(Participant opponentParticipant, String string) {
 		messages.add(new ChatMessage(opponentParticipant, string, false, System
 				.currentTimeMillis()));
-		getMainActivity().playSound(Sounds.CHAT_RECIEVED);
+		getMainActivity().getGameStrategy().playSound(Sounds.CHAT_RECIEVED);
 		if (chatDialog != null) {
 			chatDialog.newMessage();
 		} else {
@@ -206,7 +208,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void chatClosed() {
-		getMainActivity().getRoomListener().getChatHelper().sendInChat(false);
+		getMainActivity().getGameStrategy().getChatHelper().sendInChat(false);
 		chatDialog = null;
 		numNewMessages = 0;
 		invalidateMenu();
@@ -222,7 +224,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		// update the display text
 		statusText.thinkingText.setText(getResources().getString(
 				R.string.opponent_is_in_chat,
-				getMainActivity().getRoomListener().getChatHelper()
+				getMainActivity().getGameStrategy().getChatHelper()
 						.getOpponentName()));
 	}
 

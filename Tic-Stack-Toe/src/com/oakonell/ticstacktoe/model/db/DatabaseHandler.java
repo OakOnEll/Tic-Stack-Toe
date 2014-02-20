@@ -16,6 +16,7 @@ import android.util.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
+import com.oakonell.utils.StringUtils;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String MATCH_FILENAME_PREFIX = "match_";
@@ -115,15 +116,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 					// also delete the corresponding match file
 					String filename = matchInfo.getFilename();
-					boolean deleted = context.deleteFile(filename);
-					if (!deleted) {
-						File file = new File(context.getFilesDir(), filename);
-						if (file.exists()) {
-							Log.w(TAG, "File '" + filename
-									+ "' could not be deleted");
+					if (!StringUtils.isEmpty(filename)) {
+						boolean deleted = context.deleteFile(filename);
+						if (!deleted) {
+							File file = new File(context.getFilesDir(),
+									filename);
+							if (file.exists()) {
+								Log.w(TAG, "File '" + filename
+										+ "' could not be deleted");
+							}
 						}
 					}
-
 					return id;
 				} finally {
 					db.close();
@@ -406,9 +409,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String fileName = query.getString(query.getColumnIndex(KEY_FILENAME));
 
 		if (fileName == null) {
-			throw new RuntimeException("Got a null file name?");
+			Log.e(TAG, "Got a null file name?");
 		}
-		
+
 		GameMode mode = modeNum == 1 ? GameMode.AI : GameMode.PASS_N_PLAY;
 		return new LocalMatchInfo(id, mode, matchStatus, turnStatus, blackName,
 				whiteName, aiLevel, lastupdated, fileName);

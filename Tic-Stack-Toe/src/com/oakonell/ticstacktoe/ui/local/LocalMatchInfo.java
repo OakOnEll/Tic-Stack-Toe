@@ -19,11 +19,10 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.menu.MatchAdapter;
-import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
-import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
+import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class LocalMatchInfo implements MatchInfo {

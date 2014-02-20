@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.turn;
+package com.oakonell.ticstacktoe.ui.network.turn;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -31,7 +31,7 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdate
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
 import com.oakonell.ticstacktoe.ChatHelper;
-import com.oakonell.ticstacktoe.GameListener;
+import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -46,15 +46,15 @@ import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
+import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
-public class TurnListener implements TurnBasedMultiplayerListener,
-		GameListener, ChatHelper {
+public class TurnBasedMatchGameStrategy extends GameStrategy implements
+		TurnBasedMultiplayerListener, ChatHelper {
 	private static final int TOAST_DELAY = Toast.LENGTH_SHORT;
-	private static final String TAG = "TurnListener";
+	private static final String TAG = "TurnBasedMatchGameStrategy";
 	private static final int PROTOCOL_VERSION = 1;
 
-	private MainActivity activity;
 	private GameHelper helper;
 
 	private TurnBasedMatch mMatch;
@@ -66,33 +66,23 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 	// remove isVisible variable?
 	private boolean isVisible;
 
-	// enum PlayAgainState {
-	// ASK_REMATCH, REMATCH_REQUESTED_AWAIT_INVITE,
-	// REMATCH_REQUESTED_INVITE_FOUND, REMATCH_REQUESTED_NOT_FOUND, FOUND_MATCH
-	// }
-	//
-	// private static class PlayAgainPrompt {
-	// private AlertDialog playAgainDialog;
-	// PlayAgainState state;
-	// }
-	//
-	// private PlayAgainPrompt prompt;
-
 	TurnBasedPlayAgainFragment playAgainDialog;
 
-	public TurnListener(MainActivity activity, GameHelper helper,
-			GameType type, boolean isQuick) {
-		this.activity = activity;
+	public TurnBasedMatchGameStrategy(MainActivity activity,
+			SoundManager soundManager, GameHelper helper, GameType type,
+			boolean isQuick) {
+		super(activity, soundManager);
 		this.helper = helper;
 		this.type = type;
 		this.isQuick = isQuick;
 		helper.getGamesClient().registerMatchUpdateListener(this);
 	}
 
-	public TurnListener(MainActivity mainActivity, GameHelper gameHelper,
+	public TurnBasedMatchGameStrategy(MainActivity mainActivity,
+			SoundManager soundManager, GameHelper gameHelper,
 			TurnBasedMatch match) {
-		activity = mainActivity;
-		helper = activity.getGameHelper();
+		super(mainActivity, soundManager);
+		helper = mainActivity.getGameHelper();
 		helper.getGamesClient().registerMatchUpdateListener(this);
 
 		mMatch = match;
@@ -113,7 +103,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 	@Override
 	public void onSignInFailed(MainActivity mainActivity) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				activity);
+				mainActivity);
 
 		alertDialogBuilder.setTitle("Log In failed...");
 		alertDialogBuilder
@@ -130,10 +120,10 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 	}
 
 	@Override
-	public void reassociate(MainActivity activity) {
+	public void onSignInSuccess(MainActivity activity) {
 		Log.i(TAG, "Reassociating a fragment with the TurnListener");
 		activity.getGameFragment().resetThinkingText();
-		this.activity = activity;
+		this.setMainActivity(activity);
 		helper = activity.getGameHelper();
 		helper.getGamesClient().registerMatchUpdateListener(this);
 		// also reload the possibly updated match
@@ -212,8 +202,9 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 		byte[] previousMatchData = match.getPreviousMatchData();
 		ScoreCard score;
 		if (previousMatchData != null) {
-			GameState state = GameState.fromBytes(activity,
-					activity.getGamesClient(), mMatch, previousMatchData, true);
+			GameState state = GameState.fromBytes(getMainActivity(),
+					getMainActivity().getGamesClient(), mMatch,
+					previousMatchData, true);
 			blackParticipantId = state.blackPlayerId;
 			score = state.score;
 			if (type == null) {
@@ -232,7 +223,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 		Player blackPlayer;
 		Player whitePlayer;
-		String localPlayerName = activity.getString(R.string.local_player_name);
+		String localPlayerName = getMainActivity().getString(
+				R.string.local_player_name);
 		if (iAmBlack) {
 			blackParticipantId = mMyParticipantId;
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
@@ -273,10 +265,10 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 	}
 
 	public void acceptInvite(String inviteId) {
-		activity.getGameFragment().setThinkingText(
+		getMainActivity().getGameFragment().setThinkingText(
 				"Accepting invite to rematch from " + getOpponentName(), true);
-		helper.getGamesClient().acceptTurnBasedInvitation(TurnListener.this,
-				inviteId);
+		helper.getGamesClient().acceptTurnBasedInvitation(
+				TurnBasedMatchGameStrategy.this, inviteId);
 	}
 
 	// Handle notification events.
@@ -288,7 +280,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 					&& rematchId != null) {
 				rematchId = null;
 
-				openPlayAgain(activity.getGameFragment(), "Can I get here?");
+				openPlayAgain(getMainActivity().getGameFragment(),
+						"Can I get here?");
 
 				playAgainDialog.displayAcceptInvite(invitation
 						.getInvitationId());
@@ -296,7 +289,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 			}
 		}
 		Toast.makeText(
-				activity,
+				getMainActivity(),
 				"An invitation has arrived from "
 						+ invitation.getInviter().getDisplayName(), TOAST_DELAY)
 				.show();
@@ -333,8 +326,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	@Override
 	public void onInvitationRemoved(String invitationId) {
-		Toast.makeText(activity, "An invitation was removed.", TOAST_DELAY)
-				.show();
+		Toast.makeText(getMainActivity(), "An invitation was removed.",
+				TOAST_DELAY).show();
 	}
 
 	@Override
@@ -352,17 +345,19 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 			return;
 		}
 		if (match.getMatchId().equals(rematchId)) {
-			Toast.makeText(activity, "The re-match was updated.", TOAST_DELAY)
-					.show();
+			Toast.makeText(getMainActivity(), "The re-match was updated.",
+					TOAST_DELAY).show();
 			updateMatch(match);
 			return;
 		}
-		Toast.makeText(activity, "A match was updated.", TOAST_DELAY).show();
+		Toast.makeText(getMainActivity(), "A match was updated.", TOAST_DELAY)
+				.show();
 	}
 
 	@Override
 	public void onTurnBasedMatchRemoved(String matchId) {
-		Toast.makeText(activity, "A match was removed.", TOAST_DELAY).show();
+		Toast.makeText(getMainActivity(), "A match was removed.", TOAST_DELAY)
+				.show();
 
 	}
 
@@ -376,7 +371,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 			// This is OK; the action is stored by Google Play Services and will
 			// be dealt with later.
 			Toast.makeText(
-					activity,
+					getMainActivity(),
 					"Stored action for later.  (Please remove this toast before release.)",
 					TOAST_DELAY).show();
 			// NOTE: This toast is for informative reasons only; please remove
@@ -430,7 +425,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
 			int stringId) {
-		showWarning("Warning", activity.getResources().getString(stringId));
+		showWarning("Warning",
+				getMainActivity().getResources().getString(stringId));
 	}
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
@@ -448,14 +444,15 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 		if (mMatch != null
 				&& mMatch.getStatus() == TurnBasedMatch.MATCH_STATUS_ACTIVE
 				&& mMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
-			GameState gameState = new GameState(activity.getGameFragment()
-					.getGame(), activity.getGameFragment().getScore(),
-					blackParticipantId, isQuick, true);
+			GameState gameState = new GameState(getMainActivity()
+					.getGameFragment().getGame(), getMainActivity()
+					.getGameFragment().getScore(), blackParticipantId, isQuick,
+					true);
 			byte[] bytes = gameState.toBytes(helper);
 			helper.getGamesClient().takeTurn(this, mMatch.getMatchId(), bytes,
 					getMeForChat().getParticipantId());
 		}
-		activity.getMenuFragment().leaveRoom();
+		getMainActivity().getMenuFragment().leaveRoom();
 	}
 
 	@Override
@@ -465,20 +462,20 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 				isQuick, false);
 		byte[] bytes = gameState.toBytes(helper);
 		State state = game.getBoard().getState();
-		activity.getGameFragment().setThinkingText(
+		getMainActivity().getGameFragment().setThinkingText(
 				getOpponentName() + " hasn't seen your move.", true);
 		if (state.isOver()) {
 			finishGame(bytes, state);
 		} else {
-			final ProgressDialog progress = ProgressDialog.show(activity,
-					"Sending Move", "Please wait");
+			final ProgressDialog progress = ProgressDialog.show(
+					getMainActivity(), "Sending Move", "Please wait");
 			helper.getGamesClient().takeTurn(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
 						public void onTurnBasedMatchUpdated(int statusCode,
 								TurnBasedMatch match) {
 							progress.dismiss();
-							TurnListener.this.onTurnBasedMatchUpdated(
+							TurnBasedMatchGameStrategy.this.onTurnBasedMatchUpdated(
 									statusCode, match);
 						}
 					}, mMatch.getMatchId(), bytes,
@@ -519,7 +516,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 							: ParticipantResult.MATCH_RESULT_LOSS,
 					ParticipantResult.PLACING_UNINITIALIZED);
 		}
-		final ProgressDialog progress = ProgressDialog.show(activity,
+		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
 				"Finishing Move", "Please wait");
 		helper.getGamesClient().finishTurnBasedMatch(
 				new OnTurnBasedMatchUpdatedListener() {
@@ -527,8 +524,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 					public void onTurnBasedMatchUpdated(int statusCode,
 							TurnBasedMatch match) {
 						progress.dismiss();
-						TurnListener.this.onTurnBasedMatchUpdated(statusCode,
-								match);
+						TurnBasedMatchGameStrategy.this.onTurnBasedMatchUpdated(
+								statusCode, match);
 					}
 				}, mMatch.getMatchId(), bytes, myResult, opponentResult);
 	}
@@ -606,8 +603,9 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
-		activity.getGameFragment().setThinkingText("Starting rematch", true);
-		final ProgressDialog progress = ProgressDialog.show(activity,
+		getMainActivity().getGameFragment().setThinkingText("Starting rematch",
+				true);
+		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
 				"Starting a new match", "Please Wait...");
 		Log.i("TurnListener", "rematch");
 		helper.getGamesClient().rematchTurnBasedMatch(
@@ -616,10 +614,10 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 					public void onTurnBasedMatchInitiated(int statusCode,
 							TurnBasedMatch match) {
 						progress.dismiss();
-						activity.getGameFragment().resetThinkingText();
-						activity.getGameFragment().hideStatusText();
-						TurnListener.this.onTurnBasedMatchInitiated(statusCode,
-								match);
+						getMainActivity().getGameFragment().resetThinkingText();
+						getMainActivity().getGameFragment().hideStatusText();
+						TurnBasedMatchGameStrategy.this
+								.onTurnBasedMatchInitiated(statusCode, match);
 					}
 				}, mMatch.getMatchId());
 		mMatch = null;
@@ -816,7 +814,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 		if (!isVisible) {
 			Log.i("TurnListener", "  showing fragment");
 			gameFragment = new GameFragment();
-			FragmentManager manager = activity.getSupportFragmentManager();
+			FragmentManager manager = getMainActivity()
+					.getSupportFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.main_frame, gameFragment,
 					MainActivity.FRAG_TAG_GAME);
@@ -824,12 +823,12 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 			transaction.commit();
 		} else {
 			Log.i("TurnListener", "  reusing fragment");
-			gameFragment = activity.getGameFragment();
+			gameFragment = getMainActivity().getGameFragment();
 		}
 		isVisible = true;
 
-		GameState state = GameState.fromMatch(activity,
-				activity.getGamesClient(), mMatch);
+		GameState state = GameState.fromMatch(getMainActivity(),
+				getMainActivity().getGamesClient(), mMatch);
 		blackParticipantId = state.blackPlayerId;
 		type = state.game.getType();
 		isQuick = state.isQuick;
@@ -950,7 +949,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	private void lookForInviteForRematch(final String winner,
 			final String title, final String rematchId) {
-		activity.getGameFragment().setThinkingText(
+		getMainActivity().getGameFragment().setThinkingText(
 				title + "Rematch requested, looking for match invite.", true);
 		helper.getGamesClient().loadInvitations(
 				new OnInvitationsLoadedListener() {
@@ -981,10 +980,12 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 						if (turnInvitesFromPlayer.isEmpty()) {
 							alreadyLoadingRematch = false;
 
-							openPlayAgain(activity.getGameFragment(), winner);
+							openPlayAgain(getMainActivity().getGameFragment(),
+									winner);
 							playAgainDialog.displayWaitingForInvite();
 
-							activity.getGameFragment()
+							getMainActivity()
+									.getGameFragment()
 									.setThinkingText(
 											title
 													+ "Rematch requested, awaiting a move from "
@@ -992,8 +993,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 											true);
 							// listen for invites
 							helper.getGamesClient().registerInvitationListener(
-									TurnListener.this);
-							TurnListener.this.rematchId = rematchId;
+									TurnBasedMatchGameStrategy.this);
+							TurnBasedMatchGameStrategy.this.rematchId = rematchId;
 
 						} else {
 							alreadyLoadingRematch = false;
@@ -1043,7 +1044,8 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 						// display to the user that a rematch exists, and on
 						// click, go to it
 
-						openPlayAgain(activity.getGameFragment(), winner);
+						openPlayAgain(getMainActivity().getGameFragment(),
+								winner);
 						playAgainDialog.displayGoToRematch(match);
 
 						alreadyLoadingRematch = false;
@@ -1058,18 +1060,18 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 		Log.i("TurnListener", "  askToAcceptRematchInvite");
 		if (turnInvitesFromPlayer.size() == 1) {
 			Log.i("TurnListener", "  askToAcceptRematchInvite one invite");
-			activity.getGameFragment().setThinkingText(
+			getMainActivity().getGameFragment().setThinkingText(
 					title + "A possible rematch invite exists.", true);
 			Invitation theInvite = turnInvitesFromPlayer.get(0);
 			final String inviteId = theInvite.getInvitationId();
 
-			openPlayAgain(activity.getGameFragment(), winner);
+			openPlayAgain(getMainActivity().getGameFragment(), winner);
 			playAgainDialog.displayAcceptInvite(inviteId);
 
 		} else {
 			Log.i("TurnListener", "  askToAcceptRematchInvite multiple invites");
 			// TODO show a list prompt...
-			activity.getGameFragment().setThinkingText(
+			getMainActivity().getGameFragment().setThinkingText(
 					title + "Rematch requested, multiple invites from "
 							+ getOpponentName() + "...", true);
 			showWarning("Multiple invites", "Multiple invites from "
@@ -1084,7 +1086,7 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		promptToPlayAgain(winner, title, activity.getGameFragment());
+		promptToPlayAgain(winner, title, getMainActivity().getGameFragment());
 	}
 
 	public void promptToPlayAgain(final String winner, final String title,
@@ -1140,19 +1142,19 @@ public class TurnListener implements TurnBasedMultiplayerListener,
 
 	@Override
 	public void onResume(MainActivity theActivity) {
-		this.activity = theActivity;
+		setMainActivity(theActivity);
 
 		if (!helper.isSignedIn()) {
 			if (helper.getGamesClient().isConnecting()) {
-				activity.getGameFragment().setThinkingText("Reconnecting...",
-						true);
-				activity.getGameFragment().showStatusText();
+				getMainActivity().getGameFragment().setThinkingText(
+						"Reconnecting...", true);
+				getMainActivity().getGameFragment().showStatusText();
 			}
 		}
 
 		// TODO not reconnecting, give warning, and go back to main menu..
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				activity);
+				getMainActivity());
 
 		alertDialogBuilder.setTitle("Not logged in...");
 		alertDialogBuilder

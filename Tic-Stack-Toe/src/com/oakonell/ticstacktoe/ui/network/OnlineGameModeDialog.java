@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.turn;
+package com.oakonell.ticstacktoe.ui.network;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -26,25 +26,23 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.menu.StartAGameFragment;
-import com.oakonell.ticstacktoe.ui.realtime.RoomListener;
-import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.AppLaunchUtils;
 
 public class MainActivity extends BaseGameActivity {
 	public static final String FRAG_TAG_GAME = "game";
-	private static final String FRAG_TAG_MENU = "menu";
+	public static final String FRAG_TAG_MENU = "menu";
 	public static final String FRAG_TAG_START_GAME = "startGame";
 
 	// Request codes for the UIs that we show with startActivityForResult:
 	public final static int RC_UNUSED = 1;
 	// online play request codes
 	public final static int RC_SELECT_PLAYERS = 10000;
-	public final static int RC_INVITATION_INBOX = 10001;
+	// public final static int RC_INVITATION_INBOX = 10001;
 	public final static int RC_WAITING_ROOM = 10002;
-	public final static int RC_LOOK_AT_MATCHES = 10003;
+	// public final static int RC_LOOK_AT_MATCHES = 10003;
 
-	private GameListener roomListener;
+	private GameStrategy gameStrategy;
 	private InterstitialAd mInterstitialAd;
 	private AdView mAdView;
 	private SoundManager soundManager;
@@ -53,11 +51,11 @@ public class MainActivity extends BaseGameActivity {
 	protected void onActivityResult(int request, int response, Intent data) {
 		super.onActivityResult(request, response, data);
 		if (request == RC_WAITING_ROOM) {
-			// TODO currently specially launched from listener, with access to
-			// activity only
+			// TODO currently specially launched from (real-time) strategy, with
+			// access to activity only
 			getMenuFragment().onActivityResult(request, response, data);
 		} else if (request == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-			getRoomListener().leaveRoom();
+			getGameStrategy().leaveRoom();
 		}
 	}
 
@@ -133,8 +131,8 @@ public class MainActivity extends BaseGameActivity {
 		if (getMenuFragment() != null) {
 			getMenuFragment().onSignInFailed();
 		}
-		if (getRoomListener() != null) {
-			getRoomListener().onSignInFailed(this);
+		if (getGameStrategy() != null) {
+			getGameStrategy().onSignInFailed(this);
 		}
 
 	}
@@ -164,8 +162,8 @@ public class MainActivity extends BaseGameActivity {
 			achievements.pushToGoogle(getGameHelper(), this);
 		}
 
-		if (getRoomListener() != null) {
-			getRoomListener().reassociate(this);
+		if (getGameStrategy() != null) {
+			getGameStrategy().onSignInSuccess(this);
 		}
 
 		// if we received an invite via notification, accept it; otherwise, go
@@ -206,7 +204,7 @@ public class MainActivity extends BaseGameActivity {
 	public void gameEnded() {
 		possiblyShowInterstitialAd();
 		getMenuFragment().setActive();
-		roomListener = null;
+		gameStrategy = null;
 		mAdView.setVisibility(View.VISIBLE);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -216,12 +214,12 @@ public class MainActivity extends BaseGameActivity {
 		mAdView.setVisibility(View.GONE);
 	}
 
-	public GameListener getRoomListener() {
-		return roomListener;
+	public GameStrategy getGameStrategy() {
+		return gameStrategy;
 	}
 
-	public void setRoomListener(GameListener roomListener) {
-		this.roomListener = roomListener;
+	public void setGameStrategy(GameStrategy gameStrategy) {
+		this.gameStrategy = gameStrategy;
 	}
 
 	@Override
@@ -230,42 +228,16 @@ public class MainActivity extends BaseGameActivity {
 			// TODO only realtime game should ask to leave
 			// local games can be stored and continued
 			// turn-based games also would be written
-			if (roomListener != null) {
-				if (roomListener.warnToLeave()) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.setTitle(R.string.leave_game_title);
-					builder.setMessage(R.string.leave_game_message);
-					builder.setPositiveButton(R.string.yes,
-							new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-
-									if (roomListener != null) {
-										roomListener.leaveRoom();
-									}
-									getGameFragment().leaveGame();
-									// MainActivity.super.onBackPressed();
-
-								}
-							});
-					builder.setNegativeButton(R.string.no,
-							new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-								}
-							});
-					builder.show();
+			if (gameStrategy != null) {
+				if (gameStrategy.warnToLeave()) {
+					promptAndLeave();
 					return;
 				}
 			}
 
 			// else listener allows just exiting
-			if (roomListener != null) {
-				roomListener.leaveRoom();
+			if (gameStrategy != null) {
+				gameStrategy.leaveRoom();
 			} else {
 				// store local game...
 			}
@@ -273,6 +245,32 @@ public class MainActivity extends BaseGameActivity {
 			return;
 		}
 		super.onBackPressed();
+	}
+
+	private void promptAndLeave() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.leave_game_title);
+		builder.setMessage(R.string.leave_game_message);
+		builder.setPositiveButton(R.string.yes, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+
+				if (gameStrategy != null) {
+					gameStrategy.leaveRoom();
+				}
+				getGameFragment().leaveGame();
+				// MainActivity.super.onBackPressed();
+
+			}
+		});
+		builder.setNegativeButton(R.string.no, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.show();
 	}
 
 	@Override
@@ -298,7 +296,7 @@ public class MainActivity extends BaseGameActivity {
 		super.onResume();
 		// mAdView.resume();
 		if (getGameFragment() != null) {
-			GameListener appListener = getRoomListener();
+			GameStrategy appListener = getGameStrategy();
 			if (appListener != null) {
 				appListener.onResume(this);
 			}
@@ -333,38 +331,12 @@ public class MainActivity extends BaseGameActivity {
 		}
 	}
 
-	public int playSound(Sounds sound) {
-		return soundManager.playSound(sound);
-	}
-
-	public int playSound(Sounds sound, boolean loop) {
-		return soundManager.playSound(sound, loop);
-	}
-
-	public void stopSound(int streamId) {
-		soundManager.stopSound(streamId);
-	}
-
-	public void opponentLeft() {
-		if (getRoomListener() instanceof RoomListener) {
-			((RoomListener) getRoomListener()).opponentLeft();
-		}
-	}
-
-	public void opponentInChat() {
-		getGameFragment().opponentInChat();
-	}
-
-	public void opponentClosedChat() {
-		getGameFragment().opponentClosedChat();
-	}
-
-	public void onlineMoveReceived(ByteBufferDebugger buffer) {
-		getGameFragment().onlineMakeMove(buffer);
-	}
-
 	public void messageRecieved(Participant opponentParticipant, String string) {
 		getGameFragment().messageRecieved(opponentParticipant, string);
+	}
+
+	public SoundManager getSoundManager() {
+		return soundManager;
 	}
 
 }

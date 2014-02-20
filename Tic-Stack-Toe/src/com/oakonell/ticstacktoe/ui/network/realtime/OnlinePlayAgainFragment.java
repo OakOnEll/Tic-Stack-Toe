@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.ui.realtime;
+package com.oakonell.ticstacktoe.ui.network.realtime;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.ui.realtime.RoomListener.PlayAgainState;
+import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy.PlayAgainState;
 
 public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 	private String opponentName;
@@ -23,11 +23,11 @@ public class OnlinePlayAgainFragment extends SherlockDialogFragment {
 
 	private Button playAgainButton;
 
-	private RoomListener listener;
+	private RealtimeGameStrategy listener;
 	boolean willPlayAgain;
 	private Button notPlayAgainButton;
 
-	public void initialize(RoomListener fragment, String opponentName,
+	public void initialize(RealtimeGameStrategy fragment, String opponentName,
 			String title) {
 		this.opponentName = opponentName;
 		this.title = title;
