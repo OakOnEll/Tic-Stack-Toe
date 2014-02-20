@@ -173,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 					ContentValues fileNameValue = new ContentValues();
 					fileNameValue.put(KEY_FILENAME, fileName);
-					int updated = db.update(TABLE_LOCAL_MATCHES, values, KEY_ID
+					int updated = db.update(TABLE_LOCAL_MATCHES, fileNameValue, KEY_ID
 							+ "=?", new String[] { Long.toString(id) });
 					if (updated != 1) {
 						throw new RuntimeException(
