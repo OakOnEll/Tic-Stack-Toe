@@ -32,7 +32,7 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void playAgain() {
-		Game game = matchInfo.readGame(getMainActivity());
+		Game game = matchInfo.readGame(getContext());
 		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
 				.getName(), game.getType());
 		// TODO, keep track of score, and switch first player...
@@ -43,16 +43,17 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 		Player whitePlayer = HumanStrategy.createPlayer(whiteName, false);
 
 		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(getMainActivity().getString(R.string.an_start_game_cat),
-				getMainActivity()
-						.getString(R.string.an_start_pass_n_play_game_action),
-				type + "", 0L);
+		myTracker.sendEvent(
+				getContext().getString(R.string.an_start_game_cat),
+				getContext().getString(
+						R.string.an_start_pass_n_play_game_action), type + "",
+				0L);
 
 		final Game game = new Game(type, GameMode.PASS_N_PLAY, blackPlayer,
 				whitePlayer, blackPlayer);
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 
-		DatabaseHandler db = new DatabaseHandler(getMainActivity());
+		DatabaseHandler db = new DatabaseHandler(getContext());
 		matchInfo = new LocalMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
 				0, System.currentTimeMillis(), game);

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.oakonell.ticstacktoe.ChatHelper;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
@@ -41,7 +40,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	private void saveToDB() {
-		DatabaseHandler db = new DatabaseHandler(getMainActivity());
+		DatabaseHandler db = new DatabaseHandler(getContext());
 		db.updateMatch(matchInfo, new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
@@ -50,10 +49,14 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 			@Override
 			public void onUpdateFailure() {
-				getMainActivity().getGameHelper().showAlert(
-						"Error updating match to DB");
+				showAlert("Error updating match to DB");
 			}
 		});
+	}
+
+	public void showAlert(String message) {
+		(new AlertDialog.Builder(getContext())).setMessage(message)
+				.setNeutralButton(android.R.string.ok, null).create().show();
 	}
 
 	@Override
@@ -104,7 +107,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 		};
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle(title);
 		builder.setMessage(R.string.play_again);
 		builder.setCancelable(false);
@@ -145,11 +148,10 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		fragment.showFullSettingsPreference();
 	}
 
-
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 		GameFragment gameFragment = new GameFragment();
-		gameFragment.startGame(matchInfo.readGame(getMainActivity()), score, null,
+		gameFragment.startGame(matchInfo.readGame(getContext()), score, null,
 				true);
 
 		FragmentManager manager = getMainActivity().getSupportFragmentManager();

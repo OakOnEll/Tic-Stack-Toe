@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
@@ -76,10 +75,11 @@ public class MainActivity extends BaseGameActivity {
 		ab.setDisplayUseLogoEnabled(true);
 		ab.setDisplayShowTitleEnabled(true);
 
-		Fragment menuFrag = getSupportFragmentManager().findFragmentByTag(
-				FRAG_TAG_MENU);
+		MenuFragment menuFrag = (MenuFragment) getSupportFragmentManager()
+				.findFragmentByTag(FRAG_TAG_MENU);
 		if (menuFrag == null) {
 			menuFrag = new MenuFragment();
+			menuFrag.initialize(getGameHelper(), soundManager);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.add(R.id.main_frame, menuFrag, FRAG_TAG_MENU);
@@ -311,7 +311,7 @@ public class MainActivity extends BaseGameActivity {
 		super.onDestroy();
 	}
 
-	public void possiblyShowInterstitialAd() {
+	private void possiblyShowInterstitialAd() {
 		// show an ad with some probability (~50%?)
 		Random random = new Random();
 		if (random.nextInt(10) > 5)
@@ -333,10 +333,6 @@ public class MainActivity extends BaseGameActivity {
 
 	public void messageRecieved(Participant opponentParticipant, String string) {
 		getGameFragment().messageRecieved(opponentParticipant, string);
-	}
-
-	public SoundManager getSoundManager() {
-		return soundManager;
 	}
 
 }

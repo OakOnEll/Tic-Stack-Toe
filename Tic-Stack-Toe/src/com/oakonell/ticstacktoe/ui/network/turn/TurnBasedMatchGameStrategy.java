@@ -197,9 +197,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		byte[] previousMatchData = match.getPreviousMatchData();
 		ScoreCard score;
 		if (previousMatchData != null) {
-			GameState state = GameState.fromBytes(getMainActivity(),
-					getMainActivity().getGamesClient(), mMatch,
-					previousMatchData, true);
+			GameState state = GameState.fromBytes(getContext(), getHelper()
+					.getGamesClient(), mMatch, previousMatchData, true);
 			blackParticipantId = state.blackPlayerId;
 			score = state.score;
 			if (type == null) {
@@ -218,7 +217,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		Player blackPlayer;
 		Player whitePlayer;
-		String localPlayerName = getMainActivity().getString(
+		String localPlayerName = getContext().getString(
 				R.string.local_player_name);
 		if (iAmBlack) {
 			blackParticipantId = mMyParticipantId;
@@ -284,7 +283,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			}
 		}
 		Toast.makeText(
-				getMainActivity(),
+				getContext(),
 				"An invitation has arrived from "
 						+ invitation.getInviter().getDisplayName(), TOAST_DELAY)
 				.show();
@@ -321,8 +320,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void onInvitationRemoved(String invitationId) {
-		Toast.makeText(getMainActivity(), "An invitation was removed.",
-				TOAST_DELAY).show();
+		Toast.makeText(getContext(), "An invitation was removed.", TOAST_DELAY)
+				.show();
 	}
 
 	@Override
@@ -340,18 +339,18 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		if (match.getMatchId().equals(rematchId)) {
-			Toast.makeText(getMainActivity(), "The re-match was updated.",
+			Toast.makeText(getContext(), "The re-match was updated.",
 					TOAST_DELAY).show();
 			updateMatch(match);
 			return;
 		}
-		Toast.makeText(getMainActivity(), "A match was updated.", TOAST_DELAY)
+		Toast.makeText(getContext(), "A match was updated.", TOAST_DELAY)
 				.show();
 	}
 
 	@Override
 	public void onTurnBasedMatchRemoved(String matchId) {
-		Toast.makeText(getMainActivity(), "A match was removed.", TOAST_DELAY)
+		Toast.makeText(getContext(), "A match was removed.", TOAST_DELAY)
 				.show();
 
 	}
@@ -366,7 +365,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			// This is OK; the action is stored by Google Play Services and will
 			// be dealt with later.
 			Toast.makeText(
-					getMainActivity(),
+					getContext(),
 					"Stored action for later.  (Please remove this toast before release.)",
 					TOAST_DELAY).show();
 			// NOTE: This toast is for informative reasons only; please remove
@@ -420,8 +419,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
 			int stringId) {
-		showWarning("Warning",
-				getMainActivity().getResources().getString(stringId));
+		showWarning("Warning", getContext().getResources().getString(stringId));
 	}
 
 	public void showErrorMessage(TurnBasedMatch match, int statusCode,
@@ -462,8 +460,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		if (state.isOver()) {
 			finishGame(bytes, state);
 		} else {
-			final ProgressDialog progress = ProgressDialog.show(
-					getMainActivity(), "Sending Move", "Please wait");
+			final ProgressDialog progress = ProgressDialog.show(getContext(),
+					"Sending Move", "Please wait");
 			getHelper().getGamesClient().takeTurn(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
@@ -511,7 +509,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 							: ParticipantResult.MATCH_RESULT_LOSS,
 					ParticipantResult.PLACING_UNINITIALIZED);
 		}
-		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
+		final ProgressDialog progress = ProgressDialog.show(getContext(),
 				"Finishing Move", "Please wait");
 		getHelper().getGamesClient().finishTurnBasedMatch(
 				new OnTurnBasedMatchUpdatedListener() {
@@ -600,7 +598,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	public void rematch() {
 		getMainActivity().getGameFragment().setThinkingText("Starting rematch",
 				true);
-		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
+		final ProgressDialog progress = ProgressDialog.show(getContext(),
 				"Starting a new match", "Please Wait...");
 		Log.i("TurnListener", "rematch");
 		getHelper().getGamesClient().rematchTurnBasedMatch(
@@ -822,8 +820,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		isVisible = true;
 
-		GameState state = GameState.fromMatch(getMainActivity(),
-				getMainActivity().getGamesClient(), mMatch);
+		GameState state = GameState.fromMatch(getContext(), getHelper()
+				.getGamesClient(), mMatch);
 		blackParticipantId = state.blackPlayerId;
 		type = state.game.getType();
 		isQuick = state.isQuick;
@@ -1150,7 +1148,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		// TODO not reconnecting, give warning, and go back to main menu..
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				getMainActivity());
+				getContext());
 
 		alertDialogBuilder.setTitle("Not logged in...");
 		alertDialogBuilder

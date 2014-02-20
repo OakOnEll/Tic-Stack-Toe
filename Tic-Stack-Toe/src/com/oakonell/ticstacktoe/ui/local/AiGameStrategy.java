@@ -47,8 +47,8 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		}
 
 		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(getMainActivity().getString(R.string.an_start_game_cat),
-				getMainActivity().getString(R.string.an_start_ai_game_action), type
+		myTracker.sendEvent(getContext().getString(R.string.an_start_game_cat),
+				getContext().getString(R.string.an_start_ai_game_action), type
 						+ "", 0L);
 
 		final Game game = new Game(type, GameMode.AI, blackPlayer, whitePlayer,
@@ -56,7 +56,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 
-		DatabaseHandler db = new DatabaseHandler(getMainActivity());
+		DatabaseHandler db = new DatabaseHandler(getContext());
 		matchInfo = new LocalMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
 				aiDepth, System.currentTimeMillis(), game);
@@ -89,7 +89,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void playAgain() {
-		Game game = matchInfo.readGame(getMainActivity());
+		Game game = matchInfo.readGame(getContext());
 
 		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
 				.getName(), game.getType(), aiDepth);

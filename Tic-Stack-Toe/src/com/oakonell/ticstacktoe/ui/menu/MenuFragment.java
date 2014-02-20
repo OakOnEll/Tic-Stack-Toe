@@ -52,6 +52,7 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
@@ -82,6 +83,18 @@ public class MenuFragment extends SherlockFragment implements
 	private List<MatchInfo> completedMatches = new ArrayList<MatchInfo>();
 
 	private PullToRefreshLayout mPullToRefreshLayout;
+
+	public MenuFragment() {
+		// for reference finding
+	}
+
+	private SoundManager soundManager;
+	private GameHelper helper;
+
+	public void initialize(GameHelper helper, SoundManager soundManager) {
+		this.soundManager = soundManager;
+		this.helper = helper;
+	}
 
 	public DatabaseHandler getDbHandler() {
 		return dbHandler;
@@ -226,7 +239,8 @@ public class MenuFragment extends SherlockFragment implements
 				// TODO start a menu fragment(?) to choose which style of game
 
 				StartAGameFragment fragment = new StartAGameFragment();
-				fragment.initialize(getMainActivity().getGamesClient());
+				fragment.initialize(soundManager, getMainActivity()
+						.getGameHelper());
 
 				FragmentManager manager = getActivity()
 						.getSupportFragmentManager();
@@ -246,12 +260,11 @@ public class MenuFragment extends SherlockFragment implements
 			public void onClick(View v) {
 				if (getMainActivity().isSignedIn()) {
 					setInactive();
-					startActivityForResult(getMainActivity().getGamesClient()
+					startActivityForResult(getGamesClient()
 							.getAchievementsIntent(), MainActivity.RC_UNUSED);
 				} else {
 					// TODO display pending achievements
-					getMainActivity().showAlert(
-							getString(R.string.achievements_not_available));
+					showAlert(getString(R.string.achievements_not_available));
 				}
 			}
 		});
@@ -263,12 +276,11 @@ public class MenuFragment extends SherlockFragment implements
 			public void onClick(View v) {
 				if (getMainActivity().isSignedIn()) {
 					setInactive();
-					startActivityForResult(getMainActivity().getGamesClient()
+					startActivityForResult(getGamesClient()
 							.getAllLeaderboardsIntent(), MainActivity.RC_UNUSED);
 				} else {
 					// TODO display pending leaderboard
-					getMainActivity().showAlert(
-							getString(R.string.achievements_not_available));
+					showAlert(getString(R.string.achievements_not_available));
 				}
 			}
 		});
@@ -290,7 +302,6 @@ public class MenuFragment extends SherlockFragment implements
 			Intent prefIntent = new Intent(getActivity(),
 					SettingsActivity.class);
 
-			GameHelper helper = getMainActivity().getGameHelper();
 			Info info = null;
 			TicStackToe app = (TicStackToe) getActivity().getApplication();
 			if (helper.isSignedIn()) {
@@ -331,7 +342,7 @@ public class MenuFragment extends SherlockFragment implements
 			return;
 		signedInAsText.setText(getResources().getString(
 				R.string.you_are_signed_in_as,
-				getMainActivity().getGamesClient().getCurrentAccountName()));
+				getGamesClient().getCurrentAccountName()));
 	}
 
 	public void onSignInSucceeded() {
@@ -341,8 +352,7 @@ public class MenuFragment extends SherlockFragment implements
 		refreshInvites(true);
 		refreshMatches();
 
-		TurnBasedMatch aMatch = getMainActivity().getGameHelper()
-				.getTurnBasedMatch();
+		TurnBasedMatch aMatch = helper.getTurnBasedMatch();
 		if (aMatch != null) {
 			// GameHelper will cache any connection hint it gets. In this case,
 			// it can cache a TurnBasedMatch that it got from choosing a
@@ -360,50 +370,47 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void refreshInvites(final boolean shouldFlashNumber) {
-		getMainActivity().getGamesClient().loadInvitations(
-				new OnInvitationsLoadedListener() {
-					@Override
-					public void onInvitationsLoaded(int statusCode,
-							InvitationBuffer buffer) {
-						// remove existing invite matches from myTurn list, and
-						// add back these
-						for (Iterator<MatchInfo> iter = myTurns.iterator(); iter
-								.hasNext();) {
-							MatchInfo each = iter.next();
-							if (each instanceof InviteMatchInfo) {
-								iter.remove();
-							}
-						}
-						if (statusCode == GamesClient.STATUS_OK) {
-							// update the online invites button with the count
-							int count = buffer.getCount();
-							if (count != 0) {
-								for (int i = 0; i < count; i++) {
-									Invitation invite = buffer.get(i);
-									InviteMatchInfo matchInfo = new InviteMatchInfo(
-											getMainActivity().getGamesClient(),
-											invite);
-									myTurns.add(matchInfo);
-								}
-							}
-							myTurnsAdapter.notifyDataSetChanged();
-							buffer.close();
-						} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
-
-						} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
-
-						} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
-
+		getGamesClient().loadInvitations(new OnInvitationsLoadedListener() {
+			@Override
+			public void onInvitationsLoaded(int statusCode,
+					InvitationBuffer buffer) {
+				// remove existing invite matches from myTurn list, and
+				// add back these
+				for (Iterator<MatchInfo> iter = myTurns.iterator(); iter
+						.hasNext();) {
+					MatchInfo each = iter.next();
+					if (each instanceof InviteMatchInfo) {
+						iter.remove();
+					}
+				}
+				if (statusCode == GamesClient.STATUS_OK) {
+					// update the online invites button with the count
+					int count = buffer.getCount();
+					if (count != 0) {
+						for (int i = 0; i < count; i++) {
+							Invitation invite = buffer.get(i);
+							InviteMatchInfo matchInfo = new InviteMatchInfo(
+									getGamesClient(), invite);
+							myTurns.add(matchInfo);
 						}
 					}
-				});
+					myTurnsAdapter.notifyDataSetChanged();
+					buffer.close();
+				} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
+
+				} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
+
+				} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
+
+				}
+			}
+		});
 	}
 
 	// Accept the given invitation.
 	public void acceptInviteToRoom(String invId) {
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), null, false, false);
+				getMainActivity(), soundManager, helper, null, false, false);
 		getMainActivity().setGameStrategy(roomListener);
 		// accept the invitation
 		Log.d(TAG, "Accepting invitation: " + invId);
@@ -412,7 +419,11 @@ public class MenuFragment extends SherlockFragment implements
 				.setMessageReceivedListener(roomListener)
 				.setRoomStatusUpdateListener(roomListener);
 		setActive();
-		getMainActivity().getGamesClient().joinRoom(roomConfigBuilder.build());
+		getGamesClient().joinRoom(roomConfigBuilder.build());
+	}
+
+	private GamesClient getGamesClient() {
+		return helper.getGamesClient();
 	}
 
 	public MainActivity getMainActivity() {
@@ -449,33 +460,30 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void registerMatchListeners() {
-		getMainActivity().getGamesClient().registerInvitationListener(this);
-		getMainActivity().getGamesClient().registerMatchUpdateListener(this);
+		getGamesClient().registerInvitationListener(this);
+		getGamesClient().registerMatchUpdateListener(this);
 	}
 
 	private void unregisterMatchListeners() {
-		getMainActivity().getGamesClient().registerInvitationListener(null);
-		getMainActivity().getGamesClient().registerMatchUpdateListener(null);
+		getGamesClient().registerInvitationListener(null);
+		getGamesClient().registerMatchUpdateListener(null);
 	}
 
 	public void acceptTurnBasedInvitation(final String inviteId) {
 		setInactive();
 
-		getMainActivity().getGamesClient().acceptTurnBasedInvitation(
+		getGamesClient().acceptTurnBasedInvitation(
 				new OnTurnBasedMatchInitiatedListener() {
 					@Override
 					public void onTurnBasedMatchInitiated(int status,
 							TurnBasedMatch match) {
 						if (status != GamesClient.STATUS_OK) {
-							getMainActivity().getGameHelper().showAlert(
-									"Error accepting invitation " + inviteId
-											+ ": error=" + status);
+							showAlert("Error accepting invitation " + inviteId
+									+ ": error=" + status);
 							return;
 						}
 						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-								getMainActivity(), getMainActivity()
-										.getSoundManager(), getMainActivity()
-										.getGameHelper(), match);
+								getMainActivity(), soundManager, helper, match);
 						getMainActivity().setGameStrategy(listener);
 
 						listener.showGame();
@@ -489,14 +497,13 @@ public class MenuFragment extends SherlockFragment implements
 	public void showMatch(String matchId) {
 		setInactive();
 
-		getMainActivity().getGamesClient().getTurnBasedMatch(
+		getGamesClient().getTurnBasedMatch(
 				new OnTurnBasedMatchLoadedListener() {
 					@Override
 					public void onTurnBasedMatchLoaded(int status,
 							TurnBasedMatch match) {
 						if (status != GamesClient.STATUS_OK) {
-							getMainActivity().getGameHelper().showAlert(
-									"Error loading match");
+							showAlert("Error loading match");
 							setActive();
 							return;
 						}
@@ -516,8 +523,7 @@ public class MenuFragment extends SherlockFragment implements
 
 		setInactive();
 		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), match);
+				getMainActivity(), soundManager, helper, match);
 		getMainActivity().setGameStrategy(listener);
 
 		listener.showFromMenu();
@@ -575,14 +581,14 @@ public class MenuFragment extends SherlockFragment implements
 				}
 			}
 		});
-		if (!getMainActivity().isSignedIn()) {
-			if (!getMainActivity().getGamesClient().isConnecting()
+		if (!getGamesClient().isConnected()) {
+			if (!getGamesClient().isConnecting()
 					&& mPullToRefreshLayout != null) {
 				networkRefreshed = true;
 			}
 			return;
 		}
-		getMainActivity().getGamesClient().loadTurnBasedMatches(
+		getGamesClient().loadTurnBasedMatches(
 				new OnTurnBasedMatchesLoadedListener() {
 
 					@Override
@@ -604,8 +610,8 @@ public class MenuFragment extends SherlockFragment implements
 						int max = invitations.getCount();
 						for (int i = 0; i < max; i++) {
 							Invitation invitation = invitations.get(i);
-							myTurns.add(new InviteMatchInfo(getMainActivity()
-									.getGamesClient(), invitation));
+							myTurns.add(new InviteMatchInfo(getGamesClient(),
+									invitation));
 						}
 						invitations.close();
 
@@ -648,8 +654,7 @@ public class MenuFragment extends SherlockFragment implements
 						for (int i = 0; i < count; i++) {
 							TurnBasedMatch match = matchesBuffer.get(i);
 							MatchInfo info = new TurnBasedMatchInfo(
-									getMainActivity(), getMainActivity()
-											.getGamesClient(), match);
+									getMainActivity(), getGamesClient(), match);
 							matches.add(info);
 						}
 						matchesBuffer.close();
@@ -675,7 +680,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	@Override
 	public void onInvitationReceived(Invitation invite) {
-		getMainActivity().getSoundManager().playSound(Sounds.INVITE_RECEIVED);
+		soundManager.playSound(Sounds.INVITE_RECEIVED);
 		refreshInvites(true);
 		Toast.makeText(
 				getActivity(),
@@ -694,18 +699,21 @@ public class MenuFragment extends SherlockFragment implements
 
 		if (localMatchInfo.getWhiteAILevel() != 0) {
 			AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
-					getMainActivity().getSoundManager(), localMatchInfo);
+					soundManager, localMatchInfo);
 			getMainActivity().setGameStrategy(listener);
 			listener.showFromMenu();
 			return;
 		}
 
 		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				localMatchInfo);
+				getMainActivity(), soundManager, localMatchInfo);
 		getMainActivity().setGameStrategy(listener);
 		listener.showFromMenu();
 
+	}
+
+	public void showAlert(String message) {
+		helper.showAlert(message);
 	}
 
 }

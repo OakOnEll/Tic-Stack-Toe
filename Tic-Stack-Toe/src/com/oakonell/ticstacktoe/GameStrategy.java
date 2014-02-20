@@ -1,5 +1,7 @@
 package com.oakonell.ticstacktoe;
 
+import android.content.Context;
+
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.ScoreCard;
@@ -54,6 +56,10 @@ public abstract class GameStrategy {
 
 	public void stopSound(int streamId) {
 		soundManager.stopSound(streamId);
+	}
+
+	protected Context getContext() {
+		return mainActivity;
 	}
 
 	protected MainActivity getMainActivity() {

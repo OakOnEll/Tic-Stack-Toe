@@ -114,8 +114,7 @@ public class LocalMatchInfo implements MatchInfo {
 
 							@Override
 							public void onDeleteFailure() {
-								fragment.getMainActivity().getGameHelper()
-										.showAlert("Error deleting match");
+								fragment.showAlert("Error deleting match");
 							}
 						});
 

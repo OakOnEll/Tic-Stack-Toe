@@ -251,7 +251,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		Player blackPlayer;
 		Player whitePlayer;
-		String localPlayerName = getMainActivity().getString(
+		String localPlayerName = getContext().getString(
 				R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
@@ -266,10 +266,10 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker.sendEvent(
-				getMainActivity().getString(R.string.an_start_game_cat),
-				(isQuick ? getMainActivity().getString(
+				getContext().getString(R.string.an_start_game_cat),
+				(isQuick ? getContext().getString(
 						R.string.an_start_quick_game_action)
-						: getMainActivity().getString(
+						: getContext().getString(
 								R.string.an_start_online_game_action)),
 				type.getVariant() + "", 0L);
 
@@ -349,12 +349,12 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		String message = GooglePlayServicesUtil.getErrorString(errorNum);
 		if (message.startsWith("UNKNOWN")) {
 			if (errorNum == 6001) {
-				message = getMainActivity().getString(
+				message = getContext().getString(
 						R.string.cannot_invite_non_tester);
 			}
 		}
 		getHelper().showAlert(
-				getMainActivity().getString(R.string.communication_error)
+				getContext().getString(R.string.communication_error)
 						+ " (" + errorNum + ") " + message);
 	}
 
@@ -695,9 +695,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 
 		}
-		String message = getMainActivity().getResources().getString(
+		String message = getContext().getResources().getString(
 				R.string.peer_left_the_game, getOpponentName());
-		(new AlertDialog.Builder(getMainActivity())).setMessage(message)
+		(new AlertDialog.Builder(getContext())).setMessage(message)
 				.setNeutralButton(android.R.string.ok, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -719,13 +719,14 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void playAgain() {
-		Game game = getMainActivity().getGameFragment().getGame();
+		GameFragment gameFragment = getMainActivity().getGameFragment();
+		Game game = gameFragment.getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
 
-		getMainActivity().getGameFragment().startGame(game,
-				getMainActivity().getGameFragment().getScore(), null, false);
+		gameFragment.startGame(game,
+				gameFragment.getScore(), null, false);
 	}
 
 	@Override
@@ -737,7 +738,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onResume(MainActivity theActivity) {
 		setMainActivity(theActivity);
-		(new AlertDialog.Builder(getMainActivity()))
+		(new AlertDialog.Builder(getContext()))
 				.setMessage(R.string.you_left_the_game)
 				.setNeutralButton(android.R.string.ok, new OnClickListener() {
 					@Override

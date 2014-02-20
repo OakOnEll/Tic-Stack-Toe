@@ -26,7 +26,9 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog.LocalAIGameModeListener;
@@ -45,10 +47,16 @@ public class StartAGameFragment extends SherlockFragment {
 	GameType onlineType = null;
 
 	private ProgressBar waiting;
-	GamesClient client;
+	GameHelper helper;
+	private SoundManager soundManager;
 
-	public void initialize(GamesClient client) {
-		this.client = client;
+	public StartAGameFragment() {
+		// for finding references
+	}
+
+	public void initialize(SoundManager soundManager, GameHelper helper) {
+		this.soundManager = soundManager;
+		this.helper = helper;
 	}
 
 	@Override
@@ -295,8 +303,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 		// TODO
 		final TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), type, true);
+				getMainActivity(), soundManager, helper, type, true);
 		getMainActivity().setGameStrategy(listener);
 
 		// Kick the match off
@@ -306,8 +313,7 @@ public class StartAGameFragment extends SherlockFragment {
 					public void onTurnBasedMatchInitiated(int status,
 							TurnBasedMatch match) {
 						if (status != GamesClient.STATUS_OK) {
-							getMainActivity().getGameHelper().showAlert(
-									"Error starting match: " + status);
+							helper.showAlert("Error starting match: " + status);
 							exitStartMenu();
 							return;
 						}
@@ -323,8 +329,7 @@ public class StartAGameFragment extends SherlockFragment {
 		int variant = type.getVariant();
 
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), type, true, true);
+				getMainActivity(), soundManager, helper, type, true, true);
 		getMainActivity().setGameStrategy(roomListener);
 		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
 				.builder(roomListener);
@@ -338,7 +343,7 @@ public class StartAGameFragment extends SherlockFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getMainActivity().getGamesClient().createRoom(
+				getGamesClient().createRoom(
 						rtmConfigBuilder.build());
 			}
 		}, 0);
@@ -353,7 +358,7 @@ public class StartAGameFragment extends SherlockFragment {
 			public void chosenMode(GameType type, boolean useTurnBased) {
 				StartAGameFragment.this.onlineType = type;
 				StartAGameFragment.this.useTurnBased = useTurnBased;
-				Intent intent = getMainActivity().getGamesClient()
+				Intent intent = getGamesClient()
 						.getSelectPlayersIntent(1, 1);
 				setInactive();
 				startActivityForResult(intent, MainActivity.RC_SELECT_PLAYERS);
@@ -395,19 +400,18 @@ public class StartAGameFragment extends SherlockFragment {
 				.setAutoMatchCriteria(autoMatchCriteria).build();
 
 		final TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), type, false);
+				getMainActivity(), soundManager, helper, type, false);
 		getMainActivity().setGameStrategy(listener);
 
 		// Kick the match off
-		getMainActivity().getGamesClient().createTurnBasedMatch(
+		getGamesClient().createTurnBasedMatch(
 				new OnTurnBasedMatchInitiatedListener() {
 					@Override
 					public void onTurnBasedMatchInitiated(int status,
 							TurnBasedMatch match) {
 						if (status != GamesClient.STATUS_OK) {
-							getMainActivity().getGameHelper().showAlert(
-									"Error starting a match: " + status);
+							helper.showAlert("Error starting a match: "
+									+ status);
 							exitStartMenu();
 							return;
 						}
@@ -422,8 +426,7 @@ public class StartAGameFragment extends SherlockFragment {
 			GameType type, Bundle autoMatchCriteria, boolean initiated) {
 
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager(),
-				getMainActivity().getGameHelper(), type, false, initiated);
+				getMainActivity(), soundManager, helper, type, false, initiated);
 		getMainActivity().setGameStrategy(roomListener);
 		// create the room
 		Log.d(TAG, "Creating room...");
@@ -441,12 +444,16 @@ public class StartAGameFragment extends SherlockFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getMainActivity().getGamesClient().createRoom(
-						rtmConfigBuilder.build());
+				getGamesClient().createRoom(rtmConfigBuilder.build());
 			}
+
 		}, 0);
 
 		Log.d(TAG, "Room created, waiting for it to be ready...");
+	}
+
+	private GamesClient getGamesClient() {
+		return helper.getGamesClient();
 	}
 
 	private void startLocalTwoPlayerGame(GameType type, String blackName,
@@ -456,7 +463,7 @@ public class StartAGameFragment extends SherlockFragment {
 		exitStartMenu();
 
 		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(
-				getMainActivity(), getMainActivity().getSoundManager());
+				getMainActivity(), soundManager);
 		getMainActivity().setGameStrategy(listener);
 
 		listener.startGame(blackName, whiteName, type);
@@ -469,7 +476,7 @@ public class StartAGameFragment extends SherlockFragment {
 		String blackName = getResources().getString(R.string.local_player_name);
 
 		AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
-				getMainActivity().getSoundManager());
+				soundManager);
 		getMainActivity().setGameStrategy(listener);
 
 		listener.startGame(blackName, whiteName, type, aiDepth);
