@@ -36,9 +36,13 @@ public abstract class GameStrategy {
 
 	public abstract void showSettings(AbstractGameFragment fragment);
 
-	public abstract boolean shouldKeepScreenOn();
+	public boolean shouldKeepScreenOn() {
+		return false;
+	}
 
-	public abstract ChatHelper getChatHelper();
+	public ChatHelper getChatHelper() {
+		return null;
+	}
 
 	public int playSound(Sounds sound) {
 		return soundManager.playSound(sound);
@@ -59,4 +63,5 @@ public abstract class GameStrategy {
 	protected void setMainActivity(MainActivity theActivity) {
 		mainActivity = theActivity;
 	}
+
 }

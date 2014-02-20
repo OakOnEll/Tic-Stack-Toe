@@ -30,8 +30,6 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoaded
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
-import com.oakonell.ticstacktoe.ChatHelper;
-import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -47,15 +45,14 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
+import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
-public class TurnBasedMatchGameStrategy extends GameStrategy implements
-		TurnBasedMultiplayerListener, ChatHelper {
+public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
+		implements TurnBasedMultiplayerListener {
 	private static final int TOAST_DELAY = Toast.LENGTH_SHORT;
 	private static final String TAG = "TurnBasedMatchGameStrategy";
 	private static final int PROTOCOL_VERSION = 1;
-
-	private GameHelper helper;
 
 	private TurnBasedMatch mMatch;
 	private String mMyParticipantId;
@@ -71,8 +68,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	public TurnBasedMatchGameStrategy(MainActivity activity,
 			SoundManager soundManager, GameHelper helper, GameType type,
 			boolean isQuick) {
-		super(activity, soundManager);
-		this.helper = helper;
+		super(activity, soundManager, helper);
 		this.type = type;
 		this.isQuick = isQuick;
 		helper.getGamesClient().registerMatchUpdateListener(this);
@@ -81,15 +77,14 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	public TurnBasedMatchGameStrategy(MainActivity mainActivity,
 			SoundManager soundManager, GameHelper gameHelper,
 			TurnBasedMatch match) {
-		super(mainActivity, soundManager);
-		helper = mainActivity.getGameHelper();
-		helper.getGamesClient().registerMatchUpdateListener(this);
+		super(mainActivity, soundManager, gameHelper);
+		getHelper().getGamesClient().registerMatchUpdateListener(this);
 
 		mMatch = match;
 
 		if (match != null) {
-			mMyParticipantId = match.getParticipantId(helper.getGamesClient()
-					.getCurrentPlayerId());
+			mMyParticipantId = match.getParticipantId(getHelper()
+					.getGamesClient().getCurrentPlayerId());
 		}
 
 		// GameState state = GameState.fromMatch(match);
@@ -124,10 +119,10 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		Log.i(TAG, "Reassociating a fragment with the TurnListener");
 		activity.getGameFragment().resetThinkingText();
 		this.setMainActivity(activity);
-		helper = activity.getGameHelper();
-		helper.getGamesClient().registerMatchUpdateListener(this);
+		setHelper(activity.getGameHelper());
+		getHelper().getGamesClient().registerMatchUpdateListener(this);
 		// also reload the possibly updated match
-		helper.getGamesClient().getTurnBasedMatch(
+		getHelper().getGamesClient().getTurnBasedMatch(
 				new OnTurnBasedMatchLoadedListener() {
 
 					@Override
@@ -196,7 +191,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 
 	private void startMatch(TurnBasedMatch match) {
 		mMatch = match;
-		mMyParticipantId = match.getParticipantId(helper.getGamesClient()
+		mMyParticipantId = match.getParticipantId(getHelper().getGamesClient()
 				.getCurrentPlayerId());
 
 		byte[] previousMatchData = match.getPreviousMatchData();
@@ -246,10 +241,10 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		GameState gameState = new GameState(game, score, blackParticipantId,
 				isQuick, false);
 
-		byte[] bytes = gameState.toBytes(helper);
+		byte[] bytes = gameState.toBytes(getHelper());
 
 		// Taking this turn will cause turnBasedMatchUpdated
-		helper.getGamesClient().takeTurn(this, match.getMatchId(), bytes,
+		getHelper().getGamesClient().takeTurn(this, match.getMatchId(), bytes,
 				mMyParticipantId);
 	}
 
@@ -267,7 +262,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	public void acceptInvite(String inviteId) {
 		getMainActivity().getGameFragment().setThinkingText(
 				"Accepting invite to rematch from " + getOpponentName(), true);
-		helper.getGamesClient().acceptTurnBasedInvitation(
+		getHelper().getGamesClient().acceptTurnBasedInvitation(
 				TurnBasedMatchGameStrategy.this, inviteId);
 	}
 
@@ -435,7 +430,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	}
 
 	private void showWarning(String title, String message) {
-		helper.showAlert(title, message);
+		getHelper().showAlert(title, message);
 	}
 
 	@Override
@@ -448,9 +443,9 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 					.getGameFragment().getGame(), getMainActivity()
 					.getGameFragment().getScore(), blackParticipantId, isQuick,
 					true);
-			byte[] bytes = gameState.toBytes(helper);
-			helper.getGamesClient().takeTurn(this, mMatch.getMatchId(), bytes,
-					getMeForChat().getParticipantId());
+			byte[] bytes = gameState.toBytes(getHelper());
+			getHelper().getGamesClient().takeTurn(this, mMatch.getMatchId(),
+					bytes, getMeForChat().getParticipantId());
 		}
 		getMainActivity().getMenuFragment().leaveRoom();
 	}
@@ -460,7 +455,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		// store the game, take turn
 		GameState gameState = new GameState(game, score, blackParticipantId,
 				isQuick, false);
-		byte[] bytes = gameState.toBytes(helper);
+		byte[] bytes = gameState.toBytes(getHelper());
 		State state = game.getBoard().getState();
 		getMainActivity().getGameFragment().setThinkingText(
 				getOpponentName() + " hasn't seen your move.", true);
@@ -469,7 +464,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		} else {
 			final ProgressDialog progress = ProgressDialog.show(
 					getMainActivity(), "Sending Move", "Please wait");
-			helper.getGamesClient().takeTurn(
+			getHelper().getGamesClient().takeTurn(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
 						public void onTurnBasedMatchUpdated(int statusCode,
@@ -518,7 +513,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		}
 		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
 				"Finishing Move", "Please wait");
-		helper.getGamesClient().finishTurnBasedMatch(
+		getHelper().getGamesClient().finishTurnBasedMatch(
 				new OnTurnBasedMatchUpdatedListener() {
 					@Override
 					public void onTurnBasedMatchUpdated(int statusCode,
@@ -608,7 +603,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		final ProgressDialog progress = ProgressDialog.show(getMainActivity(),
 				"Starting a new match", "Please Wait...");
 		Log.i("TurnListener", "rematch");
-		helper.getGamesClient().rematchTurnBasedMatch(
+		getHelper().getGamesClient().rematchTurnBasedMatch(
 				new OnTurnBasedMatchInitiatedListener() {
 					@Override
 					public void onTurnBasedMatchInitiated(int statusCode,
@@ -631,7 +626,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 			Log.i("TurnListener", "  mMatch=" + mMatch);
 		}
 		mMatch = match;
-		mMyParticipantId = match.getParticipantId(helper.getGamesClient()
+		mMyParticipantId = match.getParticipantId(getHelper().getGamesClient()
 				.getCurrentPlayerId());
 		showGame();
 	}
@@ -837,7 +832,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 				&& !state.wasSeen) {
 			Log.i("TurnListener", "  marking that we saw the opponent's move");
 			state.wasSeen = true;
-			helper.getGamesClient().takeTurn(
+			getHelper().getGamesClient().takeTurn(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
 						public void onTurnBasedMatchUpdated(int statusCode,
@@ -859,7 +854,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 											+ statusCode);
 
 						}
-					}, mMatch.getMatchId(), state.toBytes(helper),
+					}, mMatch.getMatchId(), state.toBytes(getHelper()),
 					mMyParticipantId);
 		}
 		Log.i("TurnListener",
@@ -921,7 +916,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	private boolean completeMatch(int status, int turnStatus) {
 		if (status == TurnBasedMatch.MATCH_STATUS_COMPLETE
 				&& turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
-			helper.getGamesClient().finishTurnBasedMatch(
+			getHelper().getGamesClient().finishTurnBasedMatch(
 					new OnTurnBasedMatchUpdatedListener() {
 						@Override
 						public void onTurnBasedMatchUpdated(int status,
@@ -951,7 +946,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 			final String title, final String rematchId) {
 		getMainActivity().getGameFragment().setThinkingText(
 				title + "Rematch requested, looking for match invite.", true);
-		helper.getGamesClient().loadInvitations(
+		getHelper().getGamesClient().loadInvitations(
 				new OnInvitationsLoadedListener() {
 
 					@Override
@@ -992,8 +987,9 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 													+ getOpponentName() + ".",
 											true);
 							// listen for invites
-							helper.getGamesClient().registerInvitationListener(
-									TurnBasedMatchGameStrategy.this);
+							getHelper().getGamesClient()
+									.registerInvitationListener(
+											TurnBasedMatchGameStrategy.this);
 							TurnBasedMatchGameStrategy.this.rematchId = rematchId;
 
 						} else {
@@ -1021,7 +1017,7 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		}
 
 		alreadyLoadingRematch = true;
-		helper.getGamesClient().getTurnBasedMatch(
+		getHelper().getGamesClient().getTurnBasedMatch(
 				new OnTurnBasedMatchLoadedListener() {
 					@Override
 					public void onTurnBasedMatchLoaded(int status,
@@ -1144,8 +1140,8 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 	public void onResume(MainActivity theActivity) {
 		setMainActivity(theActivity);
 
-		if (!helper.isSignedIn()) {
-			if (helper.getGamesClient().isConnecting()) {
+		if (!getHelper().isSignedIn()) {
+			if (getHelper().getGamesClient().isConnecting()) {
 				getMainActivity().getGameFragment().setThinkingText(
 						"Reconnecting...", true);
 				getMainActivity().getGameFragment().showStatusText();
@@ -1174,13 +1170,4 @@ public class TurnBasedMatchGameStrategy extends GameStrategy implements
 		fragment.showFullSettingsPreference();
 	}
 
-	@Override
-	public boolean shouldKeepScreenOn() {
-		return false;
-	}
-
-	@Override
-	public ChatHelper getChatHelper() {
-		return this;
-	}
 }

@@ -145,15 +145,6 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		fragment.showFullSettingsPreference();
 	}
 
-	@Override
-	public boolean shouldKeepScreenOn() {
-		return false;
-	}
-
-	@Override
-	public ChatHelper getChatHelper() {
-		return null;
-	}
 
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);

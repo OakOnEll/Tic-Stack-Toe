@@ -26,7 +26,6 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.oakonell.ticstacktoe.ChatHelper;
-import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -41,11 +40,12 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
+import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
-public class RealtimeGameStrategy extends GameStrategy implements
-		RoomUpdateListener, RealTimeMessageReceivedListener,
-		RoomStatusUpdateListener, ChatHelper {
+public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
+		implements RoomUpdateListener, RealTimeMessageReceivedListener,
+		RoomStatusUpdateListener {
 	private static final Random random = new Random();
 	private static final String TAG = RealtimeGameStrategy.class.getName();
 
@@ -60,8 +60,6 @@ public class RealtimeGameStrategy extends GameStrategy implements
 	private static final byte MSG_PROTOCOL_VERSION = 8;
 
 	private int opponentProtocolVersion;
-
-	private GameHelper helper;
 
 	private String mRoomId;
 	private ArrayList<Participant> mParticipants;
@@ -78,14 +76,13 @@ public class RealtimeGameStrategy extends GameStrategy implements
 	private OnlinePlayAgainFragment onlinePlayAgainDialog;
 
 	private GamesClient getGamesClient() {
-		return helper.getGamesClient();
+		return getHelper().getGamesClient();
 	}
 
 	public RealtimeGameStrategy(MainActivity activity,
 			SoundManager soundManager, GameHelper helper, GameType type,
 			boolean isQuick, boolean initiatedTheGame) {
-		super(activity, soundManager);
-		this.helper = helper;
+		super(activity, soundManager, helper);
 		this.type = type;
 		this.isQuick = isQuick;
 		this.initiatedTheGame = initiatedTheGame;
@@ -254,8 +251,8 @@ public class RealtimeGameStrategy extends GameStrategy implements
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		Player blackPlayer;
 		Player whitePlayer;
-		String localPlayerName = getMainActivity()
-				.getString(R.string.local_player_name);
+		String localPlayerName = getMainActivity().getString(
+				R.string.local_player_name);
 		if (iAmBlack) {
 			blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
 					getMeForChat().getIconImageUri());
@@ -268,14 +265,13 @@ public class RealtimeGameStrategy extends GameStrategy implements
 					getOpponentParticipant().getIconImageUri());
 		}
 		Tracker myTracker = EasyTracker.getTracker();
-		myTracker
-				.sendEvent(
-						getMainActivity().getString(R.string.an_start_game_cat),
-						(isQuick ? getMainActivity()
-								.getString(R.string.an_start_quick_game_action)
-								: getMainActivity()
-										.getString(R.string.an_start_online_game_action)),
-						type.getVariant() + "", 0L);
+		myTracker.sendEvent(
+				getMainActivity().getString(R.string.an_start_game_cat),
+				(isQuick ? getMainActivity().getString(
+						R.string.an_start_quick_game_action)
+						: getMainActivity().getString(
+								R.string.an_start_online_game_action)),
+				type.getVariant() + "", 0L);
 
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
 				blackPlayer);
@@ -353,12 +349,13 @@ public class RealtimeGameStrategy extends GameStrategy implements
 		String message = GooglePlayServicesUtil.getErrorString(errorNum);
 		if (message.startsWith("UNKNOWN")) {
 			if (errorNum == 6001) {
-				message = getMainActivity()
-						.getString(R.string.cannot_invite_non_tester);
+				message = getMainActivity().getString(
+						R.string.cannot_invite_non_tester);
 			}
 		}
-		helper.showAlert(getMainActivity().getString(R.string.communication_error)
-				+ " (" + errorNum + ") " + message);
+		getHelper().showAlert(
+				getMainActivity().getString(R.string.communication_error)
+						+ " (" + errorNum + ") " + message);
 	}
 
 	// Show the waiting room UI to track the progress of other players as they
@@ -736,7 +733,6 @@ public class RealtimeGameStrategy extends GameStrategy implements
 		// real time game is broken when onResumed, nothing to do here
 		setMainActivity(theActivity);
 	}
-
 
 	@Override
 	public void onResume(MainActivity theActivity) {
