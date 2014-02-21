@@ -14,8 +14,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo.LocalMatchVisitor;
+import com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo;
 import com.oakonell.utils.StringUtils;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -173,8 +175,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 					ContentValues fileNameValue = new ContentValues();
 					fileNameValue.put(KEY_FILENAME, fileName);
-					int updated = db.update(TABLE_LOCAL_MATCHES, fileNameValue, KEY_ID
-							+ "=?", new String[] { Long.toString(id) });
+					int updated = db.update(TABLE_LOCAL_MATCHES, fileNameValue,
+							KEY_ID + "=?", new String[] { Long.toString(id) });
 					if (updated != 1) {
 						throw new RuntimeException(
 								"Error updating match record");
@@ -286,18 +288,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	private ContentValues getContentValues(LocalMatchInfo matchInfo) {
-		ContentValues values = new ContentValues();
-		values.put(KEY_MODE, matchInfo.getMode() == GameMode.AI ? 1 : 0);
+		final ContentValues values = new ContentValues();
 		values.put(KEY_MATCH_STATUS, matchInfo.getMatchStatus());
 		values.put(KEY_TURN_STATUS, matchInfo.getTurnStatus());
 
 		values.put(KEY_BLACK_NAME, matchInfo.getBlackName());
 		values.put(KEY_WHITE_NAME, matchInfo.getWhiteName());
 
-		values.put(KEY_WHITE_AI_LEVEL, matchInfo.getWhiteAILevel());
 		values.put(KEY_LAST_UPDATED, System.currentTimeMillis());
 
 		values.put(KEY_FILENAME, matchInfo.getFilename());
+
+		LocalMatchVisitor visitor = new LocalMatchVisitor() {
+
+			@Override
+			public void visitPassNPlay(PassNPlayMatchInfo info) {
+				values.put(KEY_MODE, 0);
+			}
+
+			@Override
+			public void visitAi(AiMatchInfo info) {
+				values.put(KEY_MODE, 1);
+				values.put(KEY_WHITE_AI_LEVEL, info.getWhiteAILevel());
+
+			}
+
+		};
+		matchInfo.accept(visitor);
+
 		return values;
 	}
 
@@ -404,7 +422,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String whiteName = query
 				.getString(query.getColumnIndex(KEY_WHITE_NAME));
 		int aiLevel = query.getInt(query.getColumnIndex(KEY_WHITE_AI_LEVEL));
-		long lastupdated = query
+		long lastUpdated = query
 				.getLong(query.getColumnIndex(KEY_LAST_UPDATED));
 		String fileName = query.getString(query.getColumnIndex(KEY_FILENAME));
 
@@ -412,8 +430,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.e(TAG, "Got a null file name?");
 		}
 
-		GameMode mode = modeNum == 1 ? GameMode.AI : GameMode.PASS_N_PLAY;
-		return new LocalMatchInfo(id, mode, matchStatus, turnStatus, blackName,
-				whiteName, aiLevel, lastupdated, fileName);
+		return LocalMatchInfo.createLocalMatch(modeNum, id, matchStatus,
+				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
+				fileName);
 	}
+
 }

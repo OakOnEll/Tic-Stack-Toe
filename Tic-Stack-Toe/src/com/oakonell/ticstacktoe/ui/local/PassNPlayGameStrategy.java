@@ -27,12 +27,12 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public PassNPlayGameStrategy(MainActivity mainActivity,
-			SoundManager soundManager, LocalMatchInfo localMatchInfo) {
+			SoundManager soundManager, PassNPlayMatchInfo localMatchInfo) {
 		super(mainActivity, localMatchInfo, soundManager);
 	}
 
 	public void playAgain() {
-		Game game = matchInfo.readGame(getContext());
+		Game game = getMatchInfo().readGame(getContext());
 		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
 				.getName(), game.getType());
 		// TODO, keep track of score, and switch first player...
@@ -54,10 +54,10 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 
 		DatabaseHandler db = new DatabaseHandler(getContext());
-		matchInfo = new LocalMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
+		setMatchInfo(new PassNPlayMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
-				0, System.currentTimeMillis(), game);
-		db.insertMatch(matchInfo, new OnLocalMatchUpdateListener() {
+				game));
+		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
 				GameFragment gameFragment = getMainActivity().getGameFragment();

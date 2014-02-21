@@ -20,7 +20,7 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public abstract class AbstractLocalStrategy extends GameStrategy {
-	protected LocalMatchInfo matchInfo;
+	private LocalMatchInfo matchInfo;
 
 	public AbstractLocalStrategy(MainActivity mainActivity,
 			SoundManager soundManager) {
@@ -31,7 +31,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public AbstractLocalStrategy(MainActivity mainActivity,
 			LocalMatchInfo localMatchInfo, SoundManager soundManager) {
 		super(mainActivity, soundManager);
-		this.matchInfo = localMatchInfo;
+		this.setMatchInfo(localMatchInfo);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	private void saveToDB() {
 		DatabaseHandler db = new DatabaseHandler(getContext());
-		db.updateMatch(matchInfo, new OnLocalMatchUpdateListener() {
+		db.updateMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
 
@@ -64,12 +64,12 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		// TODO Auto-generated method stub
 		// write the game to the DB, or wait until leave...??
 		if (game.getBoard().getState().isOver()) {
-			matchInfo.setMatchStatus(TurnBasedMatch.MATCH_STATUS_COMPLETE);
+			getMatchInfo().setMatchStatus(TurnBasedMatch.MATCH_STATUS_COMPLETE);
 			saveToDB();
 			return;
 		}
-		matchInfo
-				.setTurnStatus(matchInfo.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN ? TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN
+		getMatchInfo()
+				.setTurnStatus(getMatchInfo().getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN ? TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN
 						: TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 	}
 
@@ -151,7 +151,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 		GameFragment gameFragment = new GameFragment();
-		gameFragment.startGame(matchInfo.readGame(getContext()), score, null,
+		gameFragment.startGame(getMatchInfo().readGame(getContext()), score, null,
 				true);
 
 		FragmentManager manager = getMainActivity().getSupportFragmentManager();
@@ -161,6 +161,14 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		transaction.addToBackStack(null);
 		transaction.commit();
 
+	}
+
+	protected LocalMatchInfo getMatchInfo() {
+		return matchInfo;
+	}
+
+	protected void setMatchInfo(LocalMatchInfo matchInfo) {
+		this.matchInfo = matchInfo;
 	}
 
 }

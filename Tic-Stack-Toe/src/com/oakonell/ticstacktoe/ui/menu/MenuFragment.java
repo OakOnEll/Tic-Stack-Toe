@@ -53,9 +53,8 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
-import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
+import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
-import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
@@ -697,19 +696,10 @@ public class MenuFragment extends SherlockFragment implements
 	public void showLocalMatch(LocalMatchInfo localMatchInfo) {
 		setInactive();
 
-		if (localMatchInfo.getWhiteAILevel() != 0) {
-			AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
-					soundManager, localMatchInfo);
-			getMainActivity().setGameStrategy(listener);
-			listener.showFromMenu();
-			return;
-		}
-
-		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(
-				getMainActivity(), soundManager, localMatchInfo);
-		getMainActivity().setGameStrategy(listener);
-		listener.showFromMenu();
-
+		AbstractLocalStrategy strategy = localMatchInfo.createStrategy(
+				getMainActivity(), soundManager);
+		getMainActivity().setGameStrategy(strategy);
+		strategy.showFromMenu();
 	}
 
 	public void showAlert(String message) {

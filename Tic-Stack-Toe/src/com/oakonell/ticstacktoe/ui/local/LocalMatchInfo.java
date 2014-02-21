@@ -13,55 +13,58 @@ import android.text.format.DateUtils;
 
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.model.Game;
-import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
+import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
-public class LocalMatchInfo implements MatchInfo {
+public abstract class LocalMatchInfo implements MatchInfo {
 
 	private long id;
 
-	private GameMode mode;
 	private int matchStatus;
 	private int turnStatus;
 	private String blackName;
 	private String whiteName;
-	private int aiLevel;
 	private long lastUpdated;
 	private String fileName;
 	private Game game;
 
-	public LocalMatchInfo(long id, GameMode mode, int matchStatus,
-			int turnStatus, String blackName, String whiteName, int aiLevel,
-			long lastUpdated, String fileName) {
+	public interface LocalMatchVisitor {
+		void visitPassNPlay(PassNPlayMatchInfo info);
+
+		void visitAi(AiMatchInfo info);
+	}
+
+	public abstract void accept(LocalMatchVisitor visitor);
+
+	protected LocalMatchInfo(long id, int matchStatus, int turnStatus,
+			String blackName, String whiteName, long lastUpdated,
+			String fileName) {
 		this.id = id;
-		this.mode = mode;
 		this.matchStatus = matchStatus;
 		this.turnStatus = turnStatus;
 		this.blackName = blackName;
 		this.whiteName = whiteName;
-		this.aiLevel = aiLevel;
 		this.lastUpdated = lastUpdated;
 		this.fileName = fileName;
 	}
 
-	public LocalMatchInfo(int matchStatus, int turnStatus, String blackName,
-			String whiteName, int aiLevel, long lastUpdated, Game game) {
-		this.mode = game.getMode();
+	protected LocalMatchInfo(int matchStatus, int turnStatus, String blackName,
+			String whiteName, Game game) {
 		this.matchStatus = matchStatus;
 		this.turnStatus = turnStatus;
 		this.blackName = blackName;
 		this.whiteName = whiteName;
-		this.aiLevel = aiLevel;
-		this.lastUpdated = lastUpdated;
+		this.lastUpdated = System.currentTimeMillis();
 		this.game = game;
 	}
 
@@ -163,10 +166,6 @@ public class LocalMatchInfo implements MatchInfo {
 		fragment.showLocalMatch(this);
 	}
 
-	public GameMode getMode() {
-		return mode;
-	}
-
 	public int getMatchStatus() {
 		return matchStatus;
 	}
@@ -181,10 +180,6 @@ public class LocalMatchInfo implements MatchInfo {
 
 	public String getWhiteName() {
 		return whiteName;
-	}
-
-	public int getWhiteAILevel() {
-		return aiLevel;
 	}
 
 	public String getFilename() {
@@ -234,7 +229,7 @@ public class LocalMatchInfo implements MatchInfo {
 		ByteBufferDebugger buffer = new ByteBufferDebugger(byteBuffer);
 
 		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
-		Player whitePlayer = HumanStrategy.createPlayer(whiteName, false);
+		Player whitePlayer = createWhitePlayerStrategy();
 
 		FileInputStream in = null;
 		try {
@@ -265,6 +260,8 @@ public class LocalMatchInfo implements MatchInfo {
 		}
 	}
 
+	abstract protected Player createWhitePlayerStrategy();
+
 	public void setTurnStatus(int status) {
 		this.turnStatus = status;
 	}
@@ -272,4 +269,20 @@ public class LocalMatchInfo implements MatchInfo {
 	public void setMatchStatus(int matchStatus) {
 		this.matchStatus = matchStatus;
 	}
+
+	public abstract AbstractLocalStrategy createStrategy(MainActivity activity,
+			SoundManager soundManager);
+
+	public static LocalMatchInfo createLocalMatch(int modeNum, long id,
+			int matchStatus, int turnStatus, String blackName,
+			String whiteName, int aiLevel, long lastUpdated, String fileName) {
+		if (modeNum == 1) {
+			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
+					whiteName, aiLevel, lastUpdated, fileName);
+		}
+
+		return new PassNPlayMatchInfo(id, matchStatus, turnStatus, blackName,
+				whiteName, lastUpdated, fileName);
+	}
+
 }

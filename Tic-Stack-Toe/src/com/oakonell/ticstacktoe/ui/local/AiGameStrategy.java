@@ -30,7 +30,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public AiGameStrategy(MainActivity mainActivity, SoundManager soundManager,
-			LocalMatchInfo localMatchInfo) {
+			AiMatchInfo localMatchInfo) {
 		super(mainActivity, localMatchInfo, soundManager);
 	}
 
@@ -57,10 +57,10 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 
 		DatabaseHandler db = new DatabaseHandler(getContext());
-		matchInfo = new LocalMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
+		setMatchInfo(new AiMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
-				aiDepth, System.currentTimeMillis(), game);
-		db.insertMatch(matchInfo, new OnLocalMatchUpdateListener() {
+				aiDepth, System.currentTimeMillis(), game));
+		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
 				GameFragment gameFragment = getMainActivity().getGameFragment();
@@ -89,7 +89,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void playAgain() {
-		Game game = matchInfo.readGame(getContext());
+		Game game = getMatchInfo().readGame(getContext());
 
 		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
 				.getName(), game.getType(), aiDepth);
