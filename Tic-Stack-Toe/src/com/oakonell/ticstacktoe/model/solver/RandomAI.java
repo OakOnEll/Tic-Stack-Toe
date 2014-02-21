@@ -15,11 +15,10 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.PlaceNewPieceMove;
 import com.oakonell.ticstacktoe.model.Player;
-import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
-public class RandomAI extends PlayerStrategy {
+public class RandomAI extends AiPlayerStrategy {
 
-	public static Player createPlayer(String name, boolean isBlack) {
+	protected static Player createPlayer(String name, boolean isBlack) {
 		Player player = new Player(name, getImageUri(), new RandomAI(isBlack));
 		return player;
 	}

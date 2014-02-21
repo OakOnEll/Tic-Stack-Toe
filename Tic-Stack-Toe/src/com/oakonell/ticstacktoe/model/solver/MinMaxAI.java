@@ -6,12 +6,11 @@ import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
-import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
-public class MinMaxAI extends PlayerStrategy {
+public class MinMaxAI extends AiPlayerStrategy {
 	private MiniMaxAlg minmax;
 
-	public static Player createPlayer(String whiteName, boolean isBlack,
+	protected static Player createPlayer(String whiteName, boolean isBlack,
 			int aiDepth) {
 		MinMaxAI strategy = new MinMaxAI(isBlack);
 		Player player = new Player(whiteName, getImageUri(aiDepth), strategy);

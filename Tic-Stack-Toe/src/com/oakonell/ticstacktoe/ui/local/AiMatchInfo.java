@@ -3,8 +3,7 @@ package com.oakonell.ticstacktoe.ui.local;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
-import com.oakonell.ticstacktoe.model.solver.MinMaxAI;
-import com.oakonell.ticstacktoe.model.solver.RandomAI;
+import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public class AiMatchInfo extends LocalMatchInfo {
@@ -38,15 +37,14 @@ public class AiMatchInfo extends LocalMatchInfo {
 	public AbstractLocalStrategy createStrategy(MainActivity activity,
 			SoundManager soundManager) {
 		AiGameStrategy listener = new AiGameStrategy(activity, soundManager,
-				this);
+				aiLevel, this);
 		return listener;
 	}
 
+	@Override
 	protected Player createWhitePlayerStrategy() {
-		if (aiLevel < 0) {
-			return RandomAI.createPlayer(getWhiteName(), false);
-		}
-		return MinMaxAI.createPlayer(getWhiteName(), false, aiLevel);
+		return AiPlayerStrategy.createWhitePlayer(getWhiteName(), false,
+				aiLevel);
 	}
 
 }

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.TypeDropDownItem;
 
@@ -57,13 +58,13 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		List<AiDropDownItem> aiLevels = new ArrayList<NewAIGameDialog.AiDropDownItem>();
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_random), -1));
+				R.string.ai_random), AiPlayerStrategy.RANDOM_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_easy), 1));
+				R.string.ai_easy), AiPlayerStrategy.EASY_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_medium), 2));
+				R.string.ai_medium), AiPlayerStrategy.MEDIUM_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_hard), 3));
+				R.string.ai_hard), AiPlayerStrategy.HARD_AI));
 
 		final Spinner aiLevelSpinner = (Spinner) view
 				.findViewById(R.id.ai_level);

@@ -6,17 +6,23 @@ import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
 import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
+import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public abstract class AbstractLocalStrategy extends GameStrategy {
@@ -69,8 +75,9 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			return;
 		}
 		getMatchInfo()
-				.setTurnStatus(getMatchInfo().getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN ? TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN
-						: TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+				.setTurnStatus(
+						getMatchInfo().getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN ? TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN
+								: TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 	}
 
 	@Override
@@ -151,8 +158,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 		GameFragment gameFragment = new GameFragment();
-		gameFragment.startGame(getMatchInfo().readGame(getContext()), score, null,
-				true);
+		gameFragment.startGame(getMatchInfo().readGame(getContext()), score,
+				null, true);
 
 		FragmentManager manager = getMainActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -171,4 +178,57 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		this.matchInfo = matchInfo;
 	}
 
+	public void startGame(String blackName, String whiteName, GameType type) {
+		Player whitePlayer = createWhitePlayer(whiteName);
+		GameMode gameMode = getGameMode();
+
+		Tracker myTracker = EasyTracker.getTracker();
+		myTracker.sendEvent(getContext().getString(R.string.an_start_game_cat),
+				getContext().getString(R.string.an_start_ai_game_action), type
+						+ "", 0L);
+
+		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
+		final Game game = new Game(type, gameMode, blackPlayer, whitePlayer,
+				blackPlayer);
+		LocalMatchInfo theMatchInfo = createMatchInfo(blackName, whiteName,
+				game);
+
+		final ScoreCard score = new ScoreCard(0, 0, 0);
+
+		DatabaseHandler db = new DatabaseHandler(getContext());
+		matchInfo = theMatchInfo;
+		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
+			@Override
+			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
+				GameFragment gameFragment = getMainActivity().getGameFragment();
+				if (gameFragment == null) {
+					gameFragment = new GameFragment();
+
+					FragmentManager manager = getMainActivity()
+							.getSupportFragmentManager();
+					FragmentTransaction transaction = manager
+							.beginTransaction();
+					transaction.replace(R.id.main_frame, gameFragment,
+							MainActivity.FRAG_TAG_GAME);
+					transaction.addToBackStack(null);
+					transaction.commit();
+				}
+				gameFragment.startGame(game, score, null, false);
+
+			}
+
+			@Override
+			public void onUpdateFailure() {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+
+	protected abstract LocalMatchInfo createMatchInfo(String blackName,
+			String whiteName, final Game game);
+
+	protected abstract GameMode getGameMode();
+
+	protected abstract Player createWhitePlayer(String whiteName);
 }

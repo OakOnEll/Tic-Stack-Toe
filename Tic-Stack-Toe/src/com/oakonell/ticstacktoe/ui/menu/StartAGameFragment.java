@@ -476,10 +476,10 @@ public class StartAGameFragment extends SherlockFragment {
 		String blackName = getResources().getString(R.string.local_player_name);
 
 		AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
-				soundManager);
+				soundManager, aiDepth);
 		getMainActivity().setGameStrategy(listener);
 
-		listener.startGame(blackName, whiteName, type, aiDepth);
+		listener.startGame(blackName, whiteName, type);
 	}
 
 	public MainActivity getMainActivity() {
