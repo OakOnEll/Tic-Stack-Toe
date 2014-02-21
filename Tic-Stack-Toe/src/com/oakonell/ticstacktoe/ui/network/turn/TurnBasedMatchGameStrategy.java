@@ -806,7 +806,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		GameFragment gameFragment;
 		if (!isVisible) {
 			Log.i("TurnListener", "  showing fragment");
-			gameFragment = new GameFragment();
+			gameFragment = GameFragment.createFragment(this);
+
 			FragmentManager manager = getMainActivity()
 					.getSupportFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();

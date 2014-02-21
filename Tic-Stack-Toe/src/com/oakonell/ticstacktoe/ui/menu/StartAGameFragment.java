@@ -54,7 +54,14 @@ public class StartAGameFragment extends SherlockFragment {
 		// for finding references
 	}
 
-	public void initialize(SoundManager soundManager, GameHelper helper) {
+	public static StartAGameFragment createStartGameFragment(
+			SoundManager soundManager, GameHelper helper) {
+		StartAGameFragment fragment = new StartAGameFragment();
+		fragment.initialize(soundManager, helper);
+		return fragment;
+	}
+
+	private void initialize(SoundManager soundManager, GameHelper helper) {
 		this.soundManager = soundManager;
 		this.helper = helper;
 	}
@@ -343,8 +350,7 @@ public class StartAGameFragment extends SherlockFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getGamesClient().createRoom(
-						rtmConfigBuilder.build());
+				getGamesClient().createRoom(rtmConfigBuilder.build());
 			}
 		}, 0);
 
@@ -358,8 +364,7 @@ public class StartAGameFragment extends SherlockFragment {
 			public void chosenMode(GameType type, boolean useTurnBased) {
 				StartAGameFragment.this.onlineType = type;
 				StartAGameFragment.this.useTurnBased = useTurnBased;
-				Intent intent = getGamesClient()
-						.getSelectPlayersIntent(1, 1);
+				Intent intent = getGamesClient().getSelectPlayersIntent(1, 1);
 				setInactive();
 				startActivityForResult(intent, MainActivity.RC_SELECT_PLAYERS);
 			}

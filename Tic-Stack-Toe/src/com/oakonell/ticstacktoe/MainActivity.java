@@ -78,8 +78,8 @@ public class MainActivity extends BaseGameActivity {
 		MenuFragment menuFrag = (MenuFragment) getSupportFragmentManager()
 				.findFragmentByTag(FRAG_TAG_MENU);
 		if (menuFrag == null) {
-			menuFrag = new MenuFragment();
-			menuFrag.initialize(getGameHelper(), soundManager);
+			menuFrag = MenuFragment.createMenuFragment(getGameHelper(),
+					soundManager);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.add(R.id.main_frame, menuFrag, FRAG_TAG_MENU);

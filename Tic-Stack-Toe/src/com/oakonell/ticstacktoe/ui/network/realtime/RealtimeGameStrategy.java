@@ -244,7 +244,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	private void startGame(boolean iAmBlack) {
-		GameFragment gameFragment = new GameFragment();
+		GameFragment gameFragment = GameFragment.createFragment(this);
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
 		getMainActivity().hideAd();
@@ -268,9 +268,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		myTracker.sendEvent(
 				getContext().getString(R.string.an_start_game_cat),
 				(isQuick ? getContext().getString(
-						R.string.an_start_quick_game_action)
-						: getContext().getString(
-								R.string.an_start_online_game_action)),
+						R.string.an_start_quick_game_action) : getContext()
+						.getString(R.string.an_start_online_game_action)),
 				type.getVariant() + "", 0L);
 
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
@@ -354,8 +353,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			}
 		}
 		getHelper().showAlert(
-				getContext().getString(R.string.communication_error)
-						+ " (" + errorNum + ") " + message);
+				getContext().getString(R.string.communication_error) + " ("
+						+ errorNum + ") " + message);
 	}
 
 	// Show the waiting room UI to track the progress of other players as they
@@ -725,8 +724,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
 
-		gameFragment.startGame(game,
-				gameFragment.getScore(), null, false);
+		gameFragment.startGame(game, gameFragment.getScore(), null, false);
 	}
 
 	@Override

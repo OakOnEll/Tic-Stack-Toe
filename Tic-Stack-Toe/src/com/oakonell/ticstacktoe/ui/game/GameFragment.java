@@ -85,6 +85,20 @@ public class GameFragment extends AbstractGameFragment {
 
 	private boolean disableButtons;
 
+	public GameFragment() {
+		// for finding references
+	}
+
+	public static GameFragment createFragment(GameStrategy gameStrategy) {
+		GameFragment fragment = new GameFragment();
+		fragment.initialize(gameStrategy);
+		return fragment;
+	}
+
+	private void initialize(GameStrategy gameStrategy) {
+		this.gameStrategy = gameStrategy;
+	}
+
 	@Override
 	public void onPause() {
 		// TODO write the game state to the server?
@@ -788,6 +802,7 @@ public class GameFragment extends AbstractGameFragment {
 	// and let the animation take place
 	private boolean hadInvaldMove;
 	private SquareRelativeLayoutView squareView;
+	private GameStrategy gameStrategy;
 
 	private void configureUICell(final BoardPieceStackImageView button,
 			final Cell cell) {

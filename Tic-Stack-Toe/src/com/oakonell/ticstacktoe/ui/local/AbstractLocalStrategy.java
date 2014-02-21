@@ -157,7 +157,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
-		GameFragment gameFragment = new GameFragment();
+		GameFragment gameFragment = GameFragment.createFragment(this);
 		gameFragment.startGame(getMatchInfo().readGame(getContext()), score,
 				null, true);
 
@@ -202,7 +202,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
 				GameFragment gameFragment = getMainActivity().getGameFragment();
 				if (gameFragment == null) {
-					gameFragment = new GameFragment();
+					gameFragment = GameFragment
+							.createFragment(AbstractLocalStrategy.this);
 
 					FragmentManager manager = getMainActivity()
 							.getSupportFragmentManager();

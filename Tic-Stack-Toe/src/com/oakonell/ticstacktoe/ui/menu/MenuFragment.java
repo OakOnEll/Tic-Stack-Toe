@@ -90,7 +90,14 @@ public class MenuFragment extends SherlockFragment implements
 	private SoundManager soundManager;
 	private GameHelper helper;
 
-	public void initialize(GameHelper helper, SoundManager soundManager) {
+	public static MenuFragment createMenuFragment(GameHelper helper,
+			SoundManager soundManager) {
+		MenuFragment fragment = new MenuFragment();
+		fragment.initialize(helper, soundManager);
+		return fragment;
+	}
+
+	private void initialize(GameHelper helper, SoundManager soundManager) {
 		this.soundManager = soundManager;
 		this.helper = helper;
 	}
@@ -237,9 +244,9 @@ public class MenuFragment extends SherlockFragment implements
 			public void onClick(View v) {
 				// TODO start a menu fragment(?) to choose which style of game
 
-				StartAGameFragment fragment = new StartAGameFragment();
-				fragment.initialize(soundManager, getMainActivity()
-						.getGameHelper());
+				StartAGameFragment fragment = StartAGameFragment
+						.createStartGameFragment(soundManager,
+								getMainActivity().getGameHelper());
 
 				FragmentManager manager = getActivity()
 						.getSupportFragmentManager();
