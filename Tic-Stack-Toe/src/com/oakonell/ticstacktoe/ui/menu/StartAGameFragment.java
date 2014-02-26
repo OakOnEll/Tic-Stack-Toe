@@ -28,6 +28,7 @@ import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
@@ -471,7 +472,7 @@ public class StartAGameFragment extends SherlockFragment {
 				getMainActivity(), soundManager);
 		getMainActivity().setGameStrategy(listener);
 
-		listener.startGame(blackName, whiteName, type);
+		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
 	}
 
 	private void startAIGame(GameType type, String whiteName, int aiDepth) {
@@ -484,7 +485,7 @@ public class StartAGameFragment extends SherlockFragment {
 				soundManager, aiDepth);
 		getMainActivity().setGameStrategy(listener);
 
-		listener.startGame(blackName, whiteName, type);
+		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
 	}
 
 	public MainActivity getMainActivity() {

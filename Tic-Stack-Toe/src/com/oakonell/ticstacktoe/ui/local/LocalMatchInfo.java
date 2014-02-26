@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.net.Uri;
 import android.text.format.DateUtils;
 
 import com.google.analytics.tracking.android.Log;
@@ -16,6 +15,7 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
@@ -38,6 +38,11 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	private String fileName;
 	private Game game;
 
+	private long rematchId;
+
+	private ScoreCard scoreCard;
+	private int winner;
+
 	public interface LocalMatchVisitor {
 		void visitPassNPlay(PassNPlayMatchInfo info);
 
@@ -48,7 +53,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	protected LocalMatchInfo(long id, int matchStatus, int turnStatus,
 			String blackName, String whiteName, long lastUpdated,
-			String fileName) {
+			String fileName, ScoreCard score, long rematchId, int winner) {
 		this.id = id;
 		this.matchStatus = matchStatus;
 		this.turnStatus = turnStatus;
@@ -56,23 +61,35 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		this.whiteName = whiteName;
 		this.lastUpdated = lastUpdated;
 		this.fileName = fileName;
+
+		this.rematchId = rematchId;
+		this.scoreCard = score;
+		this.winner = winner;
 	}
 
 	protected LocalMatchInfo(int matchStatus, int turnStatus, String blackName,
-			String whiteName, Game game) {
+			String whiteName, Game game, ScoreCard score) {
 		this.matchStatus = matchStatus;
 		this.turnStatus = turnStatus;
 		this.blackName = blackName;
 		this.whiteName = whiteName;
 		this.lastUpdated = System.currentTimeMillis();
 		this.game = game;
+
+		this.scoreCard = score;
+
+		// TODO ?validate that the winner equals the game's state's winner
 	}
 
 	@Override
 	public CharSequence getText(Context context) {
 		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
-			// TODO display who won!
-			return blackName + " vs. " + whiteName;
+			if (winner == 1) {
+				return blackWon();
+			} else if (winner == -1) {
+				return whiteWon();
+			}
+			return "DRAW!";
 		}
 		if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
 			return blackName;
@@ -80,25 +97,27 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		return whiteName;
 	}
 
+	abstract protected CharSequence whiteWon();
+
+	abstract protected CharSequence blackWon();
+
 	@Override
 	public CharSequence getSubtext(Context context) {
 		CharSequence timeSpanString = DateUtils.getRelativeDateTimeString(
 				context, lastUpdated, DateUtils.MINUTE_IN_MILLIS,
 				DateUtils.WEEK_IN_MILLIS, 0);
-
-		return "Local " + blackName + " vs. " + whiteName + " last played "
-				+ timeSpanString;
+		String lastPlayed;
+		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
+			lastPlayed = " finished " + timeSpanString;
+		} else {
+			lastPlayed = " last played " + timeSpanString;
+		}
+		return "Local " + blackName + " vs. " + whiteName + lastPlayed;
 	}
 
 	@Override
 	public long getUpdatedTimestamp() {
 		return lastUpdated;
-	}
-
-	@Override
-	public Uri getIconImageUri() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public List<MatchMenuItem> getMenuItems() {
@@ -275,14 +294,31 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public static LocalMatchInfo createLocalMatch(int modeNum, long id,
 			int matchStatus, int turnStatus, String blackName,
-			String whiteName, int aiLevel, long lastUpdated, String fileName) {
+			String whiteName, int aiLevel, long lastUpdated, String fileName,
+			ScoreCard score, long rematchId, int winner) {
 		if (modeNum == 1) {
 			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
-					whiteName, aiLevel, lastUpdated, fileName);
+					whiteName, aiLevel, lastUpdated, fileName, score,
+					rematchId, winner);
 		}
 
 		return new PassNPlayMatchInfo(id, matchStatus, turnStatus, blackName,
-				whiteName, lastUpdated, fileName);
+				whiteName, lastUpdated, fileName, score, rematchId, winner);
 	}
 
+	public ScoreCard getScoreCard() {
+		return scoreCard;
+	}
+
+	public long getRematchId() {
+		return rematchId;
+	}
+
+	public void setWinner(int winner) {
+		this.winner = winner;
+	}
+
+	public void setScoreCard(ScoreCard score) {
+		this.scoreCard = score;
+	}
 }

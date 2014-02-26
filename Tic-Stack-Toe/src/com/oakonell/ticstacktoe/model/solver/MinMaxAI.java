@@ -27,7 +27,7 @@ public class MinMaxAI extends AiPlayerStrategy {
 		minmax = alg;
 	}
 
-	private static Uri getImageUri(int depth) {
+	protected static Uri getImageUri(int depth) {
 		if (depth <= 1) {
 			return Uri.parse("android.resource://com.oakonell.ticstacktoe/"
 					+ R.drawable.dim_bulb_icon_122);

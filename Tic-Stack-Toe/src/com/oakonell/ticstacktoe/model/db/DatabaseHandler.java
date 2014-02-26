@@ -14,6 +14,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo.LocalMatchVisitor;
@@ -27,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// Database Name
 	private static final String DATABASE_NAME = "localMatches";
@@ -48,9 +51,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_LAST_UPDATED = "last_updated";
 
 	private static final String KEY_FILENAME = "filename";
-	// TODO add rematch column...
-	// TODO add score columns
-	// TODO add winner column
+
+	private static final String KEY_REMATCH_ID = "rematch_id";
+
+	private static final String KEY_SCORE_BLACK_WINS = "score_black_wins";
+	private static final String KEY_SCORE_WHITE_WINS = "score_white_wins";
+	private static final String KEY_SCORE_TOTAL_GAMES = "score_total_games";
+
+	private static final String KEY_WINNER = "winner";
+
+	private static final int BLACK_WON = 1;
+	private static final int WHITE_WON = -1;
 
 	private final Context context;
 
@@ -70,7 +81,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_WHITE_NAME + " TEXT," //
 				+ KEY_WHITE_AI_LEVEL + " INTEGER," //
 				+ KEY_LAST_UPDATED + " INTEGER," //
-				+ KEY_FILENAME + " TEXT" //
+				+ KEY_FILENAME + " TEXT," //
+
+				+ KEY_REMATCH_ID + " INTEGER," //
+
+				+ KEY_SCORE_BLACK_WINS + " INTEGER," //
+				+ KEY_SCORE_WHITE_WINS + " INTEGER," //
+				+ KEY_SCORE_TOTAL_GAMES + " INTEGER," //
+
+				+ KEY_WINNER + " INTEGER" //
+
 				+ ")";
 		db.execSQL(CREATE_CONTACTS_TABLE);
 	}
@@ -250,10 +270,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			@Override
 			protected LocalMatchInfo doInBackground(Void... params) {
 				SQLiteDatabase db = getReadableDatabase();
-				String columnsNames[] = new String[] { KEY_ID, KEY_MODE,
-						KEY_MATCH_STATUS, KEY_TURN_STATUS, KEY_BLACK_NAME,
-						KEY_WHITE_NAME, KEY_WHITE_AI_LEVEL, KEY_LAST_UPDATED,
-						KEY_FILENAME };
+				String[] columnsNames = getColumnNames();
 				Cursor query = db.query(TABLE_LOCAL_MATCHES, columnsNames,
 						KEY_ID + "=?", new String[] { Long.toString(id) },
 						null, null, null);
@@ -287,6 +304,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	}
 
+	private String[] getColumnNames() {
+		String columnsNames[] = new String[] { KEY_ID, KEY_MODE,
+				KEY_MATCH_STATUS, KEY_TURN_STATUS, KEY_BLACK_NAME,
+				KEY_WHITE_NAME, KEY_WHITE_AI_LEVEL, KEY_LAST_UPDATED,
+				KEY_FILENAME,
+
+				KEY_REMATCH_ID,
+
+				KEY_SCORE_BLACK_WINS, KEY_SCORE_WHITE_WINS,
+				KEY_SCORE_TOTAL_GAMES,
+
+				KEY_WINNER };
+		return columnsNames;
+	}
+
 	private ContentValues getContentValues(LocalMatchInfo matchInfo) {
 		final ContentValues values = new ContentValues();
 		values.put(KEY_MATCH_STATUS, matchInfo.getMatchStatus());
@@ -298,6 +330,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_LAST_UPDATED, System.currentTimeMillis());
 
 		values.put(KEY_FILENAME, matchInfo.getFilename());
+
+		values.put(KEY_REMATCH_ID, matchInfo.getRematchId());
+
+		ScoreCard score = matchInfo.getScoreCard();
+
+		values.put(KEY_SCORE_BLACK_WINS, score.getBlackWins());
+		values.put(KEY_SCORE_WHITE_WINS, score.getWhiteWins());
+		values.put(KEY_SCORE_TOTAL_GAMES, score.getTotalGames());
+
+		values.put(KEY_FILENAME, matchInfo.getFilename());
+		values.put(KEY_FILENAME, matchInfo.getFilename());
+		values.put(KEY_FILENAME, matchInfo.getFilename());
+
+		Game game = matchInfo.readGame(context);
+		int winner = 0;
+		Player winnerPlayer = game.getBoard().getState().getWinner();
+		if (winnerPlayer != null) {
+			if (winnerPlayer.isBlack()) {
+				winner = BLACK_WON;
+			} else {
+				winner = WHITE_WON;
+			}
+		}
+		values.put(KEY_WINNER, winner);
 
 		LocalMatchVisitor visitor = new LocalMatchVisitor() {
 
@@ -356,10 +412,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		AsyncTask<Void, Void, LocalMatchesBuffer> task = new AsyncTask<Void, Void, LocalMatchesBuffer>() {
 			@Override
 			protected LocalMatchesBuffer doInBackground(Void... params) {
-				String columnsNames[] = new String[] { KEY_ID, KEY_MODE,
-						KEY_MATCH_STATUS, KEY_TURN_STATUS, KEY_BLACK_NAME,
-						KEY_WHITE_NAME, KEY_WHITE_AI_LEVEL, KEY_LAST_UPDATED,
-						KEY_FILENAME };
+				String[] columnsNames = getColumnNames();
 
 				SQLiteDatabase db = getReadableDatabase();
 				Cursor cursor = null;
@@ -430,9 +483,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.e(TAG, "Got a null file name?");
 		}
 
+		long rematchId = query.getLong(query.getColumnIndex(KEY_REMATCH_ID));
+		int blackWins = query
+				.getInt(query.getColumnIndex(KEY_SCORE_BLACK_WINS));
+		int whiteWins = query
+				.getInt(query.getColumnIndex(KEY_SCORE_WHITE_WINS));
+		int totalGames = query.getInt(query
+				.getColumnIndex(KEY_SCORE_TOTAL_GAMES));
+
+		ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
+				- (blackWins + whiteWins));
+
+		int winner = query.getInt(query.getColumnIndex(KEY_WINNER));
+
 		return LocalMatchInfo.createLocalMatch(modeNum, id, matchStatus,
 				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
-				fileName);
+				fileName, score, rematchId, winner);
 	}
 
 }

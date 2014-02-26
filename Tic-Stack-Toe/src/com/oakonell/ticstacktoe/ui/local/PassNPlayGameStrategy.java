@@ -6,6 +6,7 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
@@ -24,20 +25,21 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 	public void playAgain() {
 		Game game = getMatchInfo().readGame(getContext());
 		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
-				.getName(), game.getType());
+				.getName(), game.getType(), getMatchInfo().getScoreCard());
 		// TODO, keep track of score, and switch first player...
 	}
 
-	public void startGame(String blackName, String whiteName, GameType type) {
-		super.startGame(blackName, whiteName, type);
+	public void startGame(String blackName, String whiteName, GameType type,
+			ScoreCard score) {
+		super.startGame(blackName, whiteName, type, score);
 	}
 
 	@Override
 	protected LocalMatchInfo createMatchInfo(String blackName,
-			String whiteName, Game game) {
+			String whiteName, Game game, ScoreCard score) {
 		return new PassNPlayMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
-				game);
+				game, score);
 	}
 
 	@Override

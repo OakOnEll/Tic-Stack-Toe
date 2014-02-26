@@ -1,5 +1,7 @@
 package com.oakonell.ticstacktoe.model.solver;
 
+import android.net.Uri;
+
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
@@ -11,6 +13,13 @@ public abstract class AiPlayerStrategy extends PlayerStrategy {
 
 	protected AiPlayerStrategy(boolean isBlack) {
 		super(isBlack);
+	}
+
+	public static Uri getAiImageUri(int aiDepth) {
+		if (aiDepth == RANDOM_AI) {
+			return RandomAI.getImageUri();
+		}
+		return MinMaxAI.getImageUri(aiDepth);
 	}
 
 	public static Player createWhitePlayer(String whiteName, boolean isBlack,

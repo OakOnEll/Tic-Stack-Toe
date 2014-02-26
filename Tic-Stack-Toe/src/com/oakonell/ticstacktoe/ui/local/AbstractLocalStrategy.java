@@ -70,7 +70,16 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		// TODO Auto-generated method stub
 		// write the game to the DB, or wait until leave...??
 		if (game.getBoard().getState().isOver()) {
-			getMatchInfo().setMatchStatus(TurnBasedMatch.MATCH_STATUS_COMPLETE);
+			matchInfo.setMatchStatus(TurnBasedMatch.MATCH_STATUS_COMPLETE);
+			Player winner = game.getBoard().getState().getWinner();
+			if (winner == null) {
+				// draw
+			} else if (winner.isBlack()) {
+				matchInfo.setWinner(1);
+			} else {
+				matchInfo.setWinner(-1);
+			}
+			matchInfo.setScoreCard(score);
 			saveToDB();
 			return;
 		}
@@ -178,7 +187,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		this.matchInfo = matchInfo;
 	}
 
-	public void startGame(String blackName, String whiteName, GameType type) {
+	public void startGame(String blackName, String whiteName, GameType type,
+			final ScoreCard score) {
 		Player whitePlayer = createWhitePlayer(whiteName);
 		GameMode gameMode = getGameMode();
 
@@ -191,9 +201,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		final Game game = new Game(type, gameMode, blackPlayer, whitePlayer,
 				blackPlayer);
 		LocalMatchInfo theMatchInfo = createMatchInfo(blackName, whiteName,
-				game);
-
-		final ScoreCard score = new ScoreCard(0, 0, 0);
+				game, score);
 
 		DatabaseHandler db = new DatabaseHandler(getContext());
 		matchInfo = theMatchInfo;
@@ -227,7 +235,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	protected abstract LocalMatchInfo createMatchInfo(String blackName,
-			String whiteName, final Game game);
+			String whiteName, final Game game, ScoreCard score);
 
 	protected abstract GameMode getGameMode();
 

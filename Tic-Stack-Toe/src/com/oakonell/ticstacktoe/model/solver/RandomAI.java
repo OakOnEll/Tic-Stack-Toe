@@ -27,7 +27,7 @@ public class RandomAI extends AiPlayerStrategy {
 		super(isBlack);
 	}
 
-	private static Uri getImageUri() {
+	protected static Uri getImageUri() {
 		return Uri.parse("android.resource://com.oakonell.ticstacktoe/"
 				+ R.drawable.dice_icon_14730);
 	}
