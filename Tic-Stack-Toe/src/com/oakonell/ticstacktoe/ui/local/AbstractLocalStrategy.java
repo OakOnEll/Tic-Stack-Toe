@@ -20,7 +20,6 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
-import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
@@ -157,11 +156,6 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	@Override
 	public void onSignInFailed(MainActivity mainActivity) {
 		// no worries
-	}
-
-	@Override
-	public void showSettings(AbstractGameFragment fragment) {
-		fragment.showFullSettingsPreference();
 	}
 
 	public void showFromMenu() {

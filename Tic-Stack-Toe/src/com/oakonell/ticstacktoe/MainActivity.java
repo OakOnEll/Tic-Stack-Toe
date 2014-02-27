@@ -331,8 +331,4 @@ public class MainActivity extends BaseGameActivity {
 		}
 	}
 
-	public void messageRecieved(Participant opponentParticipant, String string) {
-		getGameFragment().messageRecieved(opponentParticipant, string);
-	}
-
 }

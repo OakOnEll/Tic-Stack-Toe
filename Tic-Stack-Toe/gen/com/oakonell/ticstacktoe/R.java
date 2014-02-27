@@ -1384,8 +1384,8 @@ containing a value of this type.
         public static final int abs__textButton=0x7f070020;
         public static final int abs__title=0x7f070028;
         public static final int abs__up=0x7f070014;
-        public static final int action_chat=0x7f0700d9;
-        public static final int action_settings=0x7f0700da;
+        public static final int action_chat=0x7f0700da;
+        public static final int action_settings=0x7f0700d9;
         public static final int actionbar_notifcation_imageview=0x7f070044;
         public static final int actionbar_notifcation_progress=0x7f070046;
         public static final int actionbar_notifcation_textview=0x7f070045;
@@ -1622,8 +1622,8 @@ containing a value of this type.
         public static final int turn_play_again_dialog=0x7f030031;
     }
     public static final class menu {
-        public static final int game=0x7f100000;
-        public static final int menu=0x7f100001;
+        public static final int menu=0x7f100000;
+        public static final int network_game=0x7f100001;
     }
     public static final class plurals {
         public static final int num_draws_with_label=0x7f0f0001;

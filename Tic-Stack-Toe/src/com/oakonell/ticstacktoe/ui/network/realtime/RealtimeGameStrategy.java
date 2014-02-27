@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -25,7 +26,6 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeReliableMessage
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.oakonell.ticstacktoe.ChatHelper;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -35,7 +35,6 @@ import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
-import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
@@ -212,7 +211,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				throw new RuntimeException("UTF-8 charset not present!?");
 			}
 
-			getMainActivity().messageRecieved(getOpponentParticipant(), string);
+			messageRecieved(getOpponentParticipant(), string);
 		} else if (type == MSG_SEND_VARIANT) {
 			int sentVariant = buffer.getInt();
 			if (this.type != null) {
@@ -759,7 +758,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void showSettings(AbstractGameFragment fragment) {
+	public void showSettings(Fragment fragment) {
 		// show an abbreviated "settings"- notably the sound fx and
 		// other immediate game play settings
 		OnlineSettingsDialogFragment onlineSettingsFragment = new OnlineSettingsDialogFragment();
@@ -772,20 +771,10 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		return true;
 	}
 
-	@Override
-	public ChatHelper getChatHelper() {
-		return this;
-	}
-
 	public void onlineMoveReceived(ByteBufferDebugger buffer) {
-		getMainActivity().getGameFragment().onlineMakeMove(buffer);
+		AbstractMove move = AbstractMove.fromMessageBytes(buffer,
+				getMainActivity().getGameFragment().getGame());
+		getMainActivity().getGameFragment().highlightAndMakeMove(move);
 	}
 
-	public void opponentInChat() {
-		getMainActivity().getGameFragment().opponentInChat();
-	}
-
-	public void opponentClosedChat() {
-		getMainActivity().getGameFragment().opponentClosedChat();
-	}
 }

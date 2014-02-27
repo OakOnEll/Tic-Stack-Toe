@@ -1,12 +1,19 @@
 package com.oakonell.ticstacktoe;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.ScoreCard;
-import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
+import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
+import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public abstract class GameStrategy {
 	private final SoundManager soundManager;
@@ -36,15 +43,14 @@ public abstract class GameStrategy {
 
 	public abstract void onFragmentResume();
 
-	public abstract void showSettings(AbstractGameFragment fragment);
+	public void showSettings(Fragment fragment) {
+		showFullSettingsPreference(fragment);
+	}
 
 	public boolean shouldKeepScreenOn() {
 		return false;
 	}
 
-	public ChatHelper getChatHelper() {
-		return null;
-	}
 
 	public int playSound(Sounds sound) {
 		return soundManager.playSound(sound);
@@ -68,6 +74,41 @@ public abstract class GameStrategy {
 
 	protected void setMainActivity(MainActivity theActivity) {
 		mainActivity = theActivity;
+	}
+
+	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			showSettings(fragment);
+			return true;
+		}
+		return false;
+	}
+
+	public void onCreateOptionsMenu(Fragment fragment, Menu menu,
+			MenuInflater inflater) {
+		inflater.inflate(R.menu.menu, menu);
+	}
+
+	public void onPrepareOptionsMenu(Fragment fragment, Menu menu) {
+		// do nothing
+	}
+
+	private void showFullSettingsPreference(Fragment fragment) {
+		// create special intent
+		Intent prefIntent = new Intent(fragment.getActivity(),
+				SettingsActivity.class);
+
+		GameHelper helper = getMainActivity().getGameHelper();
+		Info info = null;
+		TicStackToe app = (TicStackToe) fragment.getActivity().getApplication();
+		if (helper.isSignedIn()) {
+			info = new Info(helper);
+		}
+		app.setDevelopInfo(info);
+		// ugh.. does going to preferences leave the room!?
+		fragment.getActivity().startActivityForResult(prefIntent,
+				MainActivity.RC_UNUSED);
 	}
 
 }

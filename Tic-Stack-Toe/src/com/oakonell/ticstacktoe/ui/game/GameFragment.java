@@ -28,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
@@ -52,7 +54,6 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
-import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
 import com.oakonell.utils.activity.dragndrop.DragController;
@@ -66,7 +67,6 @@ import com.oakonell.utils.activity.dragndrop.OnDropListener;
 public class GameFragment extends AbstractGameFragment {
 	private DragController mDragController;
 	private DragLayer mDragLayer;
-
 	private ImageManager imgManager;
 
 	private View blackHeaderLayout;
@@ -76,14 +76,32 @@ public class GameFragment extends AbstractGameFragment {
 
 	private TextView gameNumber;
 	private TextView numMoves;
+	private SquareRelativeLayoutView squareView;
 
 	private List<ImageDropTarget> buttons = new ArrayList<ImageDropTarget>();
 	private WinOverlayView winOverlayView;
 
+	private static class SquareBoardResizeInfo {
+		int boardWidth;
+		int boardHeight;
+		int boardSize;
+		int pieceStackHeight;
+	}
+
+	private SquareBoardResizeInfo resizeInfo = new SquareBoardResizeInfo();
+
+	private GameStrategy gameStrategy;
 	private Game game;
 	private ScoreCard score;
 
 	private boolean disableButtons;
+	// used while dropping, in case an invalid move was made, to NOT update UI,
+	// and let the animation take place
+	private boolean hadInvaldMove;
+
+	// state management
+	private Runnable inOnResume;
+	private Runnable inOnCreate;
 
 	public GameFragment() {
 		// for finding references
@@ -101,7 +119,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	@Override
 	public void onPause() {
-		// TODO write the game state to the server?
+		gameStrategy.leaveRoom();
 		super.onPause();
 	}
 
@@ -109,16 +127,13 @@ public class GameFragment extends AbstractGameFragment {
 	public void onResume() {
 		super.onResume();
 
-		getMainActivity().getGameStrategy().onFragmentResume();
+		gameStrategy.onFragmentResume();
 		Log.i("GameFragment", "onResume");
 
 		if (inOnResume != null) {
 			inOnResume.run();
 		}
 	}
-
-	Runnable inOnResume;
-	Runnable inOnCreate;
 
 	public void startGame(final Game game, final ScoreCard score,
 			final String waitingText, final boolean showMove) {
@@ -141,7 +156,7 @@ public class GameFragment extends AbstractGameFragment {
 
 					configureNonLocalProgresses();
 					if (getView() != null) {
-						addPieceListeners(getView());
+						configureBoardButtons(getView());
 					}
 					updateHeader(getView());
 
@@ -171,7 +186,7 @@ public class GameFragment extends AbstractGameFragment {
 					GameFragment.this.game = game;
 					configureNonLocalProgresses();
 					if (getView() != null) {
-						addPieceListeners(getView());
+						configureBoardButtons(getView());
 					}
 					updateHeader(getView());
 
@@ -202,7 +217,22 @@ public class GameFragment extends AbstractGameFragment {
 			leaveGame();
 			return true;
 		}
+		if (gameStrategy.onOptionsItemSelected(this, item)) {
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		gameStrategy.onCreateOptionsMenu(this, menu, inflater);
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		gameStrategy.onPrepareOptionsMenu(this, menu);
 	}
 
 	@Override
@@ -223,28 +253,9 @@ public class GameFragment extends AbstractGameFragment {
 		// Handle when activity is recreated like on orientation Change
 		configureDisplayHomeUp();
 
-		mDragLayer = (DragLayer) view.findViewById(R.id.drag_layer);
-		mDragController = new DragController(getActivity());
-		mDragLayer.setDragController(mDragController);
-		mDragController.setDragListener(mDragLayer);
-
-		invalidateMenu();
 		setHasOptionsMenu(true);
 
-		imgManager = ImageManager.create(getMainActivity());
-
-		blackHeaderLayout = view.findViewById(R.id.black_name_layout);
-		whiteHeaderLayout = view.findViewById(R.id.white_name_layout);
-
-		winOverlayView = (WinOverlayView) view.findViewById(R.id.win_overlay);
-
-		blackWins = (TextView) view.findViewById(R.id.num_black_wins);
-		whiteWins = (TextView) view.findViewById(R.id.num_white_wins);
-		// draws = (TextView) view.findViewById(R.id.num_draws);
-
-		gameNumber = (TextView) view.findViewById(R.id.game_number);
-
-		numMoves = (TextView) view.findViewById(R.id.num_moves);
+		storeViewReferences(view);
 
 		View num_games_container = view.findViewById(R.id.num_games_container);
 		num_games_container.setOnClickListener(new View.OnClickListener() {
@@ -260,10 +271,9 @@ public class GameFragment extends AbstractGameFragment {
 
 		gameNumber.setText("" + score.getTotalGames());
 		winOverlayView.setBoardSize(game.getBoard().getSize());
-		addPieceListeners(view);
+		configureBoardButtons(view);
 
-		view.setKeepScreenOn(getMainActivity().getGameStrategy()
-				.shouldKeepScreenOn());
+		view.setKeepScreenOn(gameStrategy.shouldKeepScreenOn());
 		if (game.getBoard().getSize() == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
 					.setBackgroundResource(R.drawable.wood_grid_3x3);
@@ -286,43 +296,68 @@ public class GameFragment extends AbstractGameFragment {
 					public void onMeasureCalled(
 							PieceStackImageView squareRelativeLayoutView,
 							int size, int origWidth, int origHeight) {
-						pieceStackHeight = origHeight;
-						resizeBoardAndStacks(view);
+						if (resizeInfo != null) {
+							resizeInfo.pieceStackHeight = origHeight;
+							resizeBoardAndStacks(view);
+						}
 
 					}
 				});
 
-		squareView = (SquareRelativeLayoutView) view
-				.findViewById(R.id.grid_container);
 		squareView.setOnMeasureDependent(new OnMeasureDependent() {
 			@Override
 			public void onMeasureCalled(
 					SquareRelativeLayoutView squareRelativeLayoutView,
 					int size, int origWidth, int origHeight) {
-				boardHeight = origHeight;
-				boardWidth = origWidth;
-				boardSize = size;
-				resizeBoardAndStacks(view);
+				if (resizeInfo != null) {
+					resizeInfo.boardHeight = origHeight;
+					resizeInfo.boardWidth = origWidth;
+					resizeInfo.boardSize = size;
+					resizeBoardAndStacks(view);
+				}
 			}
 		});
 
 		return view;
 	}
 
+	private void storeViewReferences(final View view) {
+		mDragLayer = (DragLayer) view.findViewById(R.id.drag_layer);
+		mDragController = new DragController(getActivity());
+		mDragLayer.setDragController(mDragController);
+		mDragController.setDragListener(mDragLayer);
+
+		imgManager = ImageManager.create(getMainActivity());
+
+		blackHeaderLayout = view.findViewById(R.id.black_name_layout);
+		whiteHeaderLayout = view.findViewById(R.id.white_name_layout);
+
+		winOverlayView = (WinOverlayView) view.findViewById(R.id.win_overlay);
+
+		blackWins = (TextView) view.findViewById(R.id.num_black_wins);
+		whiteWins = (TextView) view.findViewById(R.id.num_white_wins);
+		// draws = (TextView) view.findViewById(R.id.num_draws);
+
+		gameNumber = (TextView) view.findViewById(R.id.game_number);
+
+		numMoves = (TextView) view.findViewById(R.id.num_moves);
+
+		squareView = (SquareRelativeLayoutView) view
+				.findViewById(R.id.grid_container);
+	}
+
 	protected void resizeBoardAndStacks(View view) {
-		if (wasResized) {
+		if (resizeInfo.boardSize == 0 || resizeInfo.pieceStackHeight == 0) {
 			return;
 		}
-		if (boardSize == 0 || pieceStackHeight == 0) {
-			return;
-		}
-		wasResized = true;
 
 		int boardSize = game.getBoard().getSize();
-		int size = (boardHeight + 2 * pieceStackHeight) / (boardSize + 2);
+		int size = (resizeInfo.boardHeight + 2 * resizeInfo.pieceStackHeight)
+				/ (boardSize + 2);
 		int newBoardPixSize = size * boardSize;
-		Log.i("GameFragment", "resizing: Board height = " + boardHeight
-				+ ", piece height = " + pieceStackHeight
+		Log.i("GameFragment", "resizing: Board height = "
+				+ resizeInfo.boardHeight + ", piece height = "
+				+ resizeInfo.pieceStackHeight
 				+ ", calculated single piece size =" + size + ", new board = "
 				+ newBoardPixSize);
 
@@ -332,13 +367,8 @@ public class GameFragment extends AbstractGameFragment {
 		layoutParams.height = newBoardPixSize;
 		squareView.requestLayout();
 
+		resizeInfo = null;
 	}
-
-	boolean wasResized;
-	int boardWidth;
-	int boardHeight;
-	int boardSize;
-	int pieceStackHeight;
 
 	private void configureDisplayHomeUp() {
 		if (getMainActivity() == null)
@@ -386,72 +416,72 @@ public class GameFragment extends AbstractGameFragment {
 		view.requestLayout();
 	}
 
-	private void addPieceListeners(View view) {
+	private void configureBoardButtons(View view) {
 		int size = game.getBoard().getSize();
 		BoardPieceStackImageView button = (BoardPieceStackImageView) view
 				.findViewById(R.id.button_r1c1);
-		configureUICell(button, new Cell(0, 0));
+		configureBoardButton(button, new Cell(0, 0));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r1c2);
-		configureUICell(button, new Cell(0, 1));
+		configureBoardButton(button, new Cell(0, 1));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r1c3);
-		configureUICell(button, new Cell(0, 2));
+		configureBoardButton(button, new Cell(0, 2));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r1c4);
 		if (size > 3) {
-			configureUICell(button, new Cell(0, 3));
+			configureBoardButton(button, new Cell(0, 3));
 			button.setVisibility(View.VISIBLE);
 		}
 		if (size > 4) {
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r1c5);
-			configureUICell(button, new Cell(0, 4));
+			configureBoardButton(button, new Cell(0, 4));
 			button.setVisibility(View.VISIBLE);
 		}
 
 		// row2
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r2c1);
-		configureUICell(button, new Cell(1, 0));
+		configureBoardButton(button, new Cell(1, 0));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r2c2);
-		configureUICell(button, new Cell(1, 1));
+		configureBoardButton(button, new Cell(1, 1));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r2c3);
-		configureUICell(button, new Cell(1, 2));
+		configureBoardButton(button, new Cell(1, 2));
 
 		if (size > 3) {
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r2c4);
-			configureUICell(button, new Cell(1, 3));
+			configureBoardButton(button, new Cell(1, 3));
 			button.setVisibility(View.VISIBLE);
 		}
 		if (size > 4) {
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r2c5);
-			configureUICell(button, new Cell(1, 4));
+			configureBoardButton(button, new Cell(1, 4));
 			button.setVisibility(View.VISIBLE);
 		}
 		// row3
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r3c1);
-		configureUICell(button, new Cell(2, 0));
+		configureBoardButton(button, new Cell(2, 0));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r3c2);
-		configureUICell(button, new Cell(2, 1));
+		configureBoardButton(button, new Cell(2, 1));
 
 		button = (BoardPieceStackImageView) view.findViewById(R.id.button_r3c3);
-		configureUICell(button, new Cell(2, 2));
+		configureBoardButton(button, new Cell(2, 2));
 
 		if (size > 3) {
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r3c4);
-			configureUICell(button, new Cell(2, 3));
+			configureBoardButton(button, new Cell(2, 3));
 			button.setVisibility(View.VISIBLE);
 		}
 		if (size > 4) {
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r3c5);
-			configureUICell(button, new Cell(2, 4));
+			configureBoardButton(button, new Cell(2, 4));
 			button.setVisibility(View.VISIBLE);
 		}
 
@@ -460,28 +490,28 @@ public class GameFragment extends AbstractGameFragment {
 			// row4
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r4c1);
-			configureUICell(button, new Cell(3, 0));
+			configureBoardButton(button, new Cell(3, 0));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r4c2);
-			configureUICell(button, new Cell(3, 1));
+			configureBoardButton(button, new Cell(3, 1));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r4c3);
-			configureUICell(button, new Cell(3, 2));
+			configureBoardButton(button, new Cell(3, 2));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r4c4);
-			configureUICell(button, new Cell(3, 3));
+			configureBoardButton(button, new Cell(3, 3));
 			button.setVisibility(View.VISIBLE);
 
 			if (size > 4) {
 				button = (BoardPieceStackImageView) view
 						.findViewById(R.id.button_r4c5);
-				configureUICell(button, new Cell(3, 4));
+				configureBoardButton(button, new Cell(3, 4));
 				button.setVisibility(View.VISIBLE);
 			}
 		}
@@ -491,27 +521,27 @@ public class GameFragment extends AbstractGameFragment {
 			// row5
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r5c1);
-			configureUICell(button, new Cell(4, 0));
+			configureBoardButton(button, new Cell(4, 0));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r5c2);
-			configureUICell(button, new Cell(4, 1));
+			configureBoardButton(button, new Cell(4, 1));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r5c3);
-			configureUICell(button, new Cell(4, 2));
+			configureBoardButton(button, new Cell(4, 2));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r5c4);
-			configureUICell(button, new Cell(4, 3));
+			configureBoardButton(button, new Cell(4, 3));
 			button.setVisibility(View.VISIBLE);
 
 			button = (BoardPieceStackImageView) view
 					.findViewById(R.id.button_r5c5);
-			configureUICell(button, new Cell(4, 4));
+			configureBoardButton(button, new Cell(4, 4));
 			button.setVisibility(View.VISIBLE);
 		}
 
@@ -551,7 +581,6 @@ public class GameFragment extends AbstractGameFragment {
 
 		PieceStackImageView stackView = getPlayerStackView(player, stackNum);
 		updatePlayerStack(pieceStack, stackView);
-
 	}
 
 	private PieceStackImageView getPlayerStackView(Player player, int stackNum) {
@@ -646,8 +675,9 @@ public class GameFragment extends AbstractGameFragment {
 
 				boolean isCurrentPlayersPiece = pieceStack.getTopPiece()
 						.isBlack() == game.getCurrentPlayer().isBlack();
-				if (!isCurrentPlayersPiece)
+				if (!isCurrentPlayersPiece) {
 					return false;
+				}
 				return pieceStack.getTopPiece() != null;
 			}
 
@@ -670,8 +700,6 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
-				// TODO depending on game rules, only allow the active stack to
-				// be played
 				Piece topPiece = pieceStack.getTopPiece();
 				if (topPiece == null) {
 					return false;
@@ -748,7 +776,7 @@ public class GameFragment extends AbstractGameFragment {
 			int movedResourceId, ImageView target, final Runnable runnable) {
 		hadInvaldMove = true;
 
-		final ImageView movingView = creatInvalidDragMovingView(dragView,
+		final ImageView movingView = createInvalidDragMovingView(dragView,
 				movedResourceId);
 
 		disableButtons = true;
@@ -798,13 +826,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	}
 
-	// used while dropping, in case an invalid move was made, to NOT update UI,
-	// and let the animation take place
-	private boolean hadInvaldMove;
-	private SquareRelativeLayoutView squareView;
-	private GameStrategy gameStrategy;
-
-	private void configureUICell(final BoardPieceStackImageView button,
+	private void configureBoardButton(final BoardPieceStackImageView button,
 			final Cell cell) {
 		Piece visiblePiece = game.getBoard().getVisiblePiece(cell);
 		if (visiblePiece != null) {
@@ -823,6 +845,14 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public boolean allowDrag() {
+				if (disableButtons) {
+					return false;
+				}
+				if (!game.getCurrentPlayer().getStrategy().isHuman()) {
+					// ignore button clicks if the current player is not a
+					// human
+					return false;
+				}
 				// if we are in strict, and a piece was already chosen, only
 				// that one can be dragged
 				if (game.getFirstPickedCell() != null) {
@@ -865,15 +895,14 @@ public class GameFragment extends AbstractGameFragment {
 						new Runnable() {
 							public void run() {
 								update();
-								// TODO animateInvalidMoveReturn( onDropMove,
-								// x,y);
 								if (game.getType().isStrict()) {
+									// in strict mode, highlight the chosen
+									// piece, as only it can be
+									// moved
 									highlightStrictFirstTouchedPiece(button);
 								}
 							}
 						});
-				// in strict mode, highlight the chosen piece, as only it can be
-				// moved
 
 			}
 
@@ -935,8 +964,7 @@ public class GameFragment extends AbstractGameFragment {
 									toast.show();
 								}
 							});
-					getMainActivity().getGameStrategy().playSound(
-							Sounds.INVALID_MOVE);
+					gameStrategy.playSound(Sounds.INVALID_MOVE);
 					return;
 				}
 				onDropMove.postMove();
@@ -946,9 +974,8 @@ public class GameFragment extends AbstractGameFragment {
 				updateBoardPiece(cell);
 				postMove(state, true);
 
-				GameStrategy appListener = getMainActivity().getGameStrategy();
 				AbstractMove lastMove = state.getLastMove();
-				appListener.sendMove(game, lastMove, score);
+				gameStrategy.sendMove(game, lastMove, score);
 			}
 
 			@Override
@@ -1148,12 +1175,12 @@ public class GameFragment extends AbstractGameFragment {
 		}
 	}
 
-	public boolean makeAndDisplayMove(AbstractMove move) {
+	private boolean makeAndDisplayMove(AbstractMove move) {
 		State outcome = null;
 		try {
 			outcome = move.applyToGame(game);
 		} catch (InvalidMoveException e) {
-			getMainActivity().getGameStrategy().playSound(Sounds.INVALID_MOVE);
+			gameStrategy.playSound(Sounds.INVALID_MOVE);
 			int messageId = e.getErrorResourceId();
 			Toast toast = Toast.makeText(getActivity(), messageId,
 					Toast.LENGTH_SHORT);
@@ -1263,7 +1290,7 @@ public class GameFragment extends AbstractGameFragment {
 		} else {
 			markerToPlayView.setImageResource(exposedSourceResId);
 		}
-		final ImageView movingView = creatMovingView(markerToPlayView,
+		final ImageView movingView = createMovingView(markerToPlayView,
 				movedResourceId);
 
 		// create translation animation
@@ -1305,7 +1332,7 @@ public class GameFragment extends AbstractGameFragment {
 		movingView.startAnimation(replaceAnimation);
 	}
 
-	private ImageView creatInvalidDragMovingView(View markerToPlayView,
+	private ImageView createInvalidDragMovingView(View markerToPlayView,
 			int resource) {
 		ImageView animatorImage = (ImageView) getView().findViewById(
 				R.id.moving_view);
@@ -1331,7 +1358,7 @@ public class GameFragment extends AbstractGameFragment {
 		return animatorImage;
 	}
 
-	private ImageView creatMovingView(View markerToPlayView, int resource) {
+	private ImageView createMovingView(View markerToPlayView, int resource) {
 		ImageView animatorImage = (ImageView) getView().findViewById(
 				R.id.moving_view);
 		animatorImage.setImageResource(resource);
@@ -1383,16 +1410,13 @@ public class GameFragment extends AbstractGameFragment {
 
 			if (playSound) {
 				if (game.getMode() == GameMode.PASS_N_PLAY) {
-					getMainActivity().getGameStrategy().playSound(
-							Sounds.GAME_WON);
+					gameStrategy.playSound(Sounds.GAME_WON);
 				} else {
 					// the player either won or lost
 					if (winner.equals(game.getLocalPlayer())) {
-						getMainActivity().getGameStrategy().playSound(
-								Sounds.GAME_WON);
+						gameStrategy.playSound(Sounds.GAME_WON);
 					} else {
-						getMainActivity().getGameStrategy().playSound(
-								Sounds.GAME_LOST);
+						gameStrategy.playSound(Sounds.GAME_LOST);
 					}
 				}
 			}
@@ -1401,18 +1425,17 @@ public class GameFragment extends AbstractGameFragment {
 
 		} else {
 			score.incrementScore(null);
-			getMainActivity().getGameStrategy().playSound(Sounds.GAME_DRAW);
+			gameStrategy.playSound(Sounds.GAME_DRAW);
 			title = getString(R.string.draw);
 		}
-		promptToPlayAgain(winner.getName(), title);
+		gameStrategy.promptToPlayAgain(winner.getName(), title);
 	}
 
 	private void acceptMove() {
 		final PlayerStrategy currentStrategy = game.getCurrentPlayer()
 				.getStrategy();
 		if (currentStrategy.isHuman()) {
-			disableButtons = false;
-			// let the buttons be pressed for a human interaction
+			acceptHumanMove();
 			return;
 		}
 		// show a thinking/progress icon, suitable for network play and ai
@@ -1425,6 +1448,12 @@ public class GameFragment extends AbstractGameFragment {
 		aiMakeMove(currentStrategy);
 	}
 
+	public void acceptHumanMove() {
+		disableButtons = false;
+		// let the buttons be pressed for a human interaction
+		return;
+	}
+
 	private void configureNonLocalProgresses() {
 		// if (thinking == null || thinkingText == null) {
 		// // safety for when start called before activity is created
@@ -1433,18 +1462,13 @@ public class GameFragment extends AbstractGameFragment {
 		PlayerStrategy strategy = game.getCurrentPlayer().getStrategy();
 		if (strategy.isHuman()) {
 			hideStatusText();
-			disableButtons = false;
+			acceptHumanMove();
 			return;
 		}
 		disableButtons = true;
 		setOpponentThinking();
 		showStatusText();
 
-	}
-
-	public void onlineMakeMove(final ByteBufferDebugger buffer) {
-		AbstractMove move = AbstractMove.fromMessageBytes(buffer, game);
-		highlightAndMakeMove(move);
 	}
 
 	private void aiMakeMove(final PlayerStrategy currentStrategy) {
@@ -1462,7 +1486,7 @@ public class GameFragment extends AbstractGameFragment {
 		aiMove.execute((Void) null);
 	}
 
-	private void highlightAndMakeMove(final AbstractMove move) {
+	public void highlightAndMakeMove(final AbstractMove move) {
 		// hide the progress icon
 		hideStatusText();
 

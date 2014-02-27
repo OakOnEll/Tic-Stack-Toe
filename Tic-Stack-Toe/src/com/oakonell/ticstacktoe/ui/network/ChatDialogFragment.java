@@ -19,16 +19,14 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.utils.StringUtils;
 
 public class ChatDialogFragment extends SherlockDialogFragment {
 	private List<ChatMessage> messages;
 	private MessagesAdapter adapter;
 	private Participant me;
-	private AbstractGameFragment parent;
+	private Context parent;
 	private String friendName;
 
 	private static class MessagesAdapter extends ArrayAdapter<ChatMessage> {
@@ -43,7 +41,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 			String participantId;
 		}
 
-		public MessagesAdapter(MainActivity context, int textViewResourceId,
+		public MessagesAdapter(Context context, int textViewResourceId,
 				List<ChatMessage> objects) {
 			super(context, textViewResourceId, objects);
 			inflater = (LayoutInflater) context
@@ -94,12 +92,16 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 		}
 	}
 
-	public void initialize(AbstractGameFragment parent, List<ChatMessage> messages,
+	private AbstractNetworkedGameStrategy strategy;
+
+	public void initialize(Context parent,
+			AbstractNetworkedGameStrategy strategy, List<ChatMessage> messages,
 			Participant me, String friendName) {
 		this.parent = parent;
 		this.messages = messages;
 		this.me = me;
 		this.friendName = friendName;
+		this.strategy = strategy;
 	}
 
 	@Override
@@ -112,8 +114,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 		ListView messagesView = (ListView) view.findViewById(R.id.messages);
 		final TextView messageView = (TextView) view.findViewById(R.id.message);
 
-		adapter = new MessagesAdapter(parent.getMainActivity(), R.id.messages,
-				messages);
+		adapter = new MessagesAdapter(parent, R.id.messages, messages);
 		messagesView.setAdapter(adapter);
 
 		Button sendButton = (Button) view.findViewById(R.id.send);
@@ -134,7 +135,7 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 			@Override
 			public void onClick(View v) {
 				dismiss();
-				parent.chatClosed();
+				strategy.chatClosed();
 			}
 		});
 
@@ -144,11 +145,11 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 	@Override
 	public void onCancel(DialogInterface dialog) {
 		super.onCancel(dialog);
-		parent.chatClosed();
+		strategy.chatClosed();
 	}
 
 	protected void sendMessage(String string) {
-		((MainActivity) getActivity()).getGameStrategy().getChatHelper().sendMessage(string);
+		strategy.sendMessage(string);
 
 		messages.add(new ChatMessage(me, string, true, System
 				.currentTimeMillis()));

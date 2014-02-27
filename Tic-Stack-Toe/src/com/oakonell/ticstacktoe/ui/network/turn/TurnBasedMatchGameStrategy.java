@@ -40,7 +40,6 @@ import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
-import com.oakonell.ticstacktoe.ui.game.AbstractGameFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
@@ -1162,11 +1161,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				leaveRoom();
 			}
 		});
-	}
-
-	@Override
-	public void showSettings(AbstractGameFragment fragment) {
-		fragment.showFullSettingsPreference();
 	}
 
 }
