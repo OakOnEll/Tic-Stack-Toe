@@ -20,6 +20,7 @@ public class InviteMatchInfo implements MatchInfo {
 	private final Uri opponentPicUri;
 	private final long created;
 	private final String inviteId;
+	private final boolean isTurnBased;
 
 	public InviteMatchInfo(GamesClient client, Invitation invite) {
 		created = invite.getCreationTimestamp();
@@ -28,6 +29,7 @@ public class InviteMatchInfo implements MatchInfo {
 		Player player = invite.getInviter().getPlayer();
 		opponentName = player.getDisplayName();
 		opponentPicUri = player.getIconImageUri();
+		isTurnBased = invite.getInvitationType() == Invitation.INVITATION_TYPE_TURN_BASED;
 	}
 
 	public CharSequence getOpponentName() {
@@ -64,7 +66,11 @@ public class InviteMatchInfo implements MatchInfo {
 
 	@Override
 	public void onClick(MenuFragment fragment) {
-		fragment.acceptTurnBasedInvitation(inviteId);
+		if (isTurnBased) {
+			fragment.acceptTurnBasedInvitation(inviteId);
+		} else {
+			fragment.acceptInviteToRoom(inviteId);
+		}
 	}
 
 	@Override
@@ -77,7 +83,11 @@ public class InviteMatchInfo implements MatchInfo {
 
 	@Override
 	public CharSequence getText(Context context) {
-		return "Invited by " + getOpponentName();
+		if (isTurnBased) {
+			return "Invited by " + getOpponentName();
+		} else {
+			return "Real-time Invited by " + getOpponentName();
+		}
 	}
 
 	@Override
