@@ -11,6 +11,7 @@ import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
@@ -65,24 +66,27 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	}
 
 	private void aiMakeMove(final PlayerStrategy currentStrategy) {
-		AsyncTask<Void, Void, AbstractMove> aiMove = new AsyncTask<Void, Void, AbstractMove>() {
+		AsyncTask<Void, Void, State> aiMove = new AsyncTask<Void, Void, State>() {
 			@Override
-			protected AbstractMove doInBackground(Void... params) {
+			protected State doInBackground(Void... params) {
 				AbstractMove move = currentStrategy.move(getGame());
 				// would like to save the state here, but need to modify the
 				// game fragment to use already modified game...
 				// move.applyToGame(getGame());
-
-				return move;
+				State state = applyNonHumanMove(move);
+				// TODO save the game state
+				return state;
 			}
 
 			@Override
-			protected void onPostExecute(final AbstractMove move) {
+			protected void onPostExecute(final State state) {
 				// gameFragment.startGame(state.game, state.score, waitingText,
 				// showMove);
 				// getMainActivity().getGameFragment().startGame(getGame(),
 				// getScore(), null, true);
-				getGameFragment().highlightAndMakeMove(move);
+				getGameFragment().hideStatusText();
+				getGameFragment().animateMove(state.getLastMove(), state);
+				// getGameFragment().highlightAndMakeMove(move);
 			}
 		};
 		aiMove.execute((Void) null);

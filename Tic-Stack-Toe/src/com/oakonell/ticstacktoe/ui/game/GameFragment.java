@@ -33,6 +33,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameStrategy;
+import com.oakonell.ticstacktoe.GameStrategy.OnHumanMove;
 import com.oakonell.ticstacktoe.Leaderboards;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
@@ -167,7 +168,8 @@ public class GameFragment extends AbstractGameFragment {
 							handler.post(new Runnable() {
 								@Override
 								public void run() {
-									highlightAndMakeMove(theMove);
+									hideStatusText();
+									makeAndDisplayMove(theMove);
 								}
 							});
 						}
@@ -722,8 +724,14 @@ public class GameFragment extends AbstractGameFragment {
 					}
 
 					@Override
-					public State droppedOn(Cell cell) {
-						return getGame().placePlayerPiece(stackNum, cell);
+					public AbstractMove createMove(Cell targetCell) {
+						Piece playedPiece = getGame().getCurrentPlayerPieces()
+								.get(stackNum).getTopPiece();
+						Piece existingTargetPiece = getGame().getBoard()
+								.getVisiblePiece(targetCell);
+						return new PlaceNewPieceMove(getGame()
+								.getCurrentPlayer(), playedPiece, stackNum,
+								targetCell, existingTargetPiece);
 					}
 
 					@Override
@@ -907,7 +915,8 @@ public class GameFragment extends AbstractGameFragment {
 		button.setOnDropListener(new OnDropListener() {
 			@Override
 			public void onDrop(View target, DragSource source, int x, int y,
-					int xOffset, int yOffset, DragView dragView, Object dragInfo) {
+					int xOffset, int yOffset, final DragView dragView,
+					Object dragInfo) {
 
 				if (disableButtons) {
 					return;
@@ -934,43 +943,88 @@ public class GameFragment extends AbstractGameFragment {
 
 				// TODO extract out the game move to the strategy, with
 				// callbacks for update UI
-				State state;
-				try {
-					state = onDropMove.droppedOn(cell);
-					// TODO play valid move sound, based on previous target
-					// exist, new piece ?
-				} catch (final InvalidMoveException e) {
-					int resId = onDropMove.getMovedImageResourceId();
-					animateInvalidMoveReturn(dragView, resId,
-							onDropMove.getSourceView(), new Runnable() {
-								@Override
-								public void run() {
-									updateBoardPiece(cell);
-									onDropMove.update();
-									if (getGame().getFirstPickedCell() != null) {
-										BoardPieceStackImageView source = (BoardPieceStackImageView) findButtonFor(getGame()
-												.getFirstPickedCell());
-										highlightStrictFirstTouchedPiece(source);
+
+				AbstractMove move = onDropMove.createMove(cell);
+				gameStrategy.humanMove(move, new OnHumanMove() {
+					@Override
+					public void onSuccess(State state) {
+						onDropMove.postMove();
+
+						getGame().setFirstPickedCell(null);
+
+						updateBoardPiece(cell);
+						postMove(state, true);
+
+						// AbstractMove lastMove = state.getLastMove();
+						// gameStrategy.sendMove(getGame(), lastMove,
+						// getScore());
+					}
+
+					@Override
+					public void onInvalid(final InvalidMoveException e) {
+						int resId = onDropMove.getMovedImageResourceId();
+						animateInvalidMoveReturn(dragView, resId,
+								onDropMove.getSourceView(), new Runnable() {
+									@Override
+									public void run() {
+										updateBoardPiece(cell);
+										onDropMove.update();
+										if (getGame().getFirstPickedCell() != null) {
+											BoardPieceStackImageView source = (BoardPieceStackImageView) findButtonFor(getGame()
+													.getFirstPickedCell());
+											highlightStrictFirstTouchedPiece(source);
+										}
+										int messageId = e.getErrorResourceId();
+										Toast toast = Toast.makeText(
+												getActivity(), messageId,
+												Toast.LENGTH_SHORT);
+										toast.setGravity(Gravity.CENTER, 0, 0);
+										toast.show();
 									}
-									int messageId = e.getErrorResourceId();
-									Toast toast = Toast.makeText(getActivity(),
-											messageId, Toast.LENGTH_SHORT);
-									toast.setGravity(Gravity.CENTER, 0, 0);
-									toast.show();
-								}
-							});
-					gameStrategy.playSound(Sounds.INVALID_MOVE);
-					return;
-				}
-				onDropMove.postMove();
+								});
+						gameStrategy.playSound(Sounds.INVALID_MOVE);
+					}
 
-				getGame().setFirstPickedCell(null);
+				});
 
-				updateBoardPiece(cell);
-				postMove(state, true);
-
-				AbstractMove lastMove = state.getLastMove();
-				gameStrategy.sendMove(getGame(), lastMove, getScore());
+				// State state;
+				// try {
+				// state = onDropMove.droppedOn(cell);
+				// // TODO play valid move sound, based on previous target
+				// // exist, new piece ?
+				// } catch (final InvalidMoveException e) {
+				// int resId = onDropMove.getMovedImageResourceId();
+				// animateInvalidMoveReturn(dragView, resId,
+				// onDropMove.getSourceView(), new Runnable() {
+				// @Override
+				// public void run() {
+				// updateBoardPiece(cell);
+				// onDropMove.update();
+				// if (getGame().getFirstPickedCell() != null) {
+				// BoardPieceStackImageView source = (BoardPieceStackImageView)
+				// findButtonFor(getGame()
+				// .getFirstPickedCell());
+				// highlightStrictFirstTouchedPiece(source);
+				// }
+				// int messageId = e.getErrorResourceId();
+				// Toast toast = Toast.makeText(getActivity(),
+				// messageId, Toast.LENGTH_SHORT);
+				// toast.setGravity(Gravity.CENTER, 0, 0);
+				// toast.show();
+				// }
+				// });
+				// gameStrategy.playSound(Sounds.INVALID_MOVE);
+				// return;
+				// }
+				// onDropMove.postMove();
+				//
+				// getGame().setFirstPickedCell(null);
+				//
+				// updateBoardPiece(cell);
+				// postMove(state, true);
+				//
+				// AbstractMove lastMove = state.getLastMove();
+				// gameStrategy.sendMove(getGame(), lastMove, getScore());
 			}
 
 			@Override
@@ -1024,8 +1078,17 @@ public class GameFragment extends AbstractGameFragment {
 					}
 
 					@Override
-					public State droppedOn(Cell toCell) {
-						return getGame().movePiece(cell, toCell);
+					public AbstractMove createMove(Cell targetCell) {
+						Piece playedPiece = getGame().getBoard()
+								.getVisiblePiece(cell);
+						Piece exposedSourcePiece = getGame().getBoard()
+								.peekNextPiece(cell);
+						Piece existingTargetPiece = getGame().getBoard()
+								.getVisiblePiece(targetCell);
+						return new ExistingPieceMove(getGame()
+								.getCurrentPlayer(), playedPiece,
+								exposedSourcePiece, cell, targetCell,
+								existingTargetPiece);
 					}
 
 					@Override
@@ -1194,7 +1257,7 @@ public class GameFragment extends AbstractGameFragment {
 		return true;
 	}
 
-	private void animateMove(final AbstractMove move, final State outcome) {
+	public void animateMove(final AbstractMove move, final State outcome) {
 		ImageDropTarget targetButton = findButtonFor(move.getTargetCell());
 
 		disableButtons = true;
@@ -1218,7 +1281,6 @@ public class GameFragment extends AbstractGameFragment {
 		int movedResourceId;
 		Runnable theUpdate = null;
 		int exposedSourceResId;
-		// markerToPlayView.setImageDrawable(null);
 		int xChange;
 		int yChange;
 
@@ -1230,12 +1292,6 @@ public class GameFragment extends AbstractGameFragment {
 			Piece nextPiece = getGame().getBoard().getVisiblePiece(source2);
 			exposedSourceResId = nextPiece != null ? nextPiece
 					.getImageResourceId() : 0;
-
-			// TODO these are probably correct
-			// xChange = targetButton.getLeft() - source.getLeft();
-			// yChange = targetButton.getTop()
-			// + ((View) targetButton.getParent()).getTop()
-			// - (source.getTop() + ((View) source.getParent()).getTop());
 
 			int[] targetPost = new int[2];
 			int[] sourcePost = new int[2];
@@ -1263,8 +1319,6 @@ public class GameFragment extends AbstractGameFragment {
 			exposedSourceResId = nextPiece != null ? nextPiece
 					.getImageResourceId() : 0;
 
-			// TODO these are not correct
-			// need to find a common reference frame
 			int[] targetPost = new int[2];
 			int[] sourcePost = new int[2];
 			targetButton.getLocationOnScreen(targetPost);
@@ -1297,11 +1351,6 @@ public class GameFragment extends AbstractGameFragment {
 		// add new animations to the set
 		replaceAnimation.addAnimation(trans);
 
-		// AlphaAnimation fade = new AlphaAnimation(1, 0);
-		// fade.setStartOffset(800);
-		// fade.setDuration(200);
-		// replaceAnimation.addAnimation(fade);
-
 		Interpolator interpolator = new AnticipateInterpolator();
 		replaceAnimation.setInterpolator(interpolator);
 
@@ -1323,8 +1372,7 @@ public class GameFragment extends AbstractGameFragment {
 			}
 
 		});
-		//
-		// // start our animation
+		// start our animation
 		movingView.startAnimation(replaceAnimation);
 	}
 
@@ -1434,10 +1482,6 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	public void configureNonLocalProgresses() {
-		// if (thinking == null || thinkingText == null) {
-		// // safety for when start called before activity is created
-		// return;
-		// }
 		PlayerStrategy strategy = getGame().getCurrentPlayer().getStrategy();
 		if (strategy.isHuman()) {
 			hideStatusText();
@@ -1448,20 +1492,6 @@ public class GameFragment extends AbstractGameFragment {
 		setOpponentThinking();
 		showStatusText();
 
-	}
-
-	public void highlightAndMakeMove(final AbstractMove move) {
-		// hide the progress icon
-		hideStatusText();
-
-		// delay and highlight the move so the human player has a
-		// chance to see it
-		// TODO incorporate source cell...
-
-		// find source piece- either player stack, or on board
-		// View source;
-
-		makeAndDisplayMove(move);
 	}
 
 	private ImageDropTarget findButtonFor(Cell cell) {
@@ -1571,7 +1601,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	public interface OnDropMove {
 
-		State droppedOn(Cell cell);
+		AbstractMove createMove(Cell targetCell);
 
 		void update();
 
@@ -1587,12 +1617,14 @@ public class GameFragment extends AbstractGameFragment {
 
 	private void highlightStrictFirstTouchedPiece(
 			final BoardPieceStackImageView button) {
+		// TODO make new method on BoardPieceStackImageView
 		button.setBackgroundColor(getResources().getColor(
 				R.color.holo_blue_light));
 	}
 
 	private void unhighlightStrictFirstTouchedPiece(
 			final BoardPieceStackImageView button) {
+		// TODO make new method on BoardPieceStackImageView
 		button.setBackgroundDrawable(null);
 	}
 
@@ -1603,13 +1635,5 @@ public class GameFragment extends AbstractGameFragment {
 	public ScoreCard getScore() {
 		return gameStrategy.getScore();
 	}
-
-	// private void setGame(Game game) {
-	// this.game = game;
-	// }
-	//
-	// private void setScore(ScoreCard score) {
-	// this.score = score;
-	// }
 
 }

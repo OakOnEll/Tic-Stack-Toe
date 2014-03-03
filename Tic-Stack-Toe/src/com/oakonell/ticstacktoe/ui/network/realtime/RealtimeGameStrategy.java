@@ -36,6 +36,7 @@ import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
@@ -782,7 +783,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void onlineMoveReceived(ByteBufferDebugger buffer) {
 		AbstractMove move = AbstractMove.fromMessageBytes(buffer, getGame());
-		getGameFragment().highlightAndMakeMove(move);
+		State state = applyNonHumanMove(move);
+		getGameFragment().hideStatusText();
+		getGameFragment().animateMove(state.getLastMove(), state);
 	}
 
 }

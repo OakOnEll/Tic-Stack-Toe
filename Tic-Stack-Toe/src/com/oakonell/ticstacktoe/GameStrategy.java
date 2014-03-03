@@ -11,8 +11,10 @@ import com.actionbarsherlock.view.MenuItem;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
@@ -177,4 +179,29 @@ public abstract class GameStrategy {
 		return false;
 	}
 
+	protected State applyNonHumanMove(AbstractMove move) {
+		try {
+			return move.applyToGame(getGame());
+		} catch (InvalidMoveException e) {
+			throw new RuntimeException(
+					"Game error while applying non-human move");
+		}
+	}
+
+	public void humanMove(AbstractMove move, OnHumanMove onHumanMove) {
+		try {
+			State state = move.applyToGame(getGame());
+			onHumanMove.onSuccess(state);
+			sendMove(getGame(), state.getLastMove(), getScore());
+		} catch (final InvalidMoveException e) {
+			onHumanMove.onInvalid(e);
+			return;
+		}
+	}
+
+	public interface OnHumanMove {
+		void onSuccess(State state);
+
+		void onInvalid(InvalidMoveException e);
+	}
 }

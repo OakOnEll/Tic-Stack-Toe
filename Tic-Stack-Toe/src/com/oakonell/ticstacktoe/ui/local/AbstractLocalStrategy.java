@@ -18,8 +18,10 @@ import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -241,4 +243,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	protected abstract GameMode getGameMode();
 
 	protected abstract Player createWhitePlayer(String whiteName);
+
+
+
 }
