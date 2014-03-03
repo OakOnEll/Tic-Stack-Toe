@@ -273,8 +273,11 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
 				blackPlayer);
+		setGame(game);
+		setScore(score);
+
 		gameFragment.startGame(game, score, null, true);
-		FragmentManager manager = getMainActivity().getSupportFragmentManager();
+		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
 				MainActivity.FRAG_TAG_GAME);
@@ -289,7 +292,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			Log.e(TAG, "*** Error: onJoinedRoom, status " + statusCode);
 			showGameError(R.string.onJoinedRoom, statusCode);
 			leaveRoom();
-			getMainActivity().getMenuFragment().setActive();
+			getMenuFragment().setActive();
 			return;
 		}
 
@@ -304,7 +307,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onLeftRoom(int arg0, String arg1) {
 		announce("onLeftRoom");
-		getMainActivity().getSupportFragmentManager().popBackStack();
+		getActivity().getSupportFragmentManager().popBackStack();
 	}
 
 	// Called when room is fully connected.
@@ -316,7 +319,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			Log.e(TAG, "*** Error: onRoomConnected, status " + statusCode);
 			showGameError(R.string.onRoomConnected, statusCode);
 			leaveRoom();
-			getMainActivity().getMenuFragment().setActive();
+			getMenuFragment().setActive();
 			return;
 		}
 		updateRoom(room);
@@ -331,7 +334,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			Log.e(TAG, "*** Error: onRoomCreated, status " + statusCode);
 			showGameError(R.string.onRoomCreated, statusCode);
 			leaveRoom();
-			getMainActivity().getMenuFragment().setActive();
+			getMenuFragment().setActive();
 			return;
 		}
 
@@ -368,7 +371,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				minPlayersToStart);
 
 		// show waiting room UI
-		getMainActivity().startActivityForResult(intent,
+		getActivity().startActivityForResult(intent,
 				MainActivity.RC_WAITING_ROOM);
 	}
 
@@ -661,8 +664,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	public void promptToPlayAgain(String winner, String title) {
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
 		onlinePlayAgainDialog.initialize(this, getOpponentName(), title);
-		onlinePlayAgainDialog.show(getMainActivity().getGameFragment()
-				.getChildFragmentManager(), "playAgain");
+		onlinePlayAgainDialog.show(getGameFragment().getChildFragmentManager(),
+				"playAgain");
 		// TODO wire up the play again / not play again message handling via
 		// the dialog
 	}
@@ -687,7 +690,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void opponentLeft() {
-		getMainActivity().getGameFragment().getView().setKeepScreenOn(false);
+		getGameFragment().getView().setKeepScreenOn(false);
 		if (onlinePlayAgainDialog != null) {
 			// the user is in the play again dialog, let him read the info
 			return;
@@ -712,16 +715,18 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 
-		getMainActivity().getGameFragment().leaveGame();
-		getMainActivity().getMenuFragment().leaveRoom();
+		getGameFragment().leaveGame();
+		getMenuFragment().leaveRoom();
 	}
 
 	public void playAgain() {
-		GameFragment gameFragment = getMainActivity().getGameFragment();
-		Game game = gameFragment.getGame();
+		GameFragment gameFragment = getGameFragment();
+		Game game = getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer);
+		setGame(game);
+		// setScore(score);
 
 		gameFragment.startGame(game, gameFragment.getScore(), null, false);
 	}
@@ -772,9 +777,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void onlineMoveReceived(ByteBufferDebugger buffer) {
-		AbstractMove move = AbstractMove.fromMessageBytes(buffer,
-				getMainActivity().getGameFragment().getGame());
-		getMainActivity().getGameFragment().highlightAndMakeMove(move);
+		AbstractMove move = AbstractMove.fromMessageBytes(buffer, getGame());
+		getGameFragment().highlightAndMakeMove(move);
 	}
 
 }

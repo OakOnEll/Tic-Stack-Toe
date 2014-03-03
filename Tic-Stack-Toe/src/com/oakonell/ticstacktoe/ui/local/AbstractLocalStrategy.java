@@ -99,8 +99,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	public void leaveGame() {
-		getMainActivity().getGameFragment().leaveGame();
-		getMainActivity().getMenuFragment().leaveRoom();
+		getGameFragment().leaveGame();
+		getMenuFragment().leaveRoom();
 	}
 
 	@Override
@@ -161,10 +161,13 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public void showFromMenu() {
 		final ScoreCard score = new ScoreCard(0, 0, 0);
 		GameFragment gameFragment = GameFragment.createFragment(this);
-		gameFragment.startGame(getMatchInfo().readGame(getContext()), score,
-				null, true);
+		Game game = getMatchInfo().readGame(getContext());
+		setGame(game);
+		setScore(score);
 
-		FragmentManager manager = getMainActivity().getSupportFragmentManager();
+		gameFragment.startGame(game, score, null, true);
+
+		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
 				MainActivity.FRAG_TAG_GAME);
@@ -194,6 +197,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
 		final Game game = new Game(type, gameMode, blackPlayer, whitePlayer,
 				blackPlayer);
+		setGame(game);
+		setScore(score);
 		LocalMatchInfo theMatchInfo = createMatchInfo(blackName, whiteName,
 				game, score);
 
@@ -202,12 +207,12 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
-				GameFragment gameFragment = getMainActivity().getGameFragment();
+				GameFragment gameFragment = getGameFragment();
 				if (gameFragment == null) {
 					gameFragment = GameFragment
 							.createFragment(AbstractLocalStrategy.this);
 
-					FragmentManager manager = getMainActivity()
+					FragmentManager manager = getActivity()
 							.getSupportFragmentManager();
 					FragmentTransaction transaction = manager
 							.beginTransaction();

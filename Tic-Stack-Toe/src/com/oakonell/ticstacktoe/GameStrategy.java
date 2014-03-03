@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -13,12 +14,17 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public abstract class GameStrategy {
 	private final SoundManager soundManager;
 	private MainActivity mainActivity;
+
+	private Game game;
+	private ScoreCard score = new ScoreCard(0, 0, 0);
 
 	protected GameStrategy(MainActivity mainActivity, SoundManager soundManager) {
 		this.mainActivity = mainActivity;
@@ -68,8 +74,20 @@ public abstract class GameStrategy {
 		return mainActivity;
 	}
 
+	protected SherlockFragmentActivity getActivity() {
+		return mainActivity;
+	}
+
 	protected MainActivity getMainActivity() {
 		return mainActivity;
+	}
+
+	protected GameFragment getGameFragment() {
+		return getMainActivity().getGameFragment();
+	}
+
+	protected MenuFragment getMenuFragment() {
+		return getMainActivity().getMenuFragment();
 	}
 
 	protected void setMainActivity(MainActivity theActivity) {
@@ -112,18 +130,35 @@ public abstract class GameStrategy {
 	}
 
 	public void acceptMove() {
-		final PlayerStrategy currentStrategy = getMainActivity()
-				.getGameFragment().getGame().getCurrentPlayer().getStrategy();
+		final PlayerStrategy currentStrategy = getGame().getCurrentPlayer()
+				.getStrategy();
 		if (currentStrategy.isHuman()) {
-			getMainActivity().getGameFragment().acceptHumanMove();
+			getGameFragment().acceptHumanMove();
 			return;
 		}
 
 		// show the waiting text
-		getMainActivity().getGameFragment().configureNonLocalProgresses();
+		getGameFragment().configureNonLocalProgresses();
 		acceptCurrentPlayerMove(currentStrategy);
 	}
 
 	abstract protected void acceptCurrentPlayerMove(
 			final PlayerStrategy currentStrategy);
+
+	public Game getGame() {
+		return game;
+	}
+
+	protected void setGame(Game game) {
+		this.game = game;
+	}
+
+	public ScoreCard getScore() {
+		return score;
+	}
+
+	protected void setScore(ScoreCard score) {
+		this.score = score;
+	}
+
 }

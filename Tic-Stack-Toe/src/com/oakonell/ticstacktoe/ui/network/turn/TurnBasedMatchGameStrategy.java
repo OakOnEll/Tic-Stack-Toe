@@ -30,6 +30,7 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoaded
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
+import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -44,6 +45,7 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
+import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
@@ -258,11 +260,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void acceptInvite(String inviteId) {
-		getMainActivity().getGameFragment().setThinkingText(
+		getGameFragment().setThinkingText(
 				"Accepting invite to rematch from " + getOpponentName(), true);
 		getHelper().getGamesClient().acceptTurnBasedInvitation(
 				TurnBasedMatchGameStrategy.this, inviteId);
 	}
+
 
 	// Handle notification events.
 	@Override
@@ -273,7 +276,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					&& rematchId != null) {
 				rematchId = null;
 
-				openPlayAgain(getMainActivity().getGameFragment(),
+				openPlayAgain(getGameFragment(),
 						"Can I get here?");
 
 				playAgainDialog.displayAcceptInvite(invitation
@@ -436,16 +439,15 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		if (mMatch != null
 				&& mMatch.getStatus() == TurnBasedMatch.MATCH_STATUS_ACTIVE
 				&& mMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
-			GameState gameState = new GameState(getMainActivity()
-					.getGameFragment().getGame(), getMainActivity()
-					.getGameFragment().getScore(), blackParticipantId, isQuick,
-					true);
+			GameState gameState = new GameState(getGame(), getScore(),
+					blackParticipantId, isQuick, true);
 			byte[] bytes = gameState.toBytes(getHelper());
 			getHelper().getGamesClient().takeTurn(this, mMatch.getMatchId(),
 					bytes, getMeForChat().getParticipantId());
 		}
-		getMainActivity().getMenuFragment().leaveRoom();
+		getMenuFragment().leaveRoom();
 	}
+
 
 	@Override
 	public void sendMove(Game game, AbstractMove lastMove, ScoreCard score) {
@@ -454,7 +456,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				isQuick, false);
 		byte[] bytes = gameState.toBytes(getHelper());
 		State state = game.getBoard().getState();
-		getMainActivity().getGameFragment().setThinkingText(
+		getGameFragment().setThinkingText(
 				getOpponentName() + " hasn't seen your move.", true);
 		if (state.isOver()) {
 			finishGame(bytes, state);
@@ -595,7 +597,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
-		getMainActivity().getGameFragment().setThinkingText("Starting rematch",
+		getGameFragment().setThinkingText("Starting rematch",
 				true);
 		final ProgressDialog progress = ProgressDialog.show(getContext(),
 				"Starting a new match", "Please Wait...");
@@ -606,8 +608,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					public void onTurnBasedMatchInitiated(int statusCode,
 							TurnBasedMatch match) {
 						progress.dismiss();
-						getMainActivity().getGameFragment().resetThinkingText();
-						getMainActivity().getGameFragment().hideStatusText();
+						getGameFragment().resetThinkingText();
+						getGameFragment().hideStatusText();
 						TurnBasedMatchGameStrategy.this
 								.onTurnBasedMatchInitiated(statusCode, match);
 					}
@@ -807,7 +809,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			Log.i("TurnListener", "  showing fragment");
 			gameFragment = GameFragment.createFragment(this);
 
-			FragmentManager manager = getMainActivity()
+			FragmentManager manager = getActivity()
 					.getSupportFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.main_frame, gameFragment,
@@ -816,7 +818,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			transaction.commit();
 		} else {
 			Log.i("TurnListener", "  reusing fragment");
-			gameFragment = getMainActivity().getGameFragment();
+			gameFragment = getGameFragment();
 		}
 		isVisible = true;
 
@@ -859,6 +861,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				"   showGame - move#" + state.game.getNumberOfMoves());
 
 		// TODO Undo the last move, so it can be reapplied and animated?
+
+		setGame(state.game);
+		setScore(state.score);
 
 		// play winning sound, and animate the move received
 		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
@@ -942,7 +947,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	private void lookForInviteForRematch(final String winner,
 			final String title, final String rematchId) {
-		getMainActivity().getGameFragment().setThinkingText(
+		getGameFragment().setThinkingText(
 				title + "Rematch requested, looking for match invite.", true);
 		getHelper().getGamesClient().loadInvitations(
 				new OnInvitationsLoadedListener() {
@@ -973,12 +978,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 						if (turnInvitesFromPlayer.isEmpty()) {
 							alreadyLoadingRematch = false;
 
-							openPlayAgain(getMainActivity().getGameFragment(),
+							openPlayAgain(getGameFragment(),
 									winner);
 							playAgainDialog.displayWaitingForInvite();
 
-							getMainActivity()
-									.getGameFragment()
+							getGameFragment()
 									.setThinkingText(
 											title
 													+ "Rematch requested, awaiting a move from "
@@ -1038,7 +1042,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 						// display to the user that a rematch exists, and on
 						// click, go to it
 
-						openPlayAgain(getMainActivity().getGameFragment(),
+						openPlayAgain(getGameFragment(),
 								winner);
 						playAgainDialog.displayGoToRematch(match);
 
@@ -1054,18 +1058,18 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		Log.i("TurnListener", "  askToAcceptRematchInvite");
 		if (turnInvitesFromPlayer.size() == 1) {
 			Log.i("TurnListener", "  askToAcceptRematchInvite one invite");
-			getMainActivity().getGameFragment().setThinkingText(
+			getGameFragment().setThinkingText(
 					title + "A possible rematch invite exists.", true);
 			Invitation theInvite = turnInvitesFromPlayer.get(0);
 			final String inviteId = theInvite.getInvitationId();
 
-			openPlayAgain(getMainActivity().getGameFragment(), winner);
+			openPlayAgain(getGameFragment(), winner);
 			playAgainDialog.displayAcceptInvite(inviteId);
 
 		} else {
 			Log.i("TurnListener", "  askToAcceptRematchInvite multiple invites");
 			// TODO show a list prompt...
-			getMainActivity().getGameFragment().setThinkingText(
+			getGameFragment().setThinkingText(
 					title + "Rematch requested, multiple invites from "
 							+ getOpponentName() + "...", true);
 			showWarning("Multiple invites", "Multiple invites from "
@@ -1080,7 +1084,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		promptToPlayAgain(winner, title, getMainActivity().getGameFragment());
+		promptToPlayAgain(winner, title, getGameFragment());
 	}
 
 	public void promptToPlayAgain(final String winner, final String title,
@@ -1140,9 +1144,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		if (!getHelper().isSignedIn()) {
 			if (getHelper().getGamesClient().isConnecting()) {
-				getMainActivity().getGameFragment().setThinkingText(
+				getGameFragment().setThinkingText(
 						"Reconnecting...", true);
-				getMainActivity().getGameFragment().showStatusText();
+				getGameFragment().showStatusText();
 			}
 		}
 

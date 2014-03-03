@@ -90,8 +90,6 @@ public class GameFragment extends AbstractGameFragment {
 	private SquareBoardResizeInfo resizeInfo = new SquareBoardResizeInfo();
 
 	private GameStrategy gameStrategy;
-	private Game game;
-	private ScoreCard score;
 
 	private boolean disableButtons;
 	// used while dropping, in case an invalid move was made, to NOT update UI,
@@ -148,9 +146,6 @@ public class GameFragment extends AbstractGameFragment {
 					undoAndAnimateMove = move != null;
 				}
 				if (undoAndAnimateMove) {
-					GameFragment.this.score = score;
-					GameFragment.this.game = game;
-
 					game.undo(move);
 
 					configureNonLocalProgresses();
@@ -181,8 +176,6 @@ public class GameFragment extends AbstractGameFragment {
 						inOnResume.run();
 					}
 				} else {
-					GameFragment.this.score = score;
-					GameFragment.this.game = game;
 					configureNonLocalProgresses();
 					if (getView() != null) {
 						configureBoardButtons(getView());
@@ -204,7 +197,7 @@ public class GameFragment extends AbstractGameFragment {
 
 			}
 		};
-		if (getMainActivity() != null) {
+		if (getActivity() != null) {
 			inOnCreate.run();
 		}
 	}
@@ -241,7 +234,7 @@ public class GameFragment extends AbstractGameFragment {
 				false);
 
 		// Listen for changes in the back stack
-		getMainActivity().getSupportFragmentManager()
+		getSherlockActivity().getSupportFragmentManager()
 				.addOnBackStackChangedListener(
 						new OnBackStackChangedListener() {
 							@Override
@@ -251,7 +244,6 @@ public class GameFragment extends AbstractGameFragment {
 						});
 		// Handle when activity is recreated like on orientation Change
 		configureDisplayHomeUp();
-
 		setHasOptionsMenu(true);
 
 		storeViewReferences(view);
@@ -268,17 +260,17 @@ public class GameFragment extends AbstractGameFragment {
 			inOnCreate.run();
 		}
 
-		gameNumber.setText("" + score.getTotalGames());
-		winOverlayView.setBoardSize(game.getBoard().getSize());
+		gameNumber.setText("" + getScore().getTotalGames());
+		winOverlayView.setBoardSize(getGame().getBoard().getSize());
 		configureBoardButtons(view);
 
 		view.setKeepScreenOn(gameStrategy.shouldKeepScreenOn());
-		if (game.getBoard().getSize() == 3) {
+		if (getGame().getBoard().getSize() == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
 					.setBackgroundResource(R.drawable.wood_grid_3x3);
 		}
-		if (game.getMode() != GameMode.PASS_N_PLAY) {
-			initThinkingText(view, game.getNonLocalPlayer().getName());
+		if (getGame().getMode() != GameMode.PASS_N_PLAY) {
+			initThinkingText(view, getGame().getNonLocalPlayer().getName());
 			setOpponentThinking();
 		} else {
 			initThinkingText(view, null);
@@ -326,7 +318,7 @@ public class GameFragment extends AbstractGameFragment {
 		mDragLayer.setDragController(mDragController);
 		mDragController.setDragListener(mDragLayer);
 
-		imgManager = ImageManager.create(getMainActivity());
+		imgManager = ImageManager.create(getActivity());
 
 		blackHeaderLayout = view.findViewById(R.id.black_name_layout);
 		whiteHeaderLayout = view.findViewById(R.id.white_name_layout);
@@ -350,7 +342,7 @@ public class GameFragment extends AbstractGameFragment {
 			return;
 		}
 
-		int boardSize = game.getBoard().getSize();
+		int boardSize = getGame().getBoard().getSize();
 		int size = (resizeInfo.boardHeight + 2 * resizeInfo.pieceStackHeight)
 				/ (boardSize + 2);
 		int newBoardPixSize = size * boardSize;
@@ -418,7 +410,7 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void configureBoardButtons(View view) {
-		int size = game.getBoard().getSize();
+		int size = getGame().getBoard().getSize();
 		BoardPieceStackImageView button = (BoardPieceStackImageView) view
 				.findViewById(R.id.button_r1c1);
 		configureBoardButton(button, new Cell(0, 0));
@@ -549,28 +541,28 @@ public class GameFragment extends AbstractGameFragment {
 		// handle the player stacks
 		PieceStackImageView stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack1);
-		configurePlayerStack(stackView, 0, game.getBlackPlayer());
+		configurePlayerStack(stackView, 0, getGame().getBlackPlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack2);
-		configurePlayerStack(stackView, 1, game.getBlackPlayer());
+		configurePlayerStack(stackView, 1, getGame().getBlackPlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack3);
-		if (game.getType().getNumberOfStacks() > 2) {
-			configurePlayerStack(stackView, 2, game.getBlackPlayer());
+		if (getGame().getType().getNumberOfStacks() > 2) {
+			configurePlayerStack(stackView, 2, getGame().getBlackPlayer());
 		} else {
 			stackView.setVisibility(View.GONE);
 		}
 
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack1);
-		configurePlayerStack(stackView, 0, game.getWhitePlayer());
+		configurePlayerStack(stackView, 0, getGame().getWhitePlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack2);
-		configurePlayerStack(stackView, 1, game.getWhitePlayer());
+		configurePlayerStack(stackView, 1, getGame().getWhitePlayer());
 		stackView = (PieceStackImageView) view
 				.findViewById(R.id.white_piece_stack3);
-		if (game.getType().getNumberOfStacks() > 2) {
-			configurePlayerStack(stackView, 2, game.getWhitePlayer());
+		if (getGame().getType().getNumberOfStacks() > 2) {
+			configurePlayerStack(stackView, 2, getGame().getWhitePlayer());
 		} else {
 			stackView.setVisibility(View.GONE);
 		}
@@ -670,12 +662,12 @@ public class GameFragment extends AbstractGameFragment {
 			public boolean allowDrag() {
 				// if we are in strict mode, and a board piece was touched, no
 				// stack moves area allowed
-				if (game.getFirstPickedCell() != null) {
+				if (getGame().getFirstPickedCell() != null) {
 					return false;
 				}
 
 				boolean isCurrentPlayersPiece = pieceStack.getTopPiece()
-						.isBlack() == game.getCurrentPlayer().isBlack();
+						.isBlack() == getGame().getCurrentPlayer().isBlack();
 				if (!isCurrentPlayersPiece) {
 					return false;
 				}
@@ -696,7 +688,7 @@ public class GameFragment extends AbstractGameFragment {
 				if (disableButtons) {
 					return false;
 				}
-				if (!game.getCurrentPlayer().getStrategy().isHuman()) {
+				if (!getGame().getCurrentPlayer().getStrategy().isHuman()) {
 					// ignore button clicks if the current player is not a human
 					return false;
 				}
@@ -706,7 +698,7 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
-				boolean isCurrentPlayersPiece = topPiece.isBlack() == game
+				boolean isCurrentPlayersPiece = topPiece.isBlack() == getGame()
 						.getCurrentPlayer().isBlack();
 				if (!isCurrentPlayersPiece) {
 					return false;
@@ -731,7 +723,7 @@ public class GameFragment extends AbstractGameFragment {
 
 					@Override
 					public State droppedOn(Cell cell) {
-						return game.placePlayerPiece(stackNum, cell);
+						return getGame().placePlayerPiece(stackNum, cell);
 					}
 
 					@Override
@@ -829,14 +821,14 @@ public class GameFragment extends AbstractGameFragment {
 
 	private void configureBoardButton(final BoardPieceStackImageView button,
 			final Cell cell) {
-		Piece visiblePiece = game.getBoard().getVisiblePiece(cell);
+		Piece visiblePiece = getGame().getBoard().getVisiblePiece(cell);
 		if (visiblePiece != null) {
 			button.setImageResource(visiblePiece.getImageResourceId());
 		} else {
 			button.setImageDrawable(null);
 		}
 
-		if (cell.equals(game.getFirstPickedCell())) {
+		if (cell.equals(getGame().getFirstPickedCell())) {
 			highlightStrictFirstTouchedPiece(button);
 		} else {
 			unhighlightStrictFirstTouchedPiece(button);
@@ -849,22 +841,22 @@ public class GameFragment extends AbstractGameFragment {
 				if (disableButtons) {
 					return false;
 				}
-				if (!game.getCurrentPlayer().getStrategy().isHuman()) {
+				if (!getGame().getCurrentPlayer().getStrategy().isHuman()) {
 					// ignore button clicks if the current player is not a
 					// human
 					return false;
 				}
 				// if we are in strict, and a piece was already chosen, only
 				// that one can be dragged
-				if (game.getFirstPickedCell() != null) {
-					return game.getFirstPickedCell().equals(cell);
+				if (getGame().getFirstPickedCell() != null) {
+					return getGame().getFirstPickedCell().equals(cell);
 				}
 				// conditionally alow dragging, if there is a piece and it is my
 				// color
 				Piece visiblePiece = getVisiblePiece();
 				return visiblePiece != null
-						&& visiblePiece.isBlack() == game.getCurrentPlayer()
-								.isBlack();
+						&& visiblePiece.isBlack() == getGame()
+								.getCurrentPlayer().isBlack();
 			}
 
 			public void update() {
@@ -872,7 +864,7 @@ public class GameFragment extends AbstractGameFragment {
 			}
 
 			public Piece getVisiblePiece() {
-				return game.getBoard().getVisiblePiece(cell);
+				return getGame().getBoard().getVisiblePiece(cell);
 			}
 
 			@Override
@@ -880,7 +872,7 @@ public class GameFragment extends AbstractGameFragment {
 				if (!hadInvaldMove) {
 					update();
 				}
-				if (game.getFirstPickedCell() == null) {
+				if (getGame().getFirstPickedCell() == null) {
 					unhighlightStrictFirstTouchedPiece(button);
 				}
 			}
@@ -896,7 +888,7 @@ public class GameFragment extends AbstractGameFragment {
 						new Runnable() {
 							public void run() {
 								update();
-								if (game.getType().isStrict()) {
+								if (getGame().getType().isStrict()) {
 									// in strict mode, highlight the chosen
 									// piece, as only it can be
 									// moved
@@ -921,7 +913,7 @@ public class GameFragment extends AbstractGameFragment {
 					return;
 				}
 
-				if (!game.getCurrentPlayer().getStrategy().isHuman()) {
+				if (!getGame().getCurrentPlayer().getStrategy().isHuman()) {
 					// ignore button clicks if the current player is not a
 					// human
 					return;
@@ -933,7 +925,7 @@ public class GameFragment extends AbstractGameFragment {
 				if (onDropMove.originatedFrom(cell)) {
 					// if in strict mode and the user already chose this piece,
 					// make sure it remains highlighted
-					if (game.getFirstPickedCell() != null) {
+					if (getGame().getFirstPickedCell() != null) {
 						highlightStrictFirstTouchedPiece(button);
 					}
 
@@ -953,8 +945,8 @@ public class GameFragment extends AbstractGameFragment {
 								public void run() {
 									updateBoardPiece(cell);
 									onDropMove.update();
-									if (game.getFirstPickedCell() != null) {
-										BoardPieceStackImageView source = (BoardPieceStackImageView) findButtonFor(game
+									if (getGame().getFirstPickedCell() != null) {
+										BoardPieceStackImageView source = (BoardPieceStackImageView) findButtonFor(getGame()
 												.getFirstPickedCell());
 										highlightStrictFirstTouchedPiece(source);
 									}
@@ -970,13 +962,13 @@ public class GameFragment extends AbstractGameFragment {
 				}
 				onDropMove.postMove();
 
-				game.setFirstPickedCell(null);
+				getGame().setFirstPickedCell(null);
 
 				updateBoardPiece(cell);
 				postMove(state, true);
 
 				AbstractMove lastMove = state.getLastMove();
-				gameStrategy.sendMove(game, lastMove, score);
+				gameStrategy.sendMove(getGame(), lastMove, getScore());
 			}
 
 			@Override
@@ -996,18 +988,19 @@ public class GameFragment extends AbstractGameFragment {
 					return false;
 				}
 
-				if (!game.getCurrentPlayer().getStrategy().isHuman()) {
+				if (!getGame().getCurrentPlayer().getStrategy().isHuman()) {
 					// ignore button clicks if the current player is not a
 					// human
 					return false;
 				}
 
-				final Piece visiblePiece = game.getBoard()
+				final Piece visiblePiece = getGame().getBoard()
 						.getVisiblePiece(cell);
 				if (visiblePiece == null) {
 					return false;
 				}
-				if (visiblePiece.isBlack() != game.getCurrentPlayer().isBlack()) {
+				if (visiblePiece.isBlack() != getGame().getCurrentPlayer()
+						.isBlack()) {
 					return false;
 				}
 
@@ -1030,7 +1023,7 @@ public class GameFragment extends AbstractGameFragment {
 
 					@Override
 					public State droppedOn(Cell toCell) {
-						return game.movePiece(cell, toCell);
+						return getGame().movePiece(cell, toCell);
 					}
 
 					@Override
@@ -1062,15 +1055,15 @@ public class GameFragment extends AbstractGameFragment {
 				mDragController.startDrag(v, dragSource, boardToBoardDropMove,
 						DragController.DRAG_ACTION_COPY, dragConfig);
 
-				if (game.getType().isStrict()) {
-					game.setFirstPickedCell(cell);
+				if (getGame().getType().isStrict()) {
+					getGame().setFirstPickedCell(cell);
 				}
 
 				// for a board move, let's leave the moved/top piece
 				// visible/greyed?
 				// TODO And not expose the piece underneath?
 
-				Piece nextPiece = game.getBoard().peekNextPiece(cell);
+				Piece nextPiece = getGame().getBoard().peekNextPiece(cell);
 				if (nextPiece == null) {
 					button.setImageDrawable(null);
 				} else {
@@ -1106,7 +1099,7 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	protected void updateBoardPiece(Cell cell) {
-		Piece visiblePiece = game.getBoard().getVisiblePiece(cell);
+		Piece visiblePiece = getGame().getBoard().getVisiblePiece(cell);
 		ImageDropTarget button = findButtonFor(cell);
 		if (visiblePiece == null) {
 			button.setImageDrawable(null);
@@ -1118,7 +1111,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	protected void showGameStats() {
 		GameStatDialogFragment dialog = new GameStatDialogFragment();
-		dialog.initialize(this, game, score);
+		dialog.initialize(this, getGame(), getScore());
 		dialog.show(getChildFragmentManager(), "stats");
 	}
 
@@ -1128,17 +1121,17 @@ public class GameFragment extends AbstractGameFragment {
 			return;
 		}
 		TextView blackName = (TextView) view.findViewById(R.id.blackName);
-		blackName.setText(game.getBlackPlayer().getName());
+		blackName.setText(getGame().getBlackPlayer().getName());
 		TextView whiteName = (TextView) view.findViewById(R.id.whiteName);
-		whiteName.setText(game.getWhitePlayer().getName());
+		whiteName.setText(getGame().getWhitePlayer().getName());
 
 		ImageView blackImage = (ImageView) view.findViewById(R.id.black_back);
 		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);
 
-		game.getBlackPlayer().updatePlayerImage(imgManager, blackImage);
-		game.getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
+		getGame().getBlackPlayer().updatePlayerImage(imgManager, blackImage);
+		getGame().getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
 
-		Player player = game.getCurrentPlayer();
+		Player player = getGame().getCurrentPlayer();
 		if (player.isBlack()) {
 			blackHeaderLayout.setBackgroundResource(R.drawable.current_player);
 			whiteHeaderLayout.setBackgroundResource(R.drawable.inactive_player);
@@ -1156,15 +1149,15 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void updateGameStatDisplay() {
-		numMoves.setText("" + game.getNumberOfMoves());
+		numMoves.setText("" + getGame().getNumberOfMoves());
 		blackWins.setText(getResources().getQuantityString(
-				R.plurals.num_wins_with_label, score.getBlackWins(),
-				score.getBlackWins()));
+				R.plurals.num_wins_with_label, getScore().getBlackWins(),
+				getScore().getBlackWins()));
 		whiteWins.setText(getResources().getQuantityString(
-				R.plurals.num_wins_with_label, score.getWhiteWins(),
-				score.getWhiteWins()));
+				R.plurals.num_wins_with_label, getScore().getWhiteWins(),
+				getScore().getWhiteWins()));
 		// draws.setText("" + score.getDraws());
-		gameNumber.setText("" + score.getTotalGames());
+		gameNumber.setText("" + getScore().getTotalGames());
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -1179,7 +1172,7 @@ public class GameFragment extends AbstractGameFragment {
 	private boolean makeAndDisplayMove(AbstractMove move) {
 		State outcome = null;
 		try {
-			outcome = move.applyToGame(game);
+			outcome = move.applyToGame(getGame());
 		} catch (InvalidMoveException e) {
 			gameStrategy.playSound(Sounds.INVALID_MOVE);
 			int messageId = e.getErrorResourceId();
@@ -1232,7 +1225,7 @@ public class GameFragment extends AbstractGameFragment {
 			final ExistingPieceMove theMove = (ExistingPieceMove) move;
 			ImageDropTarget source = findButtonFor(theMove.getSource());
 			Cell source2 = theMove.getSource();
-			Piece nextPiece = game.getBoard().getVisiblePiece(source2);
+			Piece nextPiece = getGame().getBoard().getVisiblePiece(source2);
 			exposedSourceResId = nextPiece != null ? nextPiece
 					.getImageResourceId() : 0;
 
@@ -1396,25 +1389,25 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void endGame(State outcome, boolean playSound) {
-		numMoves.setText("" + game.getNumberOfMoves());
+		numMoves.setText("" + getGame().getNumberOfMoves());
 		evaluateGameEndAchievements(outcome);
 		evaluateLeaderboards(outcome);
 		Player winner = outcome.getWinner();
 		String title;
 		if (winner != null) {
 			winOverlayView.clearWins();
-			score.incrementScore(winner);
+			getScore().incrementScore(winner);
 			for (Win each : outcome.getWins()) {
 				winOverlayView.addWinStyle(each.getWinStyle());
 			}
 			winOverlayView.invalidate();
 
 			if (playSound) {
-				if (game.getMode() == GameMode.PASS_N_PLAY) {
+				if (getGame().getMode() == GameMode.PASS_N_PLAY) {
 					gameStrategy.playSound(Sounds.GAME_WON);
 				} else {
 					// the player either won or lost
-					if (winner.equals(game.getLocalPlayer())) {
+					if (winner.equals(getGame().getLocalPlayer())) {
 						gameStrategy.playSound(Sounds.GAME_WON);
 					} else {
 						gameStrategy.playSound(Sounds.GAME_LOST);
@@ -1425,7 +1418,7 @@ public class GameFragment extends AbstractGameFragment {
 			title = getString(R.string.player_won, winner.getName());
 
 		} else {
-			score.incrementScore(null);
+			getScore().incrementScore(null);
 			gameStrategy.playSound(Sounds.GAME_DRAW);
 			title = getString(R.string.draw);
 		}
@@ -1443,7 +1436,7 @@ public class GameFragment extends AbstractGameFragment {
 		// // safety for when start called before activity is created
 		// return;
 		// }
-		PlayerStrategy strategy = game.getCurrentPlayer().getStrategy();
+		PlayerStrategy strategy = getGame().getCurrentPlayer().getStrategy();
 		if (strategy.isHuman()) {
 			hideStatusText();
 			acceptHumanMove();
@@ -1554,7 +1547,7 @@ public class GameFragment extends AbstractGameFragment {
 
 		Achievements achievements = application.getAchievements();
 		achievements.testAndSetForGameEndAchievements(getMainActivity()
-				.getGameHelper(), getActivity(), game, outcome);
+				.getGameHelper(), getActivity(), getGame(), outcome);
 	}
 
 	private void evaluateInGameAchievements(State outcome) {
@@ -1562,7 +1555,7 @@ public class GameFragment extends AbstractGameFragment {
 
 		Achievements achievements = application.getAchievements();
 		achievements.testAndSetForInGameAchievements(getMainActivity()
-				.getGameHelper(), getActivity(), game, outcome);
+				.getGameHelper(), getActivity(), getGame(), outcome);
 	}
 
 	private void evaluateLeaderboards(State outcome) {
@@ -1570,7 +1563,7 @@ public class GameFragment extends AbstractGameFragment {
 
 		Leaderboards leaderboards = application.getLeaderboards();
 		leaderboards.submitGame(getMainActivity().getGameHelper(),
-				getActivity(), game, outcome, score);
+				getActivity(), getGame(), outcome, getScore());
 
 	}
 
@@ -1602,11 +1595,19 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	public Game getGame() {
-		return game;
+		return gameStrategy.getGame();
 	}
 
 	public ScoreCard getScore() {
-		return score;
+		return gameStrategy.getScore();
 	}
+
+	// private void setGame(Game game) {
+	// this.game = game;
+	// }
+	//
+	// private void setScore(ScoreCard score) {
+	// this.score = score;
+	// }
 
 }

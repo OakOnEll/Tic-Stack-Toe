@@ -66,7 +66,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		chatDialog = new ChatDialogFragment();
 		chatDialog.initialize(getContext(), this, messages, getMeForChat(),
 				getOpponentName());
-		chatDialog.show(getMainActivity().getGameFragment()
+		chatDialog.show(getGameFragment()
 				.getChildFragmentManager(), "chat");
 	}
 
@@ -151,8 +151,8 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		invalidateMenu();
 
 		// update the display text
-		getMainActivity().getGameFragment().setThinkingText(
-				getMainActivity().getResources().getString(
+		getGameFragment().setThinkingText(
+				getContext().getResources().getString(
 						R.string.opponent_is_in_chat, getOpponentName()));
 	}
 
@@ -162,11 +162,11 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		invalidateMenu();
 
 		// update the display text
-		getMainActivity().getGameFragment().resetThinkingText();
+		getGameFragment().resetThinkingText();
 	}
 
 	protected void invalidateMenu() {
-		if (!ActivityCompat.invalidateOptionsMenu(getMainActivity())) {
+		if (!ActivityCompat.invalidateOptionsMenu(getActivity())) {
 			handleMenu();
 		} else {
 			honeyCombInvalidateMenu();
@@ -175,7 +175,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void honeyCombInvalidateMenu() {
-		getMainActivity().invalidateOptionsMenu();
+		getActivity().invalidateOptionsMenu();
 	}
 
 	@Override

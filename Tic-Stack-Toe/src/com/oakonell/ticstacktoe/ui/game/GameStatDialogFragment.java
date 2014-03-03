@@ -37,7 +37,7 @@ public class GameStatDialogFragment extends SherlockDialogFragment {
 		View view = inflater.inflate(R.layout.game_stats_dialog, container,
 				false);
 		getDialog().setTitle(R.string.game_stats_title);
-		imgManager = ImageManager.create(parent.getMainActivity());
+		imgManager = ImageManager.create(parent.getActivity());
 
 		ImageView playerBlack = (ImageView) view.findViewById(R.id.player_x);
 		game.getBlackPlayer().updatePlayerImage(imgManager, playerBlack);

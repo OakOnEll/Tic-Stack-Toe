@@ -62,21 +62,29 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 		aiMakeMove(currentStrategy);
 	}
-	
+
 	private void aiMakeMove(final PlayerStrategy currentStrategy) {
 		AsyncTask<Void, Void, AbstractMove> aiMove = new AsyncTask<Void, Void, AbstractMove>() {
 			@Override
 			protected AbstractMove doInBackground(Void... params) {
-				return currentStrategy.move(getMainActivity().getGameFragment().getGame());
+				AbstractMove move = currentStrategy.move(getGame());
+				// would like to save the state here, but need to modify the
+				// game fragment to use already modified game...
+				// move.applyToGame(getGame());
+
+				return move;
 			}
 
 			@Override
 			protected void onPostExecute(final AbstractMove move) {
-				getMainActivity().getGameFragment().highlightAndMakeMove(move);
+				// gameFragment.startGame(state.game, state.score, waitingText,
+				// showMove);
+				// getMainActivity().getGameFragment().startGame(getGame(),
+				// getScore(), null, true);
+				getGameFragment().highlightAndMakeMove(move);
 			}
 		};
 		aiMove.execute((Void) null);
 	}
 
-	
 }
