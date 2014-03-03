@@ -80,7 +80,7 @@ public abstract class GameStrategy {
 		return mainActivity;
 	}
 
-	protected MainActivity getMainActivity() {
+	private MainActivity getMainActivity() {
 		return mainActivity;
 	}
 
@@ -171,6 +171,10 @@ public abstract class GameStrategy {
 
 	protected void setHelper(GameHelper helper) {
 		this.helper = helper;
+	}
+
+	public boolean shouldHideAd() {
+		return false;
 	}
 
 }

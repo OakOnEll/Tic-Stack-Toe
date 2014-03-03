@@ -932,6 +932,8 @@ public class GameFragment extends AbstractGameFragment {
 					return;
 				}
 
+				// TODO extract out the game move to the strategy, with
+				// callbacks for update UI
 				State state;
 				try {
 					state = onDropMove.droppedOn(cell);

@@ -243,11 +243,14 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	}
 
+	public boolean shouldHideAd() {
+		return true;
+	}
+
 	private void startGame(boolean iAmBlack) {
 		GameFragment gameFragment = GameFragment.createFragment(this);
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
-		getMainActivity().hideAd();
 		ScoreCard score = new ScoreCard(0, 0, 0);
 		Player blackPlayer;
 		Player whitePlayer;
