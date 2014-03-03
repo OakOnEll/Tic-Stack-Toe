@@ -1,10 +1,14 @@
 package com.oakonell.ticstacktoe.ui.local;
 
+import android.os.AsyncTask;
+
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
@@ -49,4 +53,30 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		return AiPlayerStrategy.createWhitePlayer(whiteName, false, aiDepth);
 	}
 
+	protected void acceptCurrentPlayerMove(final PlayerStrategy currentStrategy) {
+		// show a thinking/progress icon, suitable for network play and ai
+		// thinking..
+		if (!currentStrategy.isAI()) {
+			return;
+		}
+
+		aiMakeMove(currentStrategy);
+	}
+	
+	private void aiMakeMove(final PlayerStrategy currentStrategy) {
+		AsyncTask<Void, Void, AbstractMove> aiMove = new AsyncTask<Void, Void, AbstractMove>() {
+			@Override
+			protected AbstractMove doInBackground(Void... params) {
+				return currentStrategy.move(getMainActivity().getGameFragment().getGame());
+			}
+
+			@Override
+			protected void onPostExecute(final AbstractMove move) {
+				getMainActivity().getGameFragment().highlightAndMakeMove(move);
+			}
+		};
+		aiMove.execute((Void) null);
+	}
+
+	
 }

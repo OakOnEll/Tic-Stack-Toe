@@ -6,6 +6,7 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
@@ -50,6 +51,12 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 	@Override
 	protected Player createWhitePlayer(String whiteName) {
 		return HumanStrategy.createPlayer(whiteName, false);
+	}
+
+	@Override
+	protected void acceptCurrentPlayerMove(PlayerStrategy currentStrategy) {
+		throw new RuntimeException(
+				"Shouldn't get here on a human vs human, local match");
 	}
 
 }

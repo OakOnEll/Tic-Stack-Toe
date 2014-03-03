@@ -22,6 +22,7 @@ import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.utils.StringUtils;
 
@@ -43,7 +44,6 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 	protected void setHelper(GameHelper helper) {
 		this.helper = helper;
 	}
-
 
 	@Override
 	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {
@@ -176,6 +176,23 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void honeyCombInvalidateMenu() {
 		getMainActivity().invalidateOptionsMenu();
+	}
+
+	@Override
+	abstract public void sendInChat(boolean b);
+
+	@Override
+	abstract public Participant getMeForChat();
+
+	@Override
+	abstract public void sendMessage(String string);
+
+	@Override
+	abstract public String getOpponentName();
+
+	@Override
+	protected void acceptCurrentPlayerMove(PlayerStrategy currentStrategy) {
+		// wait for the networked player's move
 	}
 
 }

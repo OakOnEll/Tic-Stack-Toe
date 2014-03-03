@@ -10,6 +10,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
@@ -50,7 +51,6 @@ public abstract class GameStrategy {
 	public boolean shouldKeepScreenOn() {
 		return false;
 	}
-
 
 	public int playSound(Sounds sound) {
 		return soundManager.playSound(sound);
@@ -111,4 +111,19 @@ public abstract class GameStrategy {
 				MainActivity.RC_UNUSED);
 	}
 
+	public void acceptMove() {
+		final PlayerStrategy currentStrategy = getMainActivity()
+				.getGameFragment().getGame().getCurrentPlayer().getStrategy();
+		if (currentStrategy.isHuman()) {
+			getMainActivity().getGameFragment().acceptHumanMove();
+			return;
+		}
+
+		// show the waiting text
+		getMainActivity().getGameFragment().configureNonLocalProgresses();
+		acceptCurrentPlayerMove(currentStrategy);
+	}
+
+	abstract protected void acceptCurrentPlayerMove(
+			final PlayerStrategy currentStrategy);
 }

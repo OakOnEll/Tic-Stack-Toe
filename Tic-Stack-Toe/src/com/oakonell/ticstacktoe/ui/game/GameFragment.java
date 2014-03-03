@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -371,9 +370,11 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void configureDisplayHomeUp() {
-		if (getMainActivity() == null)
+		if (getSherlockActivity() == null) {
 			return;
-		getMainActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+		getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(
+				true);
 	}
 
 	private void resizePlayerStacks(final View view, int size) {
@@ -1390,7 +1391,7 @@ public class GameFragment extends AbstractGameFragment {
 		} else {
 			evaluateInGameAchievements(outcome);
 			updateHeader(getView());
-			acceptMove();
+			gameStrategy.acceptMove();
 		}
 	}
 
@@ -1431,30 +1432,13 @@ public class GameFragment extends AbstractGameFragment {
 		gameStrategy.promptToPlayAgain(winner.getName(), title);
 	}
 
-	private void acceptMove() {
-		final PlayerStrategy currentStrategy = game.getCurrentPlayer()
-				.getStrategy();
-		if (currentStrategy.isHuman()) {
-			acceptHumanMove();
-			return;
-		}
-		// show a thinking/progress icon, suitable for network play and ai
-		// thinking..
-		configureNonLocalProgresses();
-		if (!currentStrategy.isAI()) {
-			return;
-		}
-
-		aiMakeMove(currentStrategy);
-	}
-
 	public void acceptHumanMove() {
 		disableButtons = false;
 		// let the buttons be pressed for a human interaction
 		return;
 	}
 
-	private void configureNonLocalProgresses() {
+	public void configureNonLocalProgresses() {
 		// if (thinking == null || thinkingText == null) {
 		// // safety for when start called before activity is created
 		// return;
@@ -1469,21 +1453,6 @@ public class GameFragment extends AbstractGameFragment {
 		setOpponentThinking();
 		showStatusText();
 
-	}
-
-	private void aiMakeMove(final PlayerStrategy currentStrategy) {
-		AsyncTask<Void, Void, AbstractMove> aiMove = new AsyncTask<Void, Void, AbstractMove>() {
-			@Override
-			protected AbstractMove doInBackground(Void... params) {
-				return currentStrategy.move(game);
-			}
-
-			@Override
-			protected void onPostExecute(final AbstractMove move) {
-				highlightAndMakeMove(move);
-			}
-		};
-		aiMove.execute((Void) null);
 	}
 
 	public void highlightAndMakeMove(final AbstractMove move) {

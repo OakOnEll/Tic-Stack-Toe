@@ -10,8 +10,6 @@ import com.oakonell.ticstacktoe.R;
 
 public abstract class AbstractGameFragment extends SherlockFragment {
 
-	// private OnlinePlayAgainFragment onlinePlayAgainDialog;
-
 	private static class StatusText {
 		private View thinking;
 		private TextView thinkingText;
@@ -35,19 +33,19 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void hideStatusText() {
-		if (statusText.thinking != null) {
-			statusText.thinking.setVisibility(View.GONE);
+		if (statusText.thinking == null) {
+			return;
 		}
-
+		statusText.thinking.setVisibility(View.GONE);
 	}
 
 	public void showStatusText() {
-		if (statusText.thinking == null)
+		if (statusText.thinking == null) {
 			return;
+		}
 		statusText.thinking.setVisibility(View.VISIBLE);
 		statusText.thinkingText.setVisibility(View.VISIBLE);
 	}
-
 
 	public MainActivity getMainActivity() {
 		return (MainActivity) super.getActivity();
