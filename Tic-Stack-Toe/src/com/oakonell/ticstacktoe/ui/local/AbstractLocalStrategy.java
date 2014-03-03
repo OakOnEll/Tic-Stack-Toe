@@ -6,12 +6,14 @@ import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -27,15 +29,15 @@ import com.oakonell.ticstacktoe.ui.game.SoundManager;
 public abstract class AbstractLocalStrategy extends GameStrategy {
 	private LocalMatchInfo matchInfo;
 
-	public AbstractLocalStrategy(MainActivity mainActivity,
+	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
 			SoundManager soundManager) {
-		super(mainActivity, soundManager);
+		super(mainActivity, helper, soundManager);
 
 	}
 
-	public AbstractLocalStrategy(MainActivity mainActivity,
+	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
 			LocalMatchInfo localMatchInfo, SoundManager soundManager) {
-		super(mainActivity, soundManager);
+		super(mainActivity, helper, soundManager);
 		this.setMatchInfo(localMatchInfo);
 	}
 
@@ -154,7 +156,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	@Override
-	public void onSignInFailed(MainActivity mainActivity) {
+	public void onSignInFailed(SherlockFragmentActivity mainActivity) {
 		// no worries
 	}
 

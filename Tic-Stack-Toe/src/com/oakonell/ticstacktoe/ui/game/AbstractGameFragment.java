@@ -99,7 +99,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		// };
 		// showGameStats();
 
-		getMainActivity().getSupportFragmentManager().popBackStack();
+		getActivity().getSupportFragmentManager().popBackStack();
 		getMainActivity().gameEnded();
 	}
 

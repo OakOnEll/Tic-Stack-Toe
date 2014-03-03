@@ -29,20 +29,9 @@ import com.oakonell.utils.StringUtils;
 public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		implements ChatHelper {
 
-	private GameHelper helper;
-
 	protected AbstractNetworkedGameStrategy(MainActivity mainActivity,
 			SoundManager soundManager, GameHelper helper) {
-		super(mainActivity, soundManager);
-		this.helper = helper;
-	}
-
-	protected GameHelper getHelper() {
-		return helper;
-	}
-
-	protected void setHelper(GameHelper helper) {
-		this.helper = helper;
+		super(mainActivity, helper, soundManager);
 	}
 
 	@Override
@@ -66,8 +55,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		chatDialog = new ChatDialogFragment();
 		chatDialog.initialize(getContext(), this, messages, getMeForChat(),
 				getOpponentName());
-		chatDialog.show(getGameFragment()
-				.getChildFragmentManager(), "chat");
+		chatDialog.show(getGameFragment().getChildFragmentManager(), "chat");
 	}
 
 	@Override

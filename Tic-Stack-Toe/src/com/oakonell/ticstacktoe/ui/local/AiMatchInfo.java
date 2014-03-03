@@ -45,8 +45,8 @@ public class AiMatchInfo extends LocalMatchInfo {
 	@Override
 	public AbstractLocalStrategy createStrategy(MainActivity activity,
 			SoundManager soundManager) {
-		AiGameStrategy listener = new AiGameStrategy(activity, soundManager,
-				aiLevel, this);
+		AiGameStrategy listener = new AiGameStrategy(activity,
+				activity.getGameHelper(), soundManager, aiLevel, this);
 		return listener;
 	}
 

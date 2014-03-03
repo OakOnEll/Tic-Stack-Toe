@@ -38,7 +38,7 @@ public class PassNPlayMatchInfo extends LocalMatchInfo {
 	@Override
 	public AbstractLocalStrategy createStrategy(MainActivity activity,
 			SoundManager soundManager) {
-		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(activity,
+		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(activity,activity.getGameHelper(),
 				soundManager, this);
 		return listener;
 	}

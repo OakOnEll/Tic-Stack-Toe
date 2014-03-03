@@ -26,9 +26,11 @@ public abstract class GameStrategy {
 	private Game game;
 	private ScoreCard score = new ScoreCard(0, 0, 0);
 
-	protected GameStrategy(MainActivity mainActivity, SoundManager soundManager) {
+	protected GameStrategy(MainActivity mainActivity, GameHelper helper,
+			SoundManager soundManager) {
 		this.mainActivity = mainActivity;
 		this.soundManager = soundManager;
+		this.helper = helper;
 	}
 
 	public abstract void leaveRoom();
@@ -46,7 +48,7 @@ public abstract class GameStrategy {
 
 	public abstract void onResume(MainActivity activity);
 
-	public abstract void onSignInFailed(MainActivity mainActivity);
+	public abstract void onSignInFailed(SherlockFragmentActivity mainActivity);
 
 	public abstract void onFragmentResume();
 
@@ -117,7 +119,7 @@ public abstract class GameStrategy {
 		Intent prefIntent = new Intent(fragment.getActivity(),
 				SettingsActivity.class);
 
-		GameHelper helper = getMainActivity().getGameHelper();
+		GameHelper helper = getHelper();
 		Info info = null;
 		TicStackToe app = (TicStackToe) fragment.getActivity().getApplication();
 		if (helper.isSignedIn()) {
@@ -159,6 +161,16 @@ public abstract class GameStrategy {
 
 	protected void setScore(ScoreCard score) {
 		this.score = score;
+	}
+
+	private GameHelper helper;
+
+	protected GameHelper getHelper() {
+		return helper;
+	}
+
+	protected void setHelper(GameHelper helper) {
+		this.helper = helper;
 	}
 
 }

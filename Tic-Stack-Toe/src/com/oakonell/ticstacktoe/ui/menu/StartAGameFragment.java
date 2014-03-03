@@ -469,7 +469,8 @@ public class StartAGameFragment extends SherlockFragment {
 		exitStartMenu();
 
 		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(
-				getMainActivity(), soundManager);
+				getMainActivity(), getMainActivity().getGameHelper(),
+				soundManager);
 		getMainActivity().setGameStrategy(listener);
 
 		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
@@ -482,7 +483,7 @@ public class StartAGameFragment extends SherlockFragment {
 		String blackName = getResources().getString(R.string.local_player_name);
 
 		AiGameStrategy listener = new AiGameStrategy(getMainActivity(),
-				soundManager, aiDepth);
+				getMainActivity().getGameHelper(), soundManager, aiDepth);
 		getMainActivity().setGameStrategy(listener);
 
 		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));

@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -753,7 +754,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void onSignInFailed(MainActivity mainActivity) {
+	public void onSignInFailed(SherlockFragmentActivity mainActivity) {
 		// Real time game, we already disconnected, this won't matter
 	}
 

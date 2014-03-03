@@ -115,7 +115,7 @@ public class MainActivity extends BaseGameActivity {
 	}
 
 	private void initializeInterstitialAd() {
-		mInterstitialAd = new InterstitialAd(MainActivity.this);
+		mInterstitialAd = new InterstitialAd(this);
 		mInterstitialAd
 				.setAdUnitId(getResources().getString(R.string.admob_id));
 		mInterstitialAd.loadAd(createAdRequest());

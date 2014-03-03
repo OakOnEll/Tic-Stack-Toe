@@ -2,6 +2,7 @@ package com.oakonell.ticstacktoe.ui.local;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -13,14 +14,14 @@ import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 
-	public PassNPlayGameStrategy(MainActivity mainActivity,
+	public PassNPlayGameStrategy(MainActivity mainActivity, GameHelper helper,
 			SoundManager soundManager) {
-		super(mainActivity, soundManager);
+		super(mainActivity, helper, soundManager);
 	}
 
-	public PassNPlayGameStrategy(MainActivity mainActivity,
+	public PassNPlayGameStrategy(MainActivity mainActivity, GameHelper helper,
 			SoundManager soundManager, PassNPlayMatchInfo localMatchInfo) {
-		super(mainActivity, localMatchInfo, soundManager);
+		super(mainActivity, helper, localMatchInfo, soundManager);
 	}
 
 	public void playAgain() {
