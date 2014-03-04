@@ -743,7 +743,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void onResume(MainActivity theActivity) {
+	public void onActivityResume(MainActivity theActivity) {
 		setMainActivity(theActivity);
 		(new AlertDialog.Builder(getContext()))
 				.setMessage(R.string.you_left_the_game)

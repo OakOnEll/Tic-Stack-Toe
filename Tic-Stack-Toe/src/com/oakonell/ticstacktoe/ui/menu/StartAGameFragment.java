@@ -318,7 +318,7 @@ public class StartAGameFragment extends SherlockFragment {
 		getMainActivity().setGameStrategy(listener);
 
 		// Kick the match off
-		getMainActivity().getGamesClient().createTurnBasedMatch(
+		helper.getGamesClient().createTurnBasedMatch(
 				new OnTurnBasedMatchInitiatedListener() {
 					@Override
 					public void onTurnBasedMatchInitiated(int status,

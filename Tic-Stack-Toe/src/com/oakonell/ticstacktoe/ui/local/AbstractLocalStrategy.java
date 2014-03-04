@@ -143,7 +143,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	abstract protected void playAgain();
 
 	@Override
-	public void onResume(MainActivity activity) {
+	public void onActivityResume(MainActivity activity) {
 		// do nothing
 	}
 

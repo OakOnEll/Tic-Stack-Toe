@@ -1131,7 +1131,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void onResume(MainActivity theActivity) {
+	public void onActivityResume(MainActivity theActivity) {
 		setMainActivity(theActivity);
 
 		if (!getHelper().isSignedIn()) {

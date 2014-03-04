@@ -16,7 +16,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.oakonell.ticstacktoe.ChatHelper;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
@@ -26,8 +25,7 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.utils.StringUtils;
 
-public abstract class AbstractNetworkedGameStrategy extends GameStrategy
-		implements ChatHelper {
+public abstract class AbstractNetworkedGameStrategy extends GameStrategy		 {
 
 	protected AbstractNetworkedGameStrategy(MainActivity mainActivity,
 			SoundManager soundManager, GameHelper helper) {
@@ -166,16 +164,12 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy
 		getActivity().invalidateOptionsMenu();
 	}
 
-	@Override
 	abstract public void sendInChat(boolean b);
 
-	@Override
 	abstract public Participant getMeForChat();
 
-	@Override
 	abstract public void sendMessage(String string);
 
-	@Override
 	abstract public String getOpponentName();
 
 	@Override

@@ -117,7 +117,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	@Override
 	public void onPause() {
-		gameStrategy.leaveRoom();
+		gameStrategy.onFragmentPause();
 		super.onPause();
 	}
 
@@ -711,11 +711,7 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 				// We are starting a drag. Let the DragController handle it.
-				DragConfig dragConfig = new DragConfig();
-				dragConfig.alpha = 255;
-				dragConfig.drawSelected = false;
-				dragConfig.vibrate = false;
-				dragConfig.animationScale = 1.0f;
+				DragConfig dragConfig = createDragConfiguration();
 
 				OnDropMove newPieceOnDrop = new OnDropMove() {
 					@Override
@@ -768,9 +764,18 @@ public class GameFragment extends AbstractGameFragment {
 
 				return true;
 			}
+
 		};
 		stackView.setOnTouchListener(onTouchListener);
+	}
 
+	private DragConfig createDragConfiguration() {
+		DragConfig dragConfig = new DragConfig();
+		dragConfig.alpha = 255;
+		dragConfig.drawSelected = false;
+		dragConfig.vibrate = false;
+		dragConfig.animationScale = 1.0f;
+		return dragConfig;
 	}
 
 	protected void animateInvalidMoveReturn(final DragView dragView,
@@ -927,9 +932,6 @@ public class GameFragment extends AbstractGameFragment {
 					// human
 					return;
 				}
-				// if same piece is droped on its original spot..
-				// TODO mark that this piece MUST be moved?
-
 				final OnDropMove onDropMove = (OnDropMove) dragInfo;
 				if (onDropMove.originatedFrom(cell)) {
 					// if in strict mode and the user already chose this piece,
@@ -941,9 +943,6 @@ public class GameFragment extends AbstractGameFragment {
 					return;
 				}
 
-				// TODO extract out the game move to the strategy, with
-				// callbacks for update UI
-
 				AbstractMove move = onDropMove.createMove(cell);
 				gameStrategy.humanMove(move, new OnHumanMove() {
 					@Override
@@ -954,10 +953,6 @@ public class GameFragment extends AbstractGameFragment {
 
 						updateBoardPiece(cell);
 						postMove(state, true);
-
-						// AbstractMove lastMove = state.getLastMove();
-						// gameStrategy.sendMove(getGame(), lastMove,
-						// getScore());
 					}
 
 					@Override
@@ -986,45 +981,6 @@ public class GameFragment extends AbstractGameFragment {
 					}
 
 				});
-
-				// State state;
-				// try {
-				// state = onDropMove.droppedOn(cell);
-				// // TODO play valid move sound, based on previous target
-				// // exist, new piece ?
-				// } catch (final InvalidMoveException e) {
-				// int resId = onDropMove.getMovedImageResourceId();
-				// animateInvalidMoveReturn(dragView, resId,
-				// onDropMove.getSourceView(), new Runnable() {
-				// @Override
-				// public void run() {
-				// updateBoardPiece(cell);
-				// onDropMove.update();
-				// if (getGame().getFirstPickedCell() != null) {
-				// BoardPieceStackImageView source = (BoardPieceStackImageView)
-				// findButtonFor(getGame()
-				// .getFirstPickedCell());
-				// highlightStrictFirstTouchedPiece(source);
-				// }
-				// int messageId = e.getErrorResourceId();
-				// Toast toast = Toast.makeText(getActivity(),
-				// messageId, Toast.LENGTH_SHORT);
-				// toast.setGravity(Gravity.CENTER, 0, 0);
-				// toast.show();
-				// }
-				// });
-				// gameStrategy.playSound(Sounds.INVALID_MOVE);
-				// return;
-				// }
-				// onDropMove.postMove();
-				//
-				// getGame().setFirstPickedCell(null);
-				//
-				// updateBoardPiece(cell);
-				// postMove(state, true);
-				//
-				// AbstractMove lastMove = state.getLastMove();
-				// gameStrategy.sendMove(getGame(), lastMove, getScore());
 			}
 
 			@Override
@@ -1065,11 +1021,7 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 				// We are starting a drag. Let the DragController handle it.
-				DragConfig dragConfig = new DragConfig();
-				dragConfig.alpha = 255;
-				dragConfig.drawSelected = false;
-				dragConfig.vibrate = false;
-				dragConfig.animationScale = 1.0f;
+				DragConfig dragConfig = createDragConfiguration();
 
 				OnDropMove boardToBoardDropMove = new OnDropMove() {
 					@Override
@@ -1123,10 +1075,6 @@ public class GameFragment extends AbstractGameFragment {
 				if (getGame().getType().isStrict()) {
 					getGame().setFirstPickedCell(cell);
 				}
-
-				// for a board move, let's leave the moved/top piece
-				// visible/greyed?
-				// TODO And not expose the piece underneath?
 
 				Piece nextPiece = getGame().getBoard().peekNextPiece(cell);
 				if (nextPiece == null) {
@@ -1266,16 +1214,6 @@ public class GameFragment extends AbstractGameFragment {
 		AnimationSet replaceAnimation = new AnimationSet(false);
 		// animations should be applied on the finish line
 		replaceAnimation.setFillAfter(false);
-
-		// float xScale = ((float) cellButton.getWidth())
-		// / markerToPlayView.getWidth();
-		// float yScale = ((float) cellButton.getHeight())
-		// / markerToPlayView.getHeight();
-		//
-
-		// TODO expose the pieces underneath when animation starts
-		// TODO use a new separate view (like the DragView) to actually animate,
-		// so it stays above all the layers
 
 		ImageView markerToPlayView;
 		int movedResourceId;

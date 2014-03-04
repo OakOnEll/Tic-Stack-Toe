@@ -22,7 +22,10 @@ public class InviteMatchInfo implements MatchInfo {
 	private final String inviteId;
 	private final boolean isTurnBased;
 
+	private GamesClient client;
+
 	public InviteMatchInfo(GamesClient client, Invitation invite) {
+		this.client = client;
 		created = invite.getCreationTimestamp();
 		inviteId = invite.getInvitationId();
 
@@ -54,9 +57,7 @@ public class InviteMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Decline", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				GamesClient gamesClient = fragment.getMainActivity()
-						.getGamesClient();
-				gamesClient.declineTurnBasedInvitation(inviteId);
+				client.declineTurnBasedInvitation(inviteId);
 				matches.remove(InviteMatchInfo.this);
 			}
 		});

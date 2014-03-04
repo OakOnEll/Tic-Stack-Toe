@@ -48,7 +48,7 @@ public abstract class GameStrategy {
 
 	public abstract void onSignInSuccess(MainActivity activity);
 
-	public abstract void onResume(MainActivity activity);
+	public abstract void onActivityResume(MainActivity activity);
 
 	public abstract void onSignInFailed(SherlockFragmentActivity mainActivity);
 
@@ -203,5 +203,14 @@ public abstract class GameStrategy {
 		void onSuccess(State state);
 
 		void onInvalid(InvalidMoveException e);
+	}
+
+	public void onFragmentPause() {
+		leaveRoom();
+	}
+
+	public void onActivityPause(MainActivity mainActivity2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

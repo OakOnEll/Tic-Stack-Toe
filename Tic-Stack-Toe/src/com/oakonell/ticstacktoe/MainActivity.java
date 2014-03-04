@@ -17,7 +17,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.GamesActivityResultCodes;
-import com.google.android.gms.games.GamesClient;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -180,11 +179,6 @@ public class MainActivity extends BaseGameActivity {
 		return super.getGameHelper();
 	}
 
-	@Override
-	public GamesClient getGamesClient() {
-		return super.getGamesClient();
-	}
-
 	public MenuFragment getMenuFragment() {
 		return (MenuFragment) getSupportFragmentManager().findFragmentByTag(
 				FRAG_TAG_MENU);
@@ -237,8 +231,6 @@ public class MainActivity extends BaseGameActivity {
 			// else listener allows just exiting
 			if (gameStrategy != null) {
 				gameStrategy.leaveRoom();
-			} else {
-				// store local game...
 			}
 			getGameFragment().leaveGame();
 			return;
@@ -286,21 +278,20 @@ public class MainActivity extends BaseGameActivity {
 
 	@Override
 	protected void onPause() {
-		// mAdView.pause();
 		super.onPause();
+		GameStrategy strategy = getGameStrategy();
+		if (strategy != null) {
+			strategy.onActivityPause(this);
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// mAdView.resume();
-		if (getGameFragment() != null) {
-			GameStrategy appListener = getGameStrategy();
-			if (appListener != null) {
-				appListener.onResume(this);
-			}
+		GameStrategy strategy = getGameStrategy();
+		if (strategy != null) {
+			strategy.onActivityResume(this);
 		}
-
 	}
 
 	@Override
@@ -311,23 +302,25 @@ public class MainActivity extends BaseGameActivity {
 	}
 
 	private void possiblyShowInterstitialAd() {
-		// show an ad with some probability (~50%?)
+		// show an ad with some probability
 		Random random = new Random();
-		if (random.nextInt(10) > 5)
+		if (random.nextInt(100) > 25) {
 			return;
-
-		if (mInterstitialAd.isLoaded()) {
-			mInterstitialAd.show();
-
-			mInterstitialAd.setAdListener(new AdListener() {
-				@Override
-				public void onAdClosed() {
-					super.onAdClosed();
-					initializeInterstitialAd();
-				}
-
-			});
 		}
+
+		if (!mInterstitialAd.isLoaded()) {
+			return;
+		}
+		mInterstitialAd.show();
+
+		mInterstitialAd.setAdListener(new AdListener() {
+			@Override
+			public void onAdClosed() {
+				super.onAdClosed();
+				initializeInterstitialAd();
+			}
+
+		});
 	}
 
 }

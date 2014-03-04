@@ -28,8 +28,11 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	private boolean canRematch;
 	private long lastUpdated;
 
+	private GamesClient client;
+
 	public TurnBasedMatchInfo(Context context, GamesClient client,
 			TurnBasedMatch match) {
+		this.client = client;
 		lastUpdated = match.getLastUpdatedTimestamp();
 		matchId = match.getMatchId();
 
@@ -81,9 +84,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				GamesClient gamesClient = fragment.getMainActivity()
-						.getGamesClient();
-				gamesClient.dismissTurnBasedMatch(matchId);
+				client.dismissTurnBasedMatch(matchId);
 				matches.remove(TurnBasedMatchInfo.this);
 			}
 		});
@@ -96,9 +97,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 						public void execute(final MenuFragment fragment,
 								List<MatchInfo> matches) {
 							fragment.setInactive();
-							GamesClient gamesClient = fragment
-									.getMainActivity().getGamesClient();
-							gamesClient.rematchTurnBasedMatch(
+							client.rematchTurnBasedMatch(
 									new OnTurnBasedMatchInitiatedListener() {
 										@Override
 										public void onTurnBasedMatchInitiated(
