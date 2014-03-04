@@ -31,19 +31,11 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		this.aiDepth = aiDepth;
 	}
 
-	public void playAgain() {
-		Game game = getMatchInfo().readGame(getContext());
-
-		startGame(game.getBlackPlayer().getName(), game.getWhitePlayer()
-				.getName(), game.getType(), getMatchInfo().getScoreCard());
-		// TODO, keep track of score, and switch first player...
-	}
-
-	protected AiMatchInfo createMatchInfo(String blackName, String whiteName,
-			final Game game, ScoreCard score) {
+	protected AiMatchInfo createNewMatchInfo(String blackName,
+			String whiteName, final Game game, ScoreCard score) {
 		return new AiMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
-				aiDepth, System.currentTimeMillis(), game, score, 0, 0);
+				aiDepth, System.currentTimeMillis(), game, score);
 	}
 
 	protected GameMode getGameMode() {
@@ -55,38 +47,20 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		return AiPlayerStrategy.createWhitePlayer(whiteName, false, aiDepth);
 	}
 
-	protected void acceptCurrentPlayerMove(final PlayerStrategy currentStrategy) {
-		// show a thinking/progress icon, suitable for network play and ai
-		// thinking..
-		if (!currentStrategy.isAI()) {
-			return;
-		}
-
-		aiMakeMove(currentStrategy);
-	}
-
-	private void aiMakeMove(final PlayerStrategy currentStrategy) {
+	protected void acceptNonHumanPlayerMove(final PlayerStrategy currentStrategy) {
 		AsyncTask<Void, Void, State> aiMove = new AsyncTask<Void, Void, State>() {
 			@Override
 			protected State doInBackground(Void... params) {
 				AbstractMove move = currentStrategy.move(getGame());
-				// would like to save the state here, but need to modify the
-				// game fragment to use already modified game...
-				// move.applyToGame(getGame());
 				State state = applyNonHumanMove(move);
-				// TODO save the game state
+				updateGame();
 				return state;
 			}
 
 			@Override
 			protected void onPostExecute(final State state) {
-				// gameFragment.startGame(state.game, state.score, waitingText,
-				// showMove);
-				// getMainActivity().getGameFragment().startGame(getGame(),
-				// getScore(), null, true);
 				getGameFragment().hideStatusText();
 				getGameFragment().animateMove(state.getLastMove(), state);
-				// getGameFragment().highlightAndMakeMove(move);
 			}
 		};
 		aiMove.execute((Void) null);

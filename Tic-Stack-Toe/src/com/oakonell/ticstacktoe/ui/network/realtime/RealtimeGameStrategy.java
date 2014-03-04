@@ -518,7 +518,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		}
 	}
 
-	public void sendMove(Game game, AbstractMove move, ScoreCard score) {
+	public void sendHumanMove() {
+		AbstractMove move = getGame().getBoard().getState().getLastMove();
 		ByteBuffer theBuffer = ByteBuffer
 				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 		ByteBufferDebugger buffer = new ByteBufferDebugger(theBuffer);

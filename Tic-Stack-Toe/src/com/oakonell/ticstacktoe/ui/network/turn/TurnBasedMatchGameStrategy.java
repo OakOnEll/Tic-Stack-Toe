@@ -34,7 +34,6 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerLi
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -446,10 +445,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void sendMove(Game game, AbstractMove lastMove, ScoreCard score) {
+	public void sendHumanMove() {
 		// store the game, take turn
-		GameState gameState = new GameState(game, score, blackParticipantId,
-				isQuick, false);
+		Game game = getGame();
+		GameState gameState = new GameState(game, getScore(),
+				blackParticipantId, isQuick, false);
 		byte[] bytes = gameState.toBytes(getHelper());
 		State state = game.getBoard().getState();
 		getGameFragment().setThinkingText(

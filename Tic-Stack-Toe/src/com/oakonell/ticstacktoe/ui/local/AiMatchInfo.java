@@ -23,7 +23,7 @@ public class AiMatchInfo extends LocalMatchInfo {
 
 	public AiMatchInfo(int matchStatus, int turnStatus, String blackName,
 			String whiteName, int aiLevel, long currentTimeMillis, Game game,
-			ScoreCard score, long rematchId, int winner) {
+			ScoreCard score) {
 		super(matchStatus, turnStatus, blackName, whiteName, game, score);
 		this.aiLevel = aiLevel;
 	}

@@ -108,7 +108,9 @@ public abstract class LocalMatchInfo implements MatchInfo {
 				DateUtils.WEEK_IN_MILLIS, 0);
 		String lastPlayed;
 		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
-			lastPlayed = " finished " + timeSpanString;
+			lastPlayed = " finished " + timeSpanString + "("
+					+ getScoreCard().getBlackWins() + " / "
+					+ getScoreCard().getWhiteWins() + ")";
 		} else {
 			lastPlayed = " last played " + timeSpanString;
 		}

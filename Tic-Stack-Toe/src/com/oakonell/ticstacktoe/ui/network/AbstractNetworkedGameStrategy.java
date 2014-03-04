@@ -173,7 +173,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy		 {
 	abstract public String getOpponentName();
 
 	@Override
-	protected void acceptCurrentPlayerMove(PlayerStrategy currentStrategy) {
+	protected void acceptNonHumanPlayerMove(PlayerStrategy currentStrategy) {
 		// wait for the networked player's move
 	}
 

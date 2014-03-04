@@ -37,8 +37,7 @@ public abstract class GameStrategy {
 
 	public abstract void leaveRoom();
 
-	public abstract void sendMove(Game game, AbstractMove lastMove,
-			ScoreCard score);
+	public abstract void sendHumanMove();
 
 	public abstract void backFromWaitingRoom();
 
@@ -143,10 +142,10 @@ public abstract class GameStrategy {
 
 		// show the waiting text
 		getGameFragment().configureNonLocalProgresses();
-		acceptCurrentPlayerMove(currentStrategy);
+		acceptNonHumanPlayerMove(currentStrategy);
 	}
 
-	abstract protected void acceptCurrentPlayerMove(
+	abstract protected void acceptNonHumanPlayerMove(
 			final PlayerStrategy currentStrategy);
 
 	public Game getGame() {
@@ -188,11 +187,12 @@ public abstract class GameStrategy {
 		}
 	}
 
-	public void humanMove(AbstractMove move, OnHumanMove onHumanMove) {
+	public final void attemptHumanMove(AbstractMove move,
+			OnHumanMove onHumanMove) {
 		try {
 			State state = move.applyToGame(getGame());
 			onHumanMove.onSuccess(state);
-			sendMove(getGame(), state.getLastMove(), getScore());
+			sendHumanMove();
 		} catch (final InvalidMoveException e) {
 			onHumanMove.onInvalid(e);
 			return;
@@ -211,6 +211,6 @@ public abstract class GameStrategy {
 
 	public void onActivityPause(MainActivity mainActivity2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

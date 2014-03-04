@@ -944,7 +944,7 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 				AbstractMove move = onDropMove.createMove(cell);
-				gameStrategy.humanMove(move, new OnHumanMove() {
+				gameStrategy.attemptHumanMove(move, new OnHumanMove() {
 					@Override
 					public void onSuccess(State state) {
 						onDropMove.postMove();

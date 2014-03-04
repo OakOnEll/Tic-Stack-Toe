@@ -14,11 +14,9 @@ import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
-import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
@@ -34,7 +32,6 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
 			SoundManager soundManager) {
 		super(mainActivity, helper, soundManager);
-
 	}
 
 	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
@@ -69,12 +66,15 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	@Override
-	public void sendMove(Game game, AbstractMove lastMove, ScoreCard score) {
-		// TODO Auto-generated method stub
-		// write the game to the DB, or wait until leave...??
-		if (game.getBoard().getState().isOver()) {
+	public void sendHumanMove() {
+		updateGame();
+	}
+
+	protected void updateGame() {
+		State state = getGame().getBoard().getState();
+		if (state.isOver()) {
 			matchInfo.setMatchStatus(TurnBasedMatch.MATCH_STATUS_COMPLETE);
-			Player winner = game.getBoard().getState().getWinner();
+			Player winner = state.getWinner();
 			if (winner == null) {
 				// draw
 			} else if (winner.isBlack()) {
@@ -82,14 +82,14 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			} else {
 				matchInfo.setWinner(-1);
 			}
-			matchInfo.setScoreCard(score);
+			matchInfo.setScoreCard(getScore());
 			saveToDB();
 			return;
 		}
 		getMatchInfo()
 				.setTurnStatus(
-						getMatchInfo().getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN ? TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN
-								: TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+						getGame().getCurrentPlayer().isBlack() ? TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN
+								: TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN);
 	}
 
 	@Override
@@ -140,7 +140,14 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	}
 
-	abstract protected void playAgain();
+	private void playAgain() {
+		Game game = getMatchInfo().readGame(getContext());
+		boolean firstIsBlack = game.getCurrentPlayer().isBlack();
+		startGame(firstIsBlack, game.getBlackPlayer().getName(), game
+				.getWhitePlayer().getName(), game.getType(), getMatchInfo()
+				.getScoreCard());
+		// TODO, keep track of score, and switch first player...
+	}
 
 	@Override
 	public void onActivityResume(MainActivity activity) {
@@ -163,10 +170,10 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	public void showFromMenu() {
-		final ScoreCard score = new ScoreCard(0, 0, 0);
 		GameFragment gameFragment = GameFragment.createFragment(this);
 		Game game = getMatchInfo().readGame(getContext());
 		setGame(game);
+		ScoreCard score = getMatchInfo().getScoreCard();
 		setScore(score);
 
 		gameFragment.startGame(game, score, null, true);
@@ -190,6 +197,11 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	public void startGame(String blackName, String whiteName, GameType type,
 			final ScoreCard score) {
+		startGame(true, blackName, whiteName, type, score);
+	}
+
+	public void startGame(boolean blackFirst, String blackName,
+			String whiteName, GameType type, final ScoreCard score) {
 		Player whitePlayer = createWhitePlayer(whiteName);
 		GameMode gameMode = getGameMode();
 
@@ -199,13 +211,20 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 						+ "", 0L);
 
 		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
+		Player firstPlayer = blackPlayer;
+		if (!blackFirst) {
+			firstPlayer = whitePlayer;
+		}
 		final Game game = new Game(type, gameMode, blackPlayer, whitePlayer,
-				blackPlayer);
+				firstPlayer);
 		setGame(game);
 		setScore(score);
-		LocalMatchInfo theMatchInfo = createMatchInfo(blackName, whiteName,
+		LocalMatchInfo theMatchInfo = createNewMatchInfo(blackName, whiteName,
 				game, score);
-
+		if (!blackFirst) {
+			theMatchInfo
+					.setTurnStatus(TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN);
+		}
 		DatabaseHandler db = new DatabaseHandler(getContext());
 		matchInfo = theMatchInfo;
 		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
@@ -231,19 +250,16 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 			@Override
 			public void onUpdateFailure() {
-				// TODO Auto-generated method stub
-
+				showAlert("Error inserting match into the DB");
 			}
 		});
 	}
 
-	protected abstract LocalMatchInfo createMatchInfo(String blackName,
+	protected abstract LocalMatchInfo createNewMatchInfo(String blackName,
 			String whiteName, final Game game, ScoreCard score);
 
 	protected abstract GameMode getGameMode();
 
 	protected abstract Player createWhitePlayer(String whiteName);
-
-
 
 }
