@@ -16,20 +16,17 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.GameStrategy;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.utils.StringUtils;
 
-public abstract class AbstractNetworkedGameStrategy extends GameStrategy		 {
+public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 
-	protected AbstractNetworkedGameStrategy(MainActivity mainActivity,
-			SoundManager soundManager, GameHelper helper) {
-		super(mainActivity, helper, soundManager);
+	protected AbstractNetworkedGameStrategy(GameContext context) {
+		super(context);
 	}
 
 	@Override

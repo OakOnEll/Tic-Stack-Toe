@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe;
 import java.util.Random;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -26,19 +28,7 @@ import com.oakonell.ticstacktoe.ui.menu.StartAGameFragment;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.AppLaunchUtils;
 
-public class MainActivity extends BaseGameActivity {
-	public static final String FRAG_TAG_GAME = "game";
-	public static final String FRAG_TAG_MENU = "menu";
-	public static final String FRAG_TAG_START_GAME = "startGame";
-
-	// Request codes for the UIs that we show with startActivityForResult:
-	public final static int RC_UNUSED = 1;
-	// online play request codes
-	public final static int RC_SELECT_PLAYERS = 10000;
-	// public final static int RC_INVITATION_INBOX = 10001;
-	public final static int RC_WAITING_ROOM = 10002;
-	// public final static int RC_LOOK_AT_MATCHES = 10003;
-
+public class MainActivity extends BaseGameActivity implements GameContext {
 	private GameStrategy gameStrategy;
 	private InterstitialAd mInterstitialAd;
 	private AdView mAdView;
@@ -47,7 +37,7 @@ public class MainActivity extends BaseGameActivity {
 	@Override
 	protected void onActivityResult(int request, int response, Intent data) {
 		super.onActivityResult(request, response, data);
-		if (request == RC_WAITING_ROOM) {
+		if (request == GameContext.RC_WAITING_ROOM) {
 			// TODO currently specially launched from (real-time) strategy, with
 			// access to activity only
 			getMenuFragment().onActivityResult(request, response, data);
@@ -76,8 +66,7 @@ public class MainActivity extends BaseGameActivity {
 		MenuFragment menuFrag = (MenuFragment) getSupportFragmentManager()
 				.findFragmentByTag(FRAG_TAG_MENU);
 		if (menuFrag == null) {
-			menuFrag = MenuFragment.createMenuFragment(getGameHelper(),
-					soundManager);
+			menuFrag = MenuFragment.createMenuFragment();
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.add(R.id.main_frame, menuFrag, FRAG_TAG_MENU);
@@ -179,6 +168,10 @@ public class MainActivity extends BaseGameActivity {
 		return super.getGameHelper();
 	}
 
+	public SoundManager getSoundManager() {
+		return soundManager;
+	}
+
 	public MenuFragment getMenuFragment() {
 		return (MenuFragment) getSupportFragmentManager().findFragmentByTag(
 				FRAG_TAG_MENU);
@@ -191,7 +184,7 @@ public class MainActivity extends BaseGameActivity {
 
 	public GameFragment getGameFragment() {
 		return (GameFragment) getSupportFragmentManager().findFragmentByTag(
-				FRAG_TAG_GAME);
+				GameContext.FRAG_TAG_GAME);
 	}
 
 	public void gameEnded() {
@@ -321,6 +314,16 @@ public class MainActivity extends BaseGameActivity {
 			}
 
 		});
+	}
+
+	@Override
+	public Context getContext() {
+		return this;
+	}
+
+	@Override
+	public SherlockFragmentActivity getSherlockActivity() {
+		return this;
 	}
 
 }

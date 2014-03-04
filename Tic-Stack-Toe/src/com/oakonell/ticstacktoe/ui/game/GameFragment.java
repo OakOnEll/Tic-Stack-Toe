@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.Achievements;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.GameStrategy.OnHumanMove;
 import com.oakonell.ticstacktoe.Leaderboards;
@@ -90,8 +92,6 @@ public class GameFragment extends AbstractGameFragment {
 
 	private SquareBoardResizeInfo resizeInfo = new SquareBoardResizeInfo();
 
-	private GameStrategy gameStrategy;
-
 	private boolean disableButtons;
 	// used while dropping, in case an invalid move was made, to NOT update UI,
 	// and let the animation take place
@@ -100,24 +100,32 @@ public class GameFragment extends AbstractGameFragment {
 	// state management
 	private Runnable inOnResume;
 	private Runnable inOnCreate;
+	private GameContext gameContext;
 
 	public GameFragment() {
 		// for finding references
 	}
 
-	public static GameFragment createFragment(GameStrategy gameStrategy) {
+	public static GameFragment createFragment() {
 		GameFragment fragment = new GameFragment();
-		fragment.initialize(gameStrategy);
 		return fragment;
 	}
 
-	private void initialize(GameStrategy gameStrategy) {
-		this.gameStrategy = gameStrategy;
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		gameContext = (GameContext) activity;
+	}
+
+	private GameStrategy getGameStrategy() {
+		return gameContext.getGameStrategy();
 	}
 
 	@Override
 	public void onPause() {
-		gameStrategy.onFragmentPause();
+		if (getGameStrategy() != null) {
+			getGameStrategy().onFragmentPause();
+		}
 		super.onPause();
 	}
 
@@ -125,7 +133,7 @@ public class GameFragment extends AbstractGameFragment {
 	public void onResume() {
 		super.onResume();
 
-		gameStrategy.onFragmentResume();
+		getGameStrategy().onFragmentResume();
 		Log.i("GameFragment", "onResume");
 
 		if (inOnResume != null) {
@@ -211,7 +219,7 @@ public class GameFragment extends AbstractGameFragment {
 			leaveGame();
 			return true;
 		}
-		if (gameStrategy.onOptionsItemSelected(this, item)) {
+		if (getGameStrategy().onOptionsItemSelected(this, item)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -220,13 +228,13 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		gameStrategy.onCreateOptionsMenu(this, menu, inflater);
+		getGameStrategy().onCreateOptionsMenu(this, menu, inflater);
 	}
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		gameStrategy.onPrepareOptionsMenu(this, menu);
+		getGameStrategy().onPrepareOptionsMenu(this, menu);
 	}
 
 	@Override
@@ -266,7 +274,7 @@ public class GameFragment extends AbstractGameFragment {
 		winOverlayView.setBoardSize(getGame().getBoard().getSize());
 		configureBoardButtons(view);
 
-		view.setKeepScreenOn(gameStrategy.shouldKeepScreenOn());
+		view.setKeepScreenOn(getGameStrategy().shouldKeepScreenOn());
 		if (getGame().getBoard().getSize() == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
 					.setBackgroundResource(R.drawable.wood_grid_3x3);
@@ -944,7 +952,7 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 				AbstractMove move = onDropMove.createMove(cell);
-				gameStrategy.attemptHumanMove(move, new OnHumanMove() {
+				getGameStrategy().attemptHumanMove(move, new OnHumanMove() {
 					@Override
 					public void onSuccess(State state) {
 						onDropMove.postMove();
@@ -977,7 +985,7 @@ public class GameFragment extends AbstractGameFragment {
 										toast.show();
 									}
 								});
-						gameStrategy.playSound(Sounds.INVALID_MOVE);
+						getGameStrategy().playSound(Sounds.INVALID_MOVE);
 					}
 
 				});
@@ -1187,7 +1195,7 @@ public class GameFragment extends AbstractGameFragment {
 		try {
 			outcome = move.applyToGame(getGame());
 		} catch (InvalidMoveException e) {
-			gameStrategy.playSound(Sounds.INVALID_MOVE);
+			getGameStrategy().playSound(Sounds.INVALID_MOVE);
 			int messageId = e.getErrorResourceId();
 			Toast toast = Toast.makeText(getActivity(), messageId,
 					Toast.LENGTH_SHORT);
@@ -1372,7 +1380,7 @@ public class GameFragment extends AbstractGameFragment {
 		} else {
 			evaluateInGameAchievements(outcome);
 			updateHeader(getView());
-			gameStrategy.acceptMove();
+			getGameStrategy().acceptMove();
 		}
 	}
 
@@ -1392,13 +1400,13 @@ public class GameFragment extends AbstractGameFragment {
 
 			if (playSound) {
 				if (getGame().getMode() == GameMode.PASS_N_PLAY) {
-					gameStrategy.playSound(Sounds.GAME_WON);
+					getGameStrategy().playSound(Sounds.GAME_WON);
 				} else {
 					// the player either won or lost
 					if (winner.equals(getGame().getLocalPlayer())) {
-						gameStrategy.playSound(Sounds.GAME_WON);
+						getGameStrategy().playSound(Sounds.GAME_WON);
 					} else {
-						gameStrategy.playSound(Sounds.GAME_LOST);
+						getGameStrategy().playSound(Sounds.GAME_LOST);
 					}
 				}
 			}
@@ -1407,10 +1415,10 @@ public class GameFragment extends AbstractGameFragment {
 
 		} else {
 			getScore().incrementScore(null);
-			gameStrategy.playSound(Sounds.GAME_DRAW);
+			getGameStrategy().playSound(Sounds.GAME_DRAW);
 			title = getString(R.string.draw);
 		}
-		gameStrategy.promptToPlayAgain(winner.getName(), title);
+		getGameStrategy().promptToPlayAgain(winner.getName(), title);
 	}
 
 	public void acceptHumanMove() {
@@ -1516,24 +1524,26 @@ public class GameFragment extends AbstractGameFragment {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Achievements achievements = application.getAchievements();
-		achievements.testAndSetForGameEndAchievements(getMainActivity()
-				.getGameHelper(), getActivity(), getGame(), outcome);
+		achievements.testAndSetForGameEndAchievements(
+				gameContext.getGameHelper(), gameContext.getContext(),
+				getGame(), outcome);
 	}
 
 	private void evaluateInGameAchievements(State outcome) {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Achievements achievements = application.getAchievements();
-		achievements.testAndSetForInGameAchievements(getMainActivity()
-				.getGameHelper(), getActivity(), getGame(), outcome);
+		achievements.testAndSetForInGameAchievements(
+				gameContext.getGameHelper(), gameContext.getContext(),
+				getGame(), outcome);
 	}
 
 	private void evaluateLeaderboards(State outcome) {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Leaderboards leaderboards = application.getLeaderboards();
-		leaderboards.submitGame(getMainActivity().getGameHelper(),
-				getActivity(), getGame(), outcome, getScore());
+		leaderboards.submitGame(gameContext.getGameHelper(),
+				gameContext.getContext(), getGame(), outcome, getScore());
 
 	}
 
@@ -1567,11 +1577,25 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	public Game getGame() {
-		return gameStrategy.getGame();
+		return getGameStrategy().getGame();
 	}
 
 	public ScoreCard getScore() {
-		return gameStrategy.getScore();
+		return getGameStrategy().getScore();
 	}
 
+	public void leaveGame() {
+		// TODO show game stats on finish of game sequence
+		// onGameStatsClose = new Runnable() {
+		// @Override
+		// public void run() {
+		// getMainActivity().getSupportFragmentManager().popBackStack();
+		// getMainActivity().gameEnded();
+		// }
+		// };
+		// showGameStats();
+
+		getActivity().getSupportFragmentManager().popBackStack();
+		gameContext.gameEnded();
+	}
 }

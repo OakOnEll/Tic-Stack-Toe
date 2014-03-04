@@ -12,6 +12,7 @@ import android.text.format.DateUtils;
 
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
@@ -130,6 +131,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 					List<MatchInfo> matches) {
 				DatabaseHandler dbHandler = fragment.getDbHandler();
 
+				// TODO show progress, or present an undo..
 				dbHandler.deleteMatch(LocalMatchInfo.this,
 						new OnLocalMatchDeleteListener() {
 							@Override
@@ -291,8 +293,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		this.matchStatus = matchStatus;
 	}
 
-	public abstract AbstractLocalStrategy createStrategy(MainActivity activity,
-			SoundManager soundManager);
+	public abstract AbstractLocalStrategy createStrategy(GameContext context);
 
 	public static LocalMatchInfo createLocalMatch(int modeNum, long id,
 			int matchStatus, int turnStatus, String blackName,

@@ -17,22 +17,18 @@ import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public abstract class GameStrategy {
-	private final SoundManager soundManager;
-	private MainActivity mainActivity;
+	private GameContext gameContext;
 
 	private Game game;
 	private ScoreCard score = new ScoreCard(0, 0, 0);
 
-	protected GameStrategy(MainActivity mainActivity, GameHelper helper,
-			SoundManager soundManager) {
-		this.mainActivity = mainActivity;
-		this.soundManager = soundManager;
-		this.helper = helper;
+	protected GameStrategy(GameContext gameContext) {
+		this.gameContext = gameContext;
+		gameContext.setGameStrategy(this);
 	}
 
 	public abstract void leaveRoom();
@@ -62,39 +58,31 @@ public abstract class GameStrategy {
 	}
 
 	public int playSound(Sounds sound) {
-		return soundManager.playSound(sound);
+		return gameContext.getSoundManager().playSound(sound);
 	}
 
 	public int playSound(Sounds sound, boolean loop) {
-		return soundManager.playSound(sound, loop);
+		return gameContext.getSoundManager().playSound(sound, loop);
 	}
 
 	public void stopSound(int streamId) {
-		soundManager.stopSound(streamId);
+		gameContext.getSoundManager().stopSound(streamId);
 	}
 
 	protected Context getContext() {
-		return mainActivity;
+		return gameContext.getContext();
 	}
 
 	protected SherlockFragmentActivity getActivity() {
-		return mainActivity;
-	}
-
-	private MainActivity getMainActivity() {
-		return mainActivity;
+		return gameContext.getSherlockActivity();
 	}
 
 	protected GameFragment getGameFragment() {
-		return getMainActivity().getGameFragment();
+		return gameContext.getGameFragment();
 	}
 
 	protected MenuFragment getMenuFragment() {
-		return getMainActivity().getMenuFragment();
-	}
-
-	protected void setMainActivity(MainActivity theActivity) {
-		mainActivity = theActivity;
+		return gameContext.getMenuFragment();
 	}
 
 	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {
@@ -129,7 +117,7 @@ public abstract class GameStrategy {
 		app.setDevelopInfo(info);
 		// ugh.. does going to preferences leave the room!?
 		fragment.getActivity().startActivityForResult(prefIntent,
-				MainActivity.RC_UNUSED);
+				GameContext.RC_UNUSED);
 	}
 
 	public void acceptMove() {
@@ -164,14 +152,8 @@ public abstract class GameStrategy {
 		this.score = score;
 	}
 
-	private GameHelper helper;
-
 	protected GameHelper getHelper() {
-		return helper;
-	}
-
-	protected void setHelper(GameHelper helper) {
-		this.helper = helper;
+		return gameContext.getGameHelper();
 	}
 
 	public boolean shouldHideAd() {

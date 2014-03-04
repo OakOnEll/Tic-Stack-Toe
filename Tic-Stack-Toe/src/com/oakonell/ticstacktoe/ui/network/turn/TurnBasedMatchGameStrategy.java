@@ -31,6 +31,7 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoaded
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayerListener;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
@@ -43,7 +44,6 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
@@ -64,19 +64,17 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	TurnBasedPlayAgainFragment playAgainDialog;
 
-	public TurnBasedMatchGameStrategy(MainActivity activity,
-			SoundManager soundManager, GameHelper helper, GameType type,
+	public TurnBasedMatchGameStrategy(GameContext context, GameType type,
 			boolean isQuick) {
-		super(activity, soundManager, helper);
+		super(context);
 		this.type = type;
 		this.isQuick = isQuick;
-		helper.getGamesClient().registerMatchUpdateListener(this);
+		context.getGameHelper().getGamesClient()
+				.registerMatchUpdateListener(this);
 	}
 
-	public TurnBasedMatchGameStrategy(MainActivity mainActivity,
-			SoundManager soundManager, GameHelper gameHelper,
-			TurnBasedMatch match) {
-		super(mainActivity, soundManager, gameHelper);
+	public TurnBasedMatchGameStrategy(GameContext context, TurnBasedMatch match) {
+		super(context);
 		getHelper().getGamesClient().registerMatchUpdateListener(this);
 
 		mMatch = match;
@@ -116,9 +114,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onSignInSuccess(MainActivity activity) {
 		Log.i(TAG, "Reassociating a fragment with the TurnListener");
-		this.setMainActivity(activity);
+		// this.setMainActivity(activity);
 		getGameFragment().resetThinkingText();
-		setHelper(activity.getGameHelper());
 		getHelper().getGamesClient().registerMatchUpdateListener(this);
 		// also reload the possibly updated match
 		getHelper().getGamesClient().getTurnBasedMatch(
@@ -802,12 +799,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		GameFragment gameFragment;
 		if (!isVisible) {
 			Log.i("TurnListener", "  showing fragment");
-			gameFragment = GameFragment.createFragment(this);
+			gameFragment = GameFragment.createFragment();
 
 			FragmentManager manager = getActivity().getSupportFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.main_frame, gameFragment,
-					MainActivity.FRAG_TAG_GAME);
+					GameContext.FRAG_TAG_GAME);
 			transaction.addToBackStack(null);
 			transaction.commit();
 		} else {
@@ -1132,8 +1129,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void onActivityResume(MainActivity theActivity) {
-		setMainActivity(theActivity);
-
 		if (!getHelper().isSignedIn()) {
 			if (getHelper().getGamesClient().isConnecting()) {
 				getGameFragment().setThinkingText("Reconnecting...", true);

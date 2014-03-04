@@ -2,13 +2,12 @@ package com.oakonell.ticstacktoe.ui.local;
 
 import android.net.Uri;
 
-import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public class PassNPlayMatchInfo extends LocalMatchInfo {
 
@@ -36,17 +35,15 @@ public class PassNPlayMatchInfo extends LocalMatchInfo {
 	}
 
 	@Override
-	public AbstractLocalStrategy createStrategy(MainActivity activity,
-			SoundManager soundManager) {
-		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(activity,activity.getGameHelper(),
-				soundManager, this);
+	public AbstractLocalStrategy createStrategy(GameContext context) {
+		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(context,
+				this);
 		return listener;
 	}
 
 	protected Player createWhitePlayerStrategy() {
 		return HumanStrategy.createPlayer(getWhiteName(), false);
 	}
-
 
 	protected CharSequence whiteWon() {
 		return getWhiteName() + " WON!";

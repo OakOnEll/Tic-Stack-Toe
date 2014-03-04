@@ -2,12 +2,11 @@ package com.oakonell.ticstacktoe.ui.local;
 
 import android.net.Uri;
 
-import com.oakonell.ticstacktoe.MainActivity;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public class AiMatchInfo extends LocalMatchInfo {
 
@@ -43,10 +42,8 @@ public class AiMatchInfo extends LocalMatchInfo {
 	}
 
 	@Override
-	public AbstractLocalStrategy createStrategy(MainActivity activity,
-			SoundManager soundManager) {
-		AiGameStrategy listener = new AiGameStrategy(activity,
-				activity.getGameHelper(), soundManager, aiLevel, this);
+	public AbstractLocalStrategy createStrategy(GameContext context) {
+		AiGameStrategy listener = new AiGameStrategy(context, aiLevel, this);
 		return listener;
 	}
 

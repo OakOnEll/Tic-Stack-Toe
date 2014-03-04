@@ -7,6 +7,7 @@ import java.util.List;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -43,6 +44,7 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdate
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
@@ -52,7 +54,6 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
@@ -87,19 +88,17 @@ public class MenuFragment extends SherlockFragment implements
 		// for reference finding
 	}
 
-	private SoundManager soundManager;
-	private GameHelper helper;
+	private GameContext context;
 
-	public static MenuFragment createMenuFragment(GameHelper helper,
-			SoundManager soundManager) {
-		MenuFragment fragment = new MenuFragment();
-		fragment.initialize(helper, soundManager);
-		return fragment;
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		context = (GameContext) activity;
 	}
 
-	private void initialize(GameHelper helper, SoundManager soundManager) {
-		this.soundManager = soundManager;
-		this.helper = helper;
+	public static MenuFragment createMenuFragment() {
+		MenuFragment fragment = new MenuFragment();
+		return fragment;
 	}
 
 	public DatabaseHandler getDbHandler() {
@@ -108,28 +107,28 @@ public class MenuFragment extends SherlockFragment implements
 
 	public void leaveRoom() {
 		Log.d(TAG, "Leaving room.");
-		getMainActivity().setGameStrategy(null);
+		context.setGameStrategy(null);
 		registerMatchListeners();
 		refreshMatches();
 	}
 
 	private void configureDisplayHomeUp() {
-		if (getMainActivity() == null)
+		if (getActivity() == null)
 			return;
-		getMainActivity().getSupportActionBar()
-				.setDisplayHomeAsUpEnabled(false);
+		getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(
+				false);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		dbHandler = new DatabaseHandler(getMainActivity());
+		dbHandler = new DatabaseHandler(getActivity());
 		final View view = inflater.inflate(R.layout.fragment_menu, container,
 				false);
 		setHasOptionsMenu(true);
 
 		// Listen for changes in the back stack
-		getMainActivity().getSupportFragmentManager()
+		getSherlockActivity().getSupportFragmentManager()
 				.addOnBackStackChangedListener(
 						new OnBackStackChangedListener() {
 							@Override
@@ -147,7 +146,7 @@ public class MenuFragment extends SherlockFragment implements
 		signInButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getMainActivity().beginUserInitiatedSignIn();
+				context.getGameHelper().beginUserInitiatedSignIn();
 			}
 		});
 
@@ -155,7 +154,7 @@ public class MenuFragment extends SherlockFragment implements
 		signOutButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getMainActivity().signOut();
+				context.getGameHelper().signOut();
 
 				// show login button
 				view.findViewById(R.id.sign_in_bar).setVisibility(View.VISIBLE);
@@ -168,7 +167,7 @@ public class MenuFragment extends SherlockFragment implements
 
 		View main = configureMainView(inflater, view);
 
-		if (getMainActivity().isSignedIn()) {
+		if (context.getGameHelper().isSignedIn()) {
 			showLogout();
 		} else {
 			showLogin();
@@ -245,14 +244,13 @@ public class MenuFragment extends SherlockFragment implements
 				// TODO start a menu fragment(?) to choose which style of game
 
 				StartAGameFragment fragment = StartAGameFragment
-						.createStartGameFragment(soundManager,
-								getMainActivity().getGameHelper());
+						.createStartGameFragment();
 
 				FragmentManager manager = getActivity()
 						.getSupportFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
 				transaction.replace(R.id.main_frame, fragment,
-						MainActivity.FRAG_TAG_START_GAME);
+						GameContext.FRAG_TAG_START_GAME);
 				transaction.addToBackStack(null);
 				transaction.commit();
 			}
@@ -264,10 +262,10 @@ public class MenuFragment extends SherlockFragment implements
 		viewAchievements.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (getMainActivity().isSignedIn()) {
+				if (context.getGameHelper().isSignedIn()) {
 					setInactive();
 					startActivityForResult(getGamesClient()
-							.getAchievementsIntent(), MainActivity.RC_UNUSED);
+							.getAchievementsIntent(), GameContext.RC_UNUSED);
 				} else {
 					// TODO display pending achievements
 					showAlert(getString(R.string.achievements_not_available));
@@ -280,10 +278,10 @@ public class MenuFragment extends SherlockFragment implements
 		viewLeaderboards.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (getMainActivity().isSignedIn()) {
+				if (context.getGameHelper().isSignedIn()) {
 					setInactive();
 					startActivityForResult(getGamesClient()
-							.getAllLeaderboardsIntent(), MainActivity.RC_UNUSED);
+							.getAllLeaderboardsIntent(), GameContext.RC_UNUSED);
 				} else {
 					// TODO display pending leaderboard
 					showAlert(getString(R.string.achievements_not_available));
@@ -310,6 +308,7 @@ public class MenuFragment extends SherlockFragment implements
 
 			Info info = null;
 			TicStackToe app = (TicStackToe) getActivity().getApplication();
+			GameHelper helper = context.getGameHelper();
 			if (helper.isSignedIn()) {
 				info = new Info(helper);
 			}
@@ -358,7 +357,7 @@ public class MenuFragment extends SherlockFragment implements
 		refreshInvites(true);
 		refreshMatches();
 
-		TurnBasedMatch aMatch = helper.getTurnBasedMatch();
+		TurnBasedMatch aMatch = context.getGameHelper().getTurnBasedMatch();
 		if (aMatch != null) {
 			// GameHelper will cache any connection hint it gets. In this case,
 			// it can cache a TurnBasedMatch that it got from choosing a
@@ -415,9 +414,8 @@ public class MenuFragment extends SherlockFragment implements
 
 	// Accept the given invitation.
 	public void acceptInviteToRoom(String invId) {
-		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(
-				getMainActivity(), soundManager, helper, null, false, false);
-		getMainActivity().setGameStrategy(roomListener);
+		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(context,
+				null, false, false);
 		// accept the invitation
 		Log.d(TAG, "Accepting invitation: " + invId);
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(roomListener);
@@ -429,11 +427,7 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private GamesClient getGamesClient() {
-		return helper.getGamesClient();
-	}
-
-	public MainActivity getMainActivity() {
-		return (MainActivity) super.getActivity();
+		return context.getGameHelper().getGamesClient();
 	}
 
 	public void setActive() {
@@ -448,7 +442,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	@Override
 	public void onPause() {
-		if (getMainActivity().isSignedIn()) {
+		if (context.getGameHelper().isSignedIn()) {
 			unregisterMatchListeners();
 		}
 		super.onPause();
@@ -457,7 +451,7 @@ public class MenuFragment extends SherlockFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (getMainActivity().isSignedIn()) {
+		if (context.getGameHelper().isSignedIn()) {
 			registerMatchListeners();
 			showLogout();
 		} else {
@@ -488,9 +482,7 @@ public class MenuFragment extends SherlockFragment implements
 									+ ": error=" + status);
 							return;
 						}
-						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-								getMainActivity(), soundManager, helper, match);
-						getMainActivity().setGameStrategy(listener);
+						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(context, match);
 
 						listener.showGame();
 					}
@@ -522,15 +514,13 @@ public class MenuFragment extends SherlockFragment implements
 	// from the inbox, or else create a match and want to start it.
 	public void updateMatch(TurnBasedMatch match) {
 		// if sign in just succeeded, but another game is in progress, don't
-		// interupt
+		// interrupt
 		// / may need to check if gameFragment exists?
-		if (getMainActivity().getGameStrategy() != null)
+		if (context.getGameStrategy() != null)
 			return;
 
 		setInactive();
-		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				getMainActivity(), soundManager, helper, match);
-		getMainActivity().setGameStrategy(listener);
+		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(context, match);
 
 		listener.showFromMenu();
 	}
@@ -660,7 +650,7 @@ public class MenuFragment extends SherlockFragment implements
 						for (int i = 0; i < count; i++) {
 							TurnBasedMatch match = matchesBuffer.get(i);
 							MatchInfo info = new TurnBasedMatchInfo(
-									getMainActivity(), getGamesClient(), match);
+									getActivity(), getGamesClient(), match);
 							matches.add(info);
 						}
 						matchesBuffer.close();
@@ -686,7 +676,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	@Override
 	public void onInvitationReceived(Invitation invite) {
-		soundManager.playSound(Sounds.INVITE_RECEIVED);
+		context.getSoundManager().playSound(Sounds.INVITE_RECEIVED);
 		refreshInvites(true);
 		Toast.makeText(
 				getActivity(),
@@ -703,14 +693,12 @@ public class MenuFragment extends SherlockFragment implements
 	public void showLocalMatch(LocalMatchInfo localMatchInfo) {
 		setInactive();
 
-		AbstractLocalStrategy strategy = localMatchInfo.createStrategy(
-				getMainActivity(), soundManager);
-		getMainActivity().setGameStrategy(strategy);
+		AbstractLocalStrategy strategy = localMatchInfo.createStrategy(context);
 		strategy.showFromMenu();
 	}
 
 	public void showAlert(String message) {
-		helper.showAlert(message);
+		context.getGameHelper().showAlert(message);
 	}
 
 }

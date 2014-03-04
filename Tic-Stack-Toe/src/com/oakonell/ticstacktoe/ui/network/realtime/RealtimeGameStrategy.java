@@ -27,9 +27,9 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeReliableMessage
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -40,7 +40,6 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
@@ -80,10 +79,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		return getHelper().getGamesClient();
 	}
 
-	public RealtimeGameStrategy(MainActivity activity,
-			SoundManager soundManager, GameHelper helper, GameType type,
+	public RealtimeGameStrategy(GameContext context, GameType type,
 			boolean isQuick, boolean initiatedTheGame) {
-		super(activity, soundManager, helper);
+		super(context);
 		this.type = type;
 		this.isQuick = isQuick;
 		this.initiatedTheGame = initiatedTheGame;
@@ -249,7 +247,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	private void startGame(boolean iAmBlack) {
-		GameFragment gameFragment = GameFragment.createFragment(this);
+		GameFragment gameFragment = GameFragment.createFragment();
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
 		ScoreCard score = new ScoreCard(0, 0, 0);
@@ -285,7 +283,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
-				MainActivity.FRAG_TAG_GAME);
+				GameContext.FRAG_TAG_GAME);
 		transaction.addToBackStack(null);
 		transaction.commit();
 	}
@@ -377,7 +375,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		// show waiting room UI
 		getActivity().startActivityForResult(intent,
-				MainActivity.RC_WAITING_ROOM);
+				GameContext.RC_WAITING_ROOM);
 	}
 
 	public void leaveRoom() {
@@ -740,12 +738,12 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onSignInSuccess(MainActivity theActivity) {
 		// real time game is broken when onResumed, nothing to do here
-		setMainActivity(theActivity);
+		//setMainActivity(theActivity);
 	}
 
 	@Override
 	public void onActivityResume(MainActivity theActivity) {
-		setMainActivity(theActivity);
+		// setMainActivity(theActivity);
 		(new AlertDialog.Builder(getContext()))
 				.setMessage(R.string.you_left_the_game)
 				.setNeutralButton(android.R.string.ok, new OnClickListener() {

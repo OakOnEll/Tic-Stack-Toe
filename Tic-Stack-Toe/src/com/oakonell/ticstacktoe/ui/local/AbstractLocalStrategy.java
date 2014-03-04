@@ -10,10 +10,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -24,19 +24,17 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public abstract class AbstractLocalStrategy extends GameStrategy {
 	private LocalMatchInfo matchInfo;
 
-	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
-			SoundManager soundManager) {
-		super(mainActivity, helper, soundManager);
+	public AbstractLocalStrategy(GameContext context) {
+		super(context);
 	}
 
-	public AbstractLocalStrategy(MainActivity mainActivity, GameHelper helper,
-			LocalMatchInfo localMatchInfo, SoundManager soundManager) {
-		super(mainActivity, helper, soundManager);
+	public AbstractLocalStrategy(GameContext context,
+			LocalMatchInfo localMatchInfo) {
+		super(context);
 		this.setMatchInfo(localMatchInfo);
 	}
 
@@ -170,7 +168,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	public void showFromMenu() {
-		GameFragment gameFragment = GameFragment.createFragment(this);
+		GameFragment gameFragment = GameFragment.createFragment();
 		Game game = getMatchInfo().readGame(getContext());
 		setGame(game);
 		ScoreCard score = getMatchInfo().getScoreCard();
@@ -181,7 +179,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
-				MainActivity.FRAG_TAG_GAME);
+				GameContext.FRAG_TAG_GAME);
 		transaction.addToBackStack(null);
 		transaction.commit();
 
@@ -232,15 +230,14 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
 				GameFragment gameFragment = getGameFragment();
 				if (gameFragment == null) {
-					gameFragment = GameFragment
-							.createFragment(AbstractLocalStrategy.this);
+					gameFragment = GameFragment.createFragment();
 
 					FragmentManager manager = getActivity()
 							.getSupportFragmentManager();
 					FragmentTransaction transaction = manager
 							.beginTransaction();
 					transaction.replace(R.id.main_frame, gameFragment,
-							MainActivity.FRAG_TAG_GAME);
+							GameContext.FRAG_TAG_GAME);
 					transaction.addToBackStack(null);
 					transaction.commit();
 				}

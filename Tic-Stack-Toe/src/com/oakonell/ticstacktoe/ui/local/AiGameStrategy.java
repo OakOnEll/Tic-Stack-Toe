@@ -3,8 +3,7 @@ package com.oakonell.ticstacktoe.ui.local;
 import android.os.AsyncTask;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.oakonell.ticstacktoe.MainActivity;
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -19,15 +18,14 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 	private final int aiDepth;
 
-	public AiGameStrategy(MainActivity mainActivity, GameHelper helper,
-			SoundManager soundManager, int aiDepth) {
-		super(mainActivity, helper, soundManager);
+	public AiGameStrategy(GameContext context, int aiDepth) {
+		super(context);
 		this.aiDepth = aiDepth;
 	}
 
-	public AiGameStrategy(MainActivity mainActivity, GameHelper helper,
-			SoundManager soundManager, int aiDepth, AiMatchInfo matchInfo) {
-		super(mainActivity, helper, matchInfo, soundManager);
+	public AiGameStrategy(GameContext context, int aiDepth,
+			AiMatchInfo matchInfo) {
+		super(context, matchInfo);
 		this.aiDepth = aiDepth;
 	}
 

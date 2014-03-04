@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.ui.network.turn;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.text.format.DateUtils;
@@ -29,12 +30,14 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	private long lastUpdated;
 
 	private GamesClient client;
+	Context context;
 
 	public TurnBasedMatchInfo(Context context, GamesClient client,
 			TurnBasedMatch match) {
 		this.client = client;
 		lastUpdated = match.getLastUpdatedTimestamp();
 		matchId = match.getMatchId();
+		this.context = context;
 
 		// TODO store a snapshot of the board state
 
@@ -103,10 +106,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 										public void onTurnBasedMatchInitiated(
 												int status, TurnBasedMatch match) {
 											if (status != GamesClient.STATUS_OK) {
-												fragment.getMainActivity()
-														.getGameHelper()
-														.showAlert(
-																"Error starting rematch");
+												showAlert("Error starting rematch");
 												fragment.refreshMatches();
 												fragment.setActive();
 												return;
@@ -141,6 +141,11 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	@Override
 	public long getUpdatedTimestamp() {
 		return lastUpdated;
+	}
+
+	public void showAlert(String message) {
+		(new AlertDialog.Builder(context)).setMessage(message)
+				.setNeutralButton(android.R.string.ok, null).create().show();
 	}
 
 }

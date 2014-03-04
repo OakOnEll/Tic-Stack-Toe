@@ -47,9 +47,6 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		statusText.thinkingText.setVisibility(View.VISIBLE);
 	}
 
-	public MainActivity getMainActivity() {
-		return (MainActivity) super.getActivity();
-	}
 
 	public void setThinkingText(String text, boolean visible) {
 		setThinkingText(text);
@@ -88,20 +85,7 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		statusText.thinkingText.setText(statusText.thinkingString);
 	}
 
-	public void leaveGame() {
-		// TODO show game stats on finish of game sequence
-		// onGameStatsClose = new Runnable() {
-		// @Override
-		// public void run() {
-		// getMainActivity().getSupportFragmentManager().popBackStack();
-		// getMainActivity().gameEnded();
-		// }
-		// };
-		// showGameStats();
 
-		getActivity().getSupportFragmentManager().popBackStack();
-		getMainActivity().gameEnded();
-	}
 
 	private Runnable onGameStatsClose;
 
