@@ -43,6 +43,10 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		saveToDB();
 	}
 
+	public void onActivityPause(MainActivity mainActivity) {
+		saveToDB();
+	}
+
 	private void saveToDB() {
 		DatabaseHandler db = new DatabaseHandler(getContext());
 		db.updateMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
@@ -153,11 +157,6 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	@Override
-	public void onFragmentResume() {
-		// do nothing
-	}
-
-	@Override
 	public void onSignInSuccess(MainActivity activity) {
 		// nothing to do, no dependency on being signed in
 	}
@@ -174,7 +173,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		ScoreCard score = getMatchInfo().getScoreCard();
 		setScore(score);
 
-		gameFragment.startGame(game, score, null, true);
+		gameFragment.startGame(null, true);
 
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -191,6 +190,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	protected void setMatchInfo(LocalMatchInfo matchInfo) {
 		this.matchInfo = matchInfo;
+		setGame(matchInfo.readGame(getContext()));
 	}
 
 	public void startGame(String blackName, String whiteName, GameType type,
@@ -241,7 +241,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 					transaction.addToBackStack(null);
 					transaction.commit();
 				}
-				gameFragment.startGame(game, score, null, false);
+				gameFragment.startGame(null, false);
 
 			}
 
@@ -255,8 +255,11 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	protected abstract LocalMatchInfo createNewMatchInfo(String blackName,
 			String whiteName, final Game game, ScoreCard score);
 
-	protected abstract GameMode getGameMode();
-
 	protected abstract Player createWhitePlayer(String whiteName);
+
+	@Override
+	protected String getMatchId() {
+		return getMatchInfo().getId() + "";
+	}
 
 }

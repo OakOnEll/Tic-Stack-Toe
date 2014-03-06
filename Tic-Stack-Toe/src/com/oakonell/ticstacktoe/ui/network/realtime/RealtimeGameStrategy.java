@@ -279,7 +279,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		setGame(game);
 		setScore(score);
 
-		gameFragment.startGame(game, score, null, true);
+		gameFragment.startGame(null, true);
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
@@ -732,13 +732,13 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		setGame(game);
 		// setScore(score);
 
-		gameFragment.startGame(game, gameFragment.getScore(), null, false);
+		gameFragment.startGame(null, false);
 	}
 
 	@Override
 	public void onSignInSuccess(MainActivity theActivity) {
 		// real time game is broken when onResumed, nothing to do here
-		//setMainActivity(theActivity);
+		// setMainActivity(theActivity);
 	}
 
 	@Override
@@ -762,11 +762,6 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	@Override
-	public void onFragmentResume() {
-		// nothing
-	}
-
-	@Override
 	public void showSettings(Fragment fragment) {
 		// show an abbreviated "settings"- notably the sound fx and
 		// other immediate game play settings
@@ -783,8 +778,15 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	public void onlineMoveReceived(ByteBufferDebugger buffer) {
 		AbstractMove move = AbstractMove.fromMessageBytes(buffer, getGame());
 		State state = applyNonHumanMove(move);
-		getGameFragment().hideStatusText();
 		getGameFragment().animateMove(state.getLastMove(), state);
 	}
 
+	protected GameMode getGameMode() {
+		return GameMode.ONLINE;
+	}
+
+	@Override
+	protected String getMatchId() {
+		return mRoomId;
+	}
 }

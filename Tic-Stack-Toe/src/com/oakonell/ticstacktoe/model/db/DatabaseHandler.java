@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
@@ -359,12 +360,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 			@Override
 			public void visitPassNPlay(PassNPlayMatchInfo info) {
-				values.put(KEY_MODE, 0);
+				values.put(KEY_MODE, GameMode.PASS_N_PLAY.getVal());
 			}
 
 			@Override
 			public void visitAi(AiMatchInfo info) {
-				values.put(KEY_MODE, 1);
+				values.put(KEY_MODE, GameMode.AI.getVal());
 				values.put(KEY_WHITE_AI_LEVEL, info.getWhiteAILevel());
 
 			}
@@ -496,7 +497,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		int winner = query.getInt(query.getColumnIndex(KEY_WINNER));
 
-		return LocalMatchInfo.createLocalMatch(modeNum, id, matchStatus,
+		GameMode mode = GameMode.fromValue(modeNum);
+
+		return LocalMatchInfo.createLocalMatch(mode, id, matchStatus,
 				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
 				fileName, score, rematchId, winner);
 	}

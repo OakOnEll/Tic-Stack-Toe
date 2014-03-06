@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.GamesActivityResultCodes;
+import com.oakonell.ticstacktoe.GameStrategy.OnGameStrategyLoad;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -62,6 +63,29 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		ab.setDisplayHomeAsUpEnabled(false);
 		ab.setDisplayUseLogoEnabled(true);
 		ab.setDisplayShowTitleEnabled(true);
+
+		if (savedInstanceState != null) {
+			GameStrategy.readFromBundle(this, savedInstanceState,
+					new OnGameStrategyLoad() {
+						@Override
+						public void onSuccess(GameStrategy strategy) {
+							// TODO show the game?
+							// gameStrategy.
+							if (strategy == null) {
+								return;
+							}
+							setGameStrategy(strategy);
+							getGameFragment().startGame(null, false);
+						}
+
+						@Override
+						public void onFailure(String reason) {
+							// TODO if because not connected, save the info to
+							// do on signin
+							showAlert(reason);
+						}
+					});
+		}
 
 		MenuFragment menuFrag = (MenuFragment) getSupportFragmentManager()
 				.findFragmentByTag(FRAG_TAG_MENU);
@@ -219,16 +243,20 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 					promptAndLeave();
 					return;
 				}
-			}
-
-			// else listener allows just exiting
-			if (gameStrategy != null) {
 				gameStrategy.leaveRoom();
 			}
 			getGameFragment().leaveGame();
 			return;
 		}
 		super.onBackPressed();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (getGameStrategy() != null) {
+			getGameStrategy().writeToBundle(outState);
+		}
 	}
 
 	private void promptAndLeave() {

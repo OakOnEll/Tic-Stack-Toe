@@ -45,7 +45,6 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoad
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
 import com.oakonell.ticstacktoe.GameContext;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.TicStackToe;
@@ -330,6 +329,9 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void showLogin() {
+		if (signInView == null)
+			return;
+
 		// show login button
 		signInView.setVisibility(View.VISIBLE);
 		// Sign-in failed, so show sign-in button on main menu
@@ -338,6 +340,9 @@ public class MenuFragment extends SherlockFragment implements
 
 	private void showLogout() {
 		// disable/hide login button
+		if (signInView == null)
+			return;
+
 		signInView.setVisibility(View.INVISIBLE);
 		// show sign out button
 		signOutView.setVisibility(View.VISIBLE);
@@ -351,6 +356,12 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void onSignInSucceeded() {
+		if (signInView == null) {
+			// if I'm not visible, notihng to do do
+			// TODO Hmm... should pull out the intent match launch into the main
+			// activity?
+			return;
+		}
 		showLogout();
 
 		registerMatchListeners();
@@ -431,11 +442,15 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void setActive() {
+		if (waiting == null)
+			return;
 		waiting.setVisibility(View.INVISIBLE);
 		Log.i(TAG, "Setting active");
 	}
 
 	public void setInactive() {
+		if (waiting == null)
+			return;
 		waiting.setVisibility(View.VISIBLE);
 		Log.i(TAG, "Setting inactive");
 	}
@@ -482,7 +497,8 @@ public class MenuFragment extends SherlockFragment implements
 									+ ": error=" + status);
 							return;
 						}
-						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(context, match);
+						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
+								context, match);
 
 						listener.showGame();
 					}
@@ -520,7 +536,8 @@ public class MenuFragment extends SherlockFragment implements
 			return;
 
 		setInactive();
-		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(context, match);
+		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
+				context, match);
 
 		listener.showFromMenu();
 	}

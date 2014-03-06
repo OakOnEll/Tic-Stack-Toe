@@ -134,7 +134,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		invalidateMenu();
 
 		// update the display text
-		getGameFragment().setThinkingText(
+		getGameFragment().showStatusText(
 				getContext().getResources().getString(
 						R.string.opponent_is_in_chat, getOpponentName()));
 	}
@@ -145,7 +145,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		invalidateMenu();
 
 		// update the display text
-		getGameFragment().resetThinkingText();
+		// getGameFragment().resetThinkingText();
 	}
 
 	protected void invalidateMenu() {
@@ -172,6 +172,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 	@Override
 	protected void acceptNonHumanPlayerMove(PlayerStrategy currentStrategy) {
 		// wait for the networked player's move
+		getGameFragment().showStatusText(getOpponentName() + " is thinking...");
 	}
 
 }

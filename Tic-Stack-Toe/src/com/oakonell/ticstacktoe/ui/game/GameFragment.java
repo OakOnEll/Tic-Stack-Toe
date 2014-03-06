@@ -50,7 +50,6 @@ import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.PlaceNewPieceMove;
 import com.oakonell.ticstacktoe.model.Player;
-import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
@@ -78,6 +77,9 @@ public class GameFragment extends AbstractGameFragment {
 
 	private TextView gameNumber;
 	private TextView numMoves;
+
+	private int boardSize;
+
 	private SquareRelativeLayoutView squareView;
 
 	private List<ImageDropTarget> buttons = new ArrayList<ImageDropTarget>();
@@ -122,31 +124,20 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	@Override
-	public void onPause() {
-		if (getGameStrategy() != null) {
-			getGameStrategy().onFragmentPause();
-		}
-		super.onPause();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 
-		getGameStrategy().onFragmentResume();
 		Log.i("GameFragment", "onResume");
-
 		if (inOnResume != null) {
 			inOnResume.run();
 		}
 	}
 
-	public void startGame(final Game game, final ScoreCard score,
-			final String waitingText, final boolean showMove) {
-
+	public void startGame(final String waitingText, final boolean showMove) {
 		inOnCreate = new Runnable() {
 			@Override
 			public void run() {
+				Game game = getGameStrategy().getGame();
 				boolean undoAndAnimateMove = false;
 				final State endState = game.getBoard().getState();
 				AbstractMove move = null;
@@ -157,14 +148,12 @@ public class GameFragment extends AbstractGameFragment {
 				if (undoAndAnimateMove) {
 					game.undo(move);
 
-					configureNonLocalProgresses();
 					if (getView() != null) {
 						configureBoardButtons(getView());
+						updateHeader(getView());
+						winOverlayView.clearWins();
+						winOverlayView.invalidate();
 					}
-					updateHeader(getView());
-
-					winOverlayView.clearWins();
-					winOverlayView.invalidate();
 
 					// update the
 					final AbstractMove theMove = move;
@@ -176,7 +165,6 @@ public class GameFragment extends AbstractGameFragment {
 							handler.post(new Runnable() {
 								@Override
 								public void run() {
-									hideStatusText();
 									makeAndDisplayMove(theMove);
 								}
 							});
@@ -186,24 +174,16 @@ public class GameFragment extends AbstractGameFragment {
 						inOnResume.run();
 					}
 				} else {
-					configureNonLocalProgresses();
 					if (getView() != null) {
 						configureBoardButtons(getView());
+						updateHeader(getView());
+						winOverlayView.clearWins();
+						winOverlayView.invalidate();
 					}
-					updateHeader(getView());
-
-					winOverlayView.clearWins();
-					winOverlayView.invalidate();
 
 					postMove(game.getBoard().getState(), showMove);
 				}
 				inOnCreate = null;
-				if (waitingText != null) {
-					setThinkingText(waitingText);
-				} else {
-					resetThinkingText();
-					hideStatusText();
-				}
 
 			}
 		};
@@ -228,13 +208,27 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		getGameStrategy().onCreateOptionsMenu(this, menu, inflater);
+		if (getGameStrategy() != null) {
+			// TODO when gameStrategy is "loaded", make sure to invalidate the
+			// menu
+			getGameStrategy().onCreateOptionsMenu(this, menu, inflater);
+		}
 	}
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		getGameStrategy().onPrepareOptionsMenu(this, menu);
+		if (getGameStrategy() != null) {
+			// TODO when gameStrategy is "loaded", make sure to invalidate the
+			// menu
+			getGameStrategy().onPrepareOptionsMenu(this, menu);
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		bundle.putInt("GAME_BOARD_SIZE", boardSize);
 	}
 
 	@Override
@@ -266,28 +260,37 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
+		boolean keepScreenOn;
+		if (savedInstanceState != null) {
+			// will need to wait for the strategy/match to load
+			keepScreenOn = false;
+			boardSize = savedInstanceState.getInt("GAME_BOARD_SIZE");
+			disableButtons = true;
+		} else {
+			boardSize = getGame().getBoard().getSize();
+			keepScreenOn = getGameStrategy().shouldKeepScreenOn();
+			configureBoardButtons(view);
+			updateHeader(view);
+		}
+
 		if (inOnCreate != null) {
 			inOnCreate.run();
 		}
 
-		gameNumber.setText("" + getScore().getTotalGames());
-		winOverlayView.setBoardSize(getGame().getBoard().getSize());
-		configureBoardButtons(view);
+		winOverlayView.setBoardSize(boardSize);
 
-		view.setKeepScreenOn(getGameStrategy().shouldKeepScreenOn());
-		if (getGame().getBoard().getSize() == 3) {
+		view.setKeepScreenOn(keepScreenOn);
+		if (boardSize == 3) {
 			((ViewGroup) view.findViewById(R.id.grid_container))
 					.setBackgroundResource(R.drawable.wood_grid_3x3);
 		}
-		if (getGame().getMode() != GameMode.PASS_N_PLAY) {
-			initThinkingText(view, getGame().getNonLocalPlayer().getName());
-			setOpponentThinking();
-		} else {
-			initThinkingText(view, null);
-		}
-		configureNonLocalProgresses();
 
-		updateHeader(view);
+		// if (getGame().getMode() != GameMode.PASS_N_PLAY) {
+		// initThinkingText(view, getGame().getNonLocalPlayer().getName());
+		// setOpponentThinking();
+		// } else {
+		// initThinkingText(view, null);
+		// }
 
 		PieceStackImageView stackView = (PieceStackImageView) view
 				.findViewById(R.id.black_piece_stack1);
@@ -323,6 +326,8 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void storeViewReferences(final View view) {
+		initThinkingText(view);
+
 		mDragLayer = (DragLayer) view.findViewById(R.id.drag_layer);
 		mDragController = new DragController(getActivity());
 		mDragLayer.setDragController(mDragController);
@@ -352,7 +357,6 @@ public class GameFragment extends AbstractGameFragment {
 			return;
 		}
 
-		int boardSize = getGame().getBoard().getSize();
 		int size = (resizeInfo.boardHeight + 2 * resizeInfo.pieceStackHeight)
 				/ (boardSize + 2);
 		int newBoardPixSize = size * boardSize;
@@ -1214,6 +1218,7 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	public void animateMove(final AbstractMove move, final State outcome) {
+		hideStatusText();
 		ImageDropTarget targetButton = findButtonFor(move.getTargetCell());
 
 		disableButtons = true;
@@ -1422,22 +1427,10 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	public void acceptHumanMove() {
-		disableButtons = false;
+		hideStatusText();
 		// let the buttons be pressed for a human interaction
+		disableButtons = false;
 		return;
-	}
-
-	public void configureNonLocalProgresses() {
-		PlayerStrategy strategy = getGame().getCurrentPlayer().getStrategy();
-		if (strategy.isHuman()) {
-			hideStatusText();
-			acceptHumanMove();
-			return;
-		}
-		disableButtons = true;
-		setOpponentThinking();
-		showStatusText();
-
 	}
 
 	private ImageDropTarget findButtonFor(Cell cell) {

@@ -12,7 +12,6 @@ import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 
 public class AiGameStrategy extends AbstractLocalStrategy {
 
@@ -46,6 +45,8 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	}
 
 	protected void acceptNonHumanPlayerMove(final PlayerStrategy currentStrategy) {
+		getGameFragment().showStatusText(
+				getMatchInfo().getWhiteName() + " is thinking...");
 		AsyncTask<Void, Void, State> aiMove = new AsyncTask<Void, Void, State>() {
 			@Override
 			protected State doInBackground(Void... params) {
@@ -57,7 +58,6 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 			@Override
 			protected void onPostExecute(final State state) {
-				getGameFragment().hideStatusText();
 				getGameFragment().animateMove(state.getLastMove(), state);
 			}
 		};

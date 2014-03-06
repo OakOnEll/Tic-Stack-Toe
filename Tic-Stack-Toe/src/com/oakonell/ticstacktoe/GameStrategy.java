@@ -2,22 +2,36 @@ package com.oakonell.ticstacktoe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoadedListener;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchReadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
+import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
+import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
+import com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
+import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public abstract class GameStrategy {
@@ -31,6 +45,8 @@ public abstract class GameStrategy {
 		gameContext.setGameStrategy(this);
 	}
 
+	protected abstract GameMode getGameMode();
+
 	public abstract void leaveRoom();
 
 	public abstract void sendHumanMove();
@@ -43,11 +59,14 @@ public abstract class GameStrategy {
 
 	public abstract void onSignInSuccess(MainActivity activity);
 
+	public void onActivityPause(MainActivity mainActivity2) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public abstract void onActivityResume(MainActivity activity);
 
 	public abstract void onSignInFailed(SherlockFragmentActivity mainActivity);
-
-	public abstract void onFragmentResume();
 
 	public void showSettings(Fragment fragment) {
 		showFullSettingsPreference(fragment);
@@ -128,8 +147,6 @@ public abstract class GameStrategy {
 			return;
 		}
 
-		// show the waiting text
-		getGameFragment().configureNonLocalProgresses();
 		acceptNonHumanPlayerMove(currentStrategy);
 	}
 
@@ -187,12 +204,106 @@ public abstract class GameStrategy {
 		void onInvalid(InvalidMoveException e);
 	}
 
-	public void onFragmentPause() {
-		leaveRoom();
+	public void writeToBundle(Bundle bundle) {
+		Log.i("GameStrategy", "Writing strategy to bundle: " + getGameMode()
+				+ ", " + getMatchId());
+		bundle.putInt("GAME_STRATEGY_TYPE", getGameMode().getVal());
+		bundle.putString("GAME_STRATEGY_MATCH_ID", getMatchId());
 	}
 
-	public void onActivityPause(MainActivity mainActivity2) {
-		// TODO Auto-generated method stub
+	protected abstract String getMatchId();
+
+	public interface OnGameStrategyLoad {
+		void onSuccess(GameStrategy strategy);
+
+		void onFailure(String reason);
+	}
+
+	public static void readFromBundle(final GameContext context, Bundle bundle,
+			final OnGameStrategyLoad onLoad) {
+		if (!bundle.containsKey("GAME_STRATEGY_TYPE")) {
+			onLoad.onSuccess(null);
+			return;
+		}
+		int modeVal = bundle.getInt("GAME_STRATEGY_TYPE");
+		String matchId = bundle.getString("GAME_STRATEGY_MATCH_ID");
+
+		GameMode mode = GameMode.fromValue(modeVal);
+		switch (mode) {
+		case AI:
+			loadAIStrategy(context, onLoad, matchId);
+			break;
+		case PASS_N_PLAY:
+			loadPassNPlayStrategy(context, onLoad, matchId);
+			break;
+		case TURN_BASED:
+			loadTurnBasedStrategy(context, onLoad, matchId);
+			break;
+		case ONLINE:
+			onLoad.onFailure("Realtime game can't be restored...");
+			break;
+		}
+	}
+
+	private static void loadTurnBasedStrategy(final GameContext context,
+			final OnGameStrategyLoad onLoad, String matchId) {
+		if (!context.getGameHelper().isSignedIn()) {
+			onLoad.onFailure("Not logged in...");
+			return;
+		}
+		context.getGameHelper().getGamesClient()
+				.getTurnBasedMatch(new OnTurnBasedMatchLoadedListener() {
+					@Override
+					public void onTurnBasedMatchLoaded(int status,
+							TurnBasedMatch match) {
+						if (status != GamesClient.STATUS_OK) {
+							onLoad.onFailure("Error(" + status
+									+ ") loading turn-based game");
+						}
+						onLoad.onSuccess(new TurnBasedMatchGameStrategy(
+								context, match));
+
+					}
+				}, matchId);
+	}
+
+	private static void loadPassNPlayStrategy(final GameContext context,
+			final OnGameStrategyLoad onLoad, String matchId) {
+		DatabaseHandler handler = new DatabaseHandler(context.getContext());
+		handler.getMatch(Long.parseLong(matchId),
+				new OnLocalMatchReadListener() {
+					@Override
+					public void onReadSuccess(LocalMatchInfo matchInfo) {
+						PassNPlayMatchInfo localMatchInfo = (PassNPlayMatchInfo) matchInfo;
+						onLoad.onSuccess(new PassNPlayGameStrategy(context,
+								localMatchInfo));
+					}
+
+					@Override
+					public void onReadFailure() {
+						onLoad.onFailure("Could not load local Pass'N'Play match");
+					}
+				});
 
 	}
+
+	private static void loadAIStrategy(final GameContext context,
+			final OnGameStrategyLoad onLoad, String matchId) {
+		DatabaseHandler handler = new DatabaseHandler(context.getContext());
+		handler.getMatch(Long.parseLong(matchId),
+				new OnLocalMatchReadListener() {
+					@Override
+					public void onReadSuccess(LocalMatchInfo matchInfo) {
+						AiMatchInfo aiMatchInfo = (AiMatchInfo) matchInfo;
+						onLoad.onSuccess(new AiGameStrategy(context,
+								aiMatchInfo.getWhiteAILevel(), aiMatchInfo));
+					}
+
+					@Override
+					public void onReadFailure() {
+						onLoad.onFailure("Could not load local AI match");
+					}
+				});
+	}
+
 }

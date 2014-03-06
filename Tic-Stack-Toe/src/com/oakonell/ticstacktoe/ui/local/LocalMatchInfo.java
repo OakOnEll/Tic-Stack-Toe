@@ -13,14 +13,13 @@ import android.text.format.DateUtils;
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameContext;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -295,18 +294,21 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public abstract AbstractLocalStrategy createStrategy(GameContext context);
 
-	public static LocalMatchInfo createLocalMatch(int modeNum, long id,
+	public static LocalMatchInfo createLocalMatch(GameMode mode, long id,
 			int matchStatus, int turnStatus, String blackName,
 			String whiteName, int aiLevel, long lastUpdated, String fileName,
 			ScoreCard score, long rematchId, int winner) {
-		if (modeNum == 1) {
+		if (mode == GameMode.AI) {
 			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
 					whiteName, aiLevel, lastUpdated, fileName, score,
 					rematchId, winner);
-		}
+		} else if (mode == GameMode.PASS_N_PLAY) {
 
-		return new PassNPlayMatchInfo(id, matchStatus, turnStatus, blackName,
-				whiteName, lastUpdated, fileName, score, rematchId, winner);
+			return new PassNPlayMatchInfo(id, matchStatus, turnStatus,
+					blackName, whiteName, lastUpdated, fileName, score,
+					rematchId, winner);
+		}
+		throw new RuntimeException("Unhandled GameMode " + mode);
 	}
 
 	public ScoreCard getScoreCard() {

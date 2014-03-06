@@ -25,10 +25,10 @@ import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitia
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.oakonell.ticstacktoe.GameContext;
-import com.oakonell.ticstacktoe.MainActivity;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog.LocalAIGameModeListener;
@@ -43,8 +43,8 @@ import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 public class StartAGameFragment extends SherlockFragment {
 	private static final String TAG = "StartAGameFragment";
 
-	Boolean useTurnBased;
-	GameType onlineType = null;
+	private Boolean useTurnBased;
+	private GameType onlineType;
 
 	private ProgressBar waiting;
 
@@ -407,7 +407,7 @@ public class StartAGameFragment extends SherlockFragment {
 				.addInvitedPlayers(invitees)
 				.setAutoMatchCriteria(autoMatchCriteria).build();
 
-		final TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
+		final TurnBasedMatchGameStrategy strategy = new TurnBasedMatchGameStrategy(
 				context, type, false);
 
 		// Kick the match off
@@ -423,7 +423,7 @@ public class StartAGameFragment extends SherlockFragment {
 							return;
 						}
 						exitStartMenu();
-						listener.onTurnBasedMatchInitiated(status, match);
+						strategy.onTurnBasedMatchInitiated(status, match);
 					}
 				}, tbmc);
 
@@ -432,16 +432,16 @@ public class StartAGameFragment extends SherlockFragment {
 	private void createRealtimeBasedMatch(final ArrayList<String> invitees,
 			GameType type, Bundle autoMatchCriteria, boolean initiated) {
 
-		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(context,
+		RealtimeGameStrategy strategy = new RealtimeGameStrategy(context,
 				type, false, initiated);
 
 		// create the room
 		Log.d(TAG, "Creating room...");
 		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
-				.builder(roomListener);
+				.builder(strategy);
 		rtmConfigBuilder.addPlayersToInvite(invitees);
-		rtmConfigBuilder.setMessageReceivedListener(roomListener);
-		rtmConfigBuilder.setRoomStatusUpdateListener(roomListener);
+		rtmConfigBuilder.setMessageReceivedListener(strategy);
+		rtmConfigBuilder.setRoomStatusUpdateListener(strategy);
 		if (autoMatchCriteria != null) {
 			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		}
@@ -465,22 +465,22 @@ public class StartAGameFragment extends SherlockFragment {
 
 	private void startLocalTwoPlayerGame(GameType type, String blackName,
 			String whiteName) {
+		PassNPlayGameStrategy strategy = new PassNPlayGameStrategy(context);
 
-		setInactive();
-		exitStartMenu();
-
-		PassNPlayGameStrategy listener = new PassNPlayGameStrategy(context);
-
-		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
+		startLocalGame(strategy, type, whiteName, blackName);
 	}
 
 	private void startAIGame(GameType type, String whiteName, int aiDepth) {
+		String blackName = getResources().getString(R.string.local_player_name);
+		AiGameStrategy strategy = new AiGameStrategy(context, aiDepth);
+
+		startLocalGame(strategy, type, whiteName, blackName);
+	}
+
+	private void startLocalGame(AbstractLocalStrategy listener, GameType type,
+			String whiteName, String blackName) {
 		setInactive();
 		exitStartMenu();
-
-		String blackName = getResources().getString(R.string.local_player_name);
-
-		AiGameStrategy listener = new AiGameStrategy(context, aiDepth);
 
 		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
 	}
