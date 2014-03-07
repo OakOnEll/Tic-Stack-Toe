@@ -93,6 +93,7 @@ public class MenuFragment extends SherlockFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = (GameContext) activity;
+		dbHandler = new DatabaseHandler(getActivity());
 	}
 
 	public static MenuFragment createMenuFragment() {
@@ -105,6 +106,9 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void leaveRoom() {
+		if (getView() == null) {
+			return;
+		}
 		Log.d(TAG, "Leaving room.");
 		context.setGameStrategy(null);
 		registerMatchListeners();
@@ -121,7 +125,6 @@ public class MenuFragment extends SherlockFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		dbHandler = new DatabaseHandler(getActivity());
 		final View view = inflater.inflate(R.layout.fragment_menu, container,
 				false);
 		setHasOptionsMenu(true);

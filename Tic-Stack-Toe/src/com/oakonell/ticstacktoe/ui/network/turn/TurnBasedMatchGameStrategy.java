@@ -59,8 +59,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	private GameType type;
 	private boolean isQuick;
 	private String blackParticipantId;
-	// remove isVisible variable?
-	private boolean isVisible;
 
 	TurnBasedPlayAgainFragment playAgainDialog;
 
@@ -427,7 +425,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void leaveRoom() {
-		isVisible = false;
 		if (mMatch != null
 				&& mMatch.getStatus() == TurnBasedMatch.MATCH_STATUS_ACTIVE
 				&& mMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
@@ -793,8 +790,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			break;
 		}
 
-		GameFragment gameFragment;
-		if (!isVisible) {
+		GameFragment gameFragment = getGameFragment();
+		if (gameFragment == null) {
 			Log.i("TurnListener", "  showing fragment");
 			gameFragment = GameFragment.createFragment();
 
@@ -806,9 +803,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			transaction.commit();
 		} else {
 			Log.i("TurnListener", "  reusing fragment");
-			gameFragment = getGameFragment();
 		}
-		isVisible = true;
 
 		GameState state = GameState.fromMatch(getContext(), getHelper()
 				.getGamesClient(), mMatch);

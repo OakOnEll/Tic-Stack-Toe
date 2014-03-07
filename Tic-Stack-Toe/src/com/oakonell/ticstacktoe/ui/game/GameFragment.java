@@ -260,17 +260,21 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
-		boolean keepScreenOn;
+		boolean keepScreenOn = false;
 		if (savedInstanceState != null) {
 			// will need to wait for the strategy/match to load
 			keepScreenOn = false;
 			boardSize = savedInstanceState.getInt("GAME_BOARD_SIZE");
 			disableButtons = true;
 		} else {
-			boardSize = getGame().getBoard().getSize();
-			keepScreenOn = getGameStrategy().shouldKeepScreenOn();
-			configureBoardButtons(view);
-			updateHeader(view);
+			// Don't know why this is null on a restored Activity in the middle
+			// of a game fragment, and then back is hit
+			if (getGameStrategy() != null) {
+				boardSize = getGame().getBoard().getSize();
+				keepScreenOn = getGameStrategy().shouldKeepScreenOn();
+				configureBoardButtons(view);
+				updateHeader(view);
+			}
 		}
 
 		if (inOnCreate != null) {

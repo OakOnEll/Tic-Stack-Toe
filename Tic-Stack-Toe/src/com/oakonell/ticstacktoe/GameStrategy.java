@@ -219,16 +219,39 @@ public abstract class GameStrategy {
 		void onFailure(String reason);
 	}
 
-	public static void readFromBundle(final GameContext context, Bundle bundle,
+	public static class StrategyId {
+		private final GameMode mode;
+		private final String matchId;
+
+		StrategyId(Bundle bundle) {
+			int modeVal = bundle.getInt("GAME_STRATEGY_TYPE");
+			mode = GameMode.fromValue(modeVal);
+			matchId = bundle.getString("GAME_STRATEGY_MATCH_ID");
+		}
+
+		public boolean waitTillSignIn() {
+			return mode == GameMode.TURN_BASED;
+		}
+	}
+
+	public static StrategyId readFromBundle(final GameContext context,
+			Bundle bundle) {
+		if (!bundle.containsKey("GAME_STRATEGY_TYPE"))
+			return null;
+		return new StrategyId(bundle);
+	}
+
+	public static void read(final GameContext context, StrategyId id,
 			final OnGameStrategyLoad onLoad) {
-		if (!bundle.containsKey("GAME_STRATEGY_TYPE")) {
+		if (id == null) {
 			onLoad.onSuccess(null);
 			return;
 		}
-		int modeVal = bundle.getInt("GAME_STRATEGY_TYPE");
-		String matchId = bundle.getString("GAME_STRATEGY_MATCH_ID");
+		loadStrategy(context, onLoad, id.mode, id.matchId);
+	}
 
-		GameMode mode = GameMode.fromValue(modeVal);
+	private static void loadStrategy(final GameContext context,
+			final OnGameStrategyLoad onLoad, GameMode mode, String matchId) {
 		switch (mode) {
 		case AI:
 			loadAIStrategy(context, onLoad, matchId);
@@ -246,11 +269,12 @@ public abstract class GameStrategy {
 	}
 
 	private static void loadTurnBasedStrategy(final GameContext context,
-			final OnGameStrategyLoad onLoad, String matchId) {
+			final OnGameStrategyLoad onLoad, final String matchId) {
 		if (!context.getGameHelper().isSignedIn()) {
-			onLoad.onFailure("Not logged in...");
+			onLoad.onFailure("Not Signed in");
 			return;
 		}
+
 		context.getGameHelper().getGamesClient()
 				.getTurnBasedMatch(new OnTurnBasedMatchLoadedListener() {
 					@Override
@@ -259,6 +283,7 @@ public abstract class GameStrategy {
 						if (status != GamesClient.STATUS_OK) {
 							onLoad.onFailure("Error(" + status
 									+ ") loading turn-based game");
+							return;
 						}
 						onLoad.onSuccess(new TurnBasedMatchGameStrategy(
 								context, match));
@@ -304,6 +329,10 @@ public abstract class GameStrategy {
 						onLoad.onFailure("Could not load local AI match");
 					}
 				});
+	}
+
+	public void showGame() {
+		getGameFragment().startGame(null, false);
 	}
 
 }

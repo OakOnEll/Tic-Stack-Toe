@@ -20,6 +20,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.oakonell.ticstacktoe.GameStrategy.OnGameStrategyLoad;
+import com.oakonell.ticstacktoe.GameStrategy.StrategyId;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -34,6 +35,8 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	private InterstitialAd mInterstitialAd;
 	private AdView mAdView;
 	private SoundManager soundManager;
+
+	private StrategyId strategyToLoadOnSignIn;
 
 	@Override
 	protected void onActivityResult(int request, int response, Intent data) {
@@ -65,26 +68,13 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		ab.setDisplayShowTitleEnabled(true);
 
 		if (savedInstanceState != null) {
-			GameStrategy.readFromBundle(this, savedInstanceState,
-					new OnGameStrategyLoad() {
-						@Override
-						public void onSuccess(GameStrategy strategy) {
-							// TODO show the game?
-							// gameStrategy.
-							if (strategy == null) {
-								return;
-							}
-							setGameStrategy(strategy);
-							getGameFragment().startGame(null, false);
-						}
-
-						@Override
-						public void onFailure(String reason) {
-							// TODO if because not connected, save the info to
-							// do on signin
-							showAlert(reason);
-						}
-					});
+			StrategyId strategyId = GameStrategy.readFromBundle(this,
+					savedInstanceState);
+			if (!strategyId.waitTillSignIn() && isSignedIn()) {
+				loadStrategy(strategyId);
+			} else {
+				strategyToLoadOnSignIn = strategyId;
+			}
 		}
 
 		MenuFragment menuFrag = (MenuFragment) getSupportFragmentManager()
@@ -99,6 +89,28 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 		setSignInMessages(getString(R.string.signing_in),
 				getString(R.string.signing_out));
+	}
+
+	private void loadStrategy(StrategyId strategyId) {
+		GameStrategy.read(this, strategyId, new OnGameStrategyLoad() {
+
+			@Override
+			public void onSuccess(GameStrategy strategy) {
+				// TODO show the game?
+				// gameStrategy.
+				if (strategy == null) {
+					return;
+				}
+				setGameStrategy(strategy);
+				strategy.showGame();
+			}
+
+			@Override
+			public void onFailure(String reason) {
+				showAlert(reason);
+			}
+
+		});
 	}
 
 	private void initializeSoundManager() {
@@ -157,6 +169,11 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	@Override
 	public void onSignInSucceeded() {
 		getMenuFragment().onSignInSucceeded();
+
+		if (strategyToLoadOnSignIn != null) {
+			loadStrategy(strategyToLoadOnSignIn);
+			strategyToLoadOnSignIn = null;
+		}
 
 		StartAGameFragment startFragment = getStartFragment();
 		if (startFragment != null) {
