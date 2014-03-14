@@ -41,7 +41,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 	@Override
 	protected Player createWhitePlayer(String whiteName) {
-		return AiPlayerStrategy.createWhitePlayer(whiteName, false, aiDepth);
+		return AiPlayerStrategy.createThePlayer(whiteName, false, aiDepth);
 	}
 
 	protected void acceptNonHumanPlayerMove(final PlayerStrategy currentStrategy) {

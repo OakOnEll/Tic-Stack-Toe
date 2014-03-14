@@ -3,6 +3,7 @@
 
     <string name="ga_trackingId" translatable="false">UA-41757713-2</string>
     <string name="admob_id" translatable="false">a152d046ac52d50</string>
-    <string name="app_id" translatable="false">316906139838</string>
-    
+    <!-- <string name="app_id" translatable="false">316906139838</string> -->
+    <string name="app_id" translatable="false">261490351127</string>
+
 </resources>

@@ -1697,6 +1697,8 @@ containing a value of this type.
         public static final int an_start_online_game_action=0x7f0b004f;
         public static final int an_start_pass_n_play_game_action=0x7f0b004c;
         public static final int an_start_quick_game_action=0x7f0b004e;
+        /**  <string name="app_id" translatable="false">316906139838</string> 
+         */
         public static final int app_id=0x7f0b00a5;
         public static final int app_name=0x7f0b00a6;
         /**   Title for notification shown when GooglePlayServices needs to be

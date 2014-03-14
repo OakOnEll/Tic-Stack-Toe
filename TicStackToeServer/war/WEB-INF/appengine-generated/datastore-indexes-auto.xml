@@ -1,0 +1,10 @@
+<!-- Indices written at Wed, 12 Mar 2014 19:18:23 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="Rank" ancestor="true" source="auto">
+        <property name="aiKey" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

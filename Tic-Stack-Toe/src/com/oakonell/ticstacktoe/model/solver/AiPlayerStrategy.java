@@ -22,13 +22,13 @@ public abstract class AiPlayerStrategy extends PlayerStrategy {
 		return MinMaxAI.getImageUri(aiDepth);
 	}
 
-	public static Player createWhitePlayer(String whiteName, boolean isBlack,
+	public static Player createThePlayer(String whiteName, boolean isBlack,
 			int aiDepth) {
 		Player whitePlayer;
 		if (aiDepth == RANDOM_AI) {
-			whitePlayer = RandomAI.createPlayer(whiteName, false);
+			whitePlayer = RandomAI.createPlayer(whiteName, isBlack);
 		} else {
-			whitePlayer = MinMaxAI.createPlayer(whiteName, false, aiDepth);
+			whitePlayer = MinMaxAI.createPlayer(whiteName, isBlack, aiDepth);
 		}
 		return whitePlayer;
 	}

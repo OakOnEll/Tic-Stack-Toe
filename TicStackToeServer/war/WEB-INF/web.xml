@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<servlet>
+		<servlet-name>airanks</servlet-name>
+		<servlet-class>com.oakonell.ticstacktoe.server.AIRankingsServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>airanks</servlet-name>
+		<url-pattern>/airanks</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>aiadjust</servlet-name>
+		<servlet-class>com.oakonell.ticstacktoe.server.AdjustAIRankServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>aiadjust</servlet-name>
+		<url-pattern>/aiadjust</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>aireset</servlet-name>
+		<servlet-class>com.oakonell.ticstacktoe.server.ResetRankingsServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>aireset</servlet-name>
+		<url-pattern>/aireset</url-pattern>
+	</servlet-mapping>
+ <servlet>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <init-param>
+   <param-name>services</param-name>
+   <param-value/>
+  </init-param>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping>
+</web-app>

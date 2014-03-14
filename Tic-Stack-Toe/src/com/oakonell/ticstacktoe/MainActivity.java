@@ -70,7 +70,8 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		if (savedInstanceState != null) {
 			StrategyId strategyId = GameStrategy.readFromBundle(this,
 					savedInstanceState);
-			if (!strategyId.waitTillSignIn() && isSignedIn()) {
+			if (strategyId != null && !strategyId.waitTillSignIn()
+					&& isSignedIn()) {
 				loadStrategy(strategyId);
 			} else {
 				strategyToLoadOnSignIn = strategyId;

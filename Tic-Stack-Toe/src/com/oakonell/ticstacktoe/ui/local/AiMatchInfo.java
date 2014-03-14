@@ -49,7 +49,7 @@ public class AiMatchInfo extends LocalMatchInfo {
 
 	@Override
 	protected Player createWhitePlayerStrategy() {
-		return AiPlayerStrategy.createWhitePlayer(getWhiteName(), false,
+		return AiPlayerStrategy.createThePlayer(getWhiteName(), false,
 				aiLevel);
 	}
 

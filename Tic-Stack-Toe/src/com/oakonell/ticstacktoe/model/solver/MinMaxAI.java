@@ -19,7 +19,7 @@ public class MinMaxAI extends AiPlayerStrategy {
 		return player;
 	}
 
-	private MinMaxAI(boolean isBlack) {
+	protected MinMaxAI(boolean isBlack) {
 		super(isBlack);
 	}
 
