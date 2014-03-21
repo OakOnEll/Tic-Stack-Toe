@@ -14,16 +14,21 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
@@ -114,11 +119,11 @@ public class StartAGameFragment extends SherlockFragment {
 				if (context.getGameHelper().isSignedIn()) {
 					selectQuickMode();
 				} else {
-					context.getGameHelper().showAlert(
-							getResources().getString(
-									R.string.sign_in_to_play_network_game));
+					showAlert(getResources().getString(
+							R.string.sign_in_to_play_network_game));
 				}
 			}
+
 		});
 
 		ImageView inviteFriend = (ImageView) view
@@ -129,9 +134,8 @@ public class StartAGameFragment extends SherlockFragment {
 				if (context.getGameHelper().isSignedIn()) {
 					selectOnlineGameMode();
 				} else {
-					context.getGameHelper().showAlert(
-							getResources().getString(
-									R.string.sign_in_to_play_network_game));
+					showAlert(getResources().getString(
+							R.string.sign_in_to_play_network_game));
 				}
 			}
 		});
@@ -316,21 +320,26 @@ public class StartAGameFragment extends SherlockFragment {
 				context, type, true);
 
 		// Kick the match off
-		context.getGameHelper().getGamesClient()
-				.createTurnBasedMatch(new OnTurnBasedMatchInitiatedListener() {
-					@Override
-					public void onTurnBasedMatchInitiated(int status,
-							TurnBasedMatch match) {
-						if (status != GamesClient.STATUS_OK) {
-							context.getGameHelper().showAlert(
-									"Error starting match: " + status);
-							exitStartMenu();
-							return;
-						}
-						exitStartMenu();
-						listener.onTurnBasedMatchInitiated(status, match);
-					}
-				}, tbmc);
+		Games.TurnBasedMultiplayer
+				.createMatch(context.getGameHelper().getApiClient(), tbmc)
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
+							@Override
+							public void onResult(InitiateMatchResult result) {
+								Status status = result.getStatus();
+								TurnBasedMatch match = result.getMatch();
+								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+									Toast.makeText(context.getContext(),
+											"Error starting match: " + status,
+											Toast.LENGTH_LONG).show();
+									exitStartMenu();
+									return;
+								}
+								exitStartMenu();
+								listener.onTurnBasedMatchInitiated(
+										status.getStatusCode(), match);
+							}
+						});
 
 	}
 
@@ -353,7 +362,8 @@ public class StartAGameFragment extends SherlockFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getGamesClient().createRoom(rtmConfigBuilder.build());
+				Games.RealTimeMultiplayer.create(context.getGameHelper()
+						.getApiClient(), rtmConfigBuilder.build());
 			}
 		}, 0);
 
@@ -367,7 +377,9 @@ public class StartAGameFragment extends SherlockFragment {
 			public void chosenMode(GameType type, boolean useTurnBased) {
 				StartAGameFragment.this.onlineType = type;
 				StartAGameFragment.this.useTurnBased = useTurnBased;
-				Intent intent = getGamesClient().getSelectPlayersIntent(1, 1);
+				Intent intent = Games.RealTimeMultiplayer
+						.getSelectOpponentsIntent(context.getGameHelper()
+								.getApiClient(), 1, 1);
 				setInactive();
 				startActivityForResult(intent, GameContext.RC_SELECT_PLAYERS);
 			}
@@ -411,29 +423,40 @@ public class StartAGameFragment extends SherlockFragment {
 				context, type, false);
 
 		// Kick the match off
-		getGamesClient().createTurnBasedMatch(
-				new OnTurnBasedMatchInitiatedListener() {
-					@Override
-					public void onTurnBasedMatchInitiated(int status,
-							TurnBasedMatch match) {
-						if (status != GamesClient.STATUS_OK) {
-							context.getGameHelper().showAlert(
-									"Error starting a match: " + status);
-							exitStartMenu();
-							return;
-						}
-						exitStartMenu();
-						strategy.onTurnBasedMatchInitiated(status, match);
-					}
-				}, tbmc);
+		Games.TurnBasedMultiplayer
+				.createMatch(context.getGameHelper().getApiClient(), tbmc)
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
+
+							@Override
+							public void onResult(InitiateMatchResult result) {
+								Status status = result.getStatus();
+								TurnBasedMatch match = result.getMatch();
+
+								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+									Toast.makeText(
+											getActivity(),
+											"Error starting a match: "
+													+ status.getStatusCode(),
+											Toast.LENGTH_LONG).show();
+									;
+									exitStartMenu();
+									return;
+								}
+								exitStartMenu();
+								strategy.onTurnBasedMatchInitiated(
+										status.getStatusCode(), match);
+
+							}
+						});
 
 	}
 
 	private void createRealtimeBasedMatch(final ArrayList<String> invitees,
 			GameType type, Bundle autoMatchCriteria, boolean initiated) {
 
-		RealtimeGameStrategy strategy = new RealtimeGameStrategy(context,
-				type, false, initiated);
+		RealtimeGameStrategy strategy = new RealtimeGameStrategy(context, type,
+				false, initiated);
 
 		// create the room
 		Log.d(TAG, "Creating room...");
@@ -451,7 +474,8 @@ public class StartAGameFragment extends SherlockFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getGamesClient().createRoom(rtmConfigBuilder.build());
+				Games.RealTimeMultiplayer.create(context.getGameHelper()
+						.getApiClient(), rtmConfigBuilder.build());
 			}
 
 		}, 0);
@@ -459,9 +483,9 @@ public class StartAGameFragment extends SherlockFragment {
 		Log.d(TAG, "Room created, waiting for it to be ready...");
 	}
 
-	private GamesClient getGamesClient() {
-		return context.getGameHelper().getGamesClient();
-	}
+	// private GamesClient getGamesClient() {
+	// return context.getGameHelper().getGamesClient();
+	// }
 
 	private void startLocalTwoPlayerGame(GameType type, String blackName,
 			String whiteName) {
@@ -489,4 +513,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 	}
 
+	private void showAlert(String string) {
+		Toast.makeText(getActivity(), string, Toast.LENGTH_LONG).show();
+	}
 }

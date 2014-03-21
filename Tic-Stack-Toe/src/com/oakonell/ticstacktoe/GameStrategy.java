@@ -10,9 +10,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchResult;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
@@ -275,21 +279,25 @@ public abstract class GameStrategy {
 			return;
 		}
 
-		context.getGameHelper().getGamesClient()
-				.getTurnBasedMatch(new OnTurnBasedMatchLoadedListener() {
-					@Override
-					public void onTurnBasedMatchLoaded(int status,
-							TurnBasedMatch match) {
-						if (status != GamesClient.STATUS_OK) {
-							onLoad.onFailure("Error(" + status
-									+ ") loading turn-based game");
-							return;
-						}
-						onLoad.onSuccess(new TurnBasedMatchGameStrategy(
-								context, match));
+		Games.TurnBasedMultiplayer
+				.loadMatch(context.getGameHelper().getApiClient(), matchId)
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.LoadMatchResult>() {
 
-					}
-				}, matchId);
+							@Override
+							public void onResult(LoadMatchResult result) {
+								Status status = result.getStatus();
+								TurnBasedMatch match = result.getMatch();
+								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+									onLoad.onFailure("Error(" + status
+											+ ") loading turn-based game");
+									return;
+								}
+								onLoad.onSuccess(new TurnBasedMatchGameStrategy(
+										context, match));
+
+							}
+						});
 	}
 
 	private static void loadPassNPlayStrategy(final GameContext context,

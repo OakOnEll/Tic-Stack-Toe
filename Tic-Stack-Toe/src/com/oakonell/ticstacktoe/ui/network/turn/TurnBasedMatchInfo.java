@@ -8,10 +8,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.format.DateUtils;
 
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
@@ -29,12 +33,12 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	private boolean canRematch;
 	private long lastUpdated;
 
-	private GamesClient client;
+	private GameHelper helper;
 	Context context;
 
-	public TurnBasedMatchInfo(Context context, GamesClient client,
+	public TurnBasedMatchInfo(Context context, GameHelper helper,
 			TurnBasedMatch match) {
-		this.client = client;
+		this.helper = helper;
 		lastUpdated = match.getLastUpdatedTimestamp();
 		matchId = match.getMatchId();
 		this.context = context;
@@ -42,7 +46,8 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		// TODO store a snapshot of the board state
 
 		String opponentName = "Anonymous";
-		String currentPlayerId = client.getCurrentPlayerId();
+		String currentPlayerId = Games.Players.getCurrentPlayerId(helper
+				.getApiClient());
 		for (Participant participant : match.getParticipants()) {
 			if (participant.getPlayer() != null
 					&& !participant.getPlayer().getPlayerId()
@@ -57,7 +62,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 			canRematch = match.canRematch();
 			// TODO offload this from the main thread
 			if (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
-				GameState state = GameState.fromMatch(context, client, match);
+				GameState state = GameState.fromMatch(context, helper, match);
 				State state2 = state.game.getBoard().getState();
 				Player winner = state2.getWinner();
 				text = winner.getName() + " won!";
@@ -87,7 +92,8 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				client.dismissTurnBasedMatch(matchId);
+				Games.TurnBasedMultiplayer.dismissMatch(helper.getApiClient(),
+						matchId);
 				matches.remove(TurnBasedMatchInfo.this);
 			}
 		});
@@ -100,21 +106,28 @@ public class TurnBasedMatchInfo implements MatchInfo {
 						public void execute(final MenuFragment fragment,
 								List<MatchInfo> matches) {
 							fragment.setInactive();
-							client.rematchTurnBasedMatch(
-									new OnTurnBasedMatchInitiatedListener() {
-										@Override
-										public void onTurnBasedMatchInitiated(
-												int status, TurnBasedMatch match) {
-											if (status != GamesClient.STATUS_OK) {
-												showAlert("Error starting rematch");
-												fragment.refreshMatches();
-												fragment.setActive();
-												return;
-											}
-											fragment.showMatch(match
-													.getMatchId());
-										}
-									}, matchId);
+							Games.TurnBasedMultiplayer
+									.rematch(helper.getApiClient(), matchId)
+									.setResultCallback(
+											new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
+
+												@Override
+												public void onResult(
+														InitiateMatchResult result) {
+													int status = result
+															.getStatus()
+															.getStatusCode();
+													if (status != GamesClient.STATUS_OK) {
+														showAlert("Error starting rematch");
+														fragment.refreshMatches();
+														fragment.setActive();
+														return;
+													}
+													fragment.showMatch(result
+															.getMatch()
+															.getMatchId());
+												}
+											});
 						}
 					});
 			result.add(rematch);

@@ -14,16 +14,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeReliableMessageSentListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer.ReliableMessageSentCallback;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
@@ -75,10 +77,6 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	private OnlinePlayAgainFragment onlinePlayAgainDialog;
 
-	private GamesClient getGamesClient() {
-		return getHelper().getGamesClient();
-	}
-
 	public RealtimeGameStrategy(GameContext context, GameType type,
 			boolean isQuick, boolean initiatedTheGame) {
 		super(context);
@@ -98,8 +96,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		// get room ID, participants and my ID:
 		mRoomId = room.getRoomId();
 		mParticipants = room.getParticipants();
-		mMyParticipantId = room.getParticipantId(getGamesClient()
-				.getCurrentPlayerId());
+		mMyParticipantId = room.getParticipantId(Games.Players
+				.getCurrentPlayerId(getHelper().getApiClient()));
 
 		// print out the list of participants (for debug purposes)
 		Log.d(TAG, "Room ID: " + mRoomId);
@@ -357,9 +355,12 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 						R.string.cannot_invite_non_tester);
 			}
 		}
-		getHelper().showAlert(
-				getContext().getString(R.string.communication_error) + " ("
-						+ errorNum + ") " + message);
+		showAlert(getContext().getString(R.string.communication_error) + " ("
+				+ errorNum + ") " + message);
+	}
+
+	private void showAlert(String string) {
+		Toast.makeText(getContext(), string, Toast.LENGTH_LONG).show();
 	}
 
 	// Show the waiting room UI to track the progress of other players as they
@@ -370,8 +371,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		// minimum number of players required for our game
 		int minPlayersToStart = 2;
-		Intent intent = getGamesClient().getRealTimeWaitingRoomIntent(room,
-				minPlayersToStart);
+
+		Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(
+				getHelper().getApiClient(), room, minPlayersToStart);
 
 		// show waiting room UI
 		getActivity().startActivityForResult(intent,
@@ -380,7 +382,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void leaveRoom() {
 		if (mRoomId != null) {
-			getGamesClient().leaveRoom(this, mRoomId);
+			Games.RealTimeMultiplayer.leave(getHelper().getApiClient(), this,
+					mRoomId);
 		}
 	}
 
@@ -420,22 +423,23 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 					.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 			buffer.put(MSG_SEND_VARIANT);
 			buffer.putInt(type.getVariant());
-			getGamesClient().sendReliableRealTimeMessage(
-					new RealTimeReliableMessageSentListener() {
-						@Override
-						public void onRealTimeMessageSent(int statusCode,
-								int token, String recipientParticipantId) {
-							if (statusCode == GamesClient.STATUS_OK) {
+			Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+					.getApiClient(), new ReliableMessageSentCallback() {
+				@Override
+				public void onRealTimeMessageSent(int statusCode, int token,
+						String recipientParticipantId) {
+					if (statusCode == GamesClient.STATUS_OK) {
 
-							} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
+					} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
 
-							} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
+					} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
 
-							} else {
+					} else {
 
-							}
-						}
-					}, buffer.array(), getRoomId(), getOpponentId());
+					}
+
+				}
+			}, buffer.array(), getRoomId(), getOpponentId());
 		}
 
 		myRandom = random.nextLong();
@@ -447,22 +451,23 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 		buffer.put(MSG_PROTOCOL_VERSION);
 		buffer.putLong(PROTOCOL_VERSION);
-		getGamesClient().sendReliableRealTimeMessage(
-				new RealTimeReliableMessageSentListener() {
-					@Override
-					public void onRealTimeMessageSent(int statusCode,
-							int token, String recipientParticipantId) {
-						if (statusCode == GamesClient.STATUS_OK) {
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
 
-						} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode == GamesClient.STATUS_OK) {
 
-						} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
+				} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
 
-						} else {
+				} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
 
-						}
-					}
-				}, buffer.array(), getRoomId(), getOpponentId());
+				} else {
+
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
 	}
 
 	private void checkWhoIsFirstAndAttemptToStart(boolean send) {
@@ -494,22 +499,25 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 					.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 			buffer.put(MSG_WHO_IS_X);
 			buffer.putLong(myRandom);
-			getGamesClient().sendReliableRealTimeMessage(
-					new RealTimeReliableMessageSentListener() {
-						@Override
-						public void onRealTimeMessageSent(int statusCode,
-								int token, String recipientParticipantId) {
-							if (statusCode == GamesClient.STATUS_OK) {
 
-							} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
+			Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+					.getApiClient(), new ReliableMessageSentCallback() {
 
-							} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
+				@Override
+				public void onRealTimeMessageSent(int statusCode, int token,
+						String recipientParticipantId) {
+					if (statusCode == GamesClient.STATUS_OK) {
 
-							} else {
+					} else if (statusCode == GamesClient.STATUS_REAL_TIME_MESSAGE_SEND_FAILED) {
 
-							}
-						}
-					}, buffer.array(), getRoomId(), getOpponentId());
+					} else if (statusCode == GamesClient.STATUS_REAL_TIME_ROOM_NOT_JOINED) {
+
+					} else {
+
+					}
+				}
+			}, buffer.array(), getRoomId(), getOpponentId());
+
 		}
 		if (start && type != null) {
 			startGame(iAmBlack);
@@ -525,17 +533,19 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		move.appendBytesToMessage(buffer);
 
-		getGamesClient().sendReliableRealTimeMessage(
-				new RealTimeReliableMessageSentListener() {
-					@Override
-					public void onRealTimeMessageSent(int statusCode,
-							int token, String recipientParticipantId) {
-						if (statusCode != GamesClient.STATUS_OK) {
-							showGameError(R.string.sendMove, statusCode);
-							leaveRoom();
-						}
-					}
-				}, theBuffer.array(), getRoomId(), getOpponentId());
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
+
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode != GamesClient.STATUS_OK) {
+					showGameError(R.string.sendMove, statusCode);
+					leaveRoom();
+				}
+			}
+		}, theBuffer.array(), getRoomId(), getOpponentId());
+
 	}
 
 	public void restartGame() {
@@ -581,22 +591,24 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		buffer.put(MSG_PLAY_AGAIN);
 		buffer.putInt(playAgain ? 1 : 0);
 
-		getGamesClient().sendReliableRealTimeMessage(
-				new RealTimeReliableMessageSentListener() {
-					@Override
-					public void onRealTimeMessageSent(int statusCode,
-							int token, String recipientParticipantId) {
-						if (statusCode == GamesClient.STATUS_OK) {
-							if (success != null) {
-								success.run();
-							}
-						} else {
-							if (error != null) {
-								error.run();
-							}
-						}
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
+
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode == GamesClient.STATUS_OK) {
+					if (success != null) {
+						success.run();
 					}
-				}, buffer.array(), getRoomId(), getOpponentId());
+				} else {
+					if (error != null) {
+						error.run();
+					}
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
+
 	}
 
 	public void sendMessage(String string) {
@@ -613,18 +625,17 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		buffer.putInt(bytes.length);
 		buffer.put(bytes);
-		getGamesClient().sendReliableRealTimeMessage(
-				new RealTimeReliableMessageSentListener() {
-					@Override
-					public void onRealTimeMessageSent(int statusCode,
-							int token, String recipientParticipantId) {
-						if (statusCode != GamesClient.STATUS_OK) {
-							showGameError(R.string.sendRealTimeMessage,
-									statusCode);
-						}
-					}
-				}, buffer.array(), getRoomId(), getOpponentId());
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
 
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode != GamesClient.STATUS_OK) {
+					showGameError(R.string.sendRealTimeMessage, statusCode);
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
 	}
 
 	public Participant getMeForChat() {
@@ -642,18 +653,20 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 		buffer.put(inChat ? MSG_IN_CHAT : MSG_CLOSE_CHAT);
 
-		getGamesClient().sendReliableRealTimeMessage(
-				new RealTimeReliableMessageSentListener() {
-					@Override
-					public void onRealTimeMessageSent(int statusCode,
-							int token, String recipientParticipantId) {
-						if (statusCode == GamesClient.STATUS_OK) {
-							// hmm..
-						} else {
-							// don't worry
-						}
-					}
-				}, buffer.array(), getRoomId(), getOpponentId());
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
+
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode == GamesClient.STATUS_OK) {
+					// hmm..
+				} else {
+					// don't worry
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
+
 	}
 
 	public boolean isInitiatedTheGame() {

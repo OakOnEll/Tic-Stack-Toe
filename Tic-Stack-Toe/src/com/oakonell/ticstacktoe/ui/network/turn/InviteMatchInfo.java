@@ -7,9 +7,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.format.DateUtils;
 
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Invitation;
+import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -22,10 +23,10 @@ public class InviteMatchInfo implements MatchInfo {
 	private final String inviteId;
 	private final boolean isTurnBased;
 
-	private GamesClient client;
+	private GameHelper helper;
 
-	public InviteMatchInfo(GamesClient client, Invitation invite) {
-		this.client = client;
+	public InviteMatchInfo(GameHelper gameHelper, Invitation invite) {
+		this.helper = gameHelper;
 		created = invite.getCreationTimestamp();
 		inviteId = invite.getInvitationId();
 
@@ -57,7 +58,8 @@ public class InviteMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Decline", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				client.declineTurnBasedInvitation(inviteId);
+				Games.TurnBasedMultiplayer.declineInvitation(
+						helper.getApiClient(), inviteId);
 				matches.remove(InviteMatchInfo.this);
 			}
 		});

@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.server;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -20,22 +21,29 @@ public class RanksQuery {
 		Key aiKey = KeyFactory.createKey("Ranks", "AI");
 		StringBuilder builder = new StringBuilder("{");
 		if (!ranks.isEmpty()) {
-			for (Entity rank : ranks) {
+			for (Iterator<Entity> iter = ranks.iterator(); iter.hasNext();) {
+				Entity rank = iter.next();
 				String aiKeyProperty = (String) rank.getProperty("aiKey");
 				long aiJuniorProperty = (Long) rank.getProperty("aiJuniorRank");
 				long aiNormalProperty = (Long) rank.getProperty("aiNormalRank");
 				long aiStrictProperty = (Long) rank.getProperty("aiStrictRank");
 				appendAiRank(builder, aiKeyProperty, aiJuniorProperty,
 						aiNormalProperty, aiStrictProperty);
+				if (iter.hasNext()) {
+					builder.append(", ");
+				}
 			}
 		} else {
 			// insert rows
 			insertAndAppendAiRank(aiKey, builder, datastore, "-1", 620, 620,
 					650);
+			builder.append(", ");
 			insertAndAppendAiRank(aiKey, builder, datastore, "1", 1560, 1388,
 					1450);
+			builder.append(", ");
 			insertAndAppendAiRank(aiKey, builder, datastore, "2", 1850, 1850,
 					1800);
+			builder.append(", ");
 			insertAndAppendAiRank(aiKey, builder, datastore, "3", 2050, 2200,
 					2200);
 		}
@@ -81,7 +89,7 @@ public class RanksQuery {
 		builder.append(", ");
 		builder.append(aiStrictRankProperty);
 		builder.append(", ");
-		builder.append("], ");
+		builder.append("] ");
 	}
 
 	public static Entity getAI(DatastoreService datastore, String aiKeyStr) {

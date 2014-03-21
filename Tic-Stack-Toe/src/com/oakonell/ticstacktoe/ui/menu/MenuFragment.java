@@ -31,19 +31,23 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
+import com.google.android.gms.games.multiplayer.Invitations;
+import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
-import com.google.android.gms.games.multiplayer.OnInvitationsLoadedListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.LoadMatchesResponse;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener;
-import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchBuffer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchResult;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchesResult;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
@@ -266,8 +270,9 @@ public class MenuFragment extends SherlockFragment implements
 			public void onClick(View v) {
 				if (context.getGameHelper().isSignedIn()) {
 					setInactive();
-					startActivityForResult(getGamesClient()
-							.getAchievementsIntent(), GameContext.RC_UNUSED);
+					startActivityForResult(Games.Achievements
+							.getAchievementsIntent(context.getGameHelper()
+									.getApiClient()), GameContext.RC_UNUSED);
 				} else {
 					// TODO display pending achievements
 					showAlert(getString(R.string.achievements_not_available));
@@ -282,8 +287,9 @@ public class MenuFragment extends SherlockFragment implements
 			public void onClick(View v) {
 				if (context.getGameHelper().isSignedIn()) {
 					setInactive();
-					startActivityForResult(getGamesClient()
-							.getAllLeaderboardsIntent(), GameContext.RC_UNUSED);
+					startActivityForResult(Games.Leaderboards
+							.getAllLeaderboardsIntent(context.getGameHelper()
+									.getApiClient()), GameContext.RC_UNUSED);
 				} else {
 					// TODO display pending leaderboard
 					showAlert(getString(R.string.achievements_not_available));
@@ -355,7 +361,8 @@ public class MenuFragment extends SherlockFragment implements
 			return;
 		signedInAsText.setText(getResources().getString(
 				R.string.you_are_signed_in_as,
-				getGamesClient().getCurrentAccountName()));
+				Games.getCurrentAccountName(context.getGameHelper()
+						.getApiClient())));
 	}
 
 	public void onSignInSucceeded() {
@@ -389,41 +396,47 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void refreshInvites(final boolean shouldFlashNumber) {
-		getGamesClient().loadInvitations(new OnInvitationsLoadedListener() {
-			@Override
-			public void onInvitationsLoaded(int statusCode,
-					InvitationBuffer buffer) {
-				// remove existing invite matches from myTurn list, and
-				// add back these
-				for (Iterator<MatchInfo> iter = myTurns.iterator(); iter
-						.hasNext();) {
-					MatchInfo each = iter.next();
-					if (each instanceof InviteMatchInfo) {
-						iter.remove();
-					}
-				}
-				if (statusCode == GamesClient.STATUS_OK) {
-					// update the online invites button with the count
-					int count = buffer.getCount();
-					if (count != 0) {
-						for (int i = 0; i < count; i++) {
-							Invitation invite = buffer.get(i);
-							InviteMatchInfo matchInfo = new InviteMatchInfo(
-									getGamesClient(), invite);
-							myTurns.add(matchInfo);
+		Games.Invitations.loadInvitations(
+				context.getGameHelper().getApiClient()).setResultCallback(
+				new ResultCallback<Invitations.LoadInvitationsResult>() {
+
+					@Override
+					public void onResult(LoadInvitationsResult result) {
+						int statusCode = result.getStatus().getStatusCode();
+						InvitationBuffer buffer = result.getInvitations();
+						// remove existing invite matches from myTurn list, and
+						// add back these
+						for (Iterator<MatchInfo> iter = myTurns.iterator(); iter
+								.hasNext();) {
+							MatchInfo each = iter.next();
+							if (each instanceof InviteMatchInfo) {
+								iter.remove();
+							}
 						}
+						if (statusCode == GamesClient.STATUS_OK) {
+							// update the online invites button with the count
+							int count = buffer.getCount();
+							if (count != 0) {
+								for (int i = 0; i < count; i++) {
+									Invitation invite = buffer.get(i);
+									InviteMatchInfo matchInfo = new InviteMatchInfo(
+											context.getGameHelper(), invite);
+									myTurns.add(matchInfo);
+								}
+							}
+							myTurnsAdapter.notifyDataSetChanged();
+							buffer.close();
+						} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
+
+						} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
+
+						} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
+
+						}
+
 					}
-					myTurnsAdapter.notifyDataSetChanged();
-					buffer.close();
-				} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
+				});
 
-				} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
-
-				} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
-
-				}
-			}
-		});
 	}
 
 	// Accept the given invitation.
@@ -437,12 +450,13 @@ public class MenuFragment extends SherlockFragment implements
 				.setMessageReceivedListener(roomListener)
 				.setRoomStatusUpdateListener(roomListener);
 		setActive();
-		getGamesClient().joinRoom(roomConfigBuilder.build());
+		Games.RealTimeMultiplayer.join(context.getGameHelper().getApiClient(),
+				roomConfigBuilder.build());
 	}
 
-	private GamesClient getGamesClient() {
-		return context.getGameHelper().getGamesClient();
-	}
+	// private GamesClient getGamesClient() {
+	// return context.getGameHelper().getGamesClient();
+	// }
 
 	public void setActive() {
 		if (waiting == null)
@@ -478,55 +492,66 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void registerMatchListeners() {
-		getGamesClient().registerInvitationListener(this);
-		getGamesClient().registerMatchUpdateListener(this);
+		Games.Invitations.registerInvitationListener(context.getGameHelper()
+				.getApiClient(), this);
+		Games.TurnBasedMultiplayer.registerMatchUpdateListener(context
+				.getGameHelper().getApiClient(), this);
 	}
 
 	private void unregisterMatchListeners() {
-		getGamesClient().registerInvitationListener(null);
-		getGamesClient().registerMatchUpdateListener(null);
+		// TODO this is being called AFTER the game strategy has been created, and registered itself!
+		Log.d(TAG, "called to unregister match listener");
+//		Games.Invitations.unregisterInvitationListener(context.getGameHelper()
+//				.getApiClient());
+//		Games.TurnBasedMultiplayer.unregisterMatchUpdateListener(context
+//				.getGameHelper().getApiClient());
 	}
 
 	public void acceptTurnBasedInvitation(final String inviteId) {
 		setInactive();
 
-		getGamesClient().acceptTurnBasedInvitation(
-				new OnTurnBasedMatchInitiatedListener() {
-					@Override
-					public void onTurnBasedMatchInitiated(int status,
-							TurnBasedMatch match) {
-						if (status != GamesClient.STATUS_OK) {
-							showAlert("Error accepting invitation " + inviteId
-									+ ": error=" + status);
-							return;
-						}
-						TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-								context, match);
+		Games.TurnBasedMultiplayer
+				.acceptInvitation(context.getGameHelper().getApiClient(),
+						inviteId)
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.InitiateMatchResult>() {
 
-						listener.showGame();
-					}
-				},
+							@Override
+							public void onResult(InitiateMatchResult result) {
+								int status = result.getStatus().getStatusCode();
+								if (status != GamesClient.STATUS_OK) {
+									showAlert("Error accepting invitation "
+											+ inviteId + ": error=" + status);
+									return;
+								}
+								TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
+										context, result.getMatch());
 
-				inviteId);
+								listener.showGame();
+							}
+						});
 
 	}
 
 	public void showMatch(String matchId) {
 		setInactive();
 
-		getGamesClient().getTurnBasedMatch(
-				new OnTurnBasedMatchLoadedListener() {
-					@Override
-					public void onTurnBasedMatchLoaded(int status,
-							TurnBasedMatch match) {
-						if (status != GamesClient.STATUS_OK) {
-							showAlert("Error loading match");
-							setActive();
-							return;
-						}
-						updateMatch(match);
-					}
-				}, matchId);
+		Games.TurnBasedMultiplayer
+				.loadMatch(context.getGameHelper().getApiClient(), matchId)
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.LoadMatchResult>() {
+
+							@Override
+							public void onResult(LoadMatchResult result) {
+								if (result.getStatus().getStatusCode() != GamesClient.STATUS_OK) {
+									showAlert("Error loading match");
+									setActive();
+									return;
+								}
+								updateMatch(result.getMatch());
+
+							}
+						});
 	}
 
 	// This is the main function that gets called when players choose a match
@@ -597,19 +622,24 @@ public class MenuFragment extends SherlockFragment implements
 				}
 			}
 		});
-		if (!getGamesClient().isConnected()) {
-			if (!getGamesClient().isConnecting()
+		if (!context.getGameHelper().getApiClient().isConnected()) {
+			if (!context.getGameHelper().getApiClient().isConnecting()
 					&& mPullToRefreshLayout != null) {
 				networkRefreshed = true;
 			}
 			return;
 		}
-		getGamesClient().loadTurnBasedMatches(
-				new OnTurnBasedMatchesLoadedListener() {
+		Games.TurnBasedMultiplayer.loadMatchesByStatus(
+				context.getGameHelper().getApiClient(),
+				TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
+				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN,
+				TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN,
+				TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE).setResultCallback(
+				new ResultCallback<TurnBasedMultiplayer.LoadMatchesResult>() {
 
 					@Override
-					public void onTurnBasedMatchesLoaded(int status,
-							LoadMatchesResponse response) {
+					public void onResult(LoadMatchesResult result) {
+						int status = result.getStatus().getStatusCode();
 						if (status != GamesClient.STATUS_OK) {
 							networkRefreshed = true;
 							if (localRefreshed && networkRefreshed) {
@@ -618,6 +648,7 @@ public class MenuFragment extends SherlockFragment implements
 							// TODO report an error in some way, retry
 							return;
 						}
+						LoadMatchesResponse response = result.getMatches();
 						InvitationBuffer invitations = response
 								.getInvitations();
 
@@ -626,8 +657,8 @@ public class MenuFragment extends SherlockFragment implements
 						int max = invitations.getCount();
 						for (int i = 0; i < max; i++) {
 							Invitation invitation = invitations.get(i);
-							myTurns.add(new InviteMatchInfo(getGamesClient(),
-									invitation));
+							myTurns.add(new InviteMatchInfo(context
+									.getGameHelper(), invitation));
 						}
 						invitations.close();
 
@@ -670,18 +701,14 @@ public class MenuFragment extends SherlockFragment implements
 						for (int i = 0; i < count; i++) {
 							TurnBasedMatch match = matchesBuffer.get(i);
 							MatchInfo info = new TurnBasedMatchInfo(
-									getActivity(), getGamesClient(), match);
+									getActivity(), context.getGameHelper(),
+									match);
 							matches.add(info);
 						}
 						matchesBuffer.close();
 						adapter.notifyDataSetChanged();
 					}
-				},
-				//
-				TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
-				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN,
-				TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN,
-				TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE);
+				});
 	}
 
 	@Override
@@ -718,7 +745,7 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void showAlert(String message) {
-		context.getGameHelper().showAlert(message);
+		Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 	}
 
 }

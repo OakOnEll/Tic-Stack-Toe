@@ -3,7 +3,10 @@ package com.oakonell.ticstacktoe.model.db;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,8 +19,10 @@ import android.util.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo.LocalMatchVisitor;
@@ -31,38 +36,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 7;
 
 	// Database Name
 	private static final String DATABASE_NAME = "localMatches";
 
-	// Contacts table name
-	private static final String TABLE_LOCAL_MATCHES = "local_matches";
+	private static class TableLocalMatches {
+		// Contacts table name
+		private static final String NAME = "local_matches";
 
-	// Contacts Table Columns names
-	private static final String KEY_ID = "id";
-	private static final String KEY_MODE = "mode";
-	private static final String KEY_MATCH_STATUS = "match_status";
-	private static final String KEY_TURN_STATUS = "turn_status";
+		// Contacts Table Columns names
+		private static final String KEY_ID = "id";
+		private static final String KEY_MODE = "mode";
+		private static final String KEY_MATCH_STATUS = "match_status";
+		private static final String KEY_TURN_STATUS = "turn_status";
 
-	private static final String KEY_BLACK_NAME = "black_name";
-	private static final String KEY_WHITE_NAME = "white_name";
-	private static final String KEY_WHITE_AI_LEVEL = "white_ai_level";
+		private static final String KEY_BLACK_NAME = "black_name";
+		private static final String KEY_WHITE_NAME = "white_name";
+		private static final String KEY_WHITE_AI_LEVEL = "white_ai_level";
 
-	private static final String KEY_LAST_UPDATED = "last_updated";
+		private static final String KEY_LAST_UPDATED = "last_updated";
 
-	private static final String KEY_FILENAME = "filename";
+		private static final String KEY_FILENAME = "filename";
 
-	private static final String KEY_REMATCH_ID = "rematch_id";
+		private static final String KEY_REMATCH_ID = "rematch_id";
 
-	private static final String KEY_SCORE_BLACK_WINS = "score_black_wins";
-	private static final String KEY_SCORE_WHITE_WINS = "score_white_wins";
-	private static final String KEY_SCORE_TOTAL_GAMES = "score_total_games";
+		private static final String KEY_SCORE_BLACK_WINS = "score_black_wins";
+		private static final String KEY_SCORE_WHITE_WINS = "score_white_wins";
+		private static final String KEY_SCORE_TOTAL_GAMES = "score_total_games";
 
-	private static final String KEY_WINNER = "winner";
+		private static final String KEY_WINNER = "winner";
 
-	private static final int BLACK_WON = 1;
-	private static final int WHITE_WON = -1;
+		private static final int BLACK_WON = 1;
+		private static final int WHITE_WON = -1;
+	}
+
+	private static class TableAIRanks {
+		private static final String NAME = "ai_ranks";
+
+		// Contacts Table Columns names
+		private static final String KEY_AI_ID = "id";
+		private static final String KEY_AI_TYPE = "mode";
+		private static final String KEY_AI_RANDOM_RANK = "random_rank";
+		private static final String KEY_AI_EASY_RANK = "easy_rank";
+		private static final String KEY_AI_MEDIUM_RANK = "medium_rank";
+		private static final String KEY_AI_HARD_RANK = "hard_rank";
+	}
+
+	private static class TableAIRanksUpdated {
+		private static final String NAME = "ai_ranks_updated";
+
+		// Contacts Table Columns names
+		private static final String KEY_AI_UPDATED_ID = "id";
+		private static final String KEY_AI_UPDATED_UPDATED = "updated";
+	}
 
 	private final Context context;
 
@@ -73,36 +100,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_LOCAL_MATCHES
-				+ "(" + KEY_ID + " INTEGER PRIMARY KEY," //
-				+ KEY_MODE + " TEXT," //
-				+ KEY_MATCH_STATUS + " INTEGER," //
-				+ KEY_TURN_STATUS + " INTEGER," //
-				+ KEY_BLACK_NAME + " TEXT," //
-				+ KEY_WHITE_NAME + " TEXT," //
-				+ KEY_WHITE_AI_LEVEL + " INTEGER," //
-				+ KEY_LAST_UPDATED + " INTEGER," //
-				+ KEY_FILENAME + " TEXT," //
+		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TableLocalMatches.NAME
+				+ "(" + TableLocalMatches.KEY_ID + " INTEGER PRIMARY KEY," //
+				+ TableLocalMatches.KEY_MODE + " TEXT," //
+				+ TableLocalMatches.KEY_MATCH_STATUS + " INTEGER," //
+				+ TableLocalMatches.KEY_TURN_STATUS + " INTEGER," //
+				+ TableLocalMatches.KEY_BLACK_NAME + " TEXT," //
+				+ TableLocalMatches.KEY_WHITE_NAME + " TEXT," //
+				+ TableLocalMatches.KEY_WHITE_AI_LEVEL + " INTEGER," //
+				+ TableLocalMatches.KEY_LAST_UPDATED + " INTEGER," //
+				+ TableLocalMatches.KEY_FILENAME + " TEXT," //
 
-				+ KEY_REMATCH_ID + " INTEGER," //
+				+ TableLocalMatches.KEY_REMATCH_ID + " INTEGER," //
 
-				+ KEY_SCORE_BLACK_WINS + " INTEGER," //
-				+ KEY_SCORE_WHITE_WINS + " INTEGER," //
-				+ KEY_SCORE_TOTAL_GAMES + " INTEGER," //
+				+ TableLocalMatches.KEY_SCORE_BLACK_WINS + " INTEGER," //
+				+ TableLocalMatches.KEY_SCORE_WHITE_WINS + " INTEGER," //
+				+ TableLocalMatches.KEY_SCORE_TOTAL_GAMES + " INTEGER," //
 
-				+ KEY_WINNER + " INTEGER" //
+				+ TableLocalMatches.KEY_WINNER + " INTEGER" //
 
 				+ ")";
 		db.execSQL(CREATE_CONTACTS_TABLE);
+
+		String CREATE_AI_RANKS_TABLE = "CREATE TABLE " + TableAIRanks.NAME
+				+ "(" + TableAIRanks.KEY_AI_ID + " INTEGER PRIMARY KEY," //
+				+ TableAIRanks.KEY_AI_TYPE + " TEXT," //
+				+ TableAIRanks.KEY_AI_RANDOM_RANK + " INTEGER," //
+				+ TableAIRanks.KEY_AI_EASY_RANK + " INTEGER," //
+				+ TableAIRanks.KEY_AI_MEDIUM_RANK + " INTEGER," //
+				+ TableAIRanks.KEY_AI_HARD_RANK + " INTEGER" //
+				+ ")";
+		db.execSQL(CREATE_AI_RANKS_TABLE);
+
+		String CREATE_AI_RANKS_UPDATED_TABLE = "CREATE TABLE "
+				+ TableAIRanksUpdated.NAME + "("
+				+ TableAIRanksUpdated.KEY_AI_UPDATED_ID
+				+ " INTEGER PRIMARY KEY," //
+				+ TableAIRanksUpdated.KEY_AI_UPDATED_UPDATED + " INTEGER" //
+				+ ")";
+		db.execSQL(CREATE_AI_RANKS_UPDATED_TABLE);
+
 	}
 
 	// Upgrading database
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO do a better upgrade
+		db.execSQL("DROP TABLE IF EXISTS " + TableAIRanks.NAME);
 
 		// Drop older table if existed
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCAL_MATCHES);
+		db.execSQL("DROP TABLE IF EXISTS " + TableLocalMatches.NAME);
 		// delete the existing match files as well?
 		File dir = context.getFilesDir();
 		String[] matchFiles = dir.list(new FilenameFilter() {
@@ -134,7 +181,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SQLiteDatabase db = getWritableDatabase();
 				try {
 					// deleting the row
-					long id = db.delete(TABLE_LOCAL_MATCHES, KEY_ID + "=?",
+					long id = db.delete(TableLocalMatches.NAME,
+							TableLocalMatches.KEY_ID + "=?",
 							new String[] { Long.toString(matchInfo.getId()) });
 
 					// also delete the corresponding match file
@@ -187,7 +235,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SQLiteDatabase db = getWritableDatabase();
 				try {
 					// updating row
-					long id = db.insertOrThrow(TABLE_LOCAL_MATCHES, null,
+					long id = db.insertOrThrow(TableLocalMatches.NAME, null,
 							values);
 
 					// set and write the game bytes file
@@ -195,9 +243,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					matchInfo.setFileName(fileName);
 
 					ContentValues fileNameValue = new ContentValues();
-					fileNameValue.put(KEY_FILENAME, fileName);
-					int updated = db.update(TABLE_LOCAL_MATCHES, fileNameValue,
-							KEY_ID + "=?", new String[] { Long.toString(id) });
+					fileNameValue.put(TableLocalMatches.KEY_FILENAME, fileName);
+					int updated = db.update(TableLocalMatches.NAME,
+							fileNameValue, TableLocalMatches.KEY_ID + "=?",
+							new String[] { Long.toString(id) });
 					if (updated != 1) {
 						throw new RuntimeException(
 								"Error updating match record");
@@ -234,8 +283,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SQLiteDatabase db = getWritableDatabase();
 				try {
 					// updating row
-					int updated = db.update(TABLE_LOCAL_MATCHES, values, KEY_ID
-							+ " = ?",
+					int updated = db.update(TableLocalMatches.NAME, values,
+							TableLocalMatches.KEY_ID + " = ?",
 							new String[] { String.valueOf(matchInfo.getId()) });
 
 					// update the game bytes file
@@ -272,9 +321,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			protected LocalMatchInfo doInBackground(Void... params) {
 				SQLiteDatabase db = getReadableDatabase();
 				String[] columnsNames = getColumnNames();
-				Cursor query = db.query(TABLE_LOCAL_MATCHES, columnsNames,
-						KEY_ID + "=?", new String[] { Long.toString(id) },
-						null, null, null);
+				Cursor query = db.query(TableLocalMatches.NAME, columnsNames,
+						TableLocalMatches.KEY_ID + "=?",
+						new String[] { Long.toString(id) }, null, null, null);
 				try {
 					if (!query.moveToFirst()) {
 						return null;
@@ -306,67 +355,77 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	private String[] getColumnNames() {
-		String columnsNames[] = new String[] { KEY_ID, KEY_MODE,
-				KEY_MATCH_STATUS, KEY_TURN_STATUS, KEY_BLACK_NAME,
-				KEY_WHITE_NAME, KEY_WHITE_AI_LEVEL, KEY_LAST_UPDATED,
-				KEY_FILENAME,
+		String columnsNames[] = new String[] { TableLocalMatches.KEY_ID,
+				TableLocalMatches.KEY_MODE, TableLocalMatches.KEY_MATCH_STATUS,
+				TableLocalMatches.KEY_TURN_STATUS,
+				TableLocalMatches.KEY_BLACK_NAME,
+				TableLocalMatches.KEY_WHITE_NAME,
+				TableLocalMatches.KEY_WHITE_AI_LEVEL,
+				TableLocalMatches.KEY_LAST_UPDATED,
+				TableLocalMatches.KEY_FILENAME,
 
-				KEY_REMATCH_ID,
+				TableLocalMatches.KEY_REMATCH_ID,
 
-				KEY_SCORE_BLACK_WINS, KEY_SCORE_WHITE_WINS,
-				KEY_SCORE_TOTAL_GAMES,
+				TableLocalMatches.KEY_SCORE_BLACK_WINS,
+				TableLocalMatches.KEY_SCORE_WHITE_WINS,
+				TableLocalMatches.KEY_SCORE_TOTAL_GAMES,
 
-				KEY_WINNER };
+				TableLocalMatches.KEY_WINNER };
 		return columnsNames;
 	}
 
 	private ContentValues getContentValues(LocalMatchInfo matchInfo) {
 		final ContentValues values = new ContentValues();
-		values.put(KEY_MATCH_STATUS, matchInfo.getMatchStatus());
-		values.put(KEY_TURN_STATUS, matchInfo.getTurnStatus());
+		values.put(TableLocalMatches.KEY_MATCH_STATUS,
+				matchInfo.getMatchStatus());
+		values.put(TableLocalMatches.KEY_TURN_STATUS, matchInfo.getTurnStatus());
 
-		values.put(KEY_BLACK_NAME, matchInfo.getBlackName());
-		values.put(KEY_WHITE_NAME, matchInfo.getWhiteName());
+		values.put(TableLocalMatches.KEY_BLACK_NAME, matchInfo.getBlackName());
+		values.put(TableLocalMatches.KEY_WHITE_NAME, matchInfo.getWhiteName());
 
-		values.put(KEY_LAST_UPDATED, System.currentTimeMillis());
+		values.put(TableLocalMatches.KEY_LAST_UPDATED,
+				System.currentTimeMillis());
 
-		values.put(KEY_FILENAME, matchInfo.getFilename());
+		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
 
-		values.put(KEY_REMATCH_ID, matchInfo.getRematchId());
+		values.put(TableLocalMatches.KEY_REMATCH_ID, matchInfo.getRematchId());
 
 		ScoreCard score = matchInfo.getScoreCard();
 
-		values.put(KEY_SCORE_BLACK_WINS, score.getBlackWins());
-		values.put(KEY_SCORE_WHITE_WINS, score.getWhiteWins());
-		values.put(KEY_SCORE_TOTAL_GAMES, score.getTotalGames());
+		values.put(TableLocalMatches.KEY_SCORE_BLACK_WINS, score.getBlackWins());
+		values.put(TableLocalMatches.KEY_SCORE_WHITE_WINS, score.getWhiteWins());
+		values.put(TableLocalMatches.KEY_SCORE_TOTAL_GAMES,
+				score.getTotalGames());
 
-		values.put(KEY_FILENAME, matchInfo.getFilename());
-		values.put(KEY_FILENAME, matchInfo.getFilename());
-		values.put(KEY_FILENAME, matchInfo.getFilename());
+		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
+		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
+		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
 
 		Game game = matchInfo.readGame(context);
 		int winner = 0;
 		Player winnerPlayer = game.getBoard().getState().getWinner();
 		if (winnerPlayer != null) {
 			if (winnerPlayer.isBlack()) {
-				winner = BLACK_WON;
+				winner = TableLocalMatches.BLACK_WON;
 			} else {
-				winner = WHITE_WON;
+				winner = TableLocalMatches.WHITE_WON;
 			}
 		}
-		values.put(KEY_WINNER, winner);
+		values.put(TableLocalMatches.KEY_WINNER, winner);
 
 		LocalMatchVisitor visitor = new LocalMatchVisitor() {
 
 			@Override
 			public void visitPassNPlay(PassNPlayMatchInfo info) {
-				values.put(KEY_MODE, GameMode.PASS_N_PLAY.getVal());
+				values.put(TableLocalMatches.KEY_MODE,
+						GameMode.PASS_N_PLAY.getVal());
 			}
 
 			@Override
 			public void visitAi(AiMatchInfo info) {
-				values.put(KEY_MODE, GameMode.AI.getVal());
-				values.put(KEY_WHITE_AI_LEVEL, info.getWhiteAILevel());
+				values.put(TableLocalMatches.KEY_MODE, GameMode.AI.getVal());
+				values.put(TableLocalMatches.KEY_WHITE_AI_LEVEL,
+						info.getWhiteAILevel());
 
 			}
 
@@ -419,8 +478,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				Cursor cursor = null;
 				try {
 					Log.i("DB", "getting matches");
-					cursor = db.query(TABLE_LOCAL_MATCHES, columnsNames, null,
-							null, null, null, null);
+					cursor = db.query(TableLocalMatches.NAME, columnsNames,
+							null, null, null, null, null);
 
 					List<LocalMatchInfo> myTurns = new ArrayList<LocalMatchInfo>();
 					List<LocalMatchInfo> theirTurns = new ArrayList<LocalMatchInfo>();
@@ -467,41 +526,173 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	private LocalMatchInfo readMatch(Cursor query) {
-		long id = query.getLong(query.getColumnIndex(KEY_ID));
-		int modeNum = query.getInt(query.getColumnIndex(KEY_MODE));
-		int matchStatus = query.getInt(query.getColumnIndex(KEY_MATCH_STATUS));
-		int turnStatus = query.getInt(query.getColumnIndex(KEY_TURN_STATUS));
-		String blackName = query
-				.getString(query.getColumnIndex(KEY_BLACK_NAME));
-		String whiteName = query
-				.getString(query.getColumnIndex(KEY_WHITE_NAME));
-		int aiLevel = query.getInt(query.getColumnIndex(KEY_WHITE_AI_LEVEL));
-		long lastUpdated = query
-				.getLong(query.getColumnIndex(KEY_LAST_UPDATED));
-		String fileName = query.getString(query.getColumnIndex(KEY_FILENAME));
+		long id = query.getLong(query.getColumnIndex(TableLocalMatches.KEY_ID));
+		int modeNum = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_MODE));
+		int matchStatus = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_MATCH_STATUS));
+		int turnStatus = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_TURN_STATUS));
+		String blackName = query.getString(query
+				.getColumnIndex(TableLocalMatches.KEY_BLACK_NAME));
+		String whiteName = query.getString(query
+				.getColumnIndex(TableLocalMatches.KEY_WHITE_NAME));
+		int aiLevel = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_WHITE_AI_LEVEL));
+		long lastUpdated = query.getLong(query
+				.getColumnIndex(TableLocalMatches.KEY_LAST_UPDATED));
+		String fileName = query.getString(query
+				.getColumnIndex(TableLocalMatches.KEY_FILENAME));
 
 		if (fileName == null) {
 			Log.e(TAG, "Got a null file name?");
 		}
 
-		long rematchId = query.getLong(query.getColumnIndex(KEY_REMATCH_ID));
-		int blackWins = query
-				.getInt(query.getColumnIndex(KEY_SCORE_BLACK_WINS));
-		int whiteWins = query
-				.getInt(query.getColumnIndex(KEY_SCORE_WHITE_WINS));
+		long rematchId = query.getLong(query
+				.getColumnIndex(TableLocalMatches.KEY_REMATCH_ID));
+		int blackWins = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_SCORE_BLACK_WINS));
+		int whiteWins = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_SCORE_WHITE_WINS));
 		int totalGames = query.getInt(query
-				.getColumnIndex(KEY_SCORE_TOTAL_GAMES));
+				.getColumnIndex(TableLocalMatches.KEY_SCORE_TOTAL_GAMES));
 
 		ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
 				- (blackWins + whiteWins));
 
-		int winner = query.getInt(query.getColumnIndex(KEY_WINNER));
+		int winner = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_WINNER));
 
 		GameMode mode = GameMode.fromValue(modeNum);
 
 		return LocalMatchInfo.createLocalMatch(mode, id, matchStatus,
 				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
 				fileName, score, rematchId, winner);
+	}
+
+	public Map<AILevel, Integer> getRanks(GameType type) {
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			Log.i("DB", "getting ranks");
+			String[] columnsNames = new String[] { TableAIRanks.KEY_AI_TYPE,
+					TableAIRanks.KEY_AI_RANDOM_RANK,
+					TableAIRanks.KEY_AI_EASY_RANK,
+					TableAIRanks.KEY_AI_MEDIUM_RANK,
+					TableAIRanks.KEY_AI_HARD_RANK };
+			cursor = db.query(TableAIRanks.NAME, columnsNames,
+					TableAIRanks.KEY_AI_TYPE + " = ?",
+					new String[] { type.getVariant() + "" }, null, null, null);
+
+			if (cursor.moveToFirst()) {
+				int randomRank = cursor.getInt(cursor
+						.getColumnIndex(TableAIRanks.KEY_AI_RANDOM_RANK));
+				int easyRank = cursor.getInt(cursor
+						.getColumnIndex(TableAIRanks.KEY_AI_EASY_RANK));
+				int mediumRank = cursor.getInt(cursor
+						.getColumnIndex(TableAIRanks.KEY_AI_MEDIUM_RANK));
+				int hardRank = cursor.getInt(cursor
+						.getColumnIndex(TableAIRanks.KEY_AI_HARD_RANK));
+
+				Map<AILevel, Integer> ranks = new HashMap<AILevel, Integer>();
+				ranks.put(AILevel.RANDOM_AI, randomRank);
+				ranks.put(AILevel.EASY_AI, easyRank);
+				ranks.put(AILevel.MEDIUM_AI, mediumRank);
+				ranks.put(AILevel.HARD_AI, hardRank);
+				return ranks;
+			} else {
+				Log.e("DB", "There were no ranks in the DB");
+				Map<AILevel, Integer> ranks = new HashMap<AILevel, Integer>();
+				ranks.put(AILevel.RANDOM_AI, 600);
+				ranks.put(AILevel.EASY_AI, 1400);
+				ranks.put(AILevel.MEDIUM_AI, 1800);
+				ranks.put(AILevel.HARD_AI, 2000);
+				return ranks;
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			db.close();
+		}
+
+	}
+
+	public void updateRanks(
+			Map<GameType, Map<AILevel, Integer>> aiRanksByGameType) {
+
+		SQLiteDatabase db = getWritableDatabase();
+		try {
+			for (Entry<GameType, Map<AILevel, Integer>> entry : aiRanksByGameType
+					.entrySet()) {
+				GameType type = entry.getKey();
+				Map<AILevel, Integer> ranks = entry.getValue();
+
+				// updating row
+				ContentValues values = new ContentValues();
+				values.put(TableAIRanks.KEY_AI_TYPE, type.getVariant());
+				values.put(TableAIRanks.KEY_AI_RANDOM_RANK,
+						ranks.get(AILevel.RANDOM_AI));
+				values.put(TableAIRanks.KEY_AI_EASY_RANK,
+						ranks.get(AILevel.EASY_AI));
+				values.put(TableAIRanks.KEY_AI_MEDIUM_RANK,
+						ranks.get(AILevel.MEDIUM_AI));
+				values.put(TableAIRanks.KEY_AI_HARD_RANK,
+						ranks.get(AILevel.HARD_AI));
+				int updated = db.update(TableAIRanks.NAME, values,
+						TableAIRanks.KEY_AI_TYPE + " = ?",
+						new String[] { String.valueOf(type.getVariant()) });
+				if (updated != 1) {
+					long id = db.insert(TableAIRanks.NAME, null, values);
+					if (id < 0) {
+						// TODO throw an error
+					}
+				}
+			}
+
+			ContentValues values = new ContentValues();
+			values.put(TableAIRanksUpdated.KEY_AI_UPDATED_UPDATED,
+					System.currentTimeMillis());
+			// just update 'all' rows- there should be only one
+			int updated = db.update(TableAIRanksUpdated.NAME, values, null,
+					null);
+			if (updated < 1) {
+				long id = db.insert(TableAIRanksUpdated.NAME, null, values);
+				if (id < 0) {
+					// TODO throw an error
+				}
+			}
+
+		} finally {
+			db.close();
+		}
+
+	}
+
+	public long ranksLastUpdated() {
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			Log.i("DB", "getting when ranks were updated");
+			String[] columnsNames = new String[] { TableAIRanksUpdated.KEY_AI_UPDATED_UPDATED };
+			cursor = db.query(TableAIRanksUpdated.NAME, columnsNames, null,
+					null, null, null, null);
+
+			if (cursor.moveToFirst()) {
+				long lastUpdated = cursor
+						.getLong(cursor
+								.getColumnIndex(TableAIRanksUpdated.KEY_AI_UPDATED_UPDATED));
+				return lastUpdated;
+			} else {
+				Log.e("DB", "There was no last updated in the DB");
+				return 0;
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			db.close();
+		}
 	}
 
 }

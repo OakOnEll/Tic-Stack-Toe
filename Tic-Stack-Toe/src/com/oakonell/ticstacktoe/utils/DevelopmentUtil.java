@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.games.Games;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 
@@ -19,11 +20,12 @@ public class DevelopmentUtil {
 
 	public static class Info {
 		public Info(GameHelper helper) {
-			accountName = helper.getGamesClient().getCurrentAccountName();
-			scopes = helper.getScopes();
-			achievementIntent = helper.getGamesClient().getAchievementsIntent();
-			allLeaderboardsIntent = helper.getGamesClient()
-					.getAllLeaderboardsIntent();
+			accountName = Games.getCurrentAccountName(helper.getApiClient());
+			scopes = Games.SCOPE_GAMES.br();
+			achievementIntent = Games.Achievements.getAchievementsIntent(helper
+					.getApiClient());
+			allLeaderboardsIntent = Games.Leaderboards
+					.getAllLeaderboardsIntent(helper.getApiClient());
 		}
 
 		public String scopes;
@@ -35,13 +37,17 @@ public class DevelopmentUtil {
 	public static void resetAchievements(Activity context, Info helper) {
 		// as seen on
 		// http://stackoverflow.com/questions/17658732/reset-achievements-leaderboard-from-my-android-application
-		ProgressDialog dialog = ProgressDialog.show(context, "Resetting Achievements", "Please Wait...");
-		new AchievementsResetterTask(context, helper, dialog).execute((Void) null);
+		ProgressDialog dialog = ProgressDialog.show(context,
+				"Resetting Achievements", "Please Wait...");
+		new AchievementsResetterTask(context, helper, dialog)
+				.execute((Void) null);
 	}
 
 	public static void resetLeaderboards(Activity context, Info helper) {
-		ProgressDialog dialog = ProgressDialog.show(context, "Resetting Leaderboards", "Please Wait...");
-		new LeaderboardResetterTask(context, helper, dialog).execute((Void) null);
+		ProgressDialog dialog = ProgressDialog.show(context,
+				"Resetting Leaderboards", "Please Wait...");
+		new LeaderboardResetterTask(context, helper, dialog)
+				.execute((Void) null);
 	}
 
 	private static class AchievementsResetterTask extends
@@ -50,7 +56,8 @@ public class DevelopmentUtil {
 		private Info helper;
 		private ProgressDialog dialog;
 
-		public AchievementsResetterTask(Activity con, Info helper, ProgressDialog dialog) {
+		public AchievementsResetterTask(Activity con, Info helper,
+				ProgressDialog dialog) {
 			mContext = con;
 			this.helper = helper;
 			this.dialog = dialog;
@@ -102,7 +109,8 @@ public class DevelopmentUtil {
 		private Info helper;
 		private ProgressDialog dialog;
 
-		public LeaderboardResetterTask(Activity con, Info helper, ProgressDialog dialog) {
+		public LeaderboardResetterTask(Activity con, Info helper,
+				ProgressDialog dialog) {
 			mContext = con;
 			this.helper = helper;
 			this.dialog = dialog;

@@ -56,9 +56,13 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 	@Override
 	public void onCreateOptionsMenu(Fragment fragment, Menu menu,
 			MenuInflater inflater) {
-		inflater.inflate(R.menu.network_game, menu);
+		inflateMenu(menu, inflater);
 		chatMenuItem = menu.findItem(R.id.action_chat);
 		handleMenu();
+	}
+
+	protected void inflateMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.network_game, menu);
 	}
 
 	@Override

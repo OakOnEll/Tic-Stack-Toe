@@ -5,11 +5,9 @@ import java.util.List;
 
 import android.content.Context;
 
-import com.google.android.gms.games.GamesClient;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
-import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 
@@ -34,7 +32,7 @@ public class Leaderboards {
 			return;
 		}
 
-		GamesClient gamesClient = gameHelper.getGamesClient();
+		// GamesClient gamesClient = gameHelper.getGamesClient();
 		int wins = 0;
 		if (game.getLocalPlayer().isBlack()) {
 			wins = score.getBlackWins();

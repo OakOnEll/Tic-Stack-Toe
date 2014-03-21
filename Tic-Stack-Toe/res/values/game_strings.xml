@@ -11,6 +11,7 @@
     
     <string name="button_send">Send</string>
     <string name="action_chat">Chat</string>
+    <string name="action_refresh">Refresh</string>    
     <string name="player_won">%s won!</string>
     <string name="draw">Draw Game!</string>
     <string name="play_again">Play again?</string>

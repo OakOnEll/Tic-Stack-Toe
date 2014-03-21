@@ -9,9 +9,7 @@ import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
-import com.google.android.gms.games.GamesClient;
-import com.oakonell.ticstacktoe.BuildConfig;
-import com.oakonell.ticstacktoe.R;
+import com.google.android.gms.games.Games;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.State;
@@ -23,12 +21,12 @@ public class Achievements {
 	private List<Achievement> inGameAchievements = new ArrayList<Achievements.Achievement>();
 
 	public Achievements() {
-//		inGameAchievements.add(dejaVu);
-//		endGameAchievements.add(customCount);
+		// inGameAchievements.add(dejaVu);
+		// endGameAchievements.add(customCount);
 	}
 
 	private interface Achievement {
-		void push(GamesClient client, Context context);
+		void push(GameHelper gameHelper, Context context);
 
 		void testAndSet(GameHelper gameHelper, Context context, Game game,
 				State outcome);
@@ -59,9 +57,10 @@ public class Achievements {
 			return value;
 		}
 
-		public void push(GamesClient client, Context context) {
+		public void push(GameHelper helper, Context context) {
 			if (value) {
-				client.unlockAchievement(context.getString(achievementId));
+				Games.Achievements.unlock(helper.getApiClient(),
+						context.getString(achievementId));
 				value = false;
 			}
 		}
@@ -69,7 +68,7 @@ public class Achievements {
 		public void unlock(GameHelper helper, Context context) {
 			boolean isSignedIn = helper.isSignedIn();
 			if (isSignedIn) {
-				helper.getGamesClient().unlockAchievement(
+				Games.Achievements.unlock(helper.getApiClient(),
 						context.getString(achievementId));
 			}
 			if (!helper.isSignedIn() || BuildConfig.DEBUG) {
@@ -104,17 +103,17 @@ public class Achievements {
 			return count > 0;
 		}
 
-		public void push(GamesClient client, Context context) {
+		public void push(GameHelper helper, Context context) {
 			if (count > 0) {
-				client.incrementAchievement(context.getString(achievementId),
-						count);
+				Games.Achievements.increment(helper.getApiClient(),
+						context.getString(achievementId), count);
 				count = 0;
 			}
 		}
 
 		public void increment(GameHelper helper, Context context) {
 			if (helper.isSignedIn()) {
-				helper.getGamesClient().incrementAchievement(
+				Games.Achievements.increment(helper.getApiClient(),
 						context.getString(achievementId), 1);
 			} else {
 				count++;
@@ -138,34 +137,38 @@ public class Achievements {
 		if (!helper.isSignedIn())
 			return;
 
-		GamesClient client = helper.getGamesClient();
 		for (Achievement each : endGameAchievements) {
-			each.push(client, context);
+			each.push(helper, context);
 		}
 		for (Achievement each : inGameAchievements) {
-			each.push(client, context);
+			each.push(helper, context);
 		}
 	}
 
 	public void testAndSetForInGameAchievements(GameHelper gameHelper,
 			Context context, Game game, State outcome) {
-		testAndSetAchievements(gameHelper, context, game, outcome, inGameAchievements, "In Game");
+		testAndSetAchievements(gameHelper, context, game, outcome,
+				inGameAchievements, "In Game");
 	}
 
 	public void testAndSetForGameEndAchievements(GameHelper gameHelper,
 			Context context, Game game, State outcome) {
-		testAndSetAchievements(gameHelper, context, game, outcome, endGameAchievements, "End Game");
+		testAndSetAchievements(gameHelper, context, game, outcome,
+				endGameAchievements, "End Game");
 	}
-	
+
 	private void testAndSetAchievements(GameHelper gameHelper, Context context,
-			Game game, State outcome, List<Achievement> achievements, String type) {
+			Game game, State outcome, List<Achievement> achievements,
+			String type) {
 		for (Achievement each : achievements) {
 			try {
 				each.testAndSet(gameHelper, context, game, outcome);
 			} catch (RuntimeException e) {
-				String text = "Error testing " + type + " achievement " + each.getName();
+				String text = "Error testing " + type + " achievement "
+						+ each.getName();
 				if (BuildConfig.DEBUG) {
-					gameHelper.showAlert(text, e.getMessage());
+					Toast.makeText(context, text + ": " + e.getMessage(),
+							Toast.LENGTH_LONG).show();
 				}
 				Tracker myTracker = EasyTracker.getTracker();
 				myTracker.sendException(text, e, false);

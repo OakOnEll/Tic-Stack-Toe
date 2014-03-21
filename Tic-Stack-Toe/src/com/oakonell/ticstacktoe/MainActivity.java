@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.oakonell.ticstacktoe.GameStrategy.OnGameStrategyLoad;
 import com.oakonell.ticstacktoe.GameStrategy.StrategyId;
@@ -88,8 +89,9 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 			transaction.commit();
 		}
 
-		setSignInMessages(getString(R.string.signing_in),
-				getString(R.string.signing_out));
+// TODO no longer used signing in/out resource
+		//		setSignInMessages(getString(R.string.signing_in),
+//				getString(R.string.signing_out));
 	}
 
 	private void loadStrategy(StrategyId strategyId) {
@@ -171,6 +173,24 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	public void onSignInSucceeded() {
 		getMenuFragment().onSignInSucceeded();
 
+		// AppStateManager.load(getApiClient(),
+		// OUR_STATE_KEY).setResultCallback(
+		// new ResultCallback<AppStateManager.StateResult>() {
+		//
+		// @Override
+		// public void onResult(AppStateManager.StateResult result) {
+		// AppStateManager.StateConflictResult conflictResult
+		// = result.getConflictResult();
+		// AppStateManager.StateLoadedResult loadedResult
+		// = result.getLoadedResult();
+		// if (loadedResult != null) {
+		// processStateLoaded(loadedResult);
+		// } else if (conflictResult != null) {
+		// processStateConflict(conflictResult);
+		// }
+		// }
+		// }
+
 		if (strategyToLoadOnSignIn != null) {
 			loadStrategy(strategyToLoadOnSignIn);
 			strategyToLoadOnSignIn = null;
@@ -183,7 +203,7 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 		TicStackToe app = (TicStackToe) getApplication();
 
-		Intent settingsIntent = getGamesClient().getSettingsIntent();
+		Intent settingsIntent = Games.getSettingsIntent(getApiClient());
 		app.setSettingsIntent(settingsIntent);
 
 		Achievements achievements = app.getAchievements();
