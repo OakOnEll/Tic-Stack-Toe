@@ -173,6 +173,9 @@ public abstract class GameStrategy {
 		this.score = score;
 	}
 
+	protected GameContext getGameContext() {
+		return gameContext;
+	}
 	protected GameHelper getHelper() {
 		return gameContext.getGameHelper();
 	}
