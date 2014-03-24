@@ -24,6 +24,12 @@ public class ByteBufferDebugger {
 		return result;
 	}
 
+	public short getShort(String string) {
+		short result = buffer.getShort();
+		log("Reading (short)" + string + ": " + result);
+		return result;		
+	}
+	
 	public int getInt(String string) {
 		int result = buffer.getInt();
 		log("Reading (int)" + string + ": " + result);
@@ -31,8 +37,13 @@ public class ByteBufferDebugger {
 	}
 
 	public void put(String comment, byte num) {
-		log("Writing (byte)" + comment + ": " + num);
+		log("Writing (byte)" + comment + ": " + num);		
 		buffer.put(num);
+	}
+
+	public void putShort(String comment, short i) {
+		log("Writing (short)" + comment + ": " + i);
+		buffer.putShort(i);
 	}
 
 	public void putInt(String comment, int i) {
