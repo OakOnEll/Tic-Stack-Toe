@@ -45,4 +45,6 @@ public interface GameContext {
 	void loadRank(OnRankReceived onRankLoaded, boolean initializeIfNone);
 
 	void updateCachedRank(RankStorage storage);
+
+	void backFromRealtimeWaitingRoom();
 }

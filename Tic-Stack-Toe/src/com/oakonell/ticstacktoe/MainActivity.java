@@ -63,12 +63,22 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	protected void onActivityResult(int request, int response, Intent data) {
 		super.onActivityResult(request, response, data);
 		if (request == GameContext.RC_WAITING_ROOM) {
-			// TODO currently specially launched from (real-time) strategy, with
-			// access to activity only
-			getMenuFragment().onActivityResult(request, response, data);
+			if (getStartFragment() != null && getStartFragment().isVisible()) {
+				getStartFragment().onActivityResult(request, response, data);
+			} else {
+				backFromRealtimeWaitingRoom();
+			}
 		} else if (request == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 			getGameStrategy().leaveRoom();
 		}
+	}
+
+	@Override
+	public void backFromRealtimeWaitingRoom() {
+		if (getGameStrategy().shouldHideAd()) {
+			hideAd();
+		}
+		getGameStrategy().backFromWaitingRoom();
 	}
 
 	@Override

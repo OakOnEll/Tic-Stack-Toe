@@ -403,6 +403,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				getHelper().getApiClient(), room, minPlayersToStart);
 
 		// show waiting room UI
+		// can we launch this from the start fragment
 		getActivity().startActivityForResult(intent,
 				GameContext.RC_WAITING_ROOM);
 	}
@@ -734,7 +735,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void opponentLeft() {
-		getGameFragment().getView().setKeepScreenOn(false);
+		if (getGameFragment() != null && getGameFragment().getView() != null) {
+			getGameFragment().getView().setKeepScreenOn(false);
+		}
 		if (onlinePlayAgainDialog != null) {
 			// the user is in the play again dialog, let him read the info
 			return;
@@ -784,15 +787,15 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onActivityResume(MainActivity theActivity) {
 		// setMainActivity(theActivity);
-		(new AlertDialog.Builder(getContext()))
-				.setMessage(R.string.you_left_the_game)
-				.setNeutralButton(android.R.string.ok, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						leaveGame();
-						dialog.dismiss();
-					}
-				}).create().show();
+		// (new AlertDialog.Builder(getContext()))
+		// .setMessage(R.string.you_left_the_game)
+		// .setNeutralButton(android.R.string.ok, new OnClickListener() {
+		// @Override
+		// public void onClick(DialogInterface dialog, int which) {
+		// leaveGame();
+		// dialog.dismiss();
+		// }
+		// }).create().show();
 
 	}
 

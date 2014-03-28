@@ -223,10 +223,7 @@ public class StartAGameFragment extends SherlockFragment {
 			// we got the result from the "waiting room" UI.
 			if (response == Activity.RESULT_OK) {
 				setInactive();
-				if (context.getGameStrategy().shouldHideAd()) {
-					context.hideAd();
-				}
-				context.getGameStrategy().backFromWaitingRoom();
+				context.backFromRealtimeWaitingRoom();
 			} else if (response == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 				// player actively indicated that they want to leave the room
 
