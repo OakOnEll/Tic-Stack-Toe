@@ -1,23 +1,24 @@
 package com.oakonell.ticstacktoe.model.rank;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class TypeRankStorage {
-	private GameType type;
+	final private GameType type;
 	private short rank;
-	private List<RankedGame> games;
+	final private List<RankedGame> games;
 
-	public TypeRankStorage(short rank) {
+	public TypeRankStorage(GameType type, short rank) {
+		this.type = type;
 		this.rank = rank;
-		this.games = Collections.emptyList();
+		this.games = new ArrayList<RankedGame>();
 	}
 
-	public TypeRankStorage(short rank, List<RankedGame> games) {
+	public TypeRankStorage(GameType type, short rank, List<RankedGame> games) {
+		this.type = type;
 		this.rank = rank;
 		this.games = games;
 	}
@@ -35,6 +36,7 @@ public class TypeRankStorage {
 	}
 
 	public void appendToBytes(ByteBufferDebugger buffer) {
+		buffer.putShort("variant", (short) type.getVariant());
 		buffer.putShort("rank", rank);
 		buffer.putShort("num games", (short) games.size());
 		for (RankedGame each : games) {
@@ -43,13 +45,14 @@ public class TypeRankStorage {
 	}
 
 	public static TypeRankStorage fromBytes(ByteBufferDebugger buffer) {
+		short variant = buffer.getShort("type");
 		short rank = buffer.getShort("rank");
 		short numGames = buffer.getShort("num games");
 		List<RankedGame> games = new ArrayList<RankedGame>(numGames);
 		for (int i = 0; i < numGames; i++) {
 			games.add(RankedGame.fromBytes(buffer));
 		}
-		return new TypeRankStorage(rank, games);
+		return new TypeRankStorage(GameType.fromVariant(variant), rank, games);
 	}
 
 	public TypeRankStorage resolveConflict(TypeRankStorage serverStorage) {
@@ -57,10 +60,10 @@ public class TypeRankStorage {
 		short newRank = serverStorage.getRank();
 		RankingRater ranker = RankingRater.Factory.getRanker();
 		for (RankedGame each : getGames()) {
-			newRank =  ranker.calculateRank(newRank,
-					each.getOpponentRank(), each.getOutcome());
+			newRank = ranker.calculateRank(newRank, each.getOpponentRank(),
+					each.getOutcome());
 		}
-		return new TypeRankStorage(newRank, games);
+		return new TypeRankStorage(serverStorage.getType(), newRank, games);
 	}
 
 	public void setRank(short myNewRank) {

@@ -32,6 +32,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	private String matchId;
 	private boolean canRematch;
 	private long lastUpdated;
+	private int status;
 
 	private GameHelper helper;
 	Context context;
@@ -41,6 +42,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		this.helper = helper;
 		lastUpdated = match.getLastUpdatedTimestamp();
 		matchId = match.getMatchId();
+		status = match.getStatus();
 		this.context = context;
 
 		// TODO store a snapshot of the board state
@@ -62,10 +64,15 @@ public class TurnBasedMatchInfo implements MatchInfo {
 			canRematch = match.canRematch();
 			// TODO offload this from the main thread
 			if (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
-				GameState state = GameState.fromMatch(context, helper, match);
-				State state2 = state.game.getBoard().getState();
-				Player winner = state2.getWinner();
-				text = winner.getName() + " won!";
+				try {
+					GameState state = GameState.fromMatch(context, helper,
+							match);
+					State state2 = state.game.getBoard().getState();
+					Player winner = state2.getWinner();
+					text = winner.getName() + " won!";
+				} catch (Exception e) {
+					text = "Error reading match";
+				}
 			}
 		} else {
 			canRematch = false;
@@ -92,12 +99,11 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				Games.TurnBasedMultiplayer.dismissMatch(helper.getApiClient(),
-						matchId);
-				matches.remove(TurnBasedMatchInfo.this);
+				dismiss(fragment, matches);
 			}
 		});
 		result.add(dismiss);
+		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 
 		if (canRematch) {
 			MatchMenuItem rematch = new MatchMenuItem("Rematch",
@@ -159,6 +165,17 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	public void showAlert(String message) {
 		(new AlertDialog.Builder(context)).setMessage(message)
 				.setNeutralButton(android.R.string.ok, null).create().show();
+	}
+
+	@Override
+	public int getMatchStatus() {
+		return status;
+	}
+
+	@Override
+	public void dismiss(MenuFragment fragment, List<MatchInfo> matches) {
+		Games.TurnBasedMultiplayer.dismissMatch(helper.getApiClient(), matchId);
+		matches.remove(this);
 	}
 
 }

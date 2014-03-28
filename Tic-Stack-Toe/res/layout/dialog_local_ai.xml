@@ -7,8 +7,7 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-         >
+        android:layout_gravity="center_horizontal" >
 
         <TableRow
             android:layout_width="match_parent"
@@ -42,8 +41,19 @@
             <Spinner
                 android:id="@+id/game_type"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+
+            <CheckBox
+                android:id="@+id/ranked_game"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                 />
+                android:text="Ranked Game" />
         </TableRow>
     </TableLayout>
 
@@ -52,7 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-       
         android:text="@string/start" />
 
 </LinearLayout>

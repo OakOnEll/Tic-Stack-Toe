@@ -7,18 +7,8 @@ public class EloRanker implements RankingRater {
 			GameOutcome outcome) {
 		double expected = calculateExpected(oldRank, opponentsRank);
 
-		double actual = 0;
-		switch (outcome) {
-		case WIN:
-			actual = 1;
-			break;
-		case LOSE:
-			actual = 0;
-			break;
-		case DRAW:
-			actual = 0.5;
-			break;
-		}
+		double actual = outcome.getMultiplier();
+
 		double newRank = oldRank + getKFactor(oldRank) * (actual - expected);
 		return (short) Math.round(newRank);
 	}

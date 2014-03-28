@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.model.rank;
+package com.oakonell.ticstacktoe.server.rank;
 
 public enum GameOutcome {
 	LOSE(0, 0.0), DRAW(1, 0.5), WIN(2, 1.0);
@@ -25,13 +25,5 @@ public enum GameOutcome {
 				return each;
 		}
 		return null;
-	}
-
-	public GameOutcome opposite() {
-		if (this == WIN)
-			return LOSE;
-		if (this == LOSE)
-			return WIN;
-		return DRAW;
 	}
 }

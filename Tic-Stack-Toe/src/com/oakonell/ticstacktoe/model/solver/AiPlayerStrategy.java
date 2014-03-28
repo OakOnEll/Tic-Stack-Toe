@@ -6,29 +6,26 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
 public abstract class AiPlayerStrategy extends PlayerStrategy {
-	public static final int EASY_AI = 1;
-	public static final int MEDIUM_AI = 2;
-	public static final int HARD_AI = 3;
-	public static final int RANDOM_AI = -1;
 
 	protected AiPlayerStrategy(boolean isBlack) {
 		super(isBlack);
 	}
 
-	public static Uri getAiImageUri(int aiDepth) {
-		if (aiDepth == RANDOM_AI) {
+	public static Uri getAiImageUri(AILevel aiDepth) {
+		if (aiDepth == AILevel.RANDOM_AI) {
 			return RandomAI.getImageUri();
 		}
-		return MinMaxAI.getImageUri(aiDepth);
+		return MinMaxAI.getImageUri(aiDepth.getValue());
 	}
 
 	public static Player createThePlayer(String whiteName, boolean isBlack,
-			int aiDepth) {
+			AILevel aiDepth) {
 		Player whitePlayer;
-		if (aiDepth == RANDOM_AI) {
+		if (aiDepth == AILevel.RANDOM_AI) {
 			whitePlayer = RandomAI.createPlayer(whiteName, isBlack);
 		} else {
-			whitePlayer = MinMaxAI.createPlayer(whiteName, isBlack, aiDepth);
+			whitePlayer = MinMaxAI.createPlayer(whiteName, isBlack,
+					aiDepth.getValue());
 		}
 		return whitePlayer;
 	}

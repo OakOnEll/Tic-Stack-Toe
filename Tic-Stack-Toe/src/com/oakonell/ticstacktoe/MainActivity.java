@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe;
 
+import java.util.Map;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -24,6 +25,14 @@ import com.oakonell.ticstacktoe.GameStrategy.OnGameStrategyLoad;
 import com.oakonell.ticstacktoe.GameStrategy.StrategyId;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
+import com.oakonell.ticstacktoe.model.rank.RankStorage;
+import com.oakonell.ticstacktoe.model.solver.AILevel;
+import com.oakonell.ticstacktoe.rank.AIRankHelper;
+import com.oakonell.ticstacktoe.rank.AIRankHelper.OnRanksRetrieved;
+import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -38,6 +47,17 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	private SoundManager soundManager;
 
 	private StrategyId strategyToLoadOnSignIn;
+	private RankRequest rankRequest;
+
+	private class RankRequest {
+		private RankStorage rankStorage;
+		private OnRankReceived onRankLoaded;
+		private boolean rankLoaded = false;
+	}
+
+	public MainActivity() {
+		super(CLIENT_GAMES | CLIENT_APPSTATE);
+	}
 
 	@Override
 	protected void onActivityResult(int request, int response, Intent data) {
@@ -89,9 +109,9 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 			transaction.commit();
 		}
 
-// TODO no longer used signing in/out resource
-		//		setSignInMessages(getString(R.string.signing_in),
-//				getString(R.string.signing_out));
+		// TODO no longer used signing in/out resource
+		// setSignInMessages(getString(R.string.signing_in),
+		// getString(R.string.signing_out));
 	}
 
 	private void loadStrategy(StrategyId strategyId) {
@@ -173,24 +193,6 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	public void onSignInSucceeded() {
 		getMenuFragment().onSignInSucceeded();
 
-		// AppStateManager.load(getApiClient(),
-		// OUR_STATE_KEY).setResultCallback(
-		// new ResultCallback<AppStateManager.StateResult>() {
-		//
-		// @Override
-		// public void onResult(AppStateManager.StateResult result) {
-		// AppStateManager.StateConflictResult conflictResult
-		// = result.getConflictResult();
-		// AppStateManager.StateLoadedResult loadedResult
-		// = result.getLoadedResult();
-		// if (loadedResult != null) {
-		// processStateLoaded(loadedResult);
-		// } else if (conflictResult != null) {
-		// processStateConflict(conflictResult);
-		// }
-		// }
-		// }
-
 		if (strategyToLoadOnSignIn != null) {
 			loadStrategy(strategyToLoadOnSignIn);
 			strategyToLoadOnSignIn = null;
@@ -222,6 +224,74 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 			getMenuFragment().acceptInviteToRoom(invitationId);
 			return;
 		}
+
+		loadRank(null, false);
+
+		// precache the AI ranks from the server, if needed
+		DatabaseHandler dbHandler = new DatabaseHandler(this);
+		AIRankHelper.retrieveRanks(dbHandler, GameType.NORMAL,
+				new OnRanksRetrieved() {
+					@Override
+					public void onSuccess(Map<AILevel, Integer> ranks) {
+						// do nothing
+					}
+				});
+
+	}
+
+	public void loadRank(final OnRankReceived onRankLoaded,
+			boolean initializeIfNone) {
+		if (rankRequest == null) {
+			rankRequest = new RankRequest();
+			rankRequest.onRankLoaded = onRankLoaded;
+			RankHelper.loadRankStorage(this, new OnRankReceived() {
+				@Override
+				public void receivedRank(RankStorage rankStorage) {
+					// mark in some way that a null was loaded?
+					rankRequest.rankLoaded = true;
+					rankRequest.rankStorage = rankStorage;
+					if (rankRequest.onRankLoaded != null) {
+						rankRequest.onRankLoaded.receivedRank(rankStorage);
+					}
+					rankRequest.onRankLoaded = null;
+				}
+			}, false);
+		}
+
+		if (!rankRequest.rankLoaded) {
+			if (rankRequest.onRankLoaded != null) {
+				if (onRankLoaded == null)
+					return;
+				final OnRankReceived existing = rankRequest.onRankLoaded;
+				rankRequest.onRankLoaded = new OnRankReceived() {
+					@Override
+					public void receivedRank(RankStorage storage) {
+						existing.receivedRank(storage);
+						onRankLoaded.receivedRank(storage);
+					}
+				};
+			}
+			rankRequest.onRankLoaded = onRankLoaded;
+			return;
+		}
+		if (onRankLoaded != null) {
+			onRankLoaded.receivedRank(rankRequest.rankStorage);
+		}
+	}
+
+	@Override
+	public void updateCachedRank(RankStorage storage) {
+		if (rankRequest == null) {
+			rankRequest = new RankRequest();
+			rankRequest.rankStorage = storage;
+			rankRequest.rankLoaded = true;
+			return;
+		}
+		if (rankRequest.rankLoaded) {
+			rankRequest.rankStorage = storage;
+			return;
+		}
+		// hmm... do we just let the current request continue?
 
 	}
 

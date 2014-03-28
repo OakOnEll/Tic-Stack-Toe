@@ -37,8 +37,11 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
@@ -70,6 +73,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	private volatile Long myRandom;
 	private volatile Long theirRandom;
 
+	private boolean isRanked;
 	private boolean isQuick;
 	private boolean isConnected;
 	private boolean initiatedTheGame;
@@ -78,8 +82,11 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	private OnlinePlayAgainFragment onlinePlayAgainDialog;
 
 	public RealtimeGameStrategy(GameContext context, GameType type,
-			boolean isQuick, boolean initiatedTheGame) {
+			boolean isQuick, boolean initiatedTheGame, boolean isRanked) {
 		super(context);
+		// TODO the isRanked may come from the invitation game and need to be
+		// adjusted
+		this.isRanked = isRanked;
 		this.type = type;
 		this.isQuick = isQuick;
 		this.initiatedTheGame = initiatedTheGame;
@@ -245,10 +252,10 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	private void startGame(boolean iAmBlack) {
-		GameFragment gameFragment = GameFragment.createFragment();
+		final GameFragment gameFragment = GameFragment.createFragment();
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
-		ScoreCard score = new ScoreCard(0, 0, 0);
+		final ScoreCard score = new ScoreCard(0, 0, 0);
 		Player blackPlayer;
 		Player whitePlayer;
 		String localPlayerName = getContext().getString(
@@ -272,8 +279,28 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 						.getString(R.string.an_start_online_game_action)),
 				type.getVariant() + "", 0L);
 
+		if (!isRanked) {
+			startGame(gameFragment, blackPlayer, whitePlayer, score, null);
+			return;
+		}
+		final Player theBlackPlayer = blackPlayer;
+		final Player theWhitePlayer = whitePlayer;
+
+		RankHelper.createRankInfo(getGameContext(), type, iAmBlack,
+				new RankInfoUpdated() {
+					@Override
+					public void onRankInfoUpdated(RankInfo rankInfo) {
+						startGame(gameFragment, theBlackPlayer, theWhitePlayer,
+								score, rankInfo);
+					}
+				});
+
+	}
+
+	private void startGame(GameFragment gameFragment, Player blackPlayer,
+			Player whitePlayer, ScoreCard score, RankInfo rankInfo) {
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
-				blackPlayer);
+				blackPlayer, rankInfo);
 		setGame(game);
 		setScore(score);
 
@@ -741,7 +768,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		Game game = getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
-				game.getWhitePlayer(), currentPlayer);
+				game.getWhitePlayer(), currentPlayer, game.getRankInfo());
 		setGame(game);
 		// setScore(score);
 

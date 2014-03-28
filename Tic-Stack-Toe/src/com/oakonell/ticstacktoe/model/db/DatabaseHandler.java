@@ -424,8 +424,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			@Override
 			public void visitAi(AiMatchInfo info) {
 				values.put(TableLocalMatches.KEY_MODE, GameMode.AI.getVal());
-				values.put(TableLocalMatches.KEY_WHITE_AI_LEVEL,
-						info.getWhiteAILevel());
+				values.put(TableLocalMatches.KEY_WHITE_AI_LEVEL, info
+						.getWhiteAILevel().getValue());
 
 			}
 
@@ -537,8 +537,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				.getColumnIndex(TableLocalMatches.KEY_BLACK_NAME));
 		String whiteName = query.getString(query
 				.getColumnIndex(TableLocalMatches.KEY_WHITE_NAME));
-		int aiLevel = query.getInt(query
+		int aiLevelInt = query.getInt(query
 				.getColumnIndex(TableLocalMatches.KEY_WHITE_AI_LEVEL));
+		AILevel aiLevel = null;
+		if (aiLevelInt != 0) {
+			aiLevel = AILevel.fromValue(aiLevelInt);
+		}
 		long lastUpdated = query.getLong(query
 				.getColumnIndex(TableLocalMatches.KEY_LAST_UPDATED));
 		String fileName = query.getString(query

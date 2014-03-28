@@ -1,4 +1,4 @@
-package com.oakonell.ticstacktoe.query;
+package com.oakonell.ticstacktoe.rank;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -19,26 +19,81 @@ import android.util.Log;
 
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
+import com.oakonell.ticstacktoe.model.rank.GameOutcome;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
-import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 
-public class AIRanksRetreiver {
+public class AIRankHelper {
 	private static final long RANKS_CACHE_TIME_MS = TimeUnit.DAYS.toMillis(1);
-	private final static String URL_STRING = "http://ticstacktoe.appspot.com/airanks";
-	private static final String TAG = AIRanksRetreiver.class.getName();
+	private final static String QUERY_URL_STRING = "http://ticstacktoe.appspot.com/airanks";
+	private final static String UPDATE_URL_STRING = "http://ticstacktoe.appspot.com/aiadjust";
+	private static final String TAG = AIRankHelper.class.getName();
 
 	public interface OnRanksRetrieved {
 		void onSuccess(Map<AILevel, Integer> ranks);
 	}
 
-	public static void retrieveRanks(DatabaseHandler db, GameType type,
-			OnRanksRetrieved onRetrieved) {
-		AIRanksRetreiver newMe = new AIRanksRetreiver();
-		newMe.privateRetrieveRanks(db, type, onRetrieved);
+	public static void updateRank(final DatabaseHandler db,
+			final GameType type, final AILevel aiLevel,
+			final GameOutcome outcome, final short humanRank) {
+		Log.i(TAG, "Updating AI rank");
+		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Void... arg0) {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpResponse response;
+				String responseString = null;
+				try {
+					String url = UPDATE_URL_STRING;
+					url += "?";
+					url += "aiKey=" + aiLevel.getValue();
+					url += "&";
+					url += "aiType=" + type.getVariant();
+					url += "&";
+					url += "outcome=" + outcome.getId();
+					url += "&";
+					url += "opponentRank=" + humanRank;
+					HttpGet httpGet = new HttpGet(url);
+					// HttpParams params = httpGet.getParams();
+					// params.setIntParameter("aiKey", aiLevel.getValue());
+					// params.setIntParameter("aiType", type.getVariant());
+					// params.setIntParameter("outcome", outcome.getId());
+					// params.setIntParameter("opponentRank", humanRank);
+					Log.i(TAG,
+							"  connecting to URL " + httpGet.getRequestLine());
+					response = httpclient.execute(httpGet);
+					StatusLine statusLine = response.getStatusLine();
+					Log.i(TAG, "  received response " + response);
+					if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						response.getEntity().writeTo(out);
+						out.close();
+						responseString = out.toString();
+					} else {
+						// Closes the connection.
+						response.getEntity().getContent().close();
+						Log.w(TAG,
+								"Couldn't update AI rank on server, because '"
+										+ statusLine.getReasonPhrase() + "'");
+					}
+				} catch (Exception e) {
+					Log.w(TAG,
+							"Couldn't update AI rank on server, caught an exception "
+									+ e.getMessage());
+					return null;
+				}
+
+				storeRanksAndReturn(db, responseString, type);
+				return null;
+			}
+
+		};
+		task.execute((Void) null);
 	}
 
-	private void privateRetrieveRanks(final DatabaseHandler db,
+	public static void retrieveRanks(final DatabaseHandler db,
 			final GameType type, final OnRanksRetrieved onRetrieved) {
+		Log.i(TAG, "Retrieving AI ranks...");
 		AsyncTask<String, String, Map<AILevel, Integer>> task = new AsyncTask<String, String, Map<AILevel, Integer>>() {
 			@Override
 			protected Map<AILevel, Integer> doInBackground(String... uri) {
@@ -49,10 +104,10 @@ public class AIRanksRetreiver {
 					return queryForRanks(uri);
 				}
 				return returnCachedRanks(db, type);
-
 			}
 
 			private Map<AILevel, Integer> queryForRanks(String... uri) {
+				Log.i(TAG, "  Querying for AI ranks...");
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpResponse response;
 				String responseString = null;
@@ -89,26 +144,30 @@ public class AIRanksRetreiver {
 			}
 
 		};
-		task.execute(URL_STRING);
+		task.execute(QUERY_URL_STRING);
 	}
 
-	private Map<AILevel, Integer> returnCachedRanks(DatabaseHandler db,
+	private static Map<AILevel, Integer> returnCachedRanks(DatabaseHandler db,
 			GameType type) {
+		Log.i(TAG, "  Retrieving cached AI ranks...");
 		return db.getRanks(type);
 	}
 
-	private Map<AILevel, Integer> storeRanksAndReturn(DatabaseHandler db,
-			String result, GameType type) {
+	private static Map<AILevel, Integer> storeRanksAndReturn(
+			DatabaseHandler db, String result, GameType type) {
+		Log.i(TAG, "  interpretting AI rank query results");
 
 		Map<GameType, Map<AILevel, Integer>> aiRanksByGameType = new HashMap<GameType, Map<AILevel, Integer>>();
 		try {
 			JSONObject object = new JSONObject(result);
-			JSONArray random = object.getJSONArray(AiPlayerStrategy.RANDOM_AI
+			JSONArray random = object.getJSONArray(AILevel.RANDOM_AI.getValue()
 					+ "");
-			JSONArray easy = object.getJSONArray(AiPlayerStrategy.EASY_AI + "");
-			JSONArray medium = object.getJSONArray(AiPlayerStrategy.MEDIUM_AI
+			JSONArray easy = object.getJSONArray(AILevel.EASY_AI.getValue()
 					+ "");
-			JSONArray hard = object.getJSONArray(AiPlayerStrategy.HARD_AI + "");
+			JSONArray medium = object.getJSONArray(AILevel.MEDIUM_AI.getValue()
+					+ "");
+			JSONArray hard = object.getJSONArray(AILevel.HARD_AI.getValue()
+					+ "");
 
 			HashMap<AILevel, Integer> junior = new HashMap<AILevel, Integer>();
 			junior.put(AILevel.RANDOM_AI, random.getInt(0));
@@ -131,11 +190,13 @@ public class AIRanksRetreiver {
 			strict.put(AILevel.HARD_AI, hard.getInt(2));
 			aiRanksByGameType.put(GameType.STRICT, strict);
 
+			Log.i(TAG, "  updating DB stored AI ranks");
 			db.updateRanks(aiRanksByGameType);
 		} catch (Exception e) {
 			Log.e(TAG, "Error reading JSON result from '" + result + "'", e);
 		}
 
+		Log.i(TAG, "  querying DB for AI rank");
 		return db.getRanks(type);
 	}
 }

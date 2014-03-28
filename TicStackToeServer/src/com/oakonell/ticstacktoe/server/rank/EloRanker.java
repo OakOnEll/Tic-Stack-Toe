@@ -3,15 +3,17 @@ package com.oakonell.ticstacktoe.server.rank;
 public class EloRanker implements RankingRater {
 
 	@Override
-	public long calculateRank(long oldRank, long opponentsRank, boolean won) {
+	public short calculateRank(short oldRank, short opponentsRank,
+			GameOutcome outcome) {
 		double expected = calculateExpected(oldRank, opponentsRank);
 
-		double actual = won ? 1 : 0;
+		double actual = outcome.getMultiplier();
+
 		double newRank = oldRank + getKFactor(oldRank) * (actual - expected);
-		return (long) Math.round(newRank);
+		return (short) Math.round(newRank);
 	}
 
-	private double getKFactor(long oldRank) {
+	private double getKFactor(short oldRank) {
 		// https://en.wikipedia.org/wiki/Elo_rating_system
 		// Using USCF logistic distribution
 		// Players below 2100: K-factor of 32 used
@@ -24,13 +26,13 @@ public class EloRanker implements RankingRater {
 		return 16;
 	}
 
-	private double calculateExpected(long oldRank, long opponentsRank) {
+	private double calculateExpected(short oldRank, short opponentsRank) {
 		double denom = 1 + Math.pow(10, (opponentsRank - oldRank) / 400.0);
 		return 1.0 / denom;
 	}
 
 	@Override
-	public long initialRank() {
+	public short initialRank() {
 		return 1200;
 	}
 

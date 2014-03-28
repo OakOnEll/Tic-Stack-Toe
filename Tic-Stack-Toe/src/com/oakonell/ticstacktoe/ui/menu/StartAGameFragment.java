@@ -33,6 +33,7 @@ import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.ScoreCard;
+import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
@@ -50,6 +51,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 	private Boolean useTurnBased;
 	private GameType onlineType;
+	private Boolean isRanked;
 
 	private ProgressBar waiting;
 
@@ -202,9 +204,11 @@ public class StartAGameFragment extends SherlockFragment {
 				onlineType = null;
 				boolean turnBased = useTurnBased;
 				useTurnBased = null;
+				boolean ranked = isRanked;
+				isRanked = null;
 
 				createOnlineRoom(invitees, type, turnBased, autoMatchCriteria,
-						true);
+						true, ranked);
 			} else {
 				Log.i(TAG, "Select players canceled");
 			}
@@ -254,8 +258,9 @@ public class StartAGameFragment extends SherlockFragment {
 		NewAIGameDialog dialog = new NewAIGameDialog();
 		dialog.initialize(new LocalAIGameModeListener() {
 			@Override
-			public void chosenMode(GameType type, String aiName, int level) {
-				startAIGame(type, aiName, level);
+			public void chosenMode(GameType type, String aiName, AILevel level,
+					boolean isRanked) {
+				startAIGame(type, aiName, level, isRanked);
 			}
 
 			@Override
@@ -289,17 +294,18 @@ public class StartAGameFragment extends SherlockFragment {
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(true, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(GameType type, boolean useTurnBased) {
+			public void chosenMode(GameType type, boolean useTurnBased,
+					boolean isRanked) {
 				final int MIN_OPPONENTS = 1, MAX_OPPONENTS = 1;
 				Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
 						MIN_OPPONENTS, MAX_OPPONENTS, 0);
 
 				if (useTurnBased) {
-					createTurnBasedQuickMatch(type, autoMatchCriteria);
+					createTurnBasedQuickMatch(type, autoMatchCriteria, isRanked);
 					return;
 				}
 
-				createRealtimeBasedQuickMatch(type, autoMatchCriteria);
+				createRealtimeBasedQuickMatch(type, autoMatchCriteria, isRanked);
 
 			}
 		});
@@ -309,15 +315,20 @@ public class StartAGameFragment extends SherlockFragment {
 	}
 
 	protected void createTurnBasedQuickMatch(GameType type,
-			Bundle autoMatchCriteria) {
+			Bundle autoMatchCriteria, boolean isRanked) {
 		setInactive();
 
+		int variant = type.getVariant();
+		if (isRanked)
+			variant += 100;
+
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
-				.setAutoMatchCriteria(autoMatchCriteria).build();
+				.setAutoMatchCriteria(autoMatchCriteria).setVariant(variant)
+				.build();
 
 		// TODO
 		final TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				context, type, true);
+				context, type, true, isRanked);
 
 		// Kick the match off
 		Games.TurnBasedMultiplayer
@@ -344,11 +355,13 @@ public class StartAGameFragment extends SherlockFragment {
 	}
 
 	protected void createRealtimeBasedQuickMatch(GameType type,
-			Bundle autoMatchCriteria) {
+			Bundle autoMatchCriteria, boolean isRanked) {
 		int variant = type.getVariant();
+		if (isRanked)
+			variant += 100;
 
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(context,
-				type, true, true);
+				type, true, true, isRanked);
 
 		final RoomConfig.Builder rtmConfigBuilder = RoomConfig
 				.builder(roomListener);
@@ -374,9 +387,11 @@ public class StartAGameFragment extends SherlockFragment {
 		OnlineGameModeDialog dialog = new OnlineGameModeDialog();
 		dialog.initialize(false, new OnlineGameModeListener() {
 			@Override
-			public void chosenMode(GameType type, boolean useTurnBased) {
+			public void chosenMode(GameType type, boolean useTurnBased,
+					boolean isRanked) {
 				StartAGameFragment.this.onlineType = type;
 				StartAGameFragment.this.useTurnBased = useTurnBased;
+				StartAGameFragment.this.isRanked = isRanked;
 				Intent intent = Games.RealTimeMultiplayer
 						.getSelectOpponentsIntent(context.getGameHelper()
 								.getApiClient(), 1, 1);
@@ -390,7 +405,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 	private void createOnlineRoom(final ArrayList<String> invitees,
 			GameType type, boolean turnBased, Bundle autoMatchCriteria,
-			boolean initiated) {
+			boolean initiated, boolean isRanked) {
 		Log.d(TAG, "Invitee count: " + invitees.size());
 
 		StringBuilder stringBuilder = new StringBuilder();
@@ -403,15 +418,16 @@ public class StartAGameFragment extends SherlockFragment {
 		// .setMessage(stringBuilder.toString()).show();
 
 		if (turnBased) {
-			createTurnBasedMatch(invitees, type, autoMatchCriteria);
+			createTurnBasedMatch(invitees, type, autoMatchCriteria, isRanked);
 			return;
 		}
 
-		createRealtimeBasedMatch(invitees, type, autoMatchCriteria, initiated);
+		createRealtimeBasedMatch(invitees, type, autoMatchCriteria, initiated,
+				isRanked);
 	}
 
 	private void createTurnBasedMatch(ArrayList<String> invitees,
-			GameType type, Bundle autoMatchCriteria) {
+			GameType type, Bundle autoMatchCriteria, boolean isRanked) {
 
 		setInactive();
 
@@ -420,7 +436,7 @@ public class StartAGameFragment extends SherlockFragment {
 				.setAutoMatchCriteria(autoMatchCriteria).build();
 
 		final TurnBasedMatchGameStrategy strategy = new TurnBasedMatchGameStrategy(
-				context, type, false);
+				context, type, false, isRanked);
 
 		// Kick the match off
 		Games.TurnBasedMultiplayer
@@ -453,10 +469,11 @@ public class StartAGameFragment extends SherlockFragment {
 	}
 
 	private void createRealtimeBasedMatch(final ArrayList<String> invitees,
-			GameType type, Bundle autoMatchCriteria, boolean initiated) {
+			GameType type, Bundle autoMatchCriteria, boolean initiated,
+			boolean isRanked) {
 
 		RealtimeGameStrategy strategy = new RealtimeGameStrategy(context, type,
-				false, initiated);
+				false, initiated, isRanked);
 
 		// create the room
 		Log.d(TAG, "Creating room...");
@@ -491,22 +508,24 @@ public class StartAGameFragment extends SherlockFragment {
 			String whiteName) {
 		PassNPlayGameStrategy strategy = new PassNPlayGameStrategy(context);
 
-		startLocalGame(strategy, type, whiteName, blackName);
+		startLocalGame(strategy, type, whiteName, blackName, false);
 	}
 
-	private void startAIGame(GameType type, String whiteName, int aiDepth) {
+	private void startAIGame(GameType type, String whiteName, AILevel aiLevel,
+			boolean isRanked) {
 		String blackName = getResources().getString(R.string.local_player_name);
-		AiGameStrategy strategy = new AiGameStrategy(context, aiDepth);
+		AiGameStrategy strategy = new AiGameStrategy(context, aiLevel);
 
-		startLocalGame(strategy, type, whiteName, blackName);
+		startLocalGame(strategy, type, whiteName, blackName, isRanked);
 	}
 
 	private void startLocalGame(AbstractLocalStrategy listener, GameType type,
-			String whiteName, String blackName) {
+			String whiteName, String blackName, boolean isRanked) {
 		setInactive();
 		exitStartMenu();
 
-		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0));
+		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0),
+				isRanked);
 	}
 
 	public void onSignInSucceeded() {

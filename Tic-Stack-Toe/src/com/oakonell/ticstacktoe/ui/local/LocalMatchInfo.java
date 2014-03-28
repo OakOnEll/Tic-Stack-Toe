@@ -19,6 +19,7 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
+import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
@@ -128,25 +129,11 @@ public abstract class LocalMatchInfo implements MatchInfo {
 			@Override
 			public void execute(final MenuFragment fragment,
 					List<MatchInfo> matches) {
-				DatabaseHandler dbHandler = fragment.getDbHandler();
-
-				// TODO show progress, or present an undo..
-				dbHandler.deleteMatch(LocalMatchInfo.this,
-						new OnLocalMatchDeleteListener() {
-							@Override
-							public void onDeleteSuccess() {
-							}
-
-							@Override
-							public void onDeleteFailure() {
-								fragment.showAlert("Error deleting match");
-							}
-						});
-
-				matches.remove(LocalMatchInfo.this);
+				dismiss(fragment, matches);
 			}
 		});
 		result.add(dismiss);
+		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 
 		// if (canRematch) {
 		// MatchMenuItem rematch = new MatchMenuItem();
@@ -296,8 +283,8 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public static LocalMatchInfo createLocalMatch(GameMode mode, long id,
 			int matchStatus, int turnStatus, String blackName,
-			String whiteName, int aiLevel, long lastUpdated, String fileName,
-			ScoreCard score, long rematchId, int winner) {
+			String whiteName, AILevel aiLevel, long lastUpdated,
+			String fileName, ScoreCard score, long rematchId, int winner) {
 		if (mode == GameMode.AI) {
 			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
 					whiteName, aiLevel, lastUpdated, fileName, score,
@@ -325,5 +312,25 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public void setScoreCard(ScoreCard score) {
 		this.scoreCard = score;
+	}
+
+	@Override
+	public void dismiss(final MenuFragment fragment, List<MatchInfo> matches) {
+		DatabaseHandler dbHandler = fragment.getDbHandler();
+
+		// TODO show progress, or present an undo..
+		dbHandler.deleteMatch(LocalMatchInfo.this,
+				new OnLocalMatchDeleteListener() {
+					@Override
+					public void onDeleteSuccess() {
+					}
+
+					@Override
+					public void onDeleteFailure() {
+						fragment.showAlert("Error deleting match");
+					}
+				});
+
+		matches.remove(LocalMatchInfo.this);
 	}
 }

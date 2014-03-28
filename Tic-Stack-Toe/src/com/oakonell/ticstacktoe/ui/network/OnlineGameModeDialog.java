@@ -19,7 +19,7 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 	public static final String SELECT_PLAYER_INTENT_KEY = "select_player";
 
 	public interface OnlineGameModeListener {
-		void chosenMode(GameType type, boolean useTurnBased);
+		void chosenMode(GameType type, boolean useTurnBased, boolean isRanked);
 	}
 
 	private OnlineGameModeListener listener;
@@ -50,8 +50,10 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 
-		final CheckBox realtime = (CheckBox) view
-				.findViewById(R.id.realtime);
+		final CheckBox realtime = (CheckBox) view.findViewById(R.id.realtime);
+
+		final CheckBox isRanked = (CheckBox) view
+				.findViewById(R.id.ranked_game);
 
 		start.setOnClickListener(new OnClickListener() {
 
@@ -63,7 +65,7 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 						.getSelectedItem();
 				boolean isTurnBased = !realtime.isChecked();
 
-				listener.chosenMode(typeItem.type, isTurnBased);
+				listener.chosenMode(typeItem.type, isTurnBased, isRanked.isChecked());
 			}
 		});
 		return view;

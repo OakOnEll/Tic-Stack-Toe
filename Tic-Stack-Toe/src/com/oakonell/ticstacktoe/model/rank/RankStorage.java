@@ -2,6 +2,7 @@ package com.oakonell.ticstacktoe.model.rank;
 
 import java.nio.ByteBuffer;
 
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class RankStorage {
@@ -19,13 +20,15 @@ public class RankStorage {
 	public TypeRankStorage getJuniorRank() {
 		return juniorRank;
 	}
+
 	public TypeRankStorage getNormalRank() {
 		return normalRank;
 	}
+
 	public TypeRankStorage getStrictRank() {
 		return strictRank;
 	}
-	
+
 	public void appendToBytes(ByteBufferDebugger buffer) {
 		juniorRank.appendToBytes(buffer);
 		normalRank.appendToBytes(buffer);
@@ -57,6 +60,17 @@ public class RankStorage {
 		return new RankStorage(juniorResolve, normalResolve, strictResolve);
 	}
 
-
+	public TypeRankStorage getRank(GameType type) {
+		if (type.getVariant() == 1) {
+			return getJuniorRank();
+		} else if (type.getVariant() == 2) {
+			return getNormalRank();
+		} else if (type.getVariant() == 3) {
+			return getStrictRank();
+		} else {
+			throw new RuntimeException("Unsupported variant "
+					+ type.getVariant());
+		}
+	}
 
 }

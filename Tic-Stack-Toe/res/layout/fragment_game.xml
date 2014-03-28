@@ -51,6 +51,14 @@
                         android:text="Black name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+                    <TextView
+                        android:id="@+id/black_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="1200"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_black_wins"
                         android:layout_width="match_parent"
@@ -412,6 +420,13 @@
                         android:lines="1"
                         android:text="White Name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <TextView
+                        android:id="@+id/white_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1200"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_white_wins"

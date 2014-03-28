@@ -10,6 +10,7 @@ import android.text.format.DateUtils;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
@@ -96,6 +97,16 @@ public class InviteMatchInfo implements MatchInfo {
 	@Override
 	public long getUpdatedTimestamp() {
 		return created;
+	}
+
+	@Override
+	public int getMatchStatus() {
+		return TurnBasedMatch.MATCH_TURN_STATUS_INVITED;
+	}
+
+	@Override
+	public void dismiss(MenuFragment fragment, List<MatchInfo> matches) {
+		// doesn't support dismiss... instead it is a decline?
 	}
 
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.rank.RankStorage;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -39,4 +41,8 @@ public interface GameContext {
 	void hideAd();
 
 	void gameEnded();
+	
+	void loadRank(OnRankReceived onRankLoaded, boolean initializeIfNone);
+
+	void updateCachedRank(RankStorage storage);
 }

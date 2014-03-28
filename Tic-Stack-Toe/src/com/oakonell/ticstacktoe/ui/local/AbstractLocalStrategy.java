@@ -18,10 +18,13 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
+import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 
@@ -86,12 +89,17 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			}
 			matchInfo.setScoreCard(getScore());
 			saveToDB();
+			gameFinished();
 			return;
 		}
 		getMatchInfo()
 				.setTurnStatus(
 						getGame().getCurrentPlayer().isBlack() ? TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN
 								: TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN);
+	}
+
+	protected void gameFinished() {
+
 	}
 
 	@Override
@@ -142,12 +150,12 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	}
 
-	private void playAgain() {
+	protected void playAgain() {
 		Game game = getMatchInfo().readGame(getContext());
 		boolean firstIsBlack = game.getCurrentPlayer().isBlack();
 		startGame(firstIsBlack, game.getBlackPlayer().getName(), game
 				.getWhitePlayer().getName(), game.getType(), getMatchInfo()
-				.getScoreCard());
+				.getScoreCard(), game.getRankInfo() != null);
 		// TODO, keep track of score, and switch first player...
 	}
 
@@ -169,6 +177,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	public void showFromMenu() {
 		GameFragment gameFragment = GameFragment.createFragment();
 		Game game = getMatchInfo().readGame(getContext());
+		// TODO update possible ranked AI match ranks (mine and AI's)
 		setGame(game);
 		ScoreCard score = getMatchInfo().getScoreCard();
 		setScore(score);
@@ -194,27 +203,47 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	}
 
 	public void startGame(String blackName, String whiteName, GameType type,
-			final ScoreCard score) {
-		startGame(true, blackName, whiteName, type, score);
+			final ScoreCard score, boolean isRanked) {
+		startGame(true, blackName, whiteName, type, score, isRanked);
 	}
 
-	public void startGame(boolean blackFirst, String blackName,
-			String whiteName, GameType type, final ScoreCard score) {
-		Player whitePlayer = createWhitePlayer(whiteName);
-		GameMode gameMode = getGameMode();
+	public void startGame(final boolean blackFirst, final String blackName,
+			final String whiteName, final GameType type, final ScoreCard score,
+			boolean isRanked) {
+		final Player whitePlayer = createWhitePlayer(whiteName);
+		final GameMode gameMode = getGameMode();
 
 		Tracker myTracker = EasyTracker.getTracker();
 		myTracker.sendEvent(getContext().getString(R.string.an_start_game_cat),
 				getContext().getString(R.string.an_start_ai_game_action), type
 						+ "", 0L);
 
-		Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
-		Player firstPlayer = blackPlayer;
-		if (!blackFirst) {
-			firstPlayer = whitePlayer;
+		final Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
+		final Player firstPlayer = blackFirst ? blackPlayer : whitePlayer;
+
+		if (!isRanked) {
+			startGame(gameMode, type, blackFirst, blackName, whitePlayer,
+					whiteName, score, blackPlayer, firstPlayer, null);
+			return;
 		}
+		RankHelper.createRankInfo(getGameContext(), type, true,
+				new RankInfoUpdated() {
+					@Override
+					public void onRankInfoUpdated(RankInfo info) {
+						startGame(gameMode, type, blackFirst, blackName,
+								whitePlayer, whiteName, score, blackPlayer,
+								firstPlayer, info);
+
+					}
+				});
+	}
+
+	protected void startGame(GameMode gameMode, GameType type,
+			boolean blackFirst, String blackName, Player whitePlayer,
+			String whiteName, final ScoreCard score, Player blackPlayer,
+			Player firstPlayer, RankInfo rankInfo) {
 		final Game game = new Game(type, gameMode, blackPlayer, whitePlayer,
-				firstPlayer);
+				firstPlayer, rankInfo);
 		setGame(game);
 		setScore(score);
 		LocalMatchInfo theMatchInfo = createNewMatchInfo(blackName, whiteName,

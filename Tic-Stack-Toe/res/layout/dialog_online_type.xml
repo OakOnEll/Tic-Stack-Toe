@@ -25,23 +25,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
-        
-        
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical" >
 
-
-            <CheckBox android:visibility="visible"
+            <CheckBox
                 android:id="@+id/realtime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Real-time"
-                />
+                android:visibility="visible" />
         </TableRow>
-        
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+
+            <CheckBox
+                android:id="@+id/ranked_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ranked Game" />
+        </TableRow>
     </TableLayout>
 
     <Button

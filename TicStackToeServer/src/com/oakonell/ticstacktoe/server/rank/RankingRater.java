@@ -1,7 +1,13 @@
 package com.oakonell.ticstacktoe.server.rank;
 
 public interface RankingRater {
-	long initialRank();
+	public static class Factory {
+		public static RankingRater getRanker() {
+			return new EloRanker();
+		}
+	}
 
-	long calculateRank(long oldRank, long opponentsRank, boolean won);
+	short initialRank();
+
+	short calculateRank(short oldRank, short opponentsRank, GameOutcome outcome);
 }

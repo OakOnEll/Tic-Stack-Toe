@@ -14,6 +14,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -21,16 +24,16 @@ import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
-import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
-import com.oakonell.ticstacktoe.query.AIRanksRetreiver;
-import com.oakonell.ticstacktoe.query.AIRanksRetreiver.OnRanksRetrieved;
+import com.oakonell.ticstacktoe.rank.AIRankHelper;
+import com.oakonell.ticstacktoe.rank.AIRankHelper.OnRanksRetrieved;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.TypeDropDownItem;
 
 public class NewAIGameDialog extends SherlockDialogFragment {
 
 	public interface LocalAIGameModeListener {
-		void chosenMode(GameType type, String aiName, int level);
+		void chosenMode(GameType type, String aiName, AILevel level,
+				boolean isRanked);
 
 		void cancel();
 	}
@@ -43,10 +46,10 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 	}
 
 	public static class AiDropDownItem {
-		private final int level;
+		private final AILevel level;
 		private String text;
 
-		public AiDropDownItem(String string, int level) {
+		public AiDropDownItem(String string, AILevel level) {
 			this.level = level;
 			this.text = string;
 		}
@@ -66,13 +69,13 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		final List<AiDropDownItem> aiLevels = new ArrayList<NewAIGameDialog.AiDropDownItem>();
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_random), AiPlayerStrategy.RANDOM_AI));
+				R.string.ai_random), AILevel.RANDOM_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_easy), AiPlayerStrategy.EASY_AI));
+				R.string.ai_easy), AILevel.EASY_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_medium), AiPlayerStrategy.MEDIUM_AI));
+				R.string.ai_medium), AILevel.MEDIUM_AI));
 		aiLevels.add(new AiDropDownItem(getResources().getString(
-				R.string.ai_hard), AiPlayerStrategy.HARD_AI));
+				R.string.ai_hard), AILevel.HARD_AI));
 
 		final Spinner aiLevelSpinner = (Spinner) view
 				.findViewById(R.id.ai_level);
@@ -84,6 +87,17 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
+		final CheckBox ranked = (CheckBox) view.findViewById(R.id.ranked_game);
+
+		ranked.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				GameType type = ((TypeDropDownItem) typeSpinner
+						.getSelectedItem()).type;
+				retrieveRanks(type, aiLevels, aiLevelAdapter, isChecked);
+			}
+		});
 
 		handler = new DatabaseHandler(getActivity());
 		typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -93,7 +107,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 					long id) {
 				GameType type = ((TypeDropDownItem) typeSpinner
 						.getSelectedItem()).type;
-				retrieveRanks(type, aiLevels, aiLevelAdapter);
+				retrieveRanks(type, aiLevels, aiLevelAdapter,
+						ranked.isChecked());
 			}
 
 			@Override
@@ -103,7 +118,7 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		});
 		GameType type = ((TypeDropDownItem) typeSpinner.getSelectedItem()).type;
-		retrieveRanks(type, aiLevels, aiLevelAdapter);
+		retrieveRanks(type, aiLevels, aiLevelAdapter, ranked.isChecked());
 
 		Button start = (Button) view.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {
@@ -116,11 +131,27 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 				TypeDropDownItem typeItem = (TypeDropDownItem) typeSpinner
 						.getSelectedItem();
 
-				String whiteName = selectedItem.text + " AI";
+				int label = 0;
+				switch (selectedItem.level) {
+				case RANDOM_AI:
+					label = R.string.ai_random;
+					break;
+				case EASY_AI:
+					label = R.string.ai_easy;
+					break;
+				case MEDIUM_AI:
+					label = R.string.ai_medium;
+					break;
+				case HARD_AI:
+					label = R.string.ai_hard;
+					break;
+				}
+
+				String whiteName = getResources().getString(label) + " AI";
 
 				dismiss();
 				listener.chosenMode(typeItem.type, whiteName,
-						selectedItem.level);
+						selectedItem.level, ranked.isChecked());
 			}
 		});
 		return view;
@@ -128,27 +159,51 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 	private void retrieveRanks(GameType type,
 			final List<AiDropDownItem> aiLevels,
-			final ArrayAdapter<AiDropDownItem> aiLevelAdapter) {
-		AIRanksRetreiver.retrieveRanks(handler, type, new OnRanksRetrieved() {
+			final ArrayAdapter<AiDropDownItem> aiLevelAdapter,
+			boolean includeRanks) {
+		if (!includeRanks) {
+			for (AiDropDownItem each : aiLevels) {
+				int label = 0;
+				switch (each.level) {
+				case RANDOM_AI:
+					label = R.string.ai_random;
+					break;
+				case EASY_AI:
+					label = R.string.ai_easy;
+					break;
+				case MEDIUM_AI:
+					label = R.string.ai_medium;
+					break;
+				case HARD_AI:
+					label = R.string.ai_hard;
+					break;
+				}
+				each.text = getResources().getString(label);
+			}
+			aiLevelAdapter.notifyDataSetChanged();
+			return;
+		}
+		// TODO show a progress dialog and clear when success
+		AIRankHelper.retrieveRanks(handler, type, new OnRanksRetrieved() {
 			@Override
 			public void onSuccess(Map<AILevel, Integer> ranks) {
 				for (AiDropDownItem each : aiLevels) {
 					int rank = 0;
 					int label = 0;
 					switch (each.level) {
-					case AiPlayerStrategy.RANDOM_AI:
+					case RANDOM_AI:
 						label = R.string.ai_random;
 						rank = ranks.get(AILevel.RANDOM_AI);
 						break;
-					case AiPlayerStrategy.EASY_AI:
+					case EASY_AI:
 						label = R.string.ai_easy;
 						rank = ranks.get(AILevel.EASY_AI);
 						break;
-					case AiPlayerStrategy.MEDIUM_AI:
+					case MEDIUM_AI:
 						label = R.string.ai_medium;
 						rank = ranks.get(AILevel.MEDIUM_AI);
 						break;
-					case AiPlayerStrategy.HARD_AI:
+					case HARD_AI:
 						label = R.string.ai_hard;
 						rank = ranks.get(AILevel.HARD_AI);
 						break;

@@ -50,6 +50,7 @@ import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.PlaceNewPieceMove;
 import com.oakonell.ticstacktoe.model.Player;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
@@ -1153,6 +1154,17 @@ public class GameFragment extends AbstractGameFragment {
 		blackName.setText(getGame().getBlackPlayer().getName());
 		TextView whiteName = (TextView) view.findViewById(R.id.whiteName);
 		whiteName.setText(getGame().getWhitePlayer().getName());
+
+		TextView blackRank = (TextView) view.findViewById(R.id.black_rank);
+		TextView whiteRank = (TextView) view.findViewById(R.id.white_rank);
+		RankInfo rankInfo = getGame().getRankInfo();
+		if (rankInfo != null) {
+			blackRank.setText(getGame().getRankInfo().blackRank() + "");
+			whiteRank.setText(getGame().getRankInfo().whiteRank() + "");
+		} else {
+			blackRank.setVisibility(View.GONE);
+			whiteRank.setVisibility(View.GONE);
+		}
 
 		ImageView blackImage = (ImageView) view.findViewById(R.id.black_back);
 		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);

@@ -56,6 +56,9 @@ import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.LocalMatchesBuffer;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchesLoadListener;
+import com.oakonell.ticstacktoe.model.rank.RankStorage;
+import com.oakonell.ticstacktoe.model.rank.TypeRankStorage;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
@@ -87,11 +90,21 @@ public class MenuFragment extends SherlockFragment implements
 
 	private PullToRefreshLayout mPullToRefreshLayout;
 
+	private GameContext context;
+
+	private View juniorRankView;
+	private View normalRankView;
+	private View strictRankView;
+
+	private boolean localRefreshed;
+	private boolean networkRefreshed;
+	private boolean rankRefreshed;
+
+	private MergeAdapter menuAdapter;
+
 	public MenuFragment() {
 		// for reference finding
 	}
-
-	private GameContext context;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -197,34 +210,44 @@ public class MenuFragment extends SherlockFragment implements
 				.setup(mPullToRefreshLayout);
 
 		ListView listView = (ListView) view.findViewById(R.id.list);
-		MergeAdapter adapter = new MergeAdapter();
+		menuAdapter = new MergeAdapter();
 
-		adapter.addView(main);
+		juniorRankView = inflater.inflate(R.layout.rank_layout, null);
+		juniorRankView.setVisibility(View.GONE);
+		menuAdapter.addView(juniorRankView);
+		menuAdapter.setActive(juniorRankView, false);
+		normalRankView = inflater.inflate(R.layout.rank_layout, null);
+		normalRankView.setVisibility(View.GONE);
+		menuAdapter.addView(normalRankView);
+		menuAdapter.setActive(normalRankView, false);
+		strictRankView = inflater.inflate(R.layout.rank_layout, null);
+		strictRankView.setVisibility(View.GONE);
+		menuAdapter.addView(strictRankView);
+		menuAdapter.setActive(strictRankView, false);
+
+		menuAdapter.addView(main);
 
 		View myTurnHeader = createMatchListHeader(inflater, view, "Your Turn");
-		adapter.addView(myTurnHeader);
-		myTurnHeader.setVisibility(View.GONE);
+		menuAdapter.addView(myTurnHeader);
 		myTurnsAdapter = new MatchAdapter(getActivity(), this, myTurns,
-				myTurnHeader);
-		adapter.addAdapter(myTurnsAdapter);
+				menuAdapter, myTurnHeader);
+		menuAdapter.addAdapter(myTurnsAdapter);
 
 		View theirTurnHeader = createMatchListHeader(inflater, view,
 				"Their turn");
-		adapter.addView(theirTurnHeader);
-		theirTurnHeader.setVisibility(View.GONE);
+		menuAdapter.addView(theirTurnHeader);
 		theirTurnsAdapter = new MatchAdapter(getActivity(), this, theirTurns,
-				theirTurnHeader);
-		adapter.addAdapter(theirTurnsAdapter);
+				menuAdapter, theirTurnHeader);
+		menuAdapter.addAdapter(theirTurnsAdapter);
 
 		View completedHeader = createMatchListHeader(inflater, view,
 				"Completed");
-		adapter.addView(completedHeader);
-		completedHeader.setVisibility(View.GONE);
+		menuAdapter.addView(completedHeader);
 		completedMatchesAdapter = new MatchAdapter(getActivity(), this,
-				completedMatches, completedHeader);
-		adapter.addAdapter(completedMatchesAdapter);
+				completedMatches, menuAdapter, completedHeader);
+		menuAdapter.addAdapter(completedMatchesAdapter);
 
-		listView.setAdapter(adapter);
+		listView.setAdapter(menuAdapter);
 
 		return view;
 	}
@@ -389,6 +412,17 @@ public class MenuFragment extends SherlockFragment implements
 			updateMatch(aMatch);
 			return;
 		}
+
+	}
+
+	protected void updateRankView(View rankView, String typeString,
+			TypeRankStorage rank) {
+		rankView.setVisibility(View.VISIBLE);
+		menuAdapter.setActive(rankView, true);
+		TextView label = (TextView) rankView.findViewById(R.id.rank_label);
+		label.setText("Your " + typeString + " rank");
+		TextView rankText = (TextView) rankView.findViewById(R.id.rank);
+		rankText.setText(rank.getRank() + "");
 	}
 
 	public void signOut() {
@@ -442,7 +476,7 @@ public class MenuFragment extends SherlockFragment implements
 	// Accept the given invitation.
 	public void acceptInviteToRoom(String invId) {
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(context,
-				null, false, false);
+				null, false, false, false);
 		// accept the invitation
 		Log.d(TAG, "Accepting invitation: " + invId);
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(roomListener);
@@ -499,12 +533,13 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private void unregisterMatchListeners() {
-		// TODO this is being called AFTER the game strategy has been created, and registered itself!
+		// TODO this is being called AFTER the game strategy has been created,
+		// and registered itself!
 		Log.d(TAG, "called to unregister match listener");
-//		Games.Invitations.unregisterInvitationListener(context.getGameHelper()
-//				.getApiClient());
-//		Games.TurnBasedMultiplayer.unregisterMatchUpdateListener(context
-//				.getGameHelper().getApiClient());
+		// Games.Invitations.unregisterInvitationListener(context.getGameHelper()
+		// .getApiClient());
+		// Games.TurnBasedMultiplayer.unregisterMatchUpdateListener(context
+		// .getGameHelper().getApiClient());
 	}
 
 	public void acceptTurnBasedInvitation(final String inviteId) {
@@ -570,16 +605,34 @@ public class MenuFragment extends SherlockFragment implements
 		listener.showFromMenu();
 	}
 
-	private boolean localRefreshed;
-	private boolean networkRefreshed;
-
 	public void refreshMatches() {
 		if (mPullToRefreshLayout != null) {
 			mPullToRefreshLayout.setRefreshing(true);
 		}
 		localRefreshed = false;
 		networkRefreshed = false;
+		rankRefreshed = false;
 		Log.i(TAG, "about to refresh DB");
+
+		context.loadRank(new OnRankReceived() {
+			@Override
+			public void receivedRank(RankStorage rankStorage) {
+				rankRefreshed = true;
+				if (rankStorage == null) {
+					conditionallyMarkRefreshComplete();
+					return;
+				}
+				updateRankView(juniorRankView, "junior",
+						rankStorage.getJuniorRank());
+				updateRankView(normalRankView, "normal",
+						rankStorage.getNormalRank());
+				updateRankView(strictRankView, "strict",
+						rankStorage.getStrictRank());
+
+				conditionallyMarkRefreshComplete();
+			}
+		}, false);
+
 		dbHandler.getMatches(new OnLocalMatchesLoadListener() {
 			@Override
 			public void onLoadSuccess(LocalMatchesBuffer localMatchesBuffer) {
@@ -599,9 +652,7 @@ public class MenuFragment extends SherlockFragment implements
 				completedMatchesAdapter.notifyDataSetChanged();
 
 				localRefreshed = true;
-				if (localRefreshed && networkRefreshed) {
-					mPullToRefreshLayout.setRefreshComplete();
-				}
+				conditionallyMarkRefreshComplete();
 			}
 
 			private void clearLocalMatches(List<MatchInfo> list) {
@@ -617,10 +668,9 @@ public class MenuFragment extends SherlockFragment implements
 			public void onLoadFailure() {
 				Log.w(TAG, "Error loading local matches");
 				localRefreshed = true;
-				if (localRefreshed && networkRefreshed) {
-					mPullToRefreshLayout.setRefreshComplete();
-				}
+				conditionallyMarkRefreshComplete();
 			}
+
 		});
 		if (!context.getGameHelper().getApiClient().isConnected()) {
 			if (!context.getGameHelper().getApiClient().isConnecting()
@@ -642,9 +692,7 @@ public class MenuFragment extends SherlockFragment implements
 						int status = result.getStatus().getStatusCode();
 						if (status != GamesClient.STATUS_OK) {
 							networkRefreshed = true;
-							if (localRefreshed && networkRefreshed) {
-								mPullToRefreshLayout.setRefreshComplete();
-							}
+							conditionallyMarkRefreshComplete();
 							// TODO report an error in some way, retry
 							return;
 						}
@@ -679,9 +727,7 @@ public class MenuFragment extends SherlockFragment implements
 								completedMatchesAdapter, completedMatches);
 
 						networkRefreshed = true;
-						if (localRefreshed && networkRefreshed) {
-							mPullToRefreshLayout.setRefreshComplete();
-						}
+						conditionallyMarkRefreshComplete();
 					}
 
 					private void clearNonLocalMatches(List<MatchInfo> list) {
@@ -709,6 +755,12 @@ public class MenuFragment extends SherlockFragment implements
 						adapter.notifyDataSetChanged();
 					}
 				});
+	}
+
+	private void conditionallyMarkRefreshComplete() {
+		if (localRefreshed && networkRefreshed && rankRefreshed) {
+			mPullToRefreshLayout.setRefreshComplete();
+		}
 	}
 
 	@Override

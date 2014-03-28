@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.android.gms.common.images.ImageManager;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.ui.ImageHelper;
@@ -27,19 +28,23 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 	private final ImageManager imgManager;
 	private final View labelView;
 	private final List<MatchInfo> objects;
+	private final MergeAdapter menuAdapter;
 
 	public MatchAdapter(Activity context, MenuFragment fragment,
-			List<MatchInfo> objects, View labelView) {
+			List<MatchInfo> objects, MergeAdapter menuAdapter, View labelView) {
 		super(context, R.layout.match_layout, objects);
 		this.context = context;
 		this.imgManager = ImageManager.create(context);
 		this.fragment = fragment;
 		this.labelView = labelView;
 		this.objects = objects;
+		this.menuAdapter = menuAdapter;
 		if (objects.size() > 0) {
 			labelView.setVisibility(View.VISIBLE);
+			menuAdapter.setActive(labelView, true);
 		} else {
 			labelView.setVisibility(View.GONE);
+			menuAdapter.setActive(labelView, false);
 		}
 	}
 
@@ -152,8 +157,10 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 		super.notifyDataSetChanged();
 		if (getCount() == 0) {
 			labelView.setVisibility(View.GONE);
+			menuAdapter.setActive(labelView, false);
 		} else {
 			labelView.setVisibility(View.VISIBLE);
+			menuAdapter.setActive(labelView, true);
 		}
 	}
 
