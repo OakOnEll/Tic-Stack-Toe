@@ -82,7 +82,7 @@ public class RankedAIPlayAgainFragment extends SherlockDialogFragment {
 		newAiRankText.setText("--");
 
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
-		waiting.setVisibility(view.VISIBLE);
+		waiting.setVisibility(View.VISIBLE);
 		return view;
 	}
 

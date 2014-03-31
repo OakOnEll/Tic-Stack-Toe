@@ -40,11 +40,18 @@ import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.model.rank.GameOutcome;
+import com.oakonell.ticstacktoe.model.rank.RankStorage;
+import com.oakonell.ticstacktoe.model.rank.RankedGame;
+import com.oakonell.ticstacktoe.model.rank.RankingRater;
 import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
+import com.oakonell.ticstacktoe.ui.local.AiGameStrategy.PostRankUpdate;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
@@ -63,6 +70,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	private static final byte MSG_IN_CHAT = 6;
 	private static final byte MSG_CLOSE_CHAT = 7;
 	private static final byte MSG_PROTOCOL_VERSION = 8;
+	private static final byte MSG_RANK = 9;
+	private static final byte MSG_PLAY_AGAIN_RANK = 10;
 
 	private int opponentProtocolVersion;
 
@@ -80,6 +89,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	private GameType type;
 
 	private OnlinePlayAgainFragment onlinePlayAgainDialog;
+	private boolean iAmBlack;
 
 	public RealtimeGameStrategy(GameContext context, GameType type,
 			boolean isQuick, boolean initiatedTheGame, boolean isRanked) {
@@ -219,14 +229,20 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			messageRecieved(getOpponentParticipant(), string);
 		} else if (type == MSG_SEND_VARIANT) {
 			int sentVariant = buffer.getInt();
+			boolean sentIsRanked = buffer.getInt() == 1;
 			if (this.type != null) {
 				// verify that the size agree
 				if (this.type.getVariant() != sentVariant) {
 					throw new RuntimeException(
 							"Opponent's variant setting does not match!");
 				}
+				if (isRanked != sentIsRanked) {
+					throw new RuntimeException(
+							"Opponent's isRanked setting does not match!");
+				}
 			} else {
 				this.type = GameType.fromVariant(sentVariant);
+				this.isRanked = sentIsRanked;
 				announce("Received variant");
 			}
 		} else if (type == MSG_PLAY_AGAIN) {
@@ -236,6 +252,12 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			opponentInChat();
 		} else if (type == MSG_CLOSE_CHAT) {
 			opponentClosedChat();
+		} else if (type == MSG_RANK) {
+			int opponentRank = buffer.getInt();
+			updateOpponentRank((short) opponentRank);
+		} else if (type == MSG_PLAY_AGAIN_RANK) {
+			int opponentRank = buffer.getInt();
+			updatePlayAgainOpponentRank((short) opponentRank);
 		} else {
 			// handle later version future support
 			if (opponentProtocolVersion > PROTOCOL_VERSION) {
@@ -247,11 +269,27 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	}
 
+	short opponentRank = -1;
+
+	private void updateOpponentRank(short opponentRank) {
+		if (getGame() == null || getGame().getRankInfo() == null) {
+			this.opponentRank = opponentRank;
+			return;
+		}
+		if (iAmBlack) {
+			getGame().getRankInfo().setWhiteRank(opponentRank);
+		} else {
+			getGame().getRankInfo().setBlackRank(opponentRank);
+		}
+		getGameFragment().refreshHeader();
+	}
+
 	public boolean shouldHideAd() {
 		return true;
 	}
 
-	private void startGame(boolean iAmBlack) {
+	private void startGame(final boolean iAmBlack) {
+		this.iAmBlack = iAmBlack;
 		final GameFragment gameFragment = GameFragment.createFragment();
 		// ads in online play will leave the room.. hide the ad to avoid the
 		// problem
@@ -290,6 +328,19 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				new RankInfoUpdated() {
 					@Override
 					public void onRankInfoUpdated(RankInfo rankInfo) {
+						if (iAmBlack) {
+							sendRank(rankInfo.blackRank());
+							if (opponentRank > 0) {
+								rankInfo.setWhiteRank(opponentRank);
+								opponentRank = -1;
+							}
+						} else {
+							sendRank(rankInfo.whiteRank());
+							if (opponentRank > 0) {
+								rankInfo.setBlackRank(opponentRank);
+								opponentRank = -1;
+							}
+						}
 						startGame(gameFragment, theBlackPlayer, theWhitePlayer,
 								score, rankInfo);
 					}
@@ -423,8 +474,10 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	private Participant getOpponentParticipant() {
-		if (!mParticipants.get(0).getParticipantId().equals(mMyParticipantId)) {
-			return mParticipants.get(0);
+		Participant participant0 = mParticipants.get(0);
+		String participant0Id = participant0.getParticipantId();
+		if (!participant0Id.equals(mMyParticipantId)) {
+			return participant0;
 		}
 		return mParticipants.get(1);
 	}
@@ -451,6 +504,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 					.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
 			buffer.put(MSG_SEND_VARIANT);
 			buffer.putInt(type.getVariant());
+			buffer.putInt(isRanked ? 1 : 0);
 			Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
 					.getApiClient(), new ReliableMessageSentCallback() {
 				@Override
@@ -708,11 +762,127 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void promptToPlayAgain(String winner, String title) {
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
-		onlinePlayAgainDialog.initialize(this, getOpponentName(), title);
+		onlinePlayAgainDialog.initialize(this, getOpponentName(), title,
+				iAmBlack);
+		if (getGame().getRankInfo() == null) {
+			onlinePlayAgainDialog.show(getGameFragment()
+					.getChildFragmentManager(), "playAgain");
+			return;
+		}
+
+		RankHelper.loadRankStorage(getGameContext(), new OnRankReceived() {
+			@Override
+			public void receivedRank(RankStorage storage) {
+				short myRank = storage.getRank(getGame().getType()).getRank();
+				sendPlayAgainRank(myRank);
+				playAgainMy = myRank;
+				conditionallyUpdateRanks();
+			}
+
+		}, true);
+
 		onlinePlayAgainDialog.show(getGameFragment().getChildFragmentManager(),
 				"playAgain");
+
+		// TODO show the updated ranks in the play again dialog...
 		// TODO wire up the play again / not play again message handling via
 		// the dialog
+	}
+
+	private short playAgainOpponent = -1;
+	private short playAgainMy = -1;
+
+	private void conditionallyUpdateRanks() {
+		if (playAgainOpponent > 0 && playAgainMy > 0) {
+			if (iAmBlack) {
+				getGame().getRankInfo().setBlackRank(playAgainMy);
+				getGame().getRankInfo().setWhiteRank(playAgainOpponent);
+			} else {
+				getGame().getRankInfo().setBlackRank(playAgainOpponent);
+				getGame().getRankInfo().setWhiteRank(playAgainMy);
+			}
+			playAgainOpponent = -1;
+			playAgainMy = -1;
+			PostRankUpdate postRankUpdate = new PostRankUpdate() {
+				@Override
+				public void ranksUpdated(short oldBlackRank,
+						short newBlackRank, short oldWhiteRank,
+						short newWhiteRank) {
+					onlinePlayAgainDialog.updateRanks(oldBlackRank,
+							newBlackRank, oldWhiteRank, newWhiteRank);
+					getGame().getRankInfo().setBlackRank(newBlackRank);
+					getGame().getRankInfo().setWhiteRank(newWhiteRank);
+				}
+			};
+			updateRanks(postRankUpdate);
+		}
+	}
+
+	private void updatePlayAgainOpponentRank(short opponentRank2) {
+		playAgainOpponent = opponentRank2;
+		conditionallyUpdateRanks();
+	}
+
+	private void updateRanks(final PostRankUpdate postUpdate) {
+		State state = getGame().getBoard().getState();
+		final GameOutcome outcome;
+		Player winner = state.getWinner();
+		if (winner != null) {
+			outcome = iAmBlack == winner.isBlack() ? GameOutcome.WIN
+					: GameOutcome.LOSE;
+		} else {
+			outcome = GameOutcome.DRAW;
+		}
+
+		RankInfo rankInfo = getGame().getRankInfo();
+		// short myStartRank = iAmBlack ? rankInfo.blackRank() :
+		// rankInfo.whiteRank();
+		final short opponentRank = iAmBlack ? rankInfo.whiteRank() : rankInfo
+				.blackRank();
+		RankHelper.updateRank(getGameContext(), getGame().getType(),
+				new RankedGame((short) opponentRank, outcome),
+				new OnMyRankUpdated() {
+					@Override
+					public void onRankUpdated(short oldRank, short newRank) {
+						sendPlayAgainRank(newRank);
+						// calculate locally, for real time, should be good?
+						// will receive updated above
+						short opponentNewRank = RankingRater.Factory
+								.getRanker().calculateRank(opponentRank,
+										oldRank, outcome.opposite());
+						if (postUpdate != null) {
+							if (iAmBlack) {
+								postUpdate.ranksUpdated(oldRank, newRank,
+										opponentRank, opponentNewRank);
+							} else {
+								postUpdate.ranksUpdated(opponentRank,
+										opponentNewRank, oldRank, newRank);
+							}
+						}
+					}
+				});
+
+	}
+
+	private void sendPlayAgainRank(short rank) {
+		ByteBuffer buffer = ByteBuffer
+				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
+		buffer.put(MSG_PLAY_AGAIN_RANK);
+		buffer.putInt(rank);
+
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
+
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode == GamesClient.STATUS_OK) {
+					// hmm...
+				} else {
+					// hmmm
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
 	}
 
 	public void opponentWillPlayAgain() {
@@ -767,15 +937,36 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	public void playAgain() {
-		GameFragment gameFragment = getGameFragment();
+		final GameFragment gameFragment = getGameFragment();
 		Game game = getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
 				game.getWhitePlayer(), currentPlayer, game.getRankInfo());
 		setGame(game);
-		// setScore(score);
 
 		gameFragment.startGame(null, false);
+
+	}
+
+	private void sendRank(short rank) {
+		ByteBuffer buffer = ByteBuffer
+				.allocate(GamesClient.MAX_RELIABLE_MESSAGE_LEN);
+		buffer.put(MSG_RANK);
+		buffer.putInt(rank);
+
+		Games.RealTimeMultiplayer.sendReliableMessage(getHelper()
+				.getApiClient(), new ReliableMessageSentCallback() {
+
+			@Override
+			public void onRealTimeMessageSent(int statusCode, int token,
+					String recipientParticipantId) {
+				if (statusCode == GamesClient.STATUS_OK) {
+					// hmm...
+				} else {
+					// hmmm
+				}
+			}
+		}, buffer.array(), getRoomId(), getOpponentId());
 	}
 
 	@Override
@@ -831,5 +1022,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	protected String getMatchId() {
 		return mRoomId;
+	}
+
+	public boolean isRanked() {
+		return isRanked;
 	}
 }

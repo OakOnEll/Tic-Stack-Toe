@@ -146,9 +146,9 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 				});
 	}
 
-	private interface PostRankUpdate {
-		void ranksUpdated(short oldRank, short newRank, short oldAiRank,
-				short newAiRank);
+	public interface PostRankUpdate {
+		void ranksUpdated(short oldBlackRank, short newBlackRank,
+				short oldWhiteRank, short newWhiteRank);
 	}
 
 	private void updateRanks(final PostRankUpdate postUpdate) {

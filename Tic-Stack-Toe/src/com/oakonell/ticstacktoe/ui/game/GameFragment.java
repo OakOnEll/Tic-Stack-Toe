@@ -1145,6 +1145,12 @@ public class GameFragment extends AbstractGameFragment {
 		dialog.show(getChildFragmentManager(), "stats");
 	}
 
+	public void refreshHeader() {
+		if (getView() != null) {
+			updateHeader(getView());
+		}
+	}
+
 	private void updateHeader(View view) {
 		if (view == null) {
 			// safely allow calls when UI not created yet

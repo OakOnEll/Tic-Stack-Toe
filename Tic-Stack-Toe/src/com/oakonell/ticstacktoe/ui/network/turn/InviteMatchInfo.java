@@ -59,8 +59,13 @@ public class InviteMatchInfo implements MatchInfo {
 		MatchMenuItem dismiss = new MatchMenuItem("Decline", new ItemExecute() {
 			@Override
 			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				Games.TurnBasedMultiplayer.declineInvitation(
-						helper.getApiClient(), inviteId);
+				if (isTurnBased) {
+					Games.TurnBasedMultiplayer.declineInvitation(
+							helper.getApiClient(), inviteId);
+				} else {
+					Games.RealTimeMultiplayer.declineInvitation(
+							helper.getApiClient(), inviteId);
+				}
 				matches.remove(InviteMatchInfo.this);
 			}
 		});
