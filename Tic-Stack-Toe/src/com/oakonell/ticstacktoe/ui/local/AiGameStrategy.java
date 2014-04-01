@@ -171,14 +171,27 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 								.getType(), new RankedGame((short) aiRank,
 								outcome), new OnMyRankUpdated() {
 							@Override
-							public void onRankUpdated(short oldRank,
-									short newRank) {
+							public void onRankUpdated(final short oldRank,
+									final short newRank) {
 								AIRankHelper.updateRank(dbHandler, getGame()
 										.getType(), aiDepth,
 										outcome.opposite(), oldRank);
 								if (postUpdate != null) {
-									postUpdate.ranksUpdated(oldRank, newRank,
-											(short) aiRank, (short) aiRank);
+									AIRankHelper.retrieveRanks(dbHandler,
+											getGame().getType(),
+											new OnRanksRetrieved() {
+												@Override
+												public void onSuccess(
+														Map<AILevel, Integer> ranks) {
+													int newAiRank = ranks
+															.get(aiDepth);
+													postUpdate.ranksUpdated(
+															oldRank, newRank,
+															(short) aiRank,
+															(short) newAiRank);
+
+												}
+											});
 								}
 							}
 						});
