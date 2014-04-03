@@ -45,8 +45,6 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		status = match.getStatus();
 		this.context = context;
 
-		// TODO store a snapshot of the board state
-
 		String opponentName = "Anonymous";
 		String currentPlayerId = Games.Players.getCurrentPlayerId(helper
 				.getApiClient());
@@ -96,14 +94,6 @@ public class TurnBasedMatchInfo implements MatchInfo {
 
 	public List<MatchMenuItem> getMenuItems() {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
-			@Override
-			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				dismiss(fragment, matches);
-			}
-		});
-		result.add(dismiss);
-		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 
 		if (canRematch) {
 			MatchMenuItem rematch = new MatchMenuItem("Rematch",
@@ -138,6 +128,15 @@ public class TurnBasedMatchInfo implements MatchInfo {
 					});
 			result.add(rematch);
 		}
+
+		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
+			@Override
+			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
+				dismiss(fragment, matches);
+			}
+		});
+		result.add(dismiss);
+		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 
 		return result;
 	}
