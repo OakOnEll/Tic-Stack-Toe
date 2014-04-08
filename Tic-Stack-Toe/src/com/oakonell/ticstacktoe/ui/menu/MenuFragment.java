@@ -107,6 +107,15 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == GameContext.RC_UNUSED) {
+			setActive();
+			return;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = (GameContext) activity;
