@@ -91,4 +91,12 @@ public class GameType {
 		throw new RuntimeException("Invalid variant: " + variant);
 	}
 
+	public boolean isJunior() {
+		return variant == 1;
+	}
+
+	public boolean isNormal() {
+		return variant == 2;
+	}
+
 }

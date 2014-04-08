@@ -52,8 +52,10 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.rank.GameOutcome;
 import com.oakonell.ticstacktoe.model.rank.RankStorage;
 import com.oakonell.ticstacktoe.model.rank.RankedGame;
+import com.oakonell.ticstacktoe.model.rank.RankingRater;
 import com.oakonell.ticstacktoe.model.rank.TypeRankStorage;
 import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
@@ -65,13 +67,7 @@ import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		implements
 		com.google.android.gms.games.multiplayer.OnInvitationReceivedListener,
-		// com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchCanceledListener,
-		// com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchInitiatedListener,
-		// com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchLeftListener,
-		com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener
-// com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdatedListener,
-// com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchesLoadedListener
-{
+		com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener {
 	private static final int TOAST_DELAY = Toast.LENGTH_SHORT;
 	private static final String TAG = "TurnBasedMatchGameStrategy";
 	private static final int PROTOCOL_VERSION = 1;
@@ -112,6 +108,18 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		// TOOD ??
 		isQuick = false;
 
+	}
+
+	public TurnRankInfo getRankInfo() {
+		return (TurnRankInfo) super.getRankInfo();
+	}
+
+	@Override
+	protected void setRankInfo(RankInfo rankInfo) {
+		if (!(rankInfo instanceof TurnRankInfo)) {
+			throw new RuntimeException("Should be a TurnRankInfo");
+		}
+		super.setRankInfo(rankInfo);
 	}
 
 	protected void inflateMenu(Menu menu, MenuInflater inflater) {
@@ -180,24 +188,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				});
 	}
 
-	/*
-	 * @Override public void onTurnBasedMatchCanceled(int statusCode, String
-	 * matchId) { Log.i("TurnListener", "onTurnBasedMatchUpdated"); if
-	 * (!checkStatusCode(null, statusCode)) { return; }
-	 * 
-	 * showWarning("Match",
-	 * "This match is canceled.  All other players will have their game ended."
-	 * );
-	 * 
-	 * leaveRoom(); }
-	 * 
-	 * @Override public void onTurnBasedMatchLeft(int statusCode, TurnBasedMatch
-	 * match) { Log.i("TurnListener", "onTurnBasedMatchUpdated"); if
-	 * (!checkStatusCode(match, statusCode)) { return; } showWarning("Left",
-	 * "You've left this match."); leaveRoom(); }
-	 * 
-	 * @Override
-	 */
 	public void onTurnBasedMatchInitiated(int statusCode, TurnBasedMatch match) {
 		if (match == null) {
 			Log.i("TurnListener",
@@ -284,19 +274,19 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					@Override
 					public void onRankInfoUpdated(RankInfo info) {
 						startGame(match, theBlackPlayer, theWhitePlayer,
-								theScore, info);
+								theScore, new TurnRankInfo(info));
 					}
 				});
 	}
 
 	private void startGame(TurnBasedMatch match, Player blackPlayer,
-			Player whitePlayer, ScoreCard score, RankInfo rankInfo) {
+			Player whitePlayer, ScoreCard score, TurnRankInfo rankInfo) {
 		Game game = new Game(type, GameMode.TURN_BASED, blackPlayer,
-				whitePlayer, blackPlayer, rankInfo);
+				whitePlayer, blackPlayer);
 
 		// write the game data
 		GameState gameState = new GameState(game, score, blackParticipantId,
-				isQuick, false);
+				isQuick, false, rankInfo);
 
 		byte[] bytes = gameState.toBytes(getHelper());
 
@@ -365,7 +355,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		playAgainDialog = new TurnBasedPlayAgainFragment();
-		playAgainDialog.initialize(this, getOpponentName(), winner);
+		playAgainDialog.initialize(this, getOpponentName(), winner,
+				iAmBlackPlayer(), isRanked);
 		// TODO... this uses new api
 		if (fragment.getActivity() == null) {
 			// huh?
@@ -388,11 +379,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				.show();
 	}
 
-	/*
-	 * @Override public void onTurnBasedMatchesLoaded(int statusCode,
-	 * LoadMatchesResponse response) { Log.i("TurnListener",
-	 * "onTurnBasedMatchesLoaded"); // Not used. }
-	 */
 	@Override
 	public void onTurnBasedMatchReceived(TurnBasedMatch match) {
 		Log.i("TurnListener", "onTurnBasedMatchReceived");
@@ -499,34 +485,22 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		if (mMatch != null
 				&& mMatch.getStatus() == TurnBasedMatch.MATCH_STATUS_ACTIVE
 				&& mMatch.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
-			final GameState gameState = new GameState(getGame(), getScore(),
-					blackParticipantId, isQuick, true);
-			updateRankIntoGame(new Runnable() {
+			updateRankInfo(new Runnable() {
 				@Override
 				public void run() {
+					GameState gameState = new GameState(getGame(), getScore(),
+							blackParticipantId, isQuick, true, getRankInfo());
 					byte[] bytes = gameState.toBytes(getHelper());
 					Games.TurnBasedMultiplayer.takeTurn(getHelper()
 							.getApiClient(), mMatch.getMatchId(), bytes,
 							getMeForChat().getParticipantId());
 				}
 			});
-			// RankHelper.updateMyRankInfo(getGameContext(), blackParticipantId,
-			// gameState.game, mMatch, new OnMyRankUpdated() {
-			//
-			// @Override
-			// public void onRankUpdated(short oldRank, short newRank) {
-			// byte[] bytes = gameState.toBytes(getHelper());
-			// Games.TurnBasedMultiplayer.takeTurn(getHelper()
-			// .getApiClient(), mMatch.getMatchId(),
-			// bytes, getMeForChat().getParticipantId());
-			// }
-			// });
-
 		}
 		getMenuFragment().leaveRoom();
 	}
 
-	private void updateRankIntoGame(Runnable runnable) {
+	private void updateRankInfo(final Runnable runnable) {
 		if (!isRanked) {
 			runnable.run();
 			return;
@@ -537,9 +511,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				TypeRankStorage typeRank = storage.getRank(getGame().getType());
 				short rank = typeRank.getRank();
 				if (iAmBlackPlayer()) {
-					getGame().getRankInfo().setBlackRank(rank);
+					getRankInfo().setBlackRank(rank);
 				} else {
-					getGame().getRankInfo().setWhiteRank(rank);
+					getRankInfo().setWhiteRank(rank);
+				}
+				if (runnable != null) {
+					runnable.run();
 				}
 			}
 		}, true);
@@ -549,18 +526,18 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	public void sendHumanMove() {
 		// store the game, take turn
 		final Game game = getGame();
-		final GameState gameState = new GameState(game, getScore(),
-				blackParticipantId, isQuick, false);
 		getGameFragment().showStatusText(
 				getOpponentName() + " hasn't seen your move.");
-		updateRankIntoGame(new Runnable() {
+		updateRankInfo(new Runnable() {
 			@Override
 			public void run() {
-				byte[] bytes = gameState.toBytes(getHelper());
+				GameState gameState = new GameState(game, getScore(),
+						blackParticipantId, isQuick, false, getRankInfo());
 				State state = game.getBoard().getState();
 				if (state.isOver()) {
-					finishGame(bytes, state);
+					finishGame(gameState, state);
 				} else {
+					byte[] bytes = gameState.toBytes(getHelper());
 					final ProgressDialog progress = ProgressDialog.show(
 							getContext(), "Sending Move", "Please wait");
 
@@ -586,72 +563,72 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 			}
 		});
-		// RankHelper.updateMyRankInfo(getGameContext(), blackParticipantId,
-		// gameState.game, mMatch, new OnMyRankUpdated() {
-		// @Override
-		// public void onRankUpdated(short oldRank, short newRank) {
-		// byte[] bytes = gameState.toBytes(getHelper());
-		// State state = game.getBoard().getState();
-		// if (state.isOver()) {
-		// finishGame(bytes, state);
-		// } else {
-		// final ProgressDialog progress = ProgressDialog
-		// .show(getContext(), "Sending Move",
-		// "Please wait");
-		//
-		// Games.TurnBasedMultiplayer
-		// .takeTurn(
-		// getHelper().getApiClient(),
-		// mMatch.getMatchId(),
-		// bytes,
-		// getOpponentParticipant()
-		// .getParticipantId())
-		// .setResultCallback(
-		// new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
-		// @Override
-		// public void onResult(
-		// UpdateMatchResult result) {
-		// Status status = result
-		// .getStatus();
-		// TurnBasedMatch match = result
-		// .getMatch();
-		// progress.dismiss();
-		// TurnBasedMatchGameStrategy.this
-		// .onTurnBasedMatchUpdated(
-		// status.getStatusCode(),
-		// match);
-		// }
-		// });
-		// }
-		//
-		// }
-		// });
 	}
 
-	private void finishGame(byte[] bytes, State state) {
+	private void finishGame(final GameState gameState, final State state) {
+		final TurnRankInfo rankInfo = getRankInfo();
+		if (rankInfo == null) {
+			finishGame2(gameState, state);
+			return;
+		}
+		
+		if (iAmBlackPlayer() && rankInfo.blackCalculated) {
+			finishGame2(gameState, state);
+			return;
+		}
+		if (!iAmBlackPlayer() && rankInfo.whiteCalculated) {
+			finishGame2(gameState, state);
+			return;
+		}
+		
+		// update the rank info
+		short opponentRank;
+		GameOutcome outcome;
+		if (iAmBlackPlayer()) {
+			outcome = state.getWinner().isBlack() ? GameOutcome.WIN
+					: GameOutcome.LOSE;
+			opponentRank = rankInfo.whiteRank();
+		} else {
+			outcome = !state.getWinner().isBlack() ? GameOutcome.WIN
+					: GameOutcome.LOSE;
+			opponentRank = rankInfo.blackRank();
+		}
+		gameState.setRankInfo(rankInfo);
+		if (state.isDraw()) {
+			outcome = GameOutcome.DRAW;
+		}
+		final GameOutcome theOutcome = outcome;
+		// update the final official starting ranks, as of this last move
+
+		RankHelper.updateRank(getGameContext(), getGame().getType(),
+				new RankedGame(opponentRank, outcome), new OnMyRankUpdated() {
+					@Override
+					public void onRankUpdated(short oldRank, short newRank) {
+						if (iAmBlackPlayer()) {
+							rankInfo.newBlackRank = newRank;
+							rankInfo.newWhiteRank = RankingRater.Factory
+									.getRanker().calculateRank(
+											rankInfo.whiteRank(), oldRank,
+											theOutcome.opposite());
+							rankInfo.blackCalculated = true;
+						} else {
+							rankInfo.blackCalculated = true;
+							rankInfo.newWhiteRank = newRank;
+							rankInfo.newBlackRank = RankingRater.Factory
+									.getRanker().calculateRank(
+											rankInfo.blackRank(), oldRank,
+											theOutcome.opposite());
+							rankInfo.whiteCalculated = true;
+						}
+						finishGame2(gameState, state);
+					}
+				});
+
+	}
+
+	protected void finishGame2(final GameState gameState, State state) {
 		ParticipantResult myResult;
 		ParticipantResult opponentResult;
-
-		RankInfo rankInfo = getGame().getRankInfo();
-		if (rankInfo != null) {
-			short opponentRank;
-			GameOutcome outcome;
-			if (iAmBlackPlayer()) {
-				outcome = state.getWinner().isBlack() ? GameOutcome.WIN
-						: GameOutcome.LOSE;
-				opponentRank = rankInfo.whiteRank();
-			} else {
-				outcome = !state.getWinner().isBlack() ? GameOutcome.WIN
-						: GameOutcome.LOSE;
-				opponentRank = rankInfo.blackRank();
-			}
-			if (state.isDraw()) {
-				outcome = GameOutcome.DRAW;
-			}
-			RankHelper.updateRank(getGameContext(), getGame().getType(),
-					new RankedGame(opponentRank, outcome), null);
-		}
-
 		if (state.isDraw()) {
 			myResult = new ParticipantResult(mMyParticipantId,
 					ParticipantResult.MATCH_RESULT_TIE,
@@ -684,6 +661,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		final ProgressDialog progress = ProgressDialog.show(getContext(),
 				"Finishing Move", "Please wait");
+
+		byte[] bytes = gameState.toBytes(getHelper());
 		Games.TurnBasedMultiplayer
 				.finishMatch(getHelper().getApiClient(), mMatch.getMatchId(),
 						bytes, myResult, opponentResult)
@@ -701,7 +680,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 						});
 	}
 
-	private boolean iAmBlackPlayer() {
+	public boolean iAmBlackPlayer() {
 		return blackParticipantId.equals(mMyParticipantId);
 	}
 
@@ -814,20 +793,75 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		showGame();
 	}
 
+	public static class TurnRankInfo extends RankInfo {
+		private short newBlackRank = -1;
+		private short newWhiteRank = -1;
+		private boolean blackCalculated;
+		private boolean whiteCalculated;
+
+		public TurnRankInfo(RankInfo info) {
+			super(info.blackRank(), info.whiteRank());
+		}
+
+		public TurnRankInfo(short black, short white, short newBlack,
+				short newWhite, boolean blackCalculated2,
+				boolean whiteCalculated2) {
+			super(black, white);
+			this.newBlackRank = newBlack;
+			this.newWhiteRank = newWhite;
+			this.blackCalculated = blackCalculated2;
+			this.whiteCalculated = whiteCalculated2;
+		}
+
+		public static TurnRankInfo fromBytes(ByteBufferDebugger buffer) {
+			short black = buffer.getShort("blackRank");
+			short white = buffer.getShort("whiteRank");
+			short newBlack = buffer.getShort("new blackRank");
+			short newWhite = buffer.getShort("new whiteRank");
+			boolean blackCalculated = buffer.getShort("blackRank calculated") != 0;
+			boolean whiteCalculated = buffer.getShort("whiteRank calculated") != 0;
+			TurnRankInfo info = new TurnRankInfo(black, white, newBlack,
+					newWhite, blackCalculated, whiteCalculated);
+			return info;
+		}
+
+		public void writeBytes(ByteBufferDebugger buffer) {
+			buffer.putShort("blackRank", blackRank());
+			buffer.putShort("whiteRank", whiteRank());
+			buffer.putShort("new blackRank", newBlackRank);
+			buffer.putShort("new whiteRank", newWhiteRank);
+			buffer.putShort("blackRank calculated",
+					(short) (blackCalculated ? 1 : 0));
+			buffer.putShort("whiteRank calculated",
+					(short) (whiteCalculated ? 1 : 0));
+		}
+
+	}
+
 	public static class GameState {
 		public final Game game;
 		public final ScoreCard score;
 		public final String blackPlayerId;
 		public final boolean isQuick;
 		public boolean wasSeen;
+		private TurnRankInfo rankInfo;
 
 		public GameState(Game game, ScoreCard score, String blackPlayerId,
-				boolean isQuick, boolean wasSeen) {
+				boolean isQuick, boolean wasSeen, TurnRankInfo rankInfo) {
 			this.game = game;
 			this.score = score;
 			this.blackPlayerId = blackPlayerId;
 			this.isQuick = isQuick;
 			this.wasSeen = wasSeen;
+			this.rankInfo = rankInfo;
+		}
+
+		public RankInfo getRankInfo() {
+			return rankInfo;
+		}
+
+		public void setRankInfo(TurnRankInfo rankInfo2) {
+			this.rankInfo = rankInfo2;
 		}
 
 		public byte[] toBytes(GameHelper helper) {
@@ -852,6 +886,13 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			buffer.putInt("Black wins", score.getBlackWins());
 			buffer.putInt("White wins", score.getWhiteWins());
 			buffer.putInt("Draws", score.getTotalGames());
+
+			if (rankInfo == null) {
+				buffer.putShort("isRanked", (short) 0);
+			} else {
+				buffer.putShort("isRanked", (short) 1);
+				rankInfo.writeBytes(buffer);
+			}
 
 			game.writeBytes(blackPlayerId, buffer);
 
@@ -892,6 +933,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			int totalGames = buffer.getInt("Draws");
 			ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
 					- (blackWins + whiteWins));
+
+			boolean isRanked = buffer.getShort("isRanked") != 0;
+			TurnRankInfo info = null;
+			if (isRanked) {
+				info = TurnRankInfo.fromBytes(buffer);
+			}
 
 			Player blackPlayer;
 			Player whitePlayer;
@@ -949,7 +996,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					buffer);
 
 			GameState gameState = new GameState(game, score,
-					blackPlayerIdString, isQuick, wasSeen);
+					blackPlayerIdString, isQuick, wasSeen, info);
 
 			return gameState;
 		}
@@ -1012,15 +1059,21 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		blackParticipantId = state.blackPlayerId;
 		type = state.game.getType();
 		isQuick = state.isQuick;
+		setRankInfo(state.getRankInfo());
+		isRanked = state.getRankInfo() != null;
+
 		if (!state.game.getBoard().getState().isOver()
 				&& turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN
 				&& !state.wasSeen) {
 			Log.i("TurnListener", "  marking that we saw the opponent's move");
 			state.wasSeen = true;
 
-			updateRankIntoGame(new Runnable() {
+			updateRankInfo(new Runnable() {
 				@Override
 				public void run() {
+					if (getGameFragment() != null) {
+						getGameFragment().refreshHeader();
+					}
 					Games.TurnBasedMultiplayer
 							.takeTurn(getHelper().getApiClient(),
 									mMatch.getMatchId(),
@@ -1058,51 +1111,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 									});
 				}
 			});
-			// RankHelper.updateMyRankInfo(getGameContext(), blackParticipantId,
-			// state.game, mMatch, new OnMyRankUpdated() {
-			//
-			// @Override
-			// public void onRankUpdated() {
-			// Games.TurnBasedMultiplayer
-			// .takeTurn(getHelper().getApiClient(),
-			// mMatch.getMatchId(),
-			// state.toBytes(getHelper()),
-			// mMyParticipantId)
-			// .setResultCallback(
-			// new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
-			//
-			// @Override
-			// public void onResult(
-			// UpdateMatchResult result) {
-			// int statusCode = result
-			// .getStatus()
-			// .getStatusCode();
-			// // we don't need to receive
-			// // notice about
-			// // marking we
-			// // saw the move
-			// // otherwise we occasionally
-			// // get a stale
-			// // board on
-			// // update from this
-			// if (statusCode == GamesClient.STATUS_OK) {
-			// return;
-			// }
-			// if (statusCode ==
-			// GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
-			// Log.i(TAG,
-			// "Deferring message that we saw the opponent's move");
-			// return;
-			// }
-			// showWarning(
-			// "Error",
-			// "Error marking that we saw opponent's move. Status = "
-			// + statusCode);
-			//
-			// }
-			// });
-			// }
-			// });
 
 		}
 		Log.i("TurnListener",
@@ -1137,12 +1145,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	private void handleGameOver(int status, int turnStatus,
 			GameFragment gameFragment, GameState state) {
+
 		Log.i("TurnListener", "handleGameOver");
 		if (completeMatch(status, turnStatus)) {
 			Log.i("TurnListener", "  handleGameOver complete match");
 			return;
 		}
-		// TODO
 		String winnerName;
 		if (state.game.getBoard().getState().getWinner().isBlack()) {
 			if (blackParticipantId.equals(getMeForChat().getParticipantId())) {
@@ -1159,7 +1167,17 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		String winTitle = winnerName + " won!";
 		gameFragment.showStatusText(winTitle);
-		promptToPlayAgain(winnerName, winTitle, gameFragment);
+
+		// check if the state has ranks to use to calculate my rank
+		boolean showRanks = false;
+		if (getRankInfo() != null) {
+			// if (state.originalBlackRank > 0 && state.originalWhiteRank > 0) {
+			// // TODO display
+			// showRanks = true;
+			// }
+		}
+
+		promptToPlayAgain(winnerName, winTitle, gameFragment, showRanks);
 	}
 
 	private boolean completeMatch(int status, int turnStatus) {
@@ -1282,7 +1300,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					@Override
 					public void onResult(LoadMatchResult result) {
 						int status = result.getStatus().getStatusCode();
-						// TODO Auto-generated method stub
 						if (status == GamesClient.STATUS_MATCH_NOT_FOUND) {
 							Log.i("TurnListener",
 									"  promptAndGoToRematch match not found");
@@ -1344,11 +1361,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		promptToPlayAgain(winner, title, getGameFragment());
+		promptToPlayAgain(winner, title, getGameFragment(), true);
 	}
 
 	public void promptToPlayAgain(final String winner, final String title,
-			final GameFragment fragment) {
+			final GameFragment fragment, boolean showRanks) {
 		Log.i("TurnListener", "promptToPlayAgain");
 		fragment.showStatusText(title);
 		if (mMatch.getStatus() != TurnBasedMatch.MATCH_STATUS_COMPLETE) {
@@ -1386,8 +1403,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void sendMessage(String string) {
-
-		// TODO Auto-generated method stub
 		// TODO append the message to the chat session, to be relayed when this
 		// turn is submitted
 	}

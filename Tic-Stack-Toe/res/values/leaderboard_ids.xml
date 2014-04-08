@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+  <string name="leaderboard_junior_rank">CgkIl7iokM4HEAIQAg</string>
+  <string name="leaderboard_normal_rank">CgkIl7iokM4HEAIQAw</string>
+  <string name="leaderboard_strict_rank">CgkIl7iokM4HEAIQBA</string>
 </resources>

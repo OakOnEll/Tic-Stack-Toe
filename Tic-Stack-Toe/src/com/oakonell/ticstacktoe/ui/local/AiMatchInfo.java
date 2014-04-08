@@ -12,20 +12,24 @@ import com.oakonell.ticstacktoe.model.solver.AiPlayerStrategy;
 public class AiMatchInfo extends LocalMatchInfo {
 
 	private AILevel aiLevel;
+	private boolean isRanked;
 
 	public AiMatchInfo(long id, int matchStatus, int turnStatus,
-			String blackName, String whiteName, AILevel aiLevel, long lastUpdated,
-			String fileName, ScoreCard score, long rematchId, int winner) {
+			String blackName, String whiteName, AILevel aiLevel,
+			long lastUpdated, String fileName, ScoreCard score, long rematchId,
+			int winner, boolean isRanked) {
 		super(id, matchStatus, turnStatus, blackName, whiteName, lastUpdated,
 				fileName, score, rematchId, winner);
 		this.aiLevel = aiLevel;
+		this.isRanked = isRanked;
 	}
 
 	public AiMatchInfo(int matchStatus, int turnStatus, String blackName,
-			String whiteName, AILevel aiLevel, long currentTimeMillis, Game game,
-			ScoreCard score) {
+			String whiteName, AILevel aiLevel, long currentTimeMillis,
+			Game game, ScoreCard score, boolean isRanked) {
 		super(matchStatus, turnStatus, blackName, whiteName, game, score);
 		this.aiLevel = aiLevel;
+		this.isRanked = isRanked;
 	}
 
 	@Override
@@ -50,8 +54,7 @@ public class AiMatchInfo extends LocalMatchInfo {
 
 	@Override
 	protected Player createWhitePlayerStrategy() {
-		return AiPlayerStrategy.createThePlayer(getWhiteName(), false,
-				aiLevel);
+		return AiPlayerStrategy.createThePlayer(getWhiteName(), false, aiLevel);
 	}
 
 	protected CharSequence whiteWon() {
@@ -61,4 +64,9 @@ public class AiMatchInfo extends LocalMatchInfo {
 	protected CharSequence blackWon() {
 		return "You WON!";
 	}
+
+	public boolean isRanked() {
+		return isRanked;
+	}
+
 }

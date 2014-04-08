@@ -23,6 +23,7 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
@@ -176,6 +177,7 @@ public abstract class GameStrategy {
 	protected GameContext getGameContext() {
 		return gameContext;
 	}
+
 	protected GameHelper getHelper() {
 		return gameContext.getGameHelper();
 	}
@@ -345,5 +347,7 @@ public abstract class GameStrategy {
 	public void showGame() {
 		getGameFragment().startGame(null, false);
 	}
+
+	public abstract RankInfo getRankInfo();
 
 }

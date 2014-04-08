@@ -11,7 +11,6 @@ import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 public class Game {
 	private final Board board;
 	private final GameType gameType;
-	private final RankInfo rankInfo;
 
 	private final Player blackPlayer;
 	private final Player whitePlayer;
@@ -26,18 +25,16 @@ public class Game {
 	private Cell firstPickedCell;
 
 	public Game(GameType gameType, GameMode mode, Player blackPlayer,
-			Player whitePlayer, Player startingPlayer, RankInfo rankInfo) {
+			Player whitePlayer, Player startingPlayer) {
 		this(gameType, mode, new Board(gameType.getSize()), 0, blackPlayer,
 				gameType.createBlackPlayerStacks(), whitePlayer, gameType
-						.createWhitePlayerStacks(), null, startingPlayer,
-				rankInfo);
+						.createWhitePlayerStacks(), null, startingPlayer);
 	}
 
 	private Game(GameType gameType, GameMode mode, Board board, int moves,
 			Player blackPlayer, List<PieceStack> blackStacks,
 			Player whitePlayer, List<PieceStack> whiteStacks,
-			Cell firstPickedCell, Player startingPlayer, RankInfo rankInfo) {
-		this.rankInfo = rankInfo;
+			Cell firstPickedCell, Player startingPlayer) {
 		this.board = board;
 		this.moves = moves;
 		this.gameType = gameType;
@@ -187,17 +184,9 @@ public class Game {
 		return gameType;
 	}
 
-
 	public void writeBytes(String blackPlayerId, ByteBufferDebugger buffer) {
 		buffer.putInt("Num Moves", moves);
 		buffer.putInt("Variant", getType().getVariant());
-		if (rankInfo == null) {
-			buffer.putShort("isRanked", (short) 0);
-		} else {
-			buffer.putShort("isRanked", (short) 1);
-			buffer.putShort("blackRank", rankInfo.blackRank());
-			buffer.putShort("whiteRank", rankInfo.whiteRank());
-		}
 
 		int boardSize = gameType.getSize();
 		for (int i = 0; i < boardSize; i++) {
@@ -243,13 +232,6 @@ public class Game {
 		int moves = buffer.getInt("Num Moves");
 		int variant = buffer.getInt("Variant");
 		GameType type = GameType.fromVariant(variant);
-		boolean isRanked = buffer.getShort("isRanked") != 0;
-		RankInfo info = null;
-		if (isRanked) {
-			short black = buffer.getShort("blackRank");
-			short white = buffer.getShort("whiteRank");
-			info = new RankInfo(black, white);
-		}
 
 		int boardSize = type.getSize();
 		PieceStack[][] board = new PieceStack[boardSize][boardSize];
@@ -284,7 +266,7 @@ public class Game {
 
 		Game game = new Game(type, GameMode.TURN_BASED, theBoard, moves,
 				blackPlayer, blackStacks, whitePlayer, whiteStacks,
-				firstPickedCell, currentPlayer, info);
+				firstPickedCell, currentPlayer);
 
 		State state = State.fromBytes(buffer, game, blackPlayer, whitePlayer);
 		theBoard.setState(state);
@@ -315,10 +297,6 @@ public class Game {
 		move.undo(getBoard(), State.open(null), getBlackPlayerPieces(),
 				getWhitePlayerPieces());
 
-	}
-
-	public RankInfo getRankInfo() {
-		return rankInfo;
 	}
 
 }

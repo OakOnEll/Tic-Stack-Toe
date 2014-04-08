@@ -1163,10 +1163,12 @@ public class GameFragment extends AbstractGameFragment {
 
 		TextView blackRank = (TextView) view.findViewById(R.id.black_rank);
 		TextView whiteRank = (TextView) view.findViewById(R.id.white_rank);
-		RankInfo rankInfo = getGame().getRankInfo();
+		RankInfo rankInfo = getGameStrategy().getRankInfo();
 		if (rankInfo != null) {
-			blackRank.setText(getGame().getRankInfo().blackRank() + "");
-			whiteRank.setText(getGame().getRankInfo().whiteRank() + "");
+			blackRank.setVisibility(View.VISIBLE);
+			whiteRank.setVisibility(View.VISIBLE);
+			blackRank.setText(rankInfo.blackRank() + "");
+			whiteRank.setText(rankInfo.whiteRank() + "");
 		} else {
 			blackRank.setVisibility(View.GONE);
 			whiteRank.setVisibility(View.GONE);
@@ -1539,26 +1541,24 @@ public class GameFragment extends AbstractGameFragment {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Achievements achievements = application.getAchievements();
-		achievements.testAndSetForGameEndAchievements(
-				gameContext.getGameHelper(), gameContext.getContext(),
-				getGame(), outcome);
+		achievements.testAndSetForGameEndAchievements(gameContext, getGame(),
+				outcome);
 	}
 
 	private void evaluateInGameAchievements(State outcome) {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Achievements achievements = application.getAchievements();
-		achievements.testAndSetForInGameAchievements(
-				gameContext.getGameHelper(), gameContext.getContext(),
-				getGame(), outcome);
+		achievements.testAndSetForInGameAchievements(gameContext, getGame(),
+				outcome);
 	}
 
 	private void evaluateLeaderboards(State outcome) {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Leaderboards leaderboards = application.getLeaderboards();
-		leaderboards.submitGame(gameContext.getGameHelper(),
-				gameContext.getContext(), getGame(), outcome, getScore());
+		// leaderboards.submitGame(gameContext.getGameHelper(),
+		// gameContext.getContext(), getGame(), outcome, getScore());
 
 	}
 

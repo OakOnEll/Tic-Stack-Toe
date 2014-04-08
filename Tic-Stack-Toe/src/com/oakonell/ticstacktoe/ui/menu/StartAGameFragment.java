@@ -505,24 +505,24 @@ public class StartAGameFragment extends SherlockFragment {
 			String whiteName) {
 		PassNPlayGameStrategy strategy = new PassNPlayGameStrategy(context);
 
-		startLocalGame(strategy, type, whiteName, blackName, false);
+		startLocalGame(strategy, type, whiteName, blackName);
 	}
 
 	private void startAIGame(GameType type, String whiteName, AILevel aiLevel,
 			boolean isRanked) {
 		String blackName = getResources().getString(R.string.local_player_name);
-		AiGameStrategy strategy = new AiGameStrategy(context, aiLevel);
+		AiGameStrategy strategy = new AiGameStrategy(context, aiLevel, isRanked);
 
-		startLocalGame(strategy, type, whiteName, blackName, isRanked);
+		startLocalGame(strategy, type, whiteName, blackName);
 	}
 
 	private void startLocalGame(AbstractLocalStrategy listener, GameType type,
-			String whiteName, String blackName, boolean isRanked) {
+			String whiteName, String blackName) {
 		setInactive();
 		exitStartMenu();
 
-		listener.startGame(blackName, whiteName, type, new ScoreCard(0, 0, 0),
-				isRanked);
+		listener.startGame(true, blackName, whiteName, type, new ScoreCard(0,
+				0, 0));
 	}
 
 	public void onSignInSucceeded() {

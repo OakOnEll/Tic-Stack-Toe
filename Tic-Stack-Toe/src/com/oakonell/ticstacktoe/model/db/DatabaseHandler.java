@@ -36,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 10;
 
 	// Database Name
 	private static final String DATABASE_NAME = "localMatches";
@@ -66,6 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		private static final String KEY_SCORE_TOTAL_GAMES = "score_total_games";
 
 		private static final String KEY_WINNER = "winner";
+		private static final String KEY_IS_RANKED = "isRanked";
 
 		private static final int BLACK_WON = 1;
 		private static final int WHITE_WON = -1;
@@ -117,7 +118,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ TableLocalMatches.KEY_SCORE_WHITE_WINS + " INTEGER," //
 				+ TableLocalMatches.KEY_SCORE_TOTAL_GAMES + " INTEGER," //
 
-				+ TableLocalMatches.KEY_WINNER + " INTEGER" //
+				+ TableLocalMatches.KEY_WINNER + " INTEGER," //
+				+ TableLocalMatches.KEY_IS_RANKED + " INTEGER" //
 
 				+ ")";
 		db.execSQL(CREATE_CONTACTS_TABLE);
@@ -150,6 +152,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + TableLocalMatches.NAME);
+
+		// Drop older table if existed
+		db.execSQL("DROP TABLE IF EXISTS " + TableAIRanksUpdated.NAME);
+
 		// delete the existing match files as well?
 		File dir = context.getFilesDir();
 		String[] matchFiles = dir.list(new FilenameFilter() {
@@ -369,6 +375,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				TableLocalMatches.KEY_SCORE_BLACK_WINS,
 				TableLocalMatches.KEY_SCORE_WHITE_WINS,
 				TableLocalMatches.KEY_SCORE_TOTAL_GAMES,
+				TableLocalMatches.KEY_IS_RANKED,
 
 				TableLocalMatches.KEY_WINNER };
 		return columnsNames;
@@ -397,8 +404,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(TableLocalMatches.KEY_SCORE_TOTAL_GAMES,
 				score.getTotalGames());
 
-		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
-		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
+		values.put(TableLocalMatches.KEY_IS_RANKED, matchInfo.isRanked() ? 1
+				: 0);
 		values.put(TableLocalMatches.KEY_FILENAME, matchInfo.getFilename());
 
 		Game game = matchInfo.readGame(context);
@@ -560,6 +567,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				.getColumnIndex(TableLocalMatches.KEY_SCORE_WHITE_WINS));
 		int totalGames = query.getInt(query
 				.getColumnIndex(TableLocalMatches.KEY_SCORE_TOTAL_GAMES));
+		boolean isRanked = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_IS_RANKED)) != 0;
 
 		ScoreCard score = new ScoreCard(blackWins, whiteWins, totalGames
 				- (blackWins + whiteWins));
@@ -571,7 +580,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		return LocalMatchInfo.createLocalMatch(mode, id, matchStatus,
 				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
-				fileName, score, rematchId, winner);
+				fileName, score, rematchId, winner, isRanked);
 	}
 
 	public Map<AILevel, Integer> getRanks(GameType type) {

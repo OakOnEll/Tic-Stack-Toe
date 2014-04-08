@@ -11,6 +11,8 @@ import com.google.android.gms.appstate.AppStateManager.StateResult;
 import com.google.android.gms.appstate.AppStateStatusCodes;
 import com.google.android.gms.common.api.ResultCallback;
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.Leaderboards;
+import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.rank.RankStorage;
@@ -162,6 +164,12 @@ public class RankHelper {
 						+ myNewRank);
 
 				typeStorage.setRank(myNewRank);
+
+				TicStackToe application = ((TicStackToe) gameContext
+						.getSherlockActivity().getApplication());
+				Leaderboards leaderboards = application.getLeaderboards();
+				leaderboards.submitRank(gameContext, type, myNewRank);
+
 				typeStorage.getGames().add(rankedGame);
 				if (onRankUpdated != null) {
 					onRankUpdated.onRankUpdated(currentRank, myNewRank);

@@ -272,14 +272,15 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	short opponentRank = -1;
 
 	private void updateOpponentRank(short opponentRank) {
-		if (getGame() == null || getGame().getRankInfo() == null) {
+		RankInfo info = getRankInfo();
+		if (info == null) {
 			this.opponentRank = opponentRank;
 			return;
 		}
 		if (iAmBlack) {
-			getGame().getRankInfo().setWhiteRank(opponentRank);
+			info.setWhiteRank(opponentRank);
 		} else {
-			getGame().getRankInfo().setBlackRank(opponentRank);
+			info.setBlackRank(opponentRank);
 		}
 		getGameFragment().refreshHeader();
 	}
@@ -351,7 +352,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 	private void startGame(GameFragment gameFragment, Player blackPlayer,
 			Player whitePlayer, ScoreCard score, RankInfo rankInfo) {
 		Game game = new Game(type, GameMode.ONLINE, blackPlayer, whitePlayer,
-				blackPlayer, rankInfo);
+				blackPlayer);
+		setRankInfo(rankInfo);
 		setGame(game);
 		setScore(score);
 
@@ -764,7 +766,11 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
 		onlinePlayAgainDialog.initialize(this, getOpponentName(), title,
 				iAmBlack);
-		if (getGame().getRankInfo() == null) {
+
+		// TODO store the completed real-time game in the db, to show in the
+		// history
+
+		if (getRankInfo() == null) {
 			onlinePlayAgainDialog.show(getGameFragment()
 					.getChildFragmentManager(), "playAgain");
 			return;
@@ -794,12 +800,13 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	private void conditionallyUpdateRanks() {
 		if (playAgainOpponent > 0 && playAgainMy > 0) {
+			final RankInfo info = getRankInfo();
 			if (iAmBlack) {
-				getGame().getRankInfo().setBlackRank(playAgainMy);
-				getGame().getRankInfo().setWhiteRank(playAgainOpponent);
+				info.setBlackRank(playAgainMy);
+				info.setWhiteRank(playAgainOpponent);
 			} else {
-				getGame().getRankInfo().setBlackRank(playAgainOpponent);
-				getGame().getRankInfo().setWhiteRank(playAgainMy);
+				info.setBlackRank(playAgainOpponent);
+				info.setWhiteRank(playAgainMy);
 			}
 			playAgainOpponent = -1;
 			playAgainMy = -1;
@@ -810,8 +817,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 						short newWhiteRank) {
 					onlinePlayAgainDialog.updateRanks(oldBlackRank,
 							newBlackRank, oldWhiteRank, newWhiteRank);
-					getGame().getRankInfo().setBlackRank(newBlackRank);
-					getGame().getRankInfo().setWhiteRank(newWhiteRank);
+					info.setBlackRank(newBlackRank);
+					info.setWhiteRank(newWhiteRank);
 				}
 			};
 			updateRanks(postRankUpdate);
@@ -834,7 +841,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			outcome = GameOutcome.DRAW;
 		}
 
-		RankInfo rankInfo = getGame().getRankInfo();
+		RankInfo rankInfo = getRankInfo();
 		// short myStartRank = iAmBlack ? rankInfo.blackRank() :
 		// rankInfo.whiteRank();
 		final short opponentRank = iAmBlack ? rankInfo.whiteRank() : rankInfo
@@ -932,7 +939,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 
-		getGameFragment().leaveGame();
+		if (getGameFragment() != null) {
+			getGameFragment().leaveGame();
+		}
 		getMenuFragment().leaveRoom();
 	}
 
@@ -941,7 +950,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		Game game = getGame();
 		Player currentPlayer = game.getCurrentPlayer();
 		game = new Game(game.getType(), game.getMode(), game.getBlackPlayer(),
-				game.getWhitePlayer(), currentPlayer, game.getRankInfo());
+				game.getWhitePlayer(), currentPlayer);
 		setGame(game);
 
 		gameFragment.startGame(null, false);
@@ -1026,5 +1035,10 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	public boolean isRanked() {
 		return isRanked;
+	}
+
+	@Override
+	public boolean iAmBlackPlayer() {
+		return iAmBlack;
 	}
 }

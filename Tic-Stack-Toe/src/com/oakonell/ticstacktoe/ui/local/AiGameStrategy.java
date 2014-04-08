@@ -5,7 +5,9 @@ import java.util.Map;
 import android.os.AsyncTask;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
@@ -24,28 +26,45 @@ import com.oakonell.ticstacktoe.rank.AIRankHelper;
 import com.oakonell.ticstacktoe.rank.AIRankHelper.OnRanksRetrieved;
 import com.oakonell.ticstacktoe.rank.RankHelper;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
+import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.local.RankedAIPlayAgainFragment.RankedAIPlayAgainListener;
 
 public class AiGameStrategy extends AbstractLocalStrategy {
 
 	private final AILevel aiDepth;
+	boolean isRanked;
+	private RankInfo rankInfo;
 
-	public AiGameStrategy(GameContext context, AILevel aiDepth) {
+	public AiGameStrategy(GameContext context, AILevel aiDepth, boolean isRanked) {
 		super(context);
 		this.aiDepth = aiDepth;
+		this.isRanked = isRanked;
 	}
 
 	public AiGameStrategy(GameContext context, AILevel aiDepth,
 			AiMatchInfo matchInfo) {
 		super(context, matchInfo);
 		this.aiDepth = aiDepth;
+		this.isRanked = matchInfo.isRanked();
 	}
 
 	protected AiMatchInfo createNewMatchInfo(String blackName,
 			String whiteName, final Game game, ScoreCard score) {
 		return new AiMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
-				aiDepth, System.currentTimeMillis(), game, score);
+				aiDepth, System.currentTimeMillis(), game, score, isRanked);
+	}
+
+	public AILevel getAILevel() {
+		return aiDepth;
+	}
+
+	public RankInfo getRankInfo() {
+		return rankInfo;
+	}
+
+	protected void setRankInfo(RankInfo rankInfo) {
+		this.rankInfo = rankInfo;
 	}
 
 	protected GameMode getGameMode() {
@@ -77,17 +96,9 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		aiMove.execute((Void) null);
 	}
 
-	// @Override
-	// protected void gameFinished() {
-	// if (getGame().getRankInfo() == null) {
-	// return;
-	// }
-	// updateRanks(null);
-	// }
-
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		if (getGame().getRankInfo() == null) {
+		if (!isRanked) {
 			super.promptToPlayAgain(winner, title);
 			return;
 		}
@@ -104,22 +115,48 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 			}
 		});
 
-		playAgainDialog
-				.initialize(new RankedAIPlayAgainListener() {
+		playAgainDialog.initialize(new RankedAIPlayAgainListener() {
 
-					@Override
-					public void playAgain() {
-						AiGameStrategy.this.playAgain();
-					}
+			@Override
+			public void playAgain() {
+				AiGameStrategy.this.playAgain();
+			}
 
-					@Override
-					public void cancel() {
-						leaveGame();
-					}
-				}, getMatchInfo().getBlackName(),
-						getMatchInfo().getWhiteName(), winner);
+			@Override
+			public void cancel() {
+				leaveGame();
+			}
+		}, getMatchInfo().getBlackName(), getMatchInfo().getWhiteName(),
+				winner, true);
 		playAgainDialog.show(getGameContext().getGameFragment()
 				.getChildFragmentManager(), "playAgain");
+
+	}
+
+	public void showFromMenu() {
+		super.showFromMenu();
+		if (!isRanked) {
+			return;
+		}
+
+		final GameType type = getGame().getType();
+		RankHelper.createRankInfo(getGameContext(), type, true,
+				new RankInfoUpdated() {
+					@Override
+					public void onRankInfoUpdated(RankInfo info) {
+						setRankInfo(info);
+						AIRankHelper.retrieveRanks(new DatabaseHandler(
+								getContext()), type, new OnRanksRetrieved() {
+							@Override
+							public void onSuccess(Map<AILevel, Integer> ranks) {
+								int aiRank = ranks.get(aiDepth);
+								rankInfo.setWhiteRank((short) aiRank);
+								getGameFragment().refreshHeader();
+							}
+						});
+
+					}
+				});
 
 	}
 
@@ -127,21 +164,32 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 			final boolean blackFirst, final String blackName,
 			final Player whitePlayer, final String whiteName,
 			final ScoreCard score, final Player blackPlayer,
-			final Player firstPlayer, final RankInfo rankInfo) {
-		if (rankInfo == null) {
+			final Player firstPlayer) {
+		if (!isRanked) {
 			super.startGame(gameMode, type, blackFirst, blackName, whitePlayer,
-					whiteName, score, blackPlayer, firstPlayer, rankInfo);
+					whiteName, score, blackPlayer, firstPlayer);
 			return;
 		}
-		AIRankHelper.retrieveRanks(new DatabaseHandler(getContext()), type,
-				new OnRanksRetrieved() {
+
+		RankHelper.createRankInfo(getGameContext(), type, true,
+				new RankInfoUpdated() {
 					@Override
-					public void onSuccess(Map<AILevel, Integer> ranks) {
-						int aiRank = ranks.get(aiDepth);
-						rankInfo.setWhiteRank((short) aiRank);
-						AiGameStrategy.super.startGame(gameMode, type,
-								blackFirst, blackName, whitePlayer, whiteName,
-								score, blackPlayer, firstPlayer, rankInfo);
+					public void onRankInfoUpdated(RankInfo info) {
+						setRankInfo(info);
+						AIRankHelper.retrieveRanks(new DatabaseHandler(
+								getContext()), type, new OnRanksRetrieved() {
+							@Override
+							public void onSuccess(Map<AILevel, Integer> ranks) {
+								int aiRank = ranks.get(aiDepth);
+								rankInfo.setWhiteRank((short) aiRank);
+								AiGameStrategy.super.startGame(gameMode, type,
+										blackFirst, blackName, whitePlayer,
+										whiteName, score, blackPlayer,
+										firstPlayer);
+
+							}
+						});
+
 					}
 				});
 	}
@@ -199,6 +247,14 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 					}
 				});
 
+	}
+
+	protected void gameFinished() {
+		TicStackToe application = ((TicStackToe) getGameContext()
+				.getSherlockActivity().getApplication());
+		Achievements achievements = application.getAchievements();
+		achievements.testAndSetForBeatAiAchievements(getGameContext(),
+				getGame(), getGame().getBoard().getState());
 	}
 
 }

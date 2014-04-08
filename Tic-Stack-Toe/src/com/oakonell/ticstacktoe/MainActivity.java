@@ -220,7 +220,7 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 		Achievements achievements = app.getAchievements();
 		if (achievements.hasPending()) {
-			achievements.pushToGoogle(getGameHelper(), this);
+			achievements.pushToGoogle(this);
 		}
 
 		if (getGameStrategy() != null) {

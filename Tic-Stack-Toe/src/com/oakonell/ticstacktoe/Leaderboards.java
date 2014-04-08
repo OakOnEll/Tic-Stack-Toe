@@ -4,135 +4,118 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.widget.Toast;
 
-import com.oakonell.ticstacktoe.googleapi.GameHelper;
-import com.oakonell.ticstacktoe.model.Game;
-import com.oakonell.ticstacktoe.model.GameMode;
-import com.oakonell.ticstacktoe.model.ScoreCard;
-import com.oakonell.ticstacktoe.model.State;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
+import com.google.android.gms.games.leaderboard.Leaderboards.SubmitScoreResult;
+import com.google.android.gms.games.leaderboard.ScoreSubmissionData.Result;
+import com.oakonell.ticstacktoe.model.GameType;
 
 public class Leaderboards {
 
 	public List<String> getLeaderboardIds(Context context) {
 		List<String> result = new ArrayList<String>();
-		// result.add(context
-		// .getString(R.string.leaderboard_shortest_chaotic_game));
+		result.add(context.getString(R.string.leaderboard_junior_rank));
+		result.add(context.getString(R.string.leaderboard_normal_rank));
+		result.add(context.getString(R.string.leaderboard_strict_rank));
 		return result;
 	}
 
-	public void submitGame(GameHelper gameHelper, final Context context,
-			Game game, State outcome, ScoreCard score) {
-		if (game.getMode() == GameMode.PASS_N_PLAY) {
-			return;
-		}
-		if (outcome.isDraw())
-			return;
-
-		if (!game.getLocalPlayer().equals(outcome.getWinner())) {
-			return;
-		}
-
-		// GamesClient gamesClient = gameHelper.getGamesClient();
-		int wins = 0;
-		if (game.getLocalPlayer().isBlack()) {
-			wins = score.getBlackWins();
+	public void submitRank(GameContext gameHelper, GameType type, short rank) {
+		if (type.equals(GameType.JUNIOR)) {
+			submitJuniorRank(gameHelper, rank);
+		} else if (type.equals(GameType.NORMAL)) {
+			submitNormalRank(gameHelper, rank);
+		} else if (type.equals(GameType.STRICT)) {
+			submitStrictRank(gameHelper, rank);
 		} else {
-			wins = score.getWhiteWins();
+			throw new RuntimeException("Unexpected game type " + type);
 		}
-		// submitMostWins(context, gamesClient, wins);
-
-		int numMoves = game.getNumberOfMoves();
-
-		// submitLongestGame(context, gamesClient, numMoves);
-		// submitShortestGame(context, gamesClient, numMoves);
-
 	}
 
-	/*
-	 * private void submitMostWins(final Context context, GamesClient
-	 * gamesClient, int submittedScore) { final String id = context
-	 * .getString(R.string.leaderboard_most_wins_in_a_session);
-	 * gamesClient.submitScoreImmediate(new BasicOnScoreSubmittedListener(
-	 * context, id) {
-	 * 
-	 * @Override protected void beatDaily(final Context context, Result daily) {
-	 * Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_daily_wins, daily.rawScore), Toast.LENGTH_SHORT).show(); }
-	 * 
-	 * @Override protected void beatWeekly(final Context context, Result weekly)
-	 * { Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_weekly_wins, weekly.rawScore), Toast.LENGTH_SHORT).show();
-	 * }
-	 * 
-	 * @Override protected void beatAllTime(final Context context, Result
-	 * allTime) { Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_alltime_wins, allTime.rawScore),
-	 * Toast.LENGTH_SHORT).show(); } }, id, submittedScore); }
-	 * 
-	 * 
-	 * private void submitShortestGame(final Context context, GamesClient
-	 * gamesClient, int submittedScore) { final String id = context
-	 * .getString(R.string.leaderboard_shortest_chaotic_game);
-	 * gamesClient.submitScoreImmediate(new BasicOnScoreSubmittedListener(
-	 * context, id) {
-	 * 
-	 * @Override protected void beatDaily(Context context, Result daily) {
-	 * Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_daily_min, daily.rawScore), Toast.LENGTH_SHORT).show(); }
-	 * 
-	 * @Override protected void beatWeekly(Context context, Result weekly) {
-	 * Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_weekly_min, weekly.rawScore), Toast.LENGTH_SHORT).show(); }
-	 * 
-	 * @Override protected void beatAllTime(Context context, Result allTime) {
-	 * Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_alltime_min, allTime.rawScore), Toast.LENGTH_SHORT).show();
-	 * } }, id, submittedScore); }
-	 * 
-	 * private void submitLongestGame(final Context context, GamesClient
-	 * gamesClient, int submittedScore) { final String id = context
-	 * .getString(R.string.leaderboard_longest_chaotic_mode_game);
-	 * gamesClient.submitScoreImmediate(new BasicOnScoreSubmittedListener(
-	 * context, id) {
-	 * 
-	 * @Override protected void beatDaily(final Context context, Result daily) {
-	 * Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_daily_max, daily.rawScore), Toast.LENGTH_SHORT).show(); }
-	 * 
-	 * @Override protected void beatWeekly(final Context context, Result weekly)
-	 * { Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_weekly_max, weekly.rawScore), Toast.LENGTH_SHORT).show(); }
-	 * 
-	 * @Override protected void beatAllTime(final Context context, Result
-	 * allTime) { Toast.makeText( context, context.getResources().getString(
-	 * R.string.beat_alltime_max, allTime.rawScore), Toast.LENGTH_SHORT).show();
-	 * } }, id, submittedScore); }
-	 * 
-	 * public abstract static class BasicOnScoreSubmittedListener implements
-	 * OnScoreSubmittedListener { private Context context; private String id;
-	 * 
-	 * BasicOnScoreSubmittedListener(Context context, String id) { this.id = id;
-	 * this.context = context; }
-	 * 
-	 * @Override public void onScoreSubmitted(int status, SubmitScoreResult
-	 * result) { if (status != GamesClient.STATUS_OK) { // report an error?
-	 * Log.e("Leaderboard", "Error submitting leaderboard score- " + status);
-	 * return; } if (!result.getLeaderboardId().equals(id)) return;
-	 * onScoreSubmitSuccess(result); }
-	 * 
-	 * protected void onScoreSubmitSuccess(SubmitScoreResult result) { Result
-	 * allTime = result .getScoreResult(LeaderboardVariant.TIME_SPAN_ALL_TIME);
-	 * if (allTime != null && allTime.newBest) { beatAllTime(context, allTime);
-	 * return; } Result weekly = result
-	 * .getScoreResult(LeaderboardVariant.TIME_SPAN_WEEKLY); if (weekly != null
-	 * && weekly.newBest) { beatWeekly(context, weekly); return; } Result daily
-	 * = result .getScoreResult(LeaderboardVariant.TIME_SPAN_DAILY); if (daily
-	 * != null && daily.newBest) { beatDaily(context, daily); return; } }
-	 * 
-	 * protected void beatDaily(final Context context, Result daily) { }
-	 * 
-	 * protected void beatWeekly(final Context context, Result weekly) { }
-	 * 
-	 * protected void beatAllTime(final Context context, Result allTime) { } }
-	 */
+	private void submitNormalRank(GameContext gameHelper, short rank) {
+		int idRes = R.string.leaderboard_normal_rank;
+		final int all_time_res = R.string.beat_all_time_normal_rank;
+		final int weekly_res = R.string.beat_weekly_normal_rank;
+		final int daily_res = R.string.beat_daily_normal_rank;
+
+		String id = gameHelper.getContext().getString(idRes);
+
+		submitRank(gameHelper, id, rank, all_time_res, weekly_res, daily_res);
+	}
+
+	private void submitStrictRank(GameContext gameHelper, short rank) {
+		int idRes = R.string.leaderboard_strict_rank;
+		final int all_time_res = R.string.beat_all_time_strict_rank;
+		final int weekly_res = R.string.beat_weekly_strict_rank;
+		final int daily_res = R.string.beat_daily_strict_rank;
+
+		String id = gameHelper.getContext().getString(idRes);
+
+		submitRank(gameHelper, id, rank, all_time_res, weekly_res, daily_res);
+	}
+
+	private void submitJuniorRank(final GameContext gameHelper, final short rank) {
+		int idRes = R.string.leaderboard_junior_rank;
+		final int all_time_res = R.string.beat_all_time_junior_rank;
+		final int weekly_res = R.string.beat_weekly_junior_rank;
+		final int daily_res = R.string.beat_daily_junior_rank;
+
+		String id = gameHelper.getContext().getString(idRes);
+
+		submitRank(gameHelper, id, rank, all_time_res, weekly_res, daily_res);
+	}
+
+	private void submitRank(final GameContext gameHelper, String id,
+			final short rank, final int all_time_res, final int weekly_res,
+			final int daily_res) {
+		Games.Leaderboards.submitScoreImmediate(
+				gameHelper.getGameHelper().getApiClient(), id, rank)
+				.setResultCallback(new ResultCallback<SubmitScoreResult>() {
+
+					@Override
+					public void onResult(SubmitScoreResult result) {
+						Result allTimeResult = result.getScoreData()
+								.getScoreResult(
+										LeaderboardVariant.TIME_SPAN_ALL_TIME);
+						Context context = gameHelper.getContext();
+						if (allTimeResult.newBest) {
+							Toast.makeText(
+									context,
+									context.getResources().getString(
+											all_time_res,
+											allTimeResult.formattedScore),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+
+						Result weeklyResult = result.getScoreData()
+								.getScoreResult(
+										LeaderboardVariant.TIME_SPAN_WEEKLY);
+						if (weeklyResult.newBest) {
+							Toast.makeText(
+									context,
+									context.getResources().getString(
+											weekly_res,
+											weeklyResult.formattedScore),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+
+						Result dailyResult = result.getScoreData()
+								.getScoreResult(
+										LeaderboardVariant.TIME_SPAN_DAILY);
+						if (dailyResult.newBest) {
+							Toast.makeText(
+									context,
+									context.getResources().getString(daily_res,
+											allTimeResult.formattedScore),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+	}
+
 }

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    
+    <string name="beat_all_time_junior_rank">Beat your all-time junior rank: %s</string>
+    <string name="beat_weekly_junior_rank">Beat your weekly junior rank: %s</string>
+    <string name="beat_daily_junior_rank">Beat your daily junior rank: %s</string>
+    <string name="beat_all_time_normal_rank">Beat your all-time normal rank: %s</string>
+    <string name="beat_weekly_normal_rank">Beat your weekly normal rank: %s</string>
+    <string name="beat_daily_normal_rank">Beat your daily normal rank: %s</string>
+    <string name="beat_all_time_strict_rank">Beat your all-time strict rank: %s</string>
+    <string name="beat_weekly_strict_rank">Beat your weekly strict rank: %s</string>
+    <string name="beat_daily_strict_rank">Beat your daily strict rank: %s</string>
+
 </resources>

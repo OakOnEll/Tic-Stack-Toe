@@ -284,11 +284,12 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	public static LocalMatchInfo createLocalMatch(GameMode mode, long id,
 			int matchStatus, int turnStatus, String blackName,
 			String whiteName, AILevel aiLevel, long lastUpdated,
-			String fileName, ScoreCard score, long rematchId, int winner) {
+			String fileName, ScoreCard score, long rematchId, int winner,
+			boolean isRanked) {
 		if (mode == GameMode.AI) {
 			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
 					whiteName, aiLevel, lastUpdated, fileName, score,
-					rematchId, winner);
+					rematchId, winner, isRanked);
 		} else if (mode == GameMode.PASS_N_PLAY) {
 
 			return new PassNPlayMatchInfo(id, matchStatus, turnStatus,
@@ -332,5 +333,9 @@ public abstract class LocalMatchInfo implements MatchInfo {
 				});
 
 		matches.remove(LocalMatchInfo.this);
+	}
+
+	public boolean isRanked() {
+		return false;
 	}
 }

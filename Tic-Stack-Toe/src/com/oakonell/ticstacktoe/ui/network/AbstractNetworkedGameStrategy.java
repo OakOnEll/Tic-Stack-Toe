@@ -21,13 +21,25 @@ import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.utils.StringUtils;
 
 public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
+	private RankInfo rankInfo;
 
 	protected AbstractNetworkedGameStrategy(GameContext context) {
 		super(context);
 	}
+
+	public RankInfo getRankInfo() {
+		return rankInfo;
+	}
+
+	protected void setRankInfo(RankInfo rankInfo) {
+		this.rankInfo = rankInfo;
+	}
+
+	public abstract boolean iAmBlackPlayer();
 
 	@Override
 	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {

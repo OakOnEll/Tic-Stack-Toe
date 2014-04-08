@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="achievement_win_5_games_against_ai">CgkIvuHPyJwJEAIQAg</string>
-  
+    <string name="achievement_beat_the_easy_junior_bot">CgkIl7iokM4HEAIQBQ</string>
+    <string name="achievement_beat_the_medium_junior_bot">CgkIl7iokM4HEAIQBg</string>
+    <string name="achievement_beta_the_hard_junior_bot">CgkIl7iokM4HEAIQBw</string>
+    <string name="achievement_beat_the_easy_normal_bot">CgkIl7iokM4HEAIQCA</string>
+    <string name="achievement_beat_the_medium_normal_bot">CgkIl7iokM4HEAIQCQ</string>
+    <string name="achievement_beat_the_hard_normal_bot">CgkIl7iokM4HEAIQCg</string>
+    <string name="achievement_beat_the_easy_strict_bot">CgkIl7iokM4HEAIQCw</string>
+    <string name="achievement_beat_the_medium_strict_bot">CgkIl7iokM4HEAIQDA</string>
+    <string name="achievement_beat_the_hard_strict_bot">CgkIl7iokM4HEAIQDQ</string>
+    <string name="achievement_beat_a_friend_at_junior">CgkIl7iokM4HEAIQDg</string>
+    <string name="achievement_beat_a_friend_at_normal">CgkIl7iokM4HEAIQDw</string>
+    <string name="achievement_beat_a_friend_at_strict">CgkIl7iokM4HEAIQEA</string>
+    <!--
+  <string name="achievement_surprise">CgkIl7iokM4HEAIQEQ</string>
+  <string name="achievement_thanks">CgkIl7iokM4HEAIQEg</string>
+    -->
+
 </resources>

@@ -2,5 +2,17 @@
 <resources>
 
     <string name="offline_achievement_label">Achievement</string>
+    <string name="achievement_beat_the_easy_junior_bot_label">Beat the Easy Bot at Junior Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_medium_junior_bot_label">Beat the Medium Bot at Junior Tic-Stack-Toe</string>
+    <string name="achievement_beta_the_hard_junior_bot_label">Beat the Hard Bot at Junior Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_easy_normal_bot_label">Beat the Easy Bot at Normal Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_medium_normal_bot_label">Beat the Medium Bot at Normal Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_hard_normal_bot_label">Beat the Hard Bot at Normal Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_easy_strict_bot_label">Beat the Easy Bot at Strict Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_medium_strict_bot_label">Beat the Medium Bot at Strict Tic-Stack-Toe</string>
+    <string name="achievement_beat_the_hard_strict_bot_label">Beat the Hard Bot at Strict Tic-Stack-Toe</string>
+    <string name="achievement_beat_a_friend_at_junior_label">Beat a friend at Junior Tic-Stack-Toe</string>
+    <string name="achievement_beat_a_friend_at_normal_label">Beat a friend at Normal Tic-Stack-Toe</string>
+    <string name="achievement_beat_a_friend_at_strict_label">Beat a friend at Strict Tic-Stack-Toe</string>
 
 </resources>

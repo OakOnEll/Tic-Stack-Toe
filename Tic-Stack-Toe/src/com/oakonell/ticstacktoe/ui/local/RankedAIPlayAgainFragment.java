@@ -7,23 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.ui.game.RankedPlayAgain;
 
-public class RankedAIPlayAgainFragment extends SherlockDialogFragment {
+public class RankedAIPlayAgainFragment extends RankedPlayAgain {
 	private RankedAIPlayAgainListener listener;
-	private String winnerName;
-	private String whiteName;
-	private String blackName;
-	private TextView originalRankText;
-	private TextView newRankText;
-	private TextView originalAiRankText;
-	private TextView newAiRankText;
 	private Button playAgain;
-	private ProgressBar waiting;
+	private String winnerName;
 
 	public interface RankedAIPlayAgainListener {
 		void cancel();
@@ -32,9 +23,8 @@ public class RankedAIPlayAgainFragment extends SherlockDialogFragment {
 	}
 
 	public void initialize(RankedAIPlayAgainListener listener,
-			String blackName, String whiteName, String winner) {
-		this.blackName = blackName;
-		this.whiteName = whiteName;
+			String blackName, String whiteName, String winner, boolean isRanked) {
+		initialize(isRanked, blackName, whiteName, true);
 		this.listener = listener;
 		this.winnerName = winner;
 	}
@@ -65,37 +55,14 @@ public class RankedAIPlayAgainFragment extends SherlockDialogFragment {
 			}
 		});
 
-		TextView blackNameText = (TextView) view.findViewById(R.id.player_name);
-		blackNameText.setText(blackName);
-		TextView whiteNameText = (TextView) view.findViewById(R.id.ai_name);
-		whiteNameText.setText(whiteName);
+		onCreateRankView(view);
 
-		originalRankText = (TextView) view.findViewById(R.id.original_rank);
-		newRankText = (TextView) view.findViewById(R.id.new_rank);
-		originalAiRankText = (TextView) view
-				.findViewById(R.id.original_ai_rank);
-		newAiRankText = (TextView) view.findViewById(R.id.new_ai_rank);
-
-		originalRankText.setText("--");
-		originalAiRankText.setText("--");
-		newRankText.setText("--");
-		newAiRankText.setText("--");
-
-		waiting = (ProgressBar) view.findViewById(R.id.waiting);
-		waiting.setVisibility(View.VISIBLE);
 		return view;
 	}
 
 	public void updateRanks(short oldRank, short newRank, short oldAiRank,
 			short newAiRank) {
-		if (!isVisible()) {
-			return;
-		}
-		originalRankText.setText(oldRank + "");
-		originalAiRankText.setText(oldAiRank + "");
-		newRankText.setText(newRank + "");
-		newAiRankText.setText(newAiRank + "");
-		waiting.setVisibility(View.GONE);
+		super.updateRanks(oldRank, newRank, oldAiRank, newAiRank);
 		playAgain.setEnabled(true);
 	}
 

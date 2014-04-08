@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.R;
+import com.oakonell.ticstacktoe.ui.game.RankedPlayAgain;
 
-public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
+public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	private String opponentName;
 	private String winnerName;
 
@@ -29,8 +29,10 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 	private TurnBasedMatchGameStrategy listener;
 	private Runnable configure;
 
-	public void initialize(TurnBasedMatchGameStrategy listener, String opponentName,
-			String winner) {
+	public void initialize(TurnBasedMatchGameStrategy listener,
+			String opponentName, String winner, boolean isRanked,
+			boolean iAmBlack) {
+		initialize(isRanked, "You", opponentName, iAmBlack);
 		this.opponentName = opponentName;
 		this.listener = listener;
 		this.winnerName = winner;
@@ -51,6 +53,8 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 		negativeButton = (Button) view.findViewById(R.id.negative);
 		positiveButton = (Button) view.findViewById(R.id.positive);
 
+		onCreateRankView(view);
+
 		configure.run();
 
 		return view;
@@ -61,7 +65,6 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 			@Override
 			public void run() {
 				configure = null;
-
 
 				positiveButton.setText("Accept");
 				positiveButton.setOnClickListener(new OnClickListener() {
@@ -99,7 +102,6 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 			public void run() {
 				configure = null;
 
-
 				positiveButton.setText("Cancel");
 				positiveButton.setOnClickListener(new OnClickListener() {
 					@Override
@@ -126,7 +128,6 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 			@Override
 			public void run() {
 				configure = null;
-
 
 				positiveButton.setText("Open Rematch");
 				positiveButton.setOnClickListener(new OnClickListener() {
@@ -164,7 +165,6 @@ public class TurnBasedPlayAgainFragment extends SherlockDialogFragment {
 			@Override
 			public void run() {
 				configure = null;
-
 
 				positiveButton.setText("Rematch");
 				positiveButton.setOnClickListener(new OnClickListener() {

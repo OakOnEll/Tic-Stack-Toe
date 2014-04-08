@@ -6,6 +6,7 @@ import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
+import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 
@@ -42,6 +43,11 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 	protected void acceptNonHumanPlayerMove(PlayerStrategy currentStrategy) {
 		throw new RuntimeException(
 				"Shouldn't get here on a human vs human, local match");
+	}
+
+	@Override
+	public RankInfo getRankInfo() {
+		return null;
 	}
 
 }
