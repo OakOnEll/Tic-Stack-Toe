@@ -22,6 +22,26 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 
 	@Override
 	public void configure() {
+		Preference deleteRanks = finder
+				.findPreference("delete_ranks");
+		deleteRanks
+				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						TicStackToe app = (TicStackToe) activity
+								.getApplication();
+						Info info = app.getDevelopInfo();
+						if (info== null) {
+							Toast.makeText(activity, "Not connected", Toast.LENGTH_SHORT).show();;
+							return true;
+						}
+
+						DevelopmentUtil.deleteRanks(activity, info);
+						return true;
+					}
+				});
+
+		
 		Preference resetAchievements = finder
 				.findPreference("reset_achievements");
 		resetAchievements

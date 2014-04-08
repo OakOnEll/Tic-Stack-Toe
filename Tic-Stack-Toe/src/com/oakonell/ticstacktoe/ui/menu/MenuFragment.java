@@ -426,6 +426,10 @@ public class MenuFragment extends SherlockFragment implements
 
 	protected void updateRankView(View rankView, String typeString,
 			TypeRankStorage rank) {
+		if (!rank.hasPlayed()) {
+			rankView.setVisibility(View.GONE);
+			return;
+		}
 		rankView.setVisibility(View.VISIBLE);
 		menuAdapter.setActive(rankView, true);
 		TextView label = (TextView) rankView.findViewById(R.id.rank_label);

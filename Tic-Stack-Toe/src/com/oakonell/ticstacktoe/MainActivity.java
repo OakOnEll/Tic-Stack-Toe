@@ -148,8 +148,6 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 	private void initializeSoundManager() {
 		soundManager = new SoundManager(this);
-		soundManager.addSound(Sounds.PLAY_X, R.raw.play_x_sounds_882_solemn);
-		soundManager.addSound(Sounds.PLAY_O, R.raw.play_o_sounds_913_served);
 		soundManager.addSound(Sounds.INVALID_MOVE,
 				R.raw.invalid_move_metal_gong_dianakc_109711828);
 		soundManager.addSound(Sounds.CHAT_RECIEVED,
@@ -161,6 +159,12 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		soundManager.addSound(Sounds.GAME_WON,
 				R.raw.game_won_small_crowd_applause_yannick_lemieux_1268806408);
 		soundManager.addSound(Sounds.GAME_DRAW, R.raw.game_draw_clong_1);
+
+		soundManager.addSound(Sounds.PUT_ON, R.raw.put_on);
+		soundManager.addSound(Sounds.TAKE_OFF, R.raw.take_off);
+		soundManager.addSound(Sounds.SLIDE_ON, R.raw.slide_on);
+		soundManager.addSound(Sounds.SLIDE_OFF, R.raw.slide_off);
+
 	}
 
 	private void initializeAds() {

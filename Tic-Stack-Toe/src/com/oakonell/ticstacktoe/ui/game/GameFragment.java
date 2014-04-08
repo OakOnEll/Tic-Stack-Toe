@@ -152,7 +152,8 @@ public class GameFragment extends AbstractGameFragment {
 					move = game.getBoard().getState().getLastMove();
 					undoAndAnimateMove = move != null;
 				}
-				gameTypeTextView.setText(GameTypeSpinnerHelper.getTypeName(getActivity(), game.getType()));
+				gameTypeTextView.setText(GameTypeSpinnerHelper.getTypeName(
+						getActivity(), game.getType()));
 				if (undoAndAnimateMove) {
 					game.undo(move);
 
@@ -701,6 +702,14 @@ public class GameFragment extends AbstractGameFragment {
 						new Runnable() {
 							@Override
 							public void run() {
+								boolean hasExposedPiece = pieceStack
+										.peekNextPiece() != null;
+								if (hasExposedPiece) {
+									getGameStrategy()
+											.playSound(Sounds.SLIDE_ON);
+								} else {
+									getGameStrategy().playSound(Sounds.PUT_ON);
+								}
 								update();
 							}
 						});
@@ -802,6 +811,14 @@ public class GameFragment extends AbstractGameFragment {
 						DragController.DRAG_ACTION_COPY, dragConfig);
 
 				Piece nextPiece = pieceStack.peekNextPiece();
+
+				boolean hasExistingPiece = nextPiece != null;
+				if (hasExistingPiece) {
+					getGameStrategy().playSound(Sounds.SLIDE_OFF);
+				} else {
+					getGameStrategy().playSound(Sounds.TAKE_OFF);
+				}
+
 				if (nextPiece == null) {
 					stackView.setImageDrawable(null);
 				} else {
@@ -946,6 +963,15 @@ public class GameFragment extends AbstractGameFragment {
 				animateInvalidMoveReturn(dragView, resId, button,
 						new Runnable() {
 							public void run() {
+								// play the appropriate sound
+								boolean hasExposedPiece = getGame().getBoard()
+										.peekNextPiece(cell) != null;
+								if (hasExposedPiece) {
+									getGameStrategy()
+											.playSound(Sounds.SLIDE_ON);
+								} else {
+									getGameStrategy().playSound(Sounds.PUT_ON);
+								}
 								update();
 								if (getGame().getType().isStrict()) {
 									// in strict mode, highlight the chosen
@@ -993,6 +1019,13 @@ public class GameFragment extends AbstractGameFragment {
 				getGameStrategy().attemptHumanMove(move, new OnHumanMove() {
 					@Override
 					public void onSuccess(State state) {
+						boolean hasExistingPiece = getGame().getBoard()
+								.peekNextPiece(cell) != null;
+						if (hasExistingPiece) {
+							getGameStrategy().playSound(Sounds.SLIDE_ON);
+						} else {
+							getGameStrategy().playSound(Sounds.PUT_ON);
+						}
 						onDropMove.postMove();
 
 						getGame().setFirstPickedCell(null);
@@ -1123,6 +1156,12 @@ public class GameFragment extends AbstractGameFragment {
 				}
 
 				Piece nextPiece = getGame().getBoard().peekNextPiece(cell);
+				boolean hasExistingPiece = nextPiece != null;
+				if (hasExistingPiece) {
+					getGameStrategy().playSound(Sounds.SLIDE_OFF);
+				} else {
+					getGameStrategy().playSound(Sounds.TAKE_OFF);
+				}
 				if (nextPiece == null) {
 					button.setImageDrawable(null);
 				} else {
@@ -1339,10 +1378,13 @@ public class GameFragment extends AbstractGameFragment {
 		}
 		final Runnable update = theUpdate;
 
+		Sounds liftSound;
 		if (exposedSourceResId == 0) {
 			markerToPlayView.setImageDrawable(null);
+			liftSound = Sounds.TAKE_OFF;
 		} else {
 			markerToPlayView.setImageResource(exposedSourceResId);
+			liftSound = Sounds.SLIDE_OFF;
 		}
 		final ImageView movingView = createMovingView(markerToPlayView,
 				movedResourceId);
@@ -1358,6 +1400,7 @@ public class GameFragment extends AbstractGameFragment {
 		Interpolator interpolator = new AnticipateInterpolator();
 		replaceAnimation.setInterpolator(interpolator);
 
+		getGameStrategy().playSound(liftSound);
 		replaceAnimation.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {
@@ -1369,6 +1412,14 @@ public class GameFragment extends AbstractGameFragment {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
+				Cell targetCell = move.getTargetCell();
+				boolean hasExistingTargetPiece = getGame().getBoard()
+						.peekNextPiece(targetCell) != null;
+				if (hasExistingTargetPiece) {
+					getGameStrategy().playSound(Sounds.SLIDE_ON);
+				} else {
+					getGameStrategy().playSound(Sounds.PUT_ON);
+				}
 				movingView.setVisibility(View.GONE);
 				update.run();
 				updateBoardPiece(move.getTargetCell());

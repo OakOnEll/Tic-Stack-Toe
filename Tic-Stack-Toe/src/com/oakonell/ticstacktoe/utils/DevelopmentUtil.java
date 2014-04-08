@@ -8,12 +8,22 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper;
+import com.oakonell.ticstacktoe.rank.RankHelper.OnRankDeleted;
 
 public class DevelopmentUtil {
 	private static final String LogTag = DevelopmentUtil.class.getName();
@@ -149,6 +159,52 @@ public class DevelopmentUtil {
 			// Launch activity to refresh data on client.
 			mContext.startActivityForResult(helper.allLeaderboardsIntent, 0);
 		}
+	}
+
+	public static void deleteRanks(final Activity activity, Info info) {
+		final GoogleApiClient[] client = new GoogleApiClient[1];
+
+		final ProgressDialog progress = ProgressDialog.show(activity,
+				"Deleting Rank Save Data", "Please wait...");
+		progress.setCancelable(false);
+
+		ConnectionCallbacks connectionCallbacks = new ConnectionCallbacks() {
+			@Override
+			public void onConnectionSuspended(int arg0) {
+				progress.dismiss();
+				progress.setMessage("Connection suspended.");
+				progress.setCancelable(true);
+			}
+
+			@Override
+			public void onConnected(Bundle arg0) {
+				RankHelper.deleteRankStorage(client[0], new OnRankDeleted() {
+					@Override
+					public void rankDeleted(Status status) {
+						progress.dismiss();
+						Toast.makeText(activity, "Ranks deleted",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+
+			}
+		};
+		OnConnectionFailedListener onConnectionFailedListener = new OnConnectionFailedListener() {
+
+			@Override
+			public void onConnectionFailed(ConnectionResult arg0) {
+				progress.dismiss();
+				progress.setMessage("Connection failed.");
+				progress.setCancelable(true);
+			}
+		};
+		GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity,
+				connectionCallbacks, onConnectionFailedListener);
+		builder.addApi(AppStateManager.API, null);
+		builder.addScope(AppStateManager.SCOPE_APP_STATE);
+		client[0] = builder.build();
+		client[0].connect();
+
 	}
 
 }

@@ -4,6 +4,9 @@
 
     <PreferenceCategory android:title="Development" >
         <Preference
+            android:key="delete_ranks"
+            android:title="Delete Saved Rank" />
+        <Preference
             android:key="reset_achievements"
             android:title="Reset Achievements" />
         <Preference
