@@ -35,6 +35,7 @@ public class AIRankHelper {
 	public static void updateRank(final DatabaseHandler db,
 			final GameType type, final AILevel aiLevel,
 			final GameOutcome outcome, final short humanRank) {
+		final long start = System.currentTimeMillis();
 		Log.i(TAG, "Updating AI rank");
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
@@ -87,12 +88,19 @@ public class AIRankHelper {
 				return null;
 			}
 
+			@Override
+			protected void onPostExecute(Void result) {
+				Log.i(TAG, "Updated AI Ranks in "
+						+ (System.currentTimeMillis() - start) + " ms");
+			}
+
 		};
 		task.execute((Void) null);
 	}
 
 	public static void retrieveRanks(final DatabaseHandler db,
 			final GameType type, final OnRanksRetrieved onRetrieved) {
+		final long start = System.currentTimeMillis();
 		Log.i(TAG, "Retrieving AI ranks...");
 		AsyncTask<String, String, Map<AILevel, Integer>> task = new AsyncTask<String, String, Map<AILevel, Integer>>() {
 			@Override
@@ -140,6 +148,8 @@ public class AIRankHelper {
 
 			@Override
 			protected void onPostExecute(Map<AILevel, Integer> ranks) {
+				Log.i(TAG, " Received Ranks, in "
+						+ (System.currentTimeMillis() - start) + " ms");
 				onRetrieved.onSuccess(ranks);
 			}
 

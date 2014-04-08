@@ -32,14 +32,15 @@ public class RankHelper {
 	public static void loadRankStorage(final GameContext context,
 			final OnRankReceived onRankReceived, final boolean initializeIfNone) {
 
-		Log.i(TAG, "loading rank...");
+		final long start = System.currentTimeMillis();
+		Log.i(TAG, "loading ranks...");
 		AppStateManager.load(context.getGameHelper().getApiClient(),
 				RANK_APP_STATE_KEY).setResultCallback(
 				new ResultCallback<AppStateManager.StateResult>() {
 
 					@Override
 					public void onResult(StateResult result) {
-						Log.i(TAG, "  done loading rank...");
+						Log.i(TAG, "  done loading ranks..." + (System.currentTimeMillis() - start) + " ms");
 
 						if (result.getStatus().getStatusCode() == AppStateStatusCodes.STATUS_STATE_KEY_NOT_FOUND) {
 							if (initializeIfNone) {
@@ -64,12 +65,12 @@ public class RankHelper {
 							Log.i(TAG, "  No rank save data yet!");
 							onRankReceived.receivedRank(null);
 						}
-						if (result.getStatus().getStatusCode() != AppStateStatusCodes.STATUS_WRITE_OUT_OF_DATE_VERSION) {
+						if (result.getStatus().getStatusCode() == AppStateStatusCodes.STATUS_WRITE_OUT_OF_DATE_VERSION) {
 							Log.w(TAG, "  rank write data is out of date");
-						} else if (result.getStatus().getStatusCode() != AppStateStatusCodes.STATUS_NETWORK_ERROR_STALE_DATA) {
+						} else if (result.getStatus().getStatusCode() == AppStateStatusCodes.STATUS_NETWORK_ERROR_STALE_DATA) {
 							Log.w(TAG, "  rank network data is stale");
 						} else if (result.getStatus().getStatusCode() != AppStateStatusCodes.STATUS_OK) {
-							Log.w("MainActivity", "Error("
+							Log.w(TAG, "Error("
 									+ result.getStatus().getStatusCode()
 									+ ") loading Rank");
 							onRankReceived.receivedRank(null);
@@ -107,6 +108,7 @@ public class RankHelper {
 							String version = conflictResult
 									.getResolvedVersion();
 
+							// TODO time the resolution?
 							AppStateManager.resolve(context.getGameHelper()
 									.getApiClient(), RANK_APP_STATE_KEY,
 									version, rankStorage.toBytes());
@@ -151,6 +153,7 @@ public class RankHelper {
 	public static void updateRank(final GameContext gameContext,
 			final GameType type, final RankedGame rankedGame,
 			final OnMyRankUpdated onRankUpdated) {
+
 		Log.i(TAG, "Updating rank. First load existing one...");
 		loadRankStorage(gameContext, new OnRankReceived() {
 			@Override
