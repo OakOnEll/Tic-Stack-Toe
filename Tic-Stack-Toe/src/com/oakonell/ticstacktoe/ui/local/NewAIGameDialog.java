@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
@@ -88,7 +89,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 		final CheckBox ranked = (CheckBox) view.findViewById(R.id.ranked_game);
-
+		final TextView typeDescr = (TextView) view.findViewById(R.id.game_type_descr);
+		
 		ranked.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
@@ -107,6 +109,7 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 					long id) {
 				GameType type = ((TypeDropDownItem) typeSpinner
 						.getSelectedItem()).type;
+				GameTypeSpinnerHelper.populateDescription(getActivity(), typeDescr, type);
 				retrieveRanks(type, aiLevels, aiLevelAdapter,
 						ranked.isChecked());
 			}
@@ -118,6 +121,7 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		});
 		GameType type = ((TypeDropDownItem) typeSpinner.getSelectedItem()).type;
+		GameTypeSpinnerHelper.populateDescription(getActivity(), typeDescr, type);
 		retrieveRanks(type, aiLevels, aiLevelAdapter, ranked.isChecked());
 
 		Button start = (Button) view.findViewById(R.id.start);

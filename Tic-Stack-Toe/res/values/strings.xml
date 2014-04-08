@@ -23,6 +23,7 @@
     <string name="match_error_inactive_match">This match is inactive.</string>
     <string name='match_error_locally_modified'>This match has locally-modified data.  This operation cannot be performed until the match is sent to the server.</string>
     
+    
 <!-- <string name="player_label">Player</string> ==>     -->
 
 </resources>

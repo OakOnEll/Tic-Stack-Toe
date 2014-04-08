@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
@@ -49,6 +50,8 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
+		final TextView typeDescr = (TextView) view.findViewById(R.id.game_type_descr);
+		GameTypeSpinnerHelper.setOnChange(getActivity(), typeSpinner, typeDescr);
 
 		final CheckBox realtime = (CheckBox) view.findViewById(R.id.realtime);
 

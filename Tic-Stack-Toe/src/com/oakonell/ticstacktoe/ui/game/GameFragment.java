@@ -5,6 +5,9 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -56,6 +60,7 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
 import com.oakonell.utils.activity.dragndrop.DragController;
@@ -104,6 +109,7 @@ public class GameFragment extends AbstractGameFragment {
 	private Runnable inOnResume;
 	private Runnable inOnCreate;
 	private GameContext gameContext;
+	private TextView gameTypeTextView;
 
 	public GameFragment() {
 		// for finding references
@@ -146,6 +152,7 @@ public class GameFragment extends AbstractGameFragment {
 					move = game.getBoard().getState().getLastMove();
 					undoAndAnimateMove = move != null;
 				}
+				gameTypeTextView.setText(GameTypeSpinnerHelper.getTypeName(getActivity(), game.getType()));
 				if (undoAndAnimateMove) {
 					game.undo(move);
 
@@ -258,6 +265,28 @@ public class GameFragment extends AbstractGameFragment {
 			@Override
 			public void onClick(View v) {
 				showGameStats();
+			}
+		});
+
+		gameTypeTextView = (TextView) view.findViewById(R.id.game_type);
+		gameTypeTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO show an alert with game play instructions
+				AlertDialog.Builder builder = new Builder(getActivity());
+				builder.setTitle("How to Play");
+				builder.setMessage(GameTypeSpinnerHelper
+						.getTypeDescriptionStringResource(getGameStrategy()
+								.getGame().getType()));
+				builder.setNeutralButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				builder.show();
 			}
 		});
 
