@@ -480,6 +480,9 @@ public class StartAGameFragment extends SherlockFragment {
 		rtmConfigBuilder.setMessageReceivedListener(strategy);
 		rtmConfigBuilder.setRoomStatusUpdateListener(strategy);
 		if (autoMatchCriteria != null) {
+			int variant =type.getVariant(); 
+			if (isRanked) variant += 1000;
+			rtmConfigBuilder.setVariant(variant);
 			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		}
 		setInactive();
