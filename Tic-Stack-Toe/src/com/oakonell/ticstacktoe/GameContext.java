@@ -21,7 +21,6 @@ public interface GameContext {
 	public static final String FRAG_TAG_MENU = "menu";
 	public static final String FRAG_TAG_START_GAME = "startGame";
 
-	
 	GameHelper getGameHelper();
 
 	SoundManager getSoundManager();
@@ -41,8 +40,10 @@ public interface GameContext {
 	void hideAd();
 
 	void gameEnded();
-	
+
 	void loadRank(OnRankReceived onRankLoaded, boolean initializeIfNone);
+
+	void clearRanks();
 
 	void updateCachedRank(RankStorage storage);
 

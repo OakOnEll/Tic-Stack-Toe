@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -95,8 +94,7 @@ public class StartAGameFragment extends SherlockFragment {
 		// Handle when activity is recreated like on orientation Change
 		configureDisplayHomeUp();
 
-		ImageView newGameOnSameDevice = (ImageView) view
-				.findViewById(R.id.new_game_same_device);
+		View newGameOnSameDevice = view.findViewById(R.id.new_game_same_device);
 		newGameOnSameDevice.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -104,7 +102,7 @@ public class StartAGameFragment extends SherlockFragment {
 			}
 		});
 
-		ImageView ai = (ImageView) view.findViewById(R.id.new_game_vs_ai);
+		View ai = view.findViewById(R.id.new_game_vs_ai);
 		ai.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -114,7 +112,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 		// network games
 
-		ImageView quick = (ImageView) view.findViewById(R.id.new_quick_play);
+		View quick = view.findViewById(R.id.new_quick_play);
 		quick.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -128,8 +126,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 		});
 
-		ImageView inviteFriend = (ImageView) view
-				.findViewById(R.id.new_game_live);
+		View inviteFriend = view.findViewById(R.id.new_game_live);
 		inviteFriend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -480,8 +477,9 @@ public class StartAGameFragment extends SherlockFragment {
 		rtmConfigBuilder.setMessageReceivedListener(strategy);
 		rtmConfigBuilder.setRoomStatusUpdateListener(strategy);
 		if (autoMatchCriteria != null) {
-			int variant =type.getVariant(); 
-			if (isRanked) variant += 1000;
+			int variant = type.getVariant();
+			if (isRanked)
+				variant += 1000;
 			rtmConfigBuilder.setVariant(variant);
 			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		}

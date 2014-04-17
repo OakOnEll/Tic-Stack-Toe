@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -183,7 +182,7 @@ public class MenuFragment extends SherlockFragment implements
 			@Override
 			public void onClick(View v) {
 				context.getGameHelper().signOut();
-
+				signOut();
 				// show login button
 				view.findViewById(R.id.sign_in_bar).setVisibility(View.VISIBLE);
 				// Sign-in failed, so show sign-in button on main menu
@@ -275,7 +274,7 @@ public class MenuFragment extends SherlockFragment implements
 	private View configureMainView(LayoutInflater inflater, final View parent) {
 		final View view = inflater.inflate(R.layout.fragment_menu_main, null);
 
-		ImageView newGame = (ImageView) view.findViewById(R.id.new_game);
+		View newGame = view.findViewById(R.id.new_game);
 		newGame.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -295,8 +294,7 @@ public class MenuFragment extends SherlockFragment implements
 
 		});
 
-		ImageView viewAchievements = (ImageView) view
-				.findViewById(R.id.view_achievements);
+		View viewAchievements = view.findViewById(R.id.view_achievements);
 		viewAchievements.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -312,8 +310,7 @@ public class MenuFragment extends SherlockFragment implements
 			}
 		});
 
-		ImageView viewLeaderboards = (ImageView) view
-				.findViewById(R.id.view_leaderboards);
+		View viewLeaderboards = view.findViewById(R.id.view_leaderboards);
 		viewLeaderboards.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -439,7 +436,19 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void signOut() {
+		context.clearRanks();
+		juniorRankView.setVisibility(View.GONE);
+		menuAdapter.setActive(juniorRankView, false);
+		normalRankView.setVisibility(View.GONE);
+		menuAdapter.setActive(normalRankView, false);
+		strictRankView.setVisibility(View.GONE);
+		menuAdapter.setActive(strictRankView, false);
 
+		clearInvites();
+		clearNonLocalMatches(myTurns);
+		clearNonLocalMatches(theirTurns);
+		clearNonLocalMatches(completedMatches);
+		// refreshMatches();
 	}
 
 	private void refreshInvites(final boolean shouldFlashNumber) {
@@ -453,13 +462,7 @@ public class MenuFragment extends SherlockFragment implements
 						InvitationBuffer buffer = result.getInvitations();
 						// remove existing invite matches from myTurn list, and
 						// add back these
-						for (Iterator<MatchInfo> iter = myTurns.iterator(); iter
-								.hasNext();) {
-							MatchInfo each = iter.next();
-							if (each instanceof InviteMatchInfo) {
-								iter.remove();
-							}
-						}
+						clearInvites();
 						if (statusCode == GamesClient.STATUS_OK) {
 							// update the online invites button with the count
 							int count = buffer.getCount();
@@ -482,6 +485,7 @@ public class MenuFragment extends SherlockFragment implements
 						}
 
 					}
+
 				});
 
 	}
@@ -627,25 +631,6 @@ public class MenuFragment extends SherlockFragment implements
 		rankRefreshed = false;
 		Log.i(TAG, "about to refresh DB");
 
-		context.loadRank(new OnRankReceived() {
-			@Override
-			public void receivedRank(RankStorage rankStorage) {
-				rankRefreshed = true;
-				if (rankStorage == null) {
-					conditionallyMarkRefreshComplete();
-					return;
-				}
-				updateRankView(juniorRankView, "junior",
-						rankStorage.getJuniorRank());
-				updateRankView(normalRankView, "normal",
-						rankStorage.getNormalRank());
-				updateRankView(strictRankView, "strict",
-						rankStorage.getStrictRank());
-
-				conditionallyMarkRefreshComplete();
-			}
-		}, false);
-
 		dbHandler.getMatches(new OnLocalMatchesLoadListener() {
 			@Override
 			public void onLoadSuccess(LocalMatchesBuffer localMatchesBuffer) {
@@ -689,9 +674,31 @@ public class MenuFragment extends SherlockFragment implements
 			if (!context.getGameHelper().getApiClient().isConnecting()
 					&& mPullToRefreshLayout != null) {
 				networkRefreshed = true;
+				rankRefreshed = true;
+				conditionallyMarkRefreshComplete();
+				return;
 			}
-			return;
 		}
+
+		context.loadRank(new OnRankReceived() {
+			@Override
+			public void receivedRank(RankStorage rankStorage) {
+				rankRefreshed = true;
+				if (rankStorage == null) {
+					conditionallyMarkRefreshComplete();
+					return;
+				}
+				updateRankView(juniorRankView, "junior",
+						rankStorage.getJuniorRank());
+				updateRankView(normalRankView, "normal",
+						rankStorage.getNormalRank());
+				updateRankView(strictRankView, "strict",
+						rankStorage.getStrictRank());
+
+				conditionallyMarkRefreshComplete();
+			}
+		}, false);
+
 		Games.TurnBasedMultiplayer.loadMatchesByStatus(
 				context.getGameHelper().getApiClient(),
 				TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
@@ -741,16 +748,6 @@ public class MenuFragment extends SherlockFragment implements
 
 						networkRefreshed = true;
 						conditionallyMarkRefreshComplete();
-					}
-
-					private void clearNonLocalMatches(List<MatchInfo> list) {
-						for (Iterator<MatchInfo> iter = list.iterator(); iter
-								.hasNext();) {
-							MatchInfo each = iter.next();
-							if (each instanceof LocalMatchInfo)
-								continue;
-							iter.remove();
-						}
 					}
 
 					private void populateMatches(
@@ -813,4 +810,21 @@ public class MenuFragment extends SherlockFragment implements
 		Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 	}
 
+	private void clearNonLocalMatches(List<MatchInfo> list) {
+		for (Iterator<MatchInfo> iter = list.iterator(); iter.hasNext();) {
+			MatchInfo each = iter.next();
+			if (each instanceof LocalMatchInfo)
+				continue;
+			iter.remove();
+		}
+	}
+
+	private void clearInvites() {
+		for (Iterator<MatchInfo> iter = myTurns.iterator(); iter.hasNext();) {
+			MatchInfo each = iter.next();
+			if (each instanceof InviteMatchInfo) {
+				iter.remove();
+			}
+		}
+	}
 }

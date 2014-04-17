@@ -116,7 +116,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	protected void setRankInfo(RankInfo rankInfo) {
-		if (!(rankInfo instanceof TurnRankInfo)) {
+		if (rankInfo != null && !(rankInfo instanceof TurnRankInfo)) {
 			throw new RuntimeException("Should be a TurnRankInfo");
 		}
 		super.setRankInfo(rankInfo);
@@ -571,7 +571,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			finishGame2(gameState, state);
 			return;
 		}
-		
+
 		if (iAmBlackPlayer() && rankInfo.blackCalculated) {
 			finishGame2(gameState, state);
 			return;
@@ -580,7 +580,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			finishGame2(gameState, state);
 			return;
 		}
-		
+
 		// update the rank info
 		short opponentRank;
 		GameOutcome outcome;

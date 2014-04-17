@@ -253,6 +253,10 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 	}
 
+	public void clearRanks() {
+		rankRequest = null;
+	}
+
 	public void loadRank(final OnRankReceived onRankLoaded,
 			boolean initializeIfNone) {
 		if (rankRequest == null) {
