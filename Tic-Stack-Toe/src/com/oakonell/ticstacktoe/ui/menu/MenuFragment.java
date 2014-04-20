@@ -236,24 +236,33 @@ public class MenuFragment extends SherlockFragment implements
 		menuAdapter.addView(main);
 
 		View myTurnHeader = createMatchListHeader(inflater, view, "Your Turn");
+		View listBottomView = inflater.inflate(
+				R.layout.fragment_menu_list_bottom, null);
 		menuAdapter.addView(myTurnHeader);
 		myTurnsAdapter = new MatchAdapter(getActivity(), this, myTurns,
-				menuAdapter, myTurnHeader);
+				menuAdapter, myTurnHeader, listBottomView);
 		menuAdapter.addAdapter(myTurnsAdapter);
+		menuAdapter.addView(listBottomView);
 
 		View theirTurnHeader = createMatchListHeader(inflater, view,
 				"Their turn");
+		listBottomView = inflater.inflate(R.layout.fragment_menu_list_bottom,
+				null);
 		menuAdapter.addView(theirTurnHeader);
 		theirTurnsAdapter = new MatchAdapter(getActivity(), this, theirTurns,
-				menuAdapter, theirTurnHeader);
+				menuAdapter, theirTurnHeader, listBottomView);
 		menuAdapter.addAdapter(theirTurnsAdapter);
+		menuAdapter.addView(listBottomView);
 
 		View completedHeader = createMatchListHeader(inflater, view,
 				"Completed");
+		listBottomView = inflater.inflate(R.layout.fragment_menu_list_bottom,
+				null);
 		menuAdapter.addView(completedHeader);
 		completedMatchesAdapter = new MatchAdapter(getActivity(), this,
-				completedMatches, menuAdapter, completedHeader);
+				completedMatches, menuAdapter, completedHeader, listBottomView);
 		menuAdapter.addAdapter(completedMatchesAdapter);
+		menuAdapter.addView(listBottomView);
 
 		listView.setAdapter(menuAdapter);
 

@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -61,10 +64,41 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 		}
 	}
 
+	// @Override
+	// public Dialog onCreateDialog(Bundle savedInstanceState) {
+	// Dialog dialog = super.onCreateDialog(savedInstanceState);
+	//
+	// // request a window without the title
+	// //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	// dialog.getWindow().setBackgroundDrawable(
+	// new ColorDrawable(android.graphics.Color.TRANSPARENT));
+	// return dialog;
+	// }
+
+	// @Override
+	// public void onResume() {
+	// // Auto size the dialog based on it's contents
+	// getDialog().getWindow().setLayout(
+	// LinearLayout.LayoutParams.WRAP_CONTENT,
+	// LinearLayout.LayoutParams.WRAP_CONTENT);
+	// // Make sure there is no background behind our view
+	// getDialog().getWindow().setBackgroundDrawable(
+	// new ColorDrawable(Color.TRANSPARENT));
+	//
+	// // Disable standard dialog styling/frame/theme: our custom view should
+	// // create full UI
+	// setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme);
+	// super.onResume();
+	// }
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater
-				.inflate(R.layout.dialog_local_ai, container, false);
+
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().setBackgroundDrawable(
+				new ColorDrawable(Color.TRANSPARENT));
+
+		View view = inflater.inflate(R.layout.dialog_local_ai, container, true);
 
 		getDialog().setTitle(R.string.choose_ai_mode_title);
 
@@ -85,12 +119,14 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 				aiLevels);
 		aiLevelSpinner.setAdapter(aiLevelAdapter);
 		aiLevelSpinner.setSelection(1);
+//		aiLevelSpinner.setBackgroundResource(R.drawable.background);
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
 		final CheckBox ranked = (CheckBox) view.findViewById(R.id.ranked_game);
-		final TextView typeDescr = (TextView) view.findViewById(R.id.game_type_descr);
-		
+		final TextView typeDescr = (TextView) view
+				.findViewById(R.id.game_type_descr);
+
 		ranked.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
@@ -109,7 +145,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 					long id) {
 				GameType type = ((TypeDropDownItem) typeSpinner
 						.getSelectedItem()).type;
-				GameTypeSpinnerHelper.populateDescription(getActivity(), typeDescr, type);
+				GameTypeSpinnerHelper.populateDescription(getActivity(),
+						typeDescr, type);
 				retrieveRanks(type, aiLevels, aiLevelAdapter,
 						ranked.isChecked());
 			}
@@ -121,7 +158,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 
 		});
 		GameType type = ((TypeDropDownItem) typeSpinner.getSelectedItem()).type;
-		GameTypeSpinnerHelper.populateDescription(getActivity(), typeDescr, type);
+		GameTypeSpinnerHelper.populateDescription(getActivity(), typeDescr,
+				type);
 		retrieveRanks(type, aiLevels, aiLevelAdapter, ranked.isChecked());
 
 		Button start = (Button) view.findViewById(R.id.start);

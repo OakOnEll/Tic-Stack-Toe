@@ -27,23 +27,28 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 	private final MenuFragment fragment;
 	private final ImageManager imgManager;
 	private final View labelView;
+	private final View bottomView;
 	private final List<MatchInfo> objects;
 	private final MergeAdapter menuAdapter;
 
 	public MatchAdapter(Activity context, MenuFragment fragment,
-			List<MatchInfo> objects, MergeAdapter menuAdapter, View labelView) {
+			List<MatchInfo> objects, MergeAdapter menuAdapter, View labelView,
+			View listBottomView) {
 		super(context, R.layout.match_layout, objects);
 		this.context = context;
 		this.imgManager = ImageManager.create(context);
 		this.fragment = fragment;
 		this.labelView = labelView;
+		this.bottomView = listBottomView;
 		this.objects = objects;
 		this.menuAdapter = menuAdapter;
 		if (objects.size() > 0) {
 			labelView.setVisibility(View.VISIBLE);
+			listBottomView.setVisibility(View.VISIBLE);
 			menuAdapter.setActive(labelView, true);
 		} else {
 			labelView.setVisibility(View.GONE);
+			listBottomView.setVisibility(View.GONE);
 			menuAdapter.setActive(labelView, false);
 		}
 	}
@@ -157,9 +162,11 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 		super.notifyDataSetChanged();
 		if (getCount() == 0) {
 			labelView.setVisibility(View.GONE);
+			bottomView.setVisibility(View.GONE);
 			menuAdapter.setActive(labelView, false);
 		} else {
 			labelView.setVisibility(View.VISIBLE);
+			bottomView.setVisibility(View.VISIBLE);
 			menuAdapter.setActive(labelView, true);
 		}
 	}

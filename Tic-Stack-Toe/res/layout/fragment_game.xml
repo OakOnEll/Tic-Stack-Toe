@@ -3,7 +3,7 @@
     android:id="@+id/game_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wood_10_" >
+    android:background="@drawable/background" >
 
     <ImageView
         android:id="@+id/moving_view"
@@ -81,12 +81,10 @@
 
                     <LinearLayout
                         android:id="@+id/blackPieceLayout"
+                        style="@style/game_piece_inset"
                         android:layout_width="0dp"
-                        android:layout_height="75dp"
-                        android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
-                        android:clipChildren="false"
-                        android:gravity="center_horizontal" >
+                        >
 
                         <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
                             android:id="@+id/black_piece_stack1"
@@ -141,8 +139,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginRight="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge" 
-                    android:text="Type"/>
+                    android:text="Type"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView
                     android:id="@+id/grid_container"
@@ -390,12 +388,9 @@
 
                     <LinearLayout
                         android:id="@+id/whitePieceLayout"
+                        style="@style/game_piece_inset"
                         android:layout_width="0dp"
-                        android:layout_height="75dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:clipChildren="false"
-                        android:gravity="center_horizontal" >
+                        android:layout_weight="1" >
 
                         <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
                             android:id="@+id/white_piece_stack1"

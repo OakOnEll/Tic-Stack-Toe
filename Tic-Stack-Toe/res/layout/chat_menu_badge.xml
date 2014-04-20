@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.MyTheme.ActionButton"
     android:layout_width="48dp"
     android:layout_height="fill_parent"
     android:layout_gravity="right" >
 
     <!-- Menu Item Image -->
+
     <ImageView
         android:id="@+id/actionbar_notifcation_imageview"
         android:layout_width="48dp"
         android:layout_height="fill_parent"
         android:clickable="true"
-        android:contentDescription="@string/chat_actionbar_image_content"
-        android:src="@drawable/abs__menu_dropdown_panel_holo_light" />
+        android:contentDescription="@string/chat_actionbar_image_content" />
+    <!-- android:src="@drawable/abs__menu_dropdown_panel_holo_light" -->
 
-    <!-- Badge Count -->    
+
+    <!-- Badge Count -->
+
     <TextView
         android:id="@+id/actionbar_notifcation_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:src="@drawable/abs__menu_dropdown_panel_holo_light" />
+        android:textColor="@android:color/white" />
+    <!-- android:src="@drawable/abs__menu_dropdown_panel_holo_light" -->
 
     <ProgressBar
         android:id="@+id/actionbar_notifcation_progress"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
 </RelativeLayout>

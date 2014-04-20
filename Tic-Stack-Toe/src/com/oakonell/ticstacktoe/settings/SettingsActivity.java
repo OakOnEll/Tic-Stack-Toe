@@ -17,8 +17,7 @@ public class SettingsActivity extends PrefsActivity {
 		if (Utils.hasHoneycomb()) {
 			addPreV11Resources();
 		}
-		getListView().setBackgroundResource(R.drawable.wood_10_);
-		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);		
 	}
 
 	@Override

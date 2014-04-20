@@ -2,7 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog"
     android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_local_game_mode_title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/line" />
+    </LinearLayout>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -18,12 +39,14 @@
                 android:id="@+id/opponent_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/label_player_black_name" />
 
             <EditText
                 android:id="@+id/player_x_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/text_input_on_wood"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:maxLines="1" >
@@ -42,6 +65,7 @@
                 android:id="@+id/switch_players"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:background="@drawable/dark_button"
                 android:scaleType="fitCenter"
                 android:src="@drawable/swap_icon_17858" />
         </TableRow>
@@ -55,12 +79,14 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/label_player_white_name" />
 
             <EditText
                 android:id="@+id/player_o_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/text_input_on_wood"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:maxLines="1" />
@@ -75,10 +101,14 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/game_type" />
 
             <Spinner
                 android:id="@+id/game_type"
+                android:background="@drawable/spinner"
+                android:popupBackground="@drawable/dropdown_background"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
@@ -92,6 +122,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/game_type_short_descr" />
 
             <TextView
@@ -101,11 +132,28 @@
         </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/start" />
+        android:scaleType="fitXY"
+        android:src="@drawable/line" />
+
+    <!--
+    bogus linear layout to avoid the NO_TITLE problem, as in
+    https://stackoverflow.com/questions/20550360/dialogfragment-width-shrink-after-specifying-feature-no-title-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal" >
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/dark_button"
+            android:text="@string/start" />
+    </LinearLayout>
 
 </LinearLayout>

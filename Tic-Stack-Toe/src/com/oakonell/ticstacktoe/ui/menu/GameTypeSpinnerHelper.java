@@ -34,7 +34,7 @@ public class GameTypeSpinnerHelper {
 	public static void populateDescription(FragmentActivity fragmentActivity,
 			TextView typeDescr, GameType type) {
 		int descrId = getTypeDescriptionStringResource(type);
-		typeDescr.setText(descrId);
+//		typeDescr.setText(descrId);
 	}
 
 	public static int getTypeDescriptionStringResource(GameType type) {

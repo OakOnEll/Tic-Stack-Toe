@@ -128,11 +128,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_refresh:
-			refreshMatch();
-			return true;
-		}
+//		switch (item.getItemId()) {
+//		case R.id.action_refresh:
+//			refreshMatch();
+//			return true;
+//		}
 		return super.onOptionsItemSelected(fragment, item);
 	}
 

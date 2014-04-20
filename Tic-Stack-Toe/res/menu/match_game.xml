@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
    
-    <item
+<!--     <item
         android:id="@+id/action_refresh"
         android:icon="@android:drawable/ic_menu_rotate"
         android:orderInCategory="101"
         android:showAsAction="always"
-        android:title="@string/action_refresh"/>
+        android:title="@string/action_refresh"/>--> 
     <item
         android:id="@+id/action_chat"
         android:actionLayout="@layout/chat_menu_badge"
@@ -17,7 +17,7 @@
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="103"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
 
 </menu>

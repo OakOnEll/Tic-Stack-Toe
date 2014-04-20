@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="menu_button">        
+    <style name="menu_button_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/wooden_button</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="menu_button">
         <item name="android:padding">5dp</item>
         <item name="android:layout_width">@dimen/menu_button_width</item>
         <item name="android:layout_height">@dimen/menu_button_height</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
-    <style name="menu_button_text">          
+
+    <style name="menu_button_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
-    
+
 </resources>

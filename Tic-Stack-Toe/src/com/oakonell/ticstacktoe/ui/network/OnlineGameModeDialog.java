@@ -1,10 +1,13 @@
 package com.oakonell.ticstacktoe.ui.network;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
@@ -34,13 +37,17 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().setBackgroundDrawable(
+				new ColorDrawable(Color.TRANSPARENT));
 		View view = inflater.inflate(R.layout.dialog_online_type, container,
 				false);
 
+		TextView titleView = (TextView) view.findViewById(R.id.title);
 		if (isQuick) {
-			getDialog().setTitle(R.string.choose_quick_game_mode_title);
+			titleView.setText(R.string.choose_quick_game_mode_title);
 		} else {
-			getDialog().setTitle(R.string.choose_online_game_mode_title);
+			titleView.setText(R.string.choose_online_game_mode_title);
 		}
 
 		Button start = (Button) view.findViewById(R.id.start);
@@ -50,8 +57,10 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
-		final TextView typeDescr = (TextView) view.findViewById(R.id.game_type_descr);
-		GameTypeSpinnerHelper.setOnChange(getActivity(), typeSpinner, typeDescr);
+		final TextView typeDescr = (TextView) view
+				.findViewById(R.id.game_type_descr);
+		GameTypeSpinnerHelper
+				.setOnChange(getActivity(), typeSpinner, typeDescr);
 
 		final CheckBox realtime = (CheckBox) view.findViewById(R.id.realtime);
 
@@ -68,7 +77,8 @@ public class OnlineGameModeDialog extends SherlockDialogFragment {
 						.getSelectedItem();
 				boolean isTurnBased = !realtime.isChecked();
 
-				listener.chosenMode(typeItem.type, isTurnBased, isRanked.isChecked());
+				listener.chosenMode(typeItem.type, isTurnBased,
+						isRanked.isChecked());
 			}
 		});
 		return view;

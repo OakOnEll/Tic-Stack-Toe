@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wood_10_"
+    android:background="@drawable/background"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -28,6 +29,7 @@
             android:id="@+id/sign_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/dark_button"
             android:text="@string/sign_out"
             android:textSize="12sp" />
     </LinearLayout>
@@ -55,15 +57,15 @@
             android:text="@string/sign_in_why"
             android:textColor="#808080" />
     </LinearLayout>
-<!-- 
+    <!--
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/sign_in_bar" >
-    </ListView>
--->
-      <uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout
+    </ListView>-->
+
+    <uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

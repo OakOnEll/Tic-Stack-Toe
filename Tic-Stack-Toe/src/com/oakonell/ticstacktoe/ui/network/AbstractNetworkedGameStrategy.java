@@ -110,6 +110,8 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		});
 		progressView.setVisibility(opponentInChat ? View.VISIBLE
 				: View.INVISIBLE);
+//		chatMenuItemImageView
+//				.setBackgroundResource(R.drawable.action_bar_inset);
 		if (numNewMessages > 0) {
 			chatMenuItemTextView.setText("" + numNewMessages);
 			chatMenuItemImageView

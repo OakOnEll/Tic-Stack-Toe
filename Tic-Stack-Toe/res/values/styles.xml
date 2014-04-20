@@ -1,26 +1,85 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+    <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.MyTheme.ActionBar</item>
+        <item name="actionButtonStyle">@style/Widget.MyTheme.ActionButton</item>
+        <item name="android:actionButtonStyle" tools:targetApi="11">@style/Widget.MyTheme.ActionButton</item>
+        <item name="android:checkboxStyle">@style/Widget.MyTheme.CompoundButton.CheckBox</item>
+        <!-- <item name="android:background">@drawable/background</item> -->
+        <!-- <item name="android:dialogTheme" tools:targetApi="11">@style/Dialog.MyTheme</item> -->
+        <!-- <item name="dialogTheme" >@style/Dialog.MyTheme</item> -->
+        <!-- <item name="android:detailsElementBackground" tools:targetApi="11">@drawable/background</item> -->
+        <!-- Doesn't recognize the keyboardViewStyle     <item name="keyboardViewStyle">@style/Widget.MyTheme.KeyboardView</item> -->
+    </style>
+
+    <style name="Widget.MyTheme.ActionButton" parent="Widget.Sherlock.ActionButton">
+        <item name="android:background">@drawable/action_bar_button</item>
+        <item name="android:dividerPadding" tools:targetApi="11">5dp</item>
+    </style>
+
+    <style name="Widget.MyTheme.ActionBar" parent="Widget.Sherlock.ActionBar">
+        <item name="android:background">@drawable/action_bar</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
+    <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="Widget.MyTheme.CompoundButton.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/wooden_check</item>
+    </style>
 
     <style name="game_stats_dialog.Window" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/game_stats_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/game_stats_dialog_out</item>
     </style>
+
+    <style name="game_piece_inset">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/game_inset_box</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+    </style>
+
+    <style name="player_stack">
+        <item name="android:layout_width">75dp</item>
+        <item name="android:layout_height">75dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="Widget.MyTheme.KeyboardView" parent="@android:Widget.KeyboardView">
+        <item name="android:background">@drawable/background</item>
+        <item name="android:keyBackground">@drawable/dark_button</item>
+        <!--
+              <item name="android:keyTextSize">22sp</item>
+        <item name="android:keyTextColor">#FFFFFFFF</item>
+        <item name="android:keyPreviewLayout">@android:layout/keyboard_key_preview</item>
+        <item name="android:keyPreviewOffset">-12dip</item>
+        <item name="android:keyPreviewHeight">80dip</item>
+        <item name="android:labelTextSize">14sp</item>
+        <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
+        <item name="android:verticalCorrection">-10dip</item>
+        <item name="android:shadowColor">#BB000000</item>
+        <item name="android:shadowRadius">2.75</item>
+        -->
+    </style>
+
+    <!--
+    this doesn't work used as a style on individual spinners in dialogs? 
+    <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:background">@drawable/spinner</item>
+        <item name="android:popupBackground">@drawable/dropdown_background</item>
+    </style>
+    -->
 
 </resources>

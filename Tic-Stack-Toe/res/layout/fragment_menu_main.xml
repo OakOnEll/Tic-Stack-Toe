@@ -3,55 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".MainActivity" >
+<!--     android:background="@drawable/background"  -->
+    <LinearLayout
+        android:id="@+id/new_game"
+        style="@style/menu_button_layout" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <ImageButton
-            android:id="@+id/new_game"
+        <ImageView
             style="@style/menu_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/pass_n_play_icon_27531" />
+            android:src="@android:drawable/ic_input_add" />
 
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
             android:id="@+id/new_game_text"
             style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/new_game"
-            android:layout_toRightOf="@+id/new_game"
             android:text="Start a Game" />
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/view_achievements"
+    <LinearLayout
+        android:id="@+id/view_achievements"
+        style="@style/menu_button_layout" >
+
+        <ImageView
             style="@style/menu_button"
-            android:layout_alignLeft="@id/new_game"
-            android:layout_below="@id/new_game"
             android:src="@drawable/achievements_icon_16419" />
 
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
             android:id="@+id/view_achievements_text"
             style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/view_achievements"
-            android:layout_toRightOf="@+id/view_achievements"
             android:text="@string/achievements" />
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/view_leaderboards"
+    <LinearLayout
+        android:id="@+id/view_leaderboards"
+        style="@style/menu_button_layout" >
+
+        <ImageView
             style="@style/menu_button"
-            android:layout_alignLeft="@id/view_achievements"
-            android:layout_below="@id/view_achievements"
-            android:src="@drawable/leaderboard_icon_17975"
-            android:text="@string/leaderboards" />
+            android:src="@drawable/leaderboard_icon_17975" />
 
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
             android:id="@+id/view_leaderboards_text"
             style="@style/menu_button_text"
-            android:layout_alignBottom="@+id/view_leaderboards"
-            android:layout_toRightOf="@+id/view_leaderboards"
             android:text="@string/leaderboards" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

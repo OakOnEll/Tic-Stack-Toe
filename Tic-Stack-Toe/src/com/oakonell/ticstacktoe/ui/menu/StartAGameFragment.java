@@ -3,6 +3,7 @@ package com.oakonell.ticstacktoe.ui.menu;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog.LocalAIGameModeListener
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog.LocalGameModeListener;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
+
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog;
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog.OnlineGameModeListener;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
@@ -263,6 +266,10 @@ public class StartAGameFragment extends SherlockFragment {
 			}
 		});
 		dialog.show(getFragmentManager(), "aidialog");
+
+		// TestDialogFrag frag = new TestDialogFrag();
+		// frag.show(getFragmentManager(), "aidialog");
+
 	}
 
 	private void selectLocalGame() {
