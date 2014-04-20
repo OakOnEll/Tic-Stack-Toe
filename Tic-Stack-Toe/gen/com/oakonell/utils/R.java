@@ -268,7 +268,7 @@ public final class R {
 		public static final int abs__textfield_searchview_right_holo_dark = 0x7f02006d;
 		public static final int abs__textfield_searchview_right_holo_light = 0x7f02006e;
 		public static final int abs__toast_frame = 0x7f02006f;
-		public static final int icon = 0x7f02009c;
+		public static final int icon = 0x7f0200aa;
 	}
 	public static final class id {
 		public static final int about_description = 0x7f0700c7;
@@ -369,11 +369,11 @@ public final class R {
 		public static final int abs__simple_dropdown_hint = 0x7f030014;
 		public static final int copy_for_facebook_dlg = 0x7f030019;
 		public static final int dialog_app_rater = 0x7f03001b;
-		public static final int generic_about_activity = 0x7f030026;
-		public static final int number_picker = 0x7f03002a;
-		public static final int share_row = 0x7f030030;
-		public static final int sherlock_spinner_dropdown_item = 0x7f030031;
-		public static final int sherlock_spinner_item = 0x7f030032;
+		public static final int generic_about_activity = 0x7f030027;
+		public static final int number_picker = 0x7f03002b;
+		public static final int share_row = 0x7f030031;
+		public static final int sherlock_spinner_dropdown_item = 0x7f030032;
+		public static final int sherlock_spinner_item = 0x7f030033;
 	}
 	public static final class string {
 		public static final int about_title = 0x7f0b0045;
