@@ -50,7 +50,7 @@
                         android:text="Black name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/black_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -83,8 +83,7 @@
                         android:id="@+id/blackPieceLayout"
                         style="@style/game_piece_inset"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        >
+                        android:layout_weight="1" >
 
                         <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
                             android:id="@+id/black_piece_stack1"
@@ -105,11 +104,10 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/game_header"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" >
+                android:layout_height="wrap_content" >
 
                 <LinearLayout
                     android:id="@+id/num_games_container"
@@ -142,11 +140,41 @@
                     android:text="Type"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
+                <LinearLayout
+                    android:id="@+id/num_moves_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                        android:id="@+id/num_moves_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/num_move_lbl"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                        android:id="@+id/num_moves"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" >
+
                 <com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView
                     android:id="@+id/grid_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/num_moves_container"
+                    android:layout_centerInParent="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_horizontal|center_vertical"
@@ -342,28 +370,6 @@
                             android:text="@string/opponent_is_thinking" />
                     </LinearLayout>
                 </com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView>
-
-                <LinearLayout
-                    android:id="@+id/num_moves_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                        android:id="@+id/num_moves_lbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:text="@string/num_move_lbl"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                        android:id="@+id/num_moves"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:gravity="center_vertical" />
-                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -419,16 +425,17 @@
                         android:id="@+id/whiteName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="right|center_vertical"
                         android:ellipsize="end"
                         android:lines="1"
                         android:text="White Name"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <TextView
+                    <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/white_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="1200"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -436,6 +443,7 @@
                         android:id="@+id/num_white_wins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
                         android:gravity="right"
                         android:text="4 wins"
                         android:textAppearance="?android:attr/textAppearanceSmall" />

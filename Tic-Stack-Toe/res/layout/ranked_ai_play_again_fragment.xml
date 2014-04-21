@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/dialog"
     android:minWidth="200dp"
-    android:minHeight="200dp"
+    android:minHeight="150dp"
     android:orientation="vertical" >
 
     <include layout="@layout/dialog_title_layout"/>
