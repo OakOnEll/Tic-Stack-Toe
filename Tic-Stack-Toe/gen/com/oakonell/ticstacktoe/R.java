@@ -1376,7 +1376,6 @@ containing a value of this type.
         public static final int wooden_check=0x7f0200d2;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f070063;
         public static final int about_description=0x7f0700c8;
         public static final int abs__action_bar=0x7f07002d;
         public static final int abs__action_bar_container=0x7f07002c;
@@ -1487,6 +1486,7 @@ containing a value of this type.
         public static final int linearLayout1=0x7f070049;
         public static final int list=0x7f0700a1;
         public static final int listMode=0x7f07000b;
+        public static final int main=0x7f070063;
         public static final int main_frame=0x7f0700c9;
         public static final int message=0x7f070041;
         public static final int messages=0x7f070040;
@@ -2046,7 +2046,7 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f0d0069;
+        public static final int AppBaseTheme=0x7f0d006d;
         public static final int Sherlock___TextAppearance_Small=0x7f0d0049;
         public static final int Sherlock___Theme=0x7f0d0054;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0d0056;
@@ -2094,6 +2094,11 @@ containing a value of this type.
 
 
 
+
+
+
+
+
     
  <item name="android:background">@drawable/background</item> 
  <item name="android:dialogTheme" tools:targetApi="11">@style/Dialog.MyTheme</item> 
@@ -2112,11 +2117,17 @@ containing a value of this type.
         public static final int Widget_MyTheme_ActionBar=0x7f0d0062;
         public static final int Widget_MyTheme_ActionButton=0x7f0d0061;
         /**  Application theme. 
-     <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
+
+         <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
         <item name="android:background">@drawable/dialog</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="buttonStyle">@style/dark_button</item>
     </style>
+
+
+
+
+    
          */
         public static final int Widget_MyTheme_CompoundButton_CheckBox=0x7f0d0063;
         /** 
@@ -2130,6 +2141,11 @@ containing a value of this type.
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
         <item name="android:shadowRadius">2.75</item>
+
+
+
+
+
 
 
 
@@ -2192,15 +2208,35 @@ containing a value of this type.
     </style>
 
 
+
+
+
+
+
     
          */
         public static final int dark_button=0x7f0d0068;
         public static final int game_button=0x7f0d005c;
+        /** 
+              <item name="android:paddingBottom">5dp</item>       
+        <item name="android:paddingTop">5dp</item>
+
+
+
+
+        
+         */
         public static final int game_piece_inset=0x7f0d0065;
+        public static final int game_profile_name=0x7f0d006a;
+        public static final int game_profile_pic=0x7f0d0069;
+        public static final int game_profile_rank=0x7f0d006b;
+        public static final int game_profile_wins=0x7f0d006c;
         public static final int game_stats_dialog_Window=0x7f0d0064;
         public static final int menu_button=0x7f0d005e;
         public static final int menu_button_layout=0x7f0d005d;
         public static final int menu_button_text=0x7f0d005f;
+        /**  <item name="android:scaleType">fitCenter</item> 
+         */
         public static final int player_stack=0x7f0d0066;
     }
     public static final class xml {

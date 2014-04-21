@@ -19,7 +19,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/LinearLayout1"
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
@@ -42,30 +42,18 @@
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/blackName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:text="Black name"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        style="@style/game_profile_name"
+                        android:text="Black name" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/black_rank"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="1200"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        style="@style/game_profile_rank"
+                        android:text="1200" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_black_wins"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:text="12 wins"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        style="@style/game_profile_wins"
+                        android:text="12 wins" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,39 +63,56 @@
 
                     <ImageView
                         android:id="@+id/black_back"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        style="@style/game_profile_pic"
+                        android:layout_gravity="top"
                         android:src="@color/abs__background_holo_dark" />
 
                     <LinearLayout
-                        android:id="@+id/blackPieceLayout"
-                        style="@style/game_piece_inset"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" >
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:background="@drawable/game_inset_box"
+                        android:orientation="vertical" >
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/black_piece_stack1"
-                            style="@style/player_stack"
-                            android:src="@drawable/black_piece4" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px" />
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/black_piece_stack2"
-                            style="@style/player_stack"
-                            android:src="@drawable/black_piece4" />
+                        <LinearLayout
+                            android:id="@+id/blackPieceLayout"
+                            style="@style/game_piece_inset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" >
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/black_piece_stack3"
-                            style="@style/player_stack"
-                            android:src="@drawable/black_piece4" />
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/black_piece_stack1"
+                                style="@style/player_stack"
+                                android:src="@drawable/black_piece4" />
+
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/black_piece_stack2"
+                                style="@style/player_stack"
+                                android:src="@drawable/black_piece4" />
+
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/black_piece_stack3"
+                                style="@style/player_stack"
+                                android:src="@drawable/black_piece4" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/game_header"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:id="@+id/num_games_container"
@@ -174,8 +179,8 @@
                     android:id="@+id/grid_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="@drawable/wood_grid_4x4"
@@ -388,30 +393,47 @@
 
                     <ImageView
                         android:id="@+id/white_back"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        style="@style/game_profile_pic"
+                        android:layout_gravity="bottom"
                         android:src="@color/abs__background_holo_light" />
 
                     <LinearLayout
-                        android:id="@+id/whitePieceLayout"
-                        style="@style/game_piece_inset"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" >
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:background="@drawable/game_inset_box"
+                        android:orientation="vertical" >
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/white_piece_stack1"
-                            style="@style/player_stack"
-                            android:src="@drawable/white_piece4" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px" />
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/white_piece_stack2"
-                            style="@style/player_stack"
-                            android:src="@drawable/white_piece4" />
+                        <LinearLayout
+                            android:id="@+id/whitePieceLayout"
+                            style="@style/game_piece_inset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" >
 
-                        <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
-                            android:id="@+id/white_piece_stack3"
-                            style="@style/player_stack"
-                            android:src="@drawable/white_piece4" />
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/white_piece_stack1"
+                                style="@style/player_stack"
+                                android:src="@drawable/white_piece4" />
+
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/white_piece_stack2"
+                                style="@style/player_stack"
+                                android:src="@drawable/white_piece4" />
+
+                            <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
+                                android:id="@+id/white_piece_stack3"
+                                style="@style/player_stack"
+                                android:src="@drawable/white_piece4" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -423,30 +445,18 @@
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/whiteName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:text="White Name"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        style="@style/game_profile_name"
+                        android:text="White Name" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/white_rank"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="1200"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        style="@style/game_profile_rank"
+                        android:text="1200" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/num_white_wins"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:text="4 wins"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        style="@style/game_profile_wins"
+                        android:text="4 wins" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

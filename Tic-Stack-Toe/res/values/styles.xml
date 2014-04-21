@@ -2,7 +2,7 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
@@ -28,11 +28,14 @@
 
     <!-- Application theme. -->
 
-<!--     <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
+
+    <!--
+         <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
         <item name="android:background">@drawable/dialog</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="buttonStyle">@style/dark_button</item>
-    </style>-->
+    </style>
+    -->
 
     <style name="Widget.MyTheme.CompoundButton.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/wooden_check</item>
@@ -44,17 +47,22 @@
     </style>
 
     <style name="game_piece_inset">
+        <item name="android:weightSum">3</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:background">@drawable/game_inset_box</item>
         <item name="android:clipChildren">false</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
+        <!--
+              <item name="android:paddingBottom">5dp</item>       
+        <item name="android:paddingTop">5dp</item>
+        -->
     </style>
 
     <style name="player_stack">
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_width">75dp</item>
         <item name="android:layout_height">75dp</item>
-        <item name="android:scaleType">fitCenter</item>
+        <!-- <item name="android:scaleType">fitCenter</item> -->
     </style>
 
     <style name="Widget.MyTheme.KeyboardView" parent="@android:Widget.KeyboardView">
@@ -70,7 +78,7 @@
         <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2.75</item>
+        <item name="android:shadowRadius">2.75</item>
         -->
     </style>
 
@@ -79,7 +87,7 @@
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
-    </style>
+    </style>
     -->
     <style name="dark_button">
         <item name="android:background">@drawable/dark_button</item>
@@ -87,6 +95,37 @@
         <item name="android:paddingBottom">30dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
+    </style>
+
+    <style name="game_profile_pic">
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="game_profile_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="game_profile_rank">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="game_profile_wins">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:gravity">right</item>
     </style>
 
 </resources>

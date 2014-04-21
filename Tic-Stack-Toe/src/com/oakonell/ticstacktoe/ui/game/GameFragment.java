@@ -406,7 +406,8 @@ public class GameFragment extends AbstractGameFragment {
 		LayoutParams layoutParams = squareView.getLayoutParams();
 		layoutParams.height = newBoardPixSize;
 		squareView.requestLayout();
-
+		getView().requestLayout();
+		
 		resizeInfo = null;
 	}
 
