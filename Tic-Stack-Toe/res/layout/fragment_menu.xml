@@ -29,9 +29,9 @@
             android:id="@+id/sign_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/dark_button"
-            android:text="@string/sign_out"
-            android:textSize="12sp" />
+            android:text="@string/sign_out"      
+            style="@style/dark_button"      
+             />
     </LinearLayout>
 
     <LinearLayout

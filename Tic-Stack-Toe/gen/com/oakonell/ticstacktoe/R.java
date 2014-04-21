@@ -1353,25 +1353,26 @@ containing a value of this type.
         public static final int no_invites_icon_15776=0x7f0200bb;
         public static final int online_game_icon_27324=0x7f0200bc;
         public static final int pass_n_play_icon_27531=0x7f0200bd;
-        public static final int quick_game_icon_18148=0x7f0200be;
-        public static final int robot_icon_699=0x7f0200bf;
-        public static final int silhouette_icon_4520=0x7f0200c0;
-        public static final int spinner=0x7f0200c1;
-        public static final int swap_icon_17858=0x7f0200c2;
-        public static final int tab=0x7f0200c3;
-        public static final int text_input=0x7f0200c4;
-        public static final int text_input_on_wood=0x7f0200c5;
-        public static final int unchecked=0x7f0200c6;
-        public static final int white_piece1=0x7f0200c7;
-        public static final int white_piece2=0x7f0200c8;
-        public static final int white_piece3=0x7f0200c9;
-        public static final int white_piece4=0x7f0200ca;
-        public static final int wood_10_=0x7f0200cb;
-        public static final int wood_10_new=0x7f0200cc;
-        public static final int wood_grid_3x3=0x7f0200cd;
-        public static final int wood_grid_4x4=0x7f0200ce;
-        public static final int wooden_button=0x7f0200cf;
-        public static final int wooden_check=0x7f0200d0;
+        public static final int popup_item_selector=0x7f0200be;
+        public static final int quick_game_icon_18148=0x7f0200bf;
+        public static final int robot_icon_699=0x7f0200c0;
+        public static final int silhouette_icon_4520=0x7f0200c1;
+        public static final int spinner=0x7f0200c2;
+        public static final int swap_icon_17858=0x7f0200c3;
+        public static final int tab=0x7f0200c4;
+        public static final int text_input=0x7f0200c5;
+        public static final int text_input_on_wood=0x7f0200c6;
+        public static final int unchecked=0x7f0200c7;
+        public static final int white_piece1=0x7f0200c8;
+        public static final int white_piece2=0x7f0200c9;
+        public static final int white_piece3=0x7f0200ca;
+        public static final int white_piece4=0x7f0200cb;
+        public static final int wood_10_=0x7f0200cc;
+        public static final int wood_10_new=0x7f0200cd;
+        public static final int wood_grid_3x3=0x7f0200ce;
+        public static final int wood_grid_4x4=0x7f0200cf;
+        public static final int wooden_button=0x7f0200d0;
+        public static final int wooden_check=0x7f0200d1;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f070063;
@@ -1662,14 +1663,16 @@ containing a value of this type.
         public static final int number_picker=0x7f03002b;
         public static final int online_settings_dialog=0x7f03002c;
         public static final int play_again_dialog=0x7f03002d;
-        public static final int rank_layout=0x7f03002e;
-        public static final int rank_update_layout=0x7f03002f;
-        public static final int ranked_ai_play_again_fragment=0x7f030030;
-        public static final int share_row=0x7f030031;
-        public static final int sherlock_spinner_dropdown_item=0x7f030032;
-        public static final int sherlock_spinner_item=0x7f030033;
-        public static final int simple_game_mode_help_dialog=0x7f030034;
-        public static final int turn_play_again_dialog=0x7f030035;
+        public static final int popup=0x7f03002e;
+        public static final int popup_item=0x7f03002f;
+        public static final int rank_layout=0x7f030030;
+        public static final int rank_update_layout=0x7f030031;
+        public static final int ranked_ai_play_again_fragment=0x7f030032;
+        public static final int share_row=0x7f030033;
+        public static final int sherlock_spinner_dropdown_item=0x7f030034;
+        public static final int sherlock_spinner_item=0x7f030035;
+        public static final int simple_game_mode_help_dialog=0x7f030036;
+        public static final int turn_play_again_dialog=0x7f030037;
     }
     public static final class menu {
         public static final int match_game=0x7f100000;
@@ -2039,7 +2042,7 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f0d0069;
+        public static final int AppBaseTheme=0x7f0d006a;
         public static final int Sherlock___TextAppearance_Small=0x7f0d0049;
         public static final int Sherlock___Theme=0x7f0d0054;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0d0056;
@@ -2085,6 +2088,8 @@ containing a value of this type.
 
 
 
+
+
     
  <item name="android:background">@drawable/background</item> 
  <item name="android:dialogTheme" tools:targetApi="11">@style/Dialog.MyTheme</item> 
@@ -2114,6 +2119,8 @@ containing a value of this type.
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
         <item name="android:shadowRadius">2.75</item>
+
+
 
 
         
@@ -2169,6 +2176,17 @@ containing a value of this type.
         /**  Application theme. 
          */
         public static final int WoodDialog_MyTheme=0x7f0d0063;
+        /** 
+    this doesn't work used as a style on individual spinners in dialogs? 
+    <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:background">@drawable/spinner</item>
+        <item name="android:popupBackground">@drawable/dropdown_background</item>
+    </style>
+
+
+    
+         */
+        public static final int dark_button=0x7f0d0069;
         public static final int game_button=0x7f0d005c;
         public static final int game_piece_inset=0x7f0d0066;
         public static final int game_stats_dialog_Window=0x7f0d0065;

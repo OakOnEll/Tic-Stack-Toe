@@ -371,9 +371,9 @@ public final class R {
 		public static final int dialog_app_rater = 0x7f03001b;
 		public static final int generic_about_activity = 0x7f030027;
 		public static final int number_picker = 0x7f03002b;
-		public static final int share_row = 0x7f030031;
-		public static final int sherlock_spinner_dropdown_item = 0x7f030032;
-		public static final int sherlock_spinner_item = 0x7f030033;
+		public static final int share_row = 0x7f030033;
+		public static final int sherlock_spinner_dropdown_item = 0x7f030034;
+		public static final int sherlock_spinner_item = 0x7f030035;
 	}
 	public static final class string {
 		public static final int about_title = 0x7f0b0045;

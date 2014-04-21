@@ -44,10 +44,10 @@
 
             <Spinner
                 android:id="@+id/game_type"
-                android:background="@drawable/spinner"
-                android:popupBackground="@drawable/dropdown_background"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner"
+                android:popupBackground="@drawable/dropdown_background" />
         </TableRow>
 
         <TableRow
@@ -116,7 +116,8 @@
 
     <!--
     bogus linear layout to avoid the NO_TITLE problem, as in
-    https://stackoverflow.com/questions/20550360/dialogfragment-width-shrink-after-specifying-feature-no-title -->
+    https://stackoverflow.com/questions/20550360/dialogfragment-width-shrink-after-specifying-feature-no-title
+    -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,10 +126,10 @@
 
         <Button
             android:id="@+id/start"
+            style="@style/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/dark_button"
             android:text="@string/select_opponent" />
     </LinearLayout>
 

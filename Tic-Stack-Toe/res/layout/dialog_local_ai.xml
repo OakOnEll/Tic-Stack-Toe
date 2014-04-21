@@ -39,17 +39,17 @@
 
             <TextView
                 android:id="@+id/opponent_name"
-                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/ai_level" />
 
             <Spinner
                 android:id="@+id/ai_level"
-                android:background="@drawable/spinner"
-                android:popupBackground="@drawable/dropdown_background"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner"
+                android:popupBackground="@drawable/dropdown_background" >
             </Spinner>
         </TableRow>
 
@@ -60,30 +60,29 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/game_type" />
 
             <Spinner
                 android:id="@+id/game_type"
-                android:background="@drawable/spinner"
-                android:popupBackground="@drawable/dropdown_background"
-
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner"
+                android:popupBackground="@drawable/dropdown_background" />
         </TableRow>
 
-         <TableRow
+        <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical" >
 
             <TextView
                 android:id="@+id/textView3"
-                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="@string/game_type_short_descr" />
 
             <TextView
@@ -99,9 +98,9 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:text="Ranked Game" />
 
             <CheckBox
@@ -112,30 +111,27 @@
         </TableRow>
     </TableLayout>
 
-    
-            <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/line" />
-    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/line" />
+
     <!--
     bogus linear layout to avoid the NO_TITLE problem, as in
-    https://stackoverflow.com/questions/20550360/dialogfragment-width-shrink-after-specifying-feature-no-title
-    -->
+    https://stackoverflow.com/questions/20550360/dialogfragment-width-shrink-after-specifying-feature-no-title-->
 
-
-        <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal" >
 
         <Button
             android:id="@+id/start"
+            style="@style/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/dark_button"
             android:text="@string/start" />
     </LinearLayout>
 

@@ -2,7 +2,7 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
@@ -70,7 +70,7 @@
         <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2.75</item>
+        <item name="android:shadowRadius">2.75</item>
         -->
     </style>
 
@@ -79,7 +79,14 @@
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
-    </style>
+    </style>
     -->
+    <style name="dark_button">
+        <item name="android:background">@drawable/dark_button</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">30dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
 
 </resources>
