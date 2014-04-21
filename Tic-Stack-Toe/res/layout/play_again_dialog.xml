@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dialog"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
+
+    <include layout="@layout/dialog_title_layout"/>
 
     <include layout="@layout/rank_update_layout" />
 
@@ -43,6 +46,12 @@
             android:text="@string/waiting_for_opponent_to_decide_to_play_again" />
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/line" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,12 +60,14 @@
 
         <Button
             android:id="@+id/play_again"
+            style="@style/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/not_play_again"
+            style="@style/dark_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no" />

@@ -24,6 +24,8 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
+import com.oakonell.ticstacktoe.ui.local.AiGameStrategy.PostRankUpdate;
+import com.oakonell.ticstacktoe.ui.local.RankedAIPlayAgainFragment.RankedAIPlayAgainListener;
 
 public abstract class AbstractLocalStrategy extends GameStrategy {
 	private LocalMatchInfo matchInfo;
@@ -116,34 +118,23 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+		final RankedAIPlayAgainFragment playAgainDialog = new RankedAIPlayAgainFragment();
+
+		playAgainDialog.initialize(new RankedAIPlayAgainListener() {
+
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
+			public void playAgain() {
+				AbstractLocalStrategy.this.playAgain();
+			}
+
+			@Override
+			public void cancel() {
 				leaveGame();
 			}
-
-		};
-		OnClickListener playAgainListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				playAgain();
-			}
-
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setTitle(title);
-		builder.setMessage(R.string.play_again);
-		builder.setCancelable(false);
-
-		builder.setNegativeButton(R.string.no, cancelListener);
-		builder.setPositiveButton(R.string.yes, playAgainListener);
-
-		AlertDialog dialog = builder.create();
-
-		dialog.show();
+		}, getMatchInfo().getBlackName(), getMatchInfo().getWhiteName(),
+				winner, false);
+		playAgainDialog.show(getGameContext().getGameFragment()
+				.getChildFragmentManager(), "playAgain");
 
 	}
 

@@ -1,13 +1,19 @@
 package com.oakonell.ticstacktoe.ui.game;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 
-public class RankedPlayAgain extends SherlockDialogFragment {
+public abstract class RankedPlayAgain extends SherlockDialogFragment {
 	private boolean isRanked;
 	private String whiteName;
 	private String blackName;
@@ -33,6 +39,34 @@ public class RankedPlayAgain extends SherlockDialogFragment {
 		return isRanked;
 	}
 
+	protected void setTitle(final View view, String title) {
+		((TextView) view.findViewById(R.id.title)).setText(title);
+		getDialog().setTitle(title);
+	}
+
+	@Override
+	public final View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().setBackgroundDrawable(
+				new ColorDrawable(Color.TRANSPARENT));
+		final View view = inflater.inflate(getMainLayoutResId(),
+				container, false);
+		getDialog().setCancelable(false);
+		onCreateRankView(view);
+		
+		continueCreateView(container, view, savedInstanceState);
+		
+		return view;
+	}
+
+	protected void continueCreateView(ViewGroup container, View view,
+			Bundle savedInstanceState) {
+		
+	}
+
+	abstract protected int getMainLayoutResId() ;
+	
 	protected void onCreateRankView(final View view) {
 		if (isRanked) {
 			TextView blackNameText = (TextView) view

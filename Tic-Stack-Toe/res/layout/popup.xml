@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/dropdown_background"
+    android:background="@drawable/popup_background"
     android:orientation="vertical" >
 
-    <!-- android:background="@drawable/dropdown_background" -->
 
 <!--  Encountered silly layout BUG again, need this to constrain the size of the listview/dialog,
          without it, the dialog is nearly the full width of the screen -->

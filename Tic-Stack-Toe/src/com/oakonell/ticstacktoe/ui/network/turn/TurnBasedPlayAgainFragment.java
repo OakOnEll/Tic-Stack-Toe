@@ -1,7 +1,6 @@
 package com.oakonell.ticstacktoe.ui.network.turn;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -39,12 +38,9 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	protected void continueCreateView(ViewGroup container, View view,
 			Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.turn_play_again_dialog,
-				container, false);
-		getDialog().setCancelable(false);
-		getDialog().setTitle(winnerName + " Won!");
+		setTitle(view, winnerName + " Won!");
 
 		opponentPlayAgainText = (TextView) view.findViewById(R.id.text);
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
@@ -53,11 +49,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 		negativeButton = (Button) view.findViewById(R.id.negative);
 		positiveButton = (Button) view.findViewById(R.id.positive);
 
-		onCreateRankView(view);
-
 		configure.run();
-
-		return view;
 	}
 
 	public void displayAcceptInvite(final String invitationId) {
@@ -200,6 +192,11 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	private void close() {
 		dismiss();
 		listener.playAgainClosed();
+	}
+
+	@Override
+	protected int getMainLayoutResId() {
+		return R.layout.turn_play_again_dialog;
 	}
 
 }

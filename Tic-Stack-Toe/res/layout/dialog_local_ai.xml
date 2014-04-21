@@ -7,25 +7,7 @@
 
     <!--  -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_ai_mode_title"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/line" />
-    </LinearLayout>
+    <include layout="@layout/dialog_title_layout"/>
 
     <TableLayout
         android:layout_width="match_parent"

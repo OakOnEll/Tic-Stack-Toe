@@ -193,6 +193,7 @@ public class MenuFragment extends SherlockFragment implements
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
 
 		View main = configureMainView(inflater, view);
+		View mainFooter = configureMainViewFooter(inflater, view);
 
 		if (context.getGameHelper().isSignedIn()) {
 			showLogout();
@@ -234,6 +235,7 @@ public class MenuFragment extends SherlockFragment implements
 		menuAdapter.setActive(strictRankView, false);
 
 		menuAdapter.addView(main);
+		
 
 		View myTurnHeader = createMatchListHeader(inflater, view, "Your Turn");
 		View listBottomView = inflater.inflate(
@@ -253,6 +255,8 @@ public class MenuFragment extends SherlockFragment implements
 				menuAdapter, theirTurnHeader, listBottomView);
 		menuAdapter.addAdapter(theirTurnsAdapter);
 		menuAdapter.addView(listBottomView);
+
+		menuAdapter.addView(mainFooter);
 
 		View completedHeader = createMatchListHeader(inflater, view,
 				"Completed");
@@ -302,6 +306,12 @@ public class MenuFragment extends SherlockFragment implements
 			}
 
 		});
+		
+		return view;
+	}
+
+	private View configureMainViewFooter(LayoutInflater inflater, final View parent) {
+		final View view = inflater.inflate(R.layout.fragment_menu_main_footer, null);
 
 		View viewAchievements = view.findViewById(R.id.view_achievements);
 		viewAchievements.setOnClickListener(new OnClickListener() {
@@ -338,6 +348,7 @@ public class MenuFragment extends SherlockFragment implements
 		return view;
 	}
 
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);

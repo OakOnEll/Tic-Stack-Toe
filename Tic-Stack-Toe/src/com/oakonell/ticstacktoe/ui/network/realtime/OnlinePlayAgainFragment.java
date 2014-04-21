@@ -35,13 +35,20 @@ public class OnlinePlayAgainFragment extends RankedPlayAgain {
 		this.listener = fragment;
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	protected int getMainLayoutResId() {
+		return R.layout.play_again_dialog;
+	}
+
+	protected void continueCreateView(ViewGroup container,
 			Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.play_again_dialog,
-				container, false);
-		getDialog().setTitle(title);
-		getDialog().setCancelable(false);
+
+	}
+
+	protected void continueCreateView(ViewGroup container, final View view,
+			Bundle savedInstanceState) {
+
+		setTitle(view, title);
+
 		opponentPlayAgainText = (TextView) view
 				.findViewById(R.id.opponent_wants_to_play_again_text);
 		opponentPlayAgainText.setText(getResources().getString(
@@ -123,7 +130,6 @@ public class OnlinePlayAgainFragment extends RankedPlayAgain {
 		});
 
 		// Rank related stuff
-		onCreateRankView(view);
 		if (isRanked()) {
 			playAgainButton.setEnabled(false);
 		}
@@ -134,7 +140,6 @@ public class OnlinePlayAgainFragment extends RankedPlayAgain {
 			updateOpponentPlayAgain(opponentPlayAgainState == PlayAgainState.PLAY_AGAIN);
 		}
 
-		return view;
 	}
 
 	public void updateOpponentPlayAgain(boolean willPlay) {

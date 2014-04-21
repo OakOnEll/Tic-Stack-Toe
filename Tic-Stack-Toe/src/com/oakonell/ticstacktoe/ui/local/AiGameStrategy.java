@@ -98,14 +98,11 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 
 	@Override
 	public void promptToPlayAgain(String winner, String title) {
-		if (!isRanked) {
-			super.promptToPlayAgain(winner, title);
-			return;
-		}
 		// TODO display play again prompt, with rank change info... with a
 		// progress
 		final RankedAIPlayAgainFragment playAgainDialog = new RankedAIPlayAgainFragment();
 
+		if (isRanked) {
 		updateRanks(new PostRankUpdate() {
 			@Override
 			public void ranksUpdated(short oldRank, short newRank,
@@ -114,6 +111,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 						newAiRank);
 			}
 		});
+		}
 
 		playAgainDialog.initialize(new RankedAIPlayAgainListener() {
 
@@ -127,7 +125,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 				leaveGame();
 			}
 		}, getMatchInfo().getBlackName(), getMatchInfo().getWhiteName(),
-				winner, true);
+				winner, isRanked);
 		playAgainDialog.show(getGameContext().getGameFragment()
 				.getChildFragmentManager(), "playAgain");
 

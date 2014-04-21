@@ -8,18 +8,33 @@
     android:padding="10dp"
     tools:context=".MainActivity" >
 <!--     android:background="@drawable/background"  -->
+
     <LinearLayout
-        android:id="@+id/new_game"
+        android:id="@+id/view_achievements"
         style="@style/menu_button_layout" >
 
         <ImageView
             style="@style/menu_button"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@drawable/achievements_icon_16419" />
 
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
-            android:id="@+id/new_game_text"
+            android:id="@+id/view_achievements_text"
             style="@style/menu_button_text"
-            android:text="Start a Game" />
+            android:text="@string/achievements" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_leaderboards"
+        style="@style/menu_button_layout" >
+
+        <ImageView
+            style="@style/menu_button"
+            android:src="@drawable/leaderboard_icon_17975" />
+
+        <com.oakonell.ticstacktoe.ui.CustomFontTextView
+            android:id="@+id/view_leaderboards_text"
+            style="@style/menu_button_text"
+            android:text="@string/leaderboards" />
     </LinearLayout>
 
 </LinearLayout>

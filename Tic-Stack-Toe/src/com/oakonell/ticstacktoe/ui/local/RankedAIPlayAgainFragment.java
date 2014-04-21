@@ -2,7 +2,6 @@ package com.oakonell.ticstacktoe.ui.local;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -30,12 +29,9 @@ public class RankedAIPlayAgainFragment extends RankedPlayAgain {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	protected void continueCreateView(ViewGroup container, View view,
 			Bundle savedInstanceState) {
-		final View view = inflater.inflate(
-				R.layout.ranked_ai_play_again_fragment, container, false);
-		getDialog().setCancelable(false);
-		getDialog().setTitle(winnerName + " Won!");
+		setTitle(view, winnerName + " Won!");
 
 		playAgain = (Button) view.findViewById(R.id.play_again);
 		playAgain.setOnClickListener(new OnClickListener() {
@@ -45,7 +41,9 @@ public class RankedAIPlayAgainFragment extends RankedPlayAgain {
 				listener.playAgain();
 			}
 		});
-		playAgain.setEnabled(false);
+		if (isRanked()) {
+			playAgain.setEnabled(false);
+		}
 		Button cancel = (Button) view.findViewById(R.id.cancel);
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
@@ -54,10 +52,6 @@ public class RankedAIPlayAgainFragment extends RankedPlayAgain {
 				listener.cancel();
 			}
 		});
-
-		onCreateRankView(view);
-
-		return view;
 	}
 
 	public void updateRanks(short oldRank, short newRank, short oldAiRank,
@@ -70,6 +64,11 @@ public class RankedAIPlayAgainFragment extends RankedPlayAgain {
 	public void onCancel(DialogInterface dialog) {
 		super.onCancel(dialog);
 		listener.cancel();
+	}
+
+	@Override
+	protected int getMainLayoutResId() {
+		return R.layout.ranked_ai_play_again_fragment;
 	}
 
 }

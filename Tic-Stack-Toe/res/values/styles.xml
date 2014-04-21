@@ -28,11 +28,11 @@
 
     <!-- Application theme. -->
 
-    <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/dialog</item>
-        <item name="android:windowBackground">@null</item>
+<!--     <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:background">@drawable/dialog</item>
         <item name="android:textColor">@android:color/black</item>
-    </style>
+        <item name="buttonStyle">@style/dark_button</item>
+    </style>-->
 
     <style name="Widget.MyTheme.CompoundButton.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/wooden_check</item>
