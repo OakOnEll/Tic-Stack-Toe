@@ -10,8 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -26,6 +25,8 @@
                 android:id="@+id/new_game_same_device_text"
                 style="@style/menu_button_text"
                 android:text="@string/new_game_same_device" />
+
+            <ImageView style="@style/menu_button_filler" />
         </LinearLayout>
 
         <LinearLayout
@@ -40,6 +41,8 @@
                 android:id="@+id/new_game_vs_ai_text"
                 style="@style/menu_button_text"
                 android:text="@string/new_game_vs_ai" />
+
+            <ImageView style="@style/menu_button_filler" />
         </LinearLayout>
 
         <ImageView
@@ -61,6 +64,8 @@
                 android:id="@+id/new_quick_play_text"
                 style="@style/menu_button_text"
                 android:text="@string/new_quick_game" />
+
+            <ImageView style="@style/menu_button_filler" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,6 +80,8 @@
                 android:id="@+id/new_game_live_text"
                 style="@style/menu_button_text"
                 android:text="@string/new_game_live" />
+
+            <ImageView style="@style/menu_button_filler" />
         </LinearLayout>
     </LinearLayout>
 

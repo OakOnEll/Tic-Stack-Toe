@@ -235,9 +235,9 @@ public class MenuFragment extends SherlockFragment implements
 		menuAdapter.setActive(strictRankView, false);
 
 		menuAdapter.addView(main);
-		
 
-		View myTurnHeader = createMatchListHeader(inflater, view, "Your Turn");
+		View myTurnHeader = createMatchListHeader(inflater, view, "Your Turn",
+				true);
 		View listBottomView = inflater.inflate(
 				R.layout.fragment_menu_list_bottom, null);
 		menuAdapter.addView(myTurnHeader);
@@ -247,7 +247,7 @@ public class MenuFragment extends SherlockFragment implements
 		menuAdapter.addView(listBottomView);
 
 		View theirTurnHeader = createMatchListHeader(inflater, view,
-				"Their turn");
+				"Their turn", false);
 		listBottomView = inflater.inflate(R.layout.fragment_menu_list_bottom,
 				null);
 		menuAdapter.addView(theirTurnHeader);
@@ -259,7 +259,7 @@ public class MenuFragment extends SherlockFragment implements
 		menuAdapter.addView(mainFooter);
 
 		View completedHeader = createMatchListHeader(inflater, view,
-				"Completed");
+				"Completed", true);
 		listBottomView = inflater.inflate(R.layout.fragment_menu_list_bottom,
 				null);
 		menuAdapter.addView(completedHeader);
@@ -274,10 +274,15 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	private View createMatchListHeader(LayoutInflater inflater, View parent,
-			String label) {
-		final View view = inflater.inflate(R.layout.fragment_menu_list_header,
-				null);
-
+			String label, boolean left) {
+		View view;
+		if (left) {
+			view = inflater.inflate(R.layout.fragment_menu_list_header_left,
+					null);
+		} else {
+			view = inflater.inflate(R.layout.fragment_menu_list_header_right,
+					null);
+		}
 		TextView text = (TextView) view.findViewById(R.id.label);
 		text.setText(label);
 
@@ -306,12 +311,14 @@ public class MenuFragment extends SherlockFragment implements
 			}
 
 		});
-		
+
 		return view;
 	}
 
-	private View configureMainViewFooter(LayoutInflater inflater, final View parent) {
-		final View view = inflater.inflate(R.layout.fragment_menu_main_footer, null);
+	private View configureMainViewFooter(LayoutInflater inflater,
+			final View parent) {
+		final View view = inflater.inflate(R.layout.fragment_menu_main_footer,
+				null);
 
 		View viewAchievements = view.findViewById(R.id.view_achievements);
 		viewAchievements.setOnClickListener(new OnClickListener() {
@@ -348,7 +355,6 @@ public class MenuFragment extends SherlockFragment implements
 		return view;
 	}
 
-	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -846,5 +852,10 @@ public class MenuFragment extends SherlockFragment implements
 				iter.remove();
 			}
 		}
+	}
+
+	public void gameEnded() {
+		setActive();
+		refreshMatches();		
 	}
 }

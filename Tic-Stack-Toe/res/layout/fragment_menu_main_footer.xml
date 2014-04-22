@@ -21,7 +21,10 @@
             android:id="@+id/view_achievements_text"
             style="@style/menu_button_text"
             android:text="@string/achievements" />
-    </LinearLayout>
+        <ImageView
+            style="@style/menu_button_filler"
+            />
+        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/view_leaderboards"
@@ -35,6 +38,9 @@
             android:id="@+id/view_leaderboards_text"
             style="@style/menu_button_text"
             android:text="@string/leaderboards" />
-    </LinearLayout>
+        <ImageView
+            style="@style/menu_button_filler"
+            />
+        </LinearLayout>
 
 </LinearLayout>

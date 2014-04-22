@@ -63,15 +63,20 @@
 
                     <ImageView
                         android:id="@+id/black_back"
-                        style="@style/game_profile_pic"
-                        android:layout_gravity="top"
+                        style="@style/game_profile_pic"                        
                         android:src="@color/abs__background_holo_dark" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:background="@drawable/game_inset_box"
+                        android:gravity="right"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -98,7 +103,8 @@
                             <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
                                 android:id="@+id/black_piece_stack3"
                                 style="@style/player_stack"
-                                android:src="@drawable/black_piece4" />
+                                android:src="@drawable/black_piece4"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <ImageView
@@ -394,8 +400,12 @@
                     <ImageView
                         android:id="@+id/white_back"
                         style="@style/game_profile_pic"
-                        android:layout_gravity="bottom"
                         android:src="@color/abs__background_holo_light" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

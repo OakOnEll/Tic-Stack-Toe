@@ -8,7 +8,7 @@
         <shape
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle" >
-            <corners android:radius="20dp" />
+            <corners android:radius="10dp" />
 
 <!--              <padding
                 android:bottom="10dp"
@@ -16,7 +16,7 @@
                 android:right="10dp"
                 android:top="10dp" />-->
 
-            <solid android:color="#005F635E" />
+            <solid android:color="#ff777777" ></solid>
         </shape>
     </item>
 

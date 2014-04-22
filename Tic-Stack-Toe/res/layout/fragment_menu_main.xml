@@ -20,6 +20,9 @@
             android:id="@+id/new_game_text"
             style="@style/menu_button_text"
             android:text="Start a Game" />
-    </LinearLayout>
+        <ImageView
+            style="@style/menu_button_filler"
+            />
+        </LinearLayout>
 
 </LinearLayout>
