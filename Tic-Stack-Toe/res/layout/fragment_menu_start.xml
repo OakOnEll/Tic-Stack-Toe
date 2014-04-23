@@ -7,83 +7,97 @@
     android:padding="10dp"
     tools:context=".MainActivity" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical" >
+        android:layout_centerInParent="true" >
 
         <LinearLayout
-            android:id="@+id/new_game_same_device"
-            style="@style/menu_button_layout" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/new_game_same_device"
+                style="@style/menu_button_layout" >
+
+                <ImageView
+                    style="@style/menu_button"
+                    android:src="@drawable/pass_n_play_icon_27531" />
+
+                <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                    android:id="@+id/new_game_same_device_text"
+                    style="@style/menu_button_text"
+                    android:text="@string/new_game_same_device" />
+
+                <ImageView style="@style/menu_button_filler" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/new_game_vs_ai"
+                style="@style/menu_button_layout" >
+
+                <ImageView
+                    style="@style/menu_button"
+                    android:src="@drawable/robot_icon_699" />
+
+                <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                    android:id="@+id/new_game_vs_ai_text"
+                    style="@style/menu_button_text"
+                    android:text="@string/new_game_vs_ai" />
+
+                <ImageView style="@style/menu_button_filler" />
+            </LinearLayout>
 
             <ImageView
-                style="@style/menu_button"
-                android:src="@drawable/pass_n_play_icon_27531" />
+                android:id="@+id/play_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/games_controller_green_med" />
 
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/new_game_same_device_text"
-                style="@style/menu_button_text"
-                android:text="@string/new_game_same_device" />
+            <LinearLayout
+                android:id="@+id/new_quick_play"
+                style="@style/menu_button_layout" >
 
-            <ImageView style="@style/menu_button_filler" />
+                <ImageView
+                    style="@style/menu_button"
+                    android:src="@drawable/quick_game_icon_18148" />
+
+                <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                    android:id="@+id/new_quick_play_text"
+                    style="@style/menu_button_text"
+                    android:text="@string/new_quick_game" />
+
+                <ImageView style="@style/menu_button_filler" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/new_game_live"
+                style="@style/menu_button_layout" >
+
+                <ImageView
+                    style="@style/menu_button"
+                    android:src="@drawable/online_game_icon_27324" />
+
+                <com.oakonell.ticstacktoe.ui.CustomFontTextView
+                    android:id="@+id/new_game_live_text"
+                    style="@style/menu_button_text"
+                    android:text="@string/new_game_live" />
+
+                <ImageView style="@style/menu_button_filler" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/tutorial"
+                style="@style/dark_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Tutorial" >
+            </Button>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/new_game_vs_ai"
-            style="@style/menu_button_layout" >
-
-            <ImageView
-                style="@style/menu_button"
-                android:src="@drawable/robot_icon_699" />
-
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/new_game_vs_ai_text"
-                style="@style/menu_button_text"
-                android:text="@string/new_game_vs_ai" />
-
-            <ImageView style="@style/menu_button_filler" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/play_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/games_controller_green_med" />
-
-        <LinearLayout
-            android:id="@+id/new_quick_play"
-            style="@style/menu_button_layout" >
-
-            <ImageView
-                style="@style/menu_button"
-                android:src="@drawable/quick_game_icon_18148" />
-
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/new_quick_play_text"
-                style="@style/menu_button_text"
-                android:text="@string/new_quick_game" />
-
-            <ImageView style="@style/menu_button_filler" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/new_game_live"
-            style="@style/menu_button_layout" >
-
-            <ImageView
-                style="@style/menu_button"
-                android:src="@drawable/online_game_icon_27324" />
-
-            <com.oakonell.ticstacktoe.ui.CustomFontTextView
-                android:id="@+id/new_game_live_text"
-                style="@style/menu_button_text"
-                android:text="@string/new_game_live" />
-
-            <ImageView style="@style/menu_button_filler" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/waiting"

@@ -1,6 +1,6 @@
 package com.oakonell.ticstacktoe.model;
 
-public class PlayerStrategy {
+public abstract class PlayerStrategy {
 	private boolean isBlack;
 
 	protected PlayerStrategy(boolean isBlack) {

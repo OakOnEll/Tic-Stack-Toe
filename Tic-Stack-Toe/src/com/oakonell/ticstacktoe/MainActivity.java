@@ -339,9 +339,9 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 	public void gameEnded() {
 		possiblyShowInterstitialAd();
-		getMenuFragment().setActive();
 		gameStrategy = null;
 		mAdView.setVisibility(View.VISIBLE);
+		getMenuFragment().gameEnded();
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}

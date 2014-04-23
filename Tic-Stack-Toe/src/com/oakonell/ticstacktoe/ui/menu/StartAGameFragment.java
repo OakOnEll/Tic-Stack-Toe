@@ -41,8 +41,8 @@ import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog.LocalAIGameModeListener;
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog.LocalGameModeListener;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
-
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog;
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog.OnlineGameModeListener;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
@@ -96,6 +96,14 @@ public class StartAGameFragment extends SherlockFragment {
 						});
 		// Handle when activity is recreated like on orientation Change
 		configureDisplayHomeUp();
+
+		View tutorial = view.findViewById(R.id.tutorial);
+		tutorial.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startTutorial();
+			}
+		});
 
 		View newGameOnSameDevice = view.findViewById(R.id.new_game_same_device);
 		newGameOnSameDevice.setOnClickListener(new OnClickListener() {
@@ -270,6 +278,13 @@ public class StartAGameFragment extends SherlockFragment {
 		// TestDialogFrag frag = new TestDialogFrag();
 		// frag.show(getFragmentManager(), "aidialog");
 
+	}
+
+	private void startTutorial() {
+		setInactive();
+		exitStartMenu();
+		TutorialGameStrategy strategy = new TutorialGameStrategy(context);
+		strategy.startGame();
 	}
 
 	private void selectLocalGame() {

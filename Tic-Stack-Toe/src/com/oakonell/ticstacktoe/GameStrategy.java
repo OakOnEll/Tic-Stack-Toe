@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -148,11 +151,15 @@ public abstract class GameStrategy {
 		final PlayerStrategy currentStrategy = getGame().getCurrentPlayer()
 				.getStrategy();
 		if (currentStrategy.isHuman()) {
-			getGameFragment().acceptHumanMove();
+			acceptHumanMove(currentStrategy);
 			return;
 		}
 
 		acceptNonHumanPlayerMove(currentStrategy);
+	}
+
+	protected void acceptHumanMove(PlayerStrategy currentStrategy) {
+		getGameFragment().acceptHumanMove();
 	}
 
 	abstract protected void acceptNonHumanPlayerMove(
@@ -195,8 +202,7 @@ public abstract class GameStrategy {
 		}
 	}
 
-	public final void attemptHumanMove(AbstractMove move,
-			OnHumanMove onHumanMove) {
+	public void attemptHumanMove(AbstractMove move, OnHumanMove onHumanMove) {
 		try {
 			State state = move.applyToGame(getGame());
 			onHumanMove.onSuccess(state);
@@ -349,5 +355,10 @@ public abstract class GameStrategy {
 	}
 
 	public abstract RankInfo getRankInfo();
+
+	public void viewCreated(GameFragment gameFragment, LayoutInflater inflater,
+			ViewGroup container, FrameLayout frame) {
+
+	}
 
 }

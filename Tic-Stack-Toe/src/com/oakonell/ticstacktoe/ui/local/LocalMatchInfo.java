@@ -21,6 +21,7 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -48,6 +49,8 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		void visitPassNPlay(PassNPlayMatchInfo info);
 
 		void visitAi(AiMatchInfo info);
+
+		void visitTutorial(TutorialMatchInfo info);
 	}
 
 	public abstract void accept(LocalMatchVisitor visitor);
@@ -291,10 +294,13 @@ public abstract class LocalMatchInfo implements MatchInfo {
 					whiteName, aiLevel, lastUpdated, fileName, score,
 					rematchId, winner, isRanked);
 		} else if (mode == GameMode.PASS_N_PLAY) {
-
 			return new PassNPlayMatchInfo(id, matchStatus, turnStatus,
 					blackName, whiteName, lastUpdated, fileName, score,
 					rematchId, winner);
+		} else if (mode == GameMode.TUTORIAL) {
+			return new TutorialMatchInfo(id, matchStatus, turnStatus,
+					blackName, whiteName, aiLevel, lastUpdated, fileName,
+					score, rematchId, winner);
 		}
 		throw new RuntimeException("Unhandled GameMode " + mode);
 	}

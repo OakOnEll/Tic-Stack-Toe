@@ -27,6 +27,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -243,8 +244,16 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		final FrameLayout frame = new FrameLayout(getActivity()
+				.getApplicationContext());
+
 		final View view = inflater.inflate(R.layout.fragment_game, container,
 				false);
+		frame.addView(view);
+
+		if (getGameStrategy().shouldHideAd()) {
+			gameContext.hideAd();
+		}
 
 		// Listen for changes in the back stack
 		getSherlockActivity().getSupportFragmentManager()
@@ -308,10 +317,6 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		}
 
-		if (inOnCreate != null) {
-			inOnCreate.run();
-		}
-
 		winOverlayView.setBoardSize(boardSize);
 
 		view.setKeepScreenOn(keepScreenOn);
@@ -357,7 +362,13 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
-		return view;
+		getGameStrategy().viewCreated(this, inflater, container, frame);
+
+		if (inOnCreate != null) {
+			inOnCreate.run();
+		}
+
+		return frame;
 	}
 
 	private void storeViewReferences(final View view) {
@@ -407,7 +418,7 @@ public class GameFragment extends AbstractGameFragment {
 		layoutParams.height = newBoardPixSize;
 		squareView.requestLayout();
 		getView().requestLayout();
-		
+
 		resizeInfo = null;
 	}
 
@@ -1693,5 +1704,9 @@ public class GameFragment extends AbstractGameFragment {
 
 		getActivity().getSupportFragmentManager().popBackStack();
 		gameContext.gameEnded();
+	}
+
+	public void disableDragging(boolean disable) {
+		disableButtons = disable;
 	}
 }

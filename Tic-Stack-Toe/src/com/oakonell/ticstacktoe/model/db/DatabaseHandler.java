@@ -26,6 +26,7 @@ import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo.LocalMatchVisitor;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo;
 import com.oakonell.utils.StringUtils;
 
@@ -434,6 +435,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				values.put(TableLocalMatches.KEY_WHITE_AI_LEVEL, info
 						.getWhiteAILevel().getValue());
 
+			}
+			
+			@Override
+			public void visitTutorial(TutorialMatchInfo info) {
+				values.put(TableLocalMatches.KEY_MODE,
+						GameMode.TUTORIAL.getVal());								
 			}
 
 		};

@@ -9,7 +9,9 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
@@ -61,6 +63,7 @@ import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
 import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
@@ -69,6 +72,8 @@ import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public class MenuFragment extends SherlockFragment implements
 		OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
+
+	public static final String SAW_TUTORIAL = "saw_tutorial";
 
 	private DatabaseHandler dbHandler;
 
@@ -296,18 +301,29 @@ public class MenuFragment extends SherlockFragment implements
 		newGame.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO start a menu fragment(?) to choose which style of game
 
-				StartAGameFragment fragment = StartAGameFragment
-						.createStartGameFragment();
+				SharedPreferences preferences = PreferenceManager
+						.getDefaultSharedPreferences(getActivity());
+				boolean sawTutorial = preferences.getBoolean(SAW_TUTORIAL,
+						false);
+				if (sawTutorial) {
+					StartAGameFragment fragment = StartAGameFragment
+							.createStartGameFragment();
 
-				FragmentManager manager = getActivity()
-						.getSupportFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
-				transaction.replace(R.id.main_frame, fragment,
-						GameContext.FRAG_TAG_START_GAME);
-				transaction.addToBackStack(null);
-				transaction.commit();
+					FragmentManager manager = getActivity()
+							.getSupportFragmentManager();
+					FragmentTransaction transaction = manager
+							.beginTransaction();
+					transaction.replace(R.id.main_frame, fragment,
+							GameContext.FRAG_TAG_START_GAME);
+					transaction.addToBackStack(null);
+					transaction.commit();
+					return;
+				}
+				setInactive();
+				TutorialGameStrategy strategy = new TutorialGameStrategy(
+						context);
+				strategy.startGame();
 			}
 
 		});
@@ -856,6 +872,6 @@ public class MenuFragment extends SherlockFragment implements
 
 	public void gameEnded() {
 		setActive();
-		refreshMatches();		
+		refreshMatches();
 	}
 }
