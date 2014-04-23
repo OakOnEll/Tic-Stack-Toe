@@ -14,10 +14,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,11 +51,14 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		getDialog().getWindow().setBackgroundDrawable(
+				new ColorDrawable(Color.TRANSPARENT));
 		View view = inflater.inflate(R.layout.dialog_local_game, container,
 				false);
 
-//		getDialog().setTitle(R.string.choose_local_game_mode_title);
+		getDialog().setTitle(R.string.choose_local_game_mode_title);
+		TextView titleView = (TextView) view.findViewById(R.id.title);
+		titleView.setText(R.string.choose_local_game_mode_title);
 		defaultNamesFromPreferences();
 
 		ImageButton switchPlayers = (ImageButton) view
@@ -124,8 +127,10 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);
-		final TextView typeDescr = (TextView) view.findViewById(R.id.game_type_descr);
-		GameTypeSpinnerHelper.setOnChange(getActivity(), typeSpinner, typeDescr);
+		final TextView typeDescr = (TextView) view
+				.findViewById(R.id.game_type_descr);
+		GameTypeSpinnerHelper
+				.setOnChange(getActivity(), typeSpinner, typeDescr);
 
 		Button start = (Button) view.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {

@@ -101,6 +101,8 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 		View view = inflater.inflate(R.layout.dialog_local_ai, container, true);
 
 		getDialog().setTitle(R.string.choose_ai_mode_title);
+		TextView titleView = (TextView) view.findViewById(R.id.title);
+		titleView.setText(R.string.choose_ai_mode_title);
 
 		final List<AiDropDownItem> aiLevels = new ArrayList<NewAIGameDialog.AiDropDownItem>();
 		aiLevels.add(new AiDropDownItem(getResources().getString(
