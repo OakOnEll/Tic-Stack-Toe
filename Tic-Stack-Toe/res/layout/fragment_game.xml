@@ -104,7 +104,7 @@
                                 android:id="@+id/black_piece_stack3"
                                 style="@style/player_stack"
                                 android:src="@drawable/black_piece4"
-                                android:visibility="gone" />
+                                />
                         </LinearLayout>
 
                         <ImageView
