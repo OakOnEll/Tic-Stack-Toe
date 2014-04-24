@@ -8,10 +8,19 @@
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <string name="an_start_game_cat">start_game</string>
-
+    <string name="an_start_tutorial_game_action">tutorial_game</string>
     <string name="an_start_pass_n_play_game_action">pass_n_play_game</string>
+
     <string name="an_start_ai_game_action">ai_game</string>
     <string name="an_start_quick_game_action">quick_game</string>
     <string name="an_start_online_game_action">online_game</string>
+    <string name="an_start_quick_turn_game_action">quick_turn_game</string>
+    <string name="an_start_online_turn_game_action">turn_game</string>
+
+    <string name="an_start_ranked_ai_game_action">ranked_ai_game</string>
+    <string name="an_start_ranked_quick_game_action">ranked_quick_game</string>
+    <string name="an_start_ranked_online_game_action">ranked_online_game</string>
+    <string name="an_start_ranked_quick_turn_game_action">ranked_quick_turn_game</string>
+    <string name="an_start_ranked_online_turn_game_action">ranked_turn_game</string>
     
 </resources>

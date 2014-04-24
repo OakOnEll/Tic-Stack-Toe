@@ -17,8 +17,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
@@ -289,7 +287,17 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		return true;
 	}
 
-	private void startGame(final boolean iAmBlack) {
+	@Override
+	protected int getAnalyticGameActionResId() {
+		if (isRanked) {
+			return isQuick ? R.string.an_start_ranked_quick_game_action
+					: R.string.an_start_ranked_online_game_action;
+		}
+		return isQuick ? R.string.an_start_quick_game_action
+				: R.string.an_start_online_game_action;
+	}
+
+	private void startNewGame(final boolean iAmBlack) {
 		this.iAmBlack = iAmBlack;
 		final GameFragment gameFragment = GameFragment.createFragment();
 		// ads in online play will leave the room.. hide the ad to avoid the
@@ -310,13 +318,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
 					getOpponentParticipant().getIconImageUri());
 		}
-		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(
-				getContext().getString(R.string.an_start_game_cat),
-				(isQuick ? getContext().getString(
-						R.string.an_start_quick_game_action) : getContext()
-						.getString(R.string.an_start_online_game_action)),
-				type.getVariant() + "", 0L);
+
+		sendAnalyticStartGameEvent(type);
 
 		if (!isRanked) {
 			startGame(gameFragment, blackPlayer, whitePlayer, score, null);
@@ -604,7 +607,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		}
 		if (start && type != null) {
-			startGame(iAmBlack);
+			startNewGame(iAmBlack);
 		}
 	}
 

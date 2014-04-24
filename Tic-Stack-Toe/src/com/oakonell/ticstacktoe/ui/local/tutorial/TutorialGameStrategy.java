@@ -64,6 +64,11 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 	private View next;
 
+	protected int getAnalyticGameActionResId() {
+		return R.string.an_start_tutorial_game_action;
+	}
+	
+	
 	public static class TutorialPlayerStrategy extends PlayerStrategy {
 		protected TutorialPlayerStrategy() {
 			super(false);
@@ -219,7 +224,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void startGame() {
-		startGame(true, "You", "Opponent", GameType.JUNIOR, new ScoreCard(0, 0,
+		startNewGame(true, "You", "Opponent", GameType.JUNIOR, new ScoreCard(0, 0,
 				0));
 	}
 

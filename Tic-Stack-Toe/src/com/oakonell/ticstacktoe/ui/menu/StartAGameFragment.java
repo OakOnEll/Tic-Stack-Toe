@@ -544,7 +544,7 @@ public class StartAGameFragment extends SherlockFragment {
 		setInactive();
 		exitStartMenu();
 
-		listener.startGame(true, blackName, whiteName, type, new ScoreCard(0,
+		listener.startNewGame(true, blackName, whiteName, type, new ScoreCard(0,
 				0, 0));
 	}
 

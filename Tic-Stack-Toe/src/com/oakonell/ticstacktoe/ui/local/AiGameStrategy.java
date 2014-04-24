@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
@@ -53,6 +54,13 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		return new AiMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
 				aiDepth, System.currentTimeMillis(), game, score, isRanked);
+	}
+
+	protected int getAnalyticGameActionResId() {
+		if (isRanked) {
+			return R.string.an_start_ranked_ai_game_action;
+		}
+		return R.string.an_start_ai_game_action;
 	}
 
 	public AILevel getAILevel() {

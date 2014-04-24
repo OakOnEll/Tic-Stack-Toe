@@ -1,8 +1,6 @@
 package com.oakonell.ticstacktoe.ui.local;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -24,7 +22,6 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchUpdateListener;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
-import com.oakonell.ticstacktoe.ui.local.AiGameStrategy.PostRankUpdate;
 import com.oakonell.ticstacktoe.ui.local.RankedAIPlayAgainFragment.RankedAIPlayAgainListener;
 
 public abstract class AbstractLocalStrategy extends GameStrategy {
@@ -141,7 +138,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 	protected void playAgain() {
 		Game game = getMatchInfo().readGame(getContext());
 		boolean firstIsBlack = game.getCurrentPlayer().isBlack();
-		startGame(firstIsBlack, game.getBlackPlayer().getName(), game
+		startNewGame(firstIsBlack, game.getBlackPlayer().getName(), game
 				.getWhitePlayer().getName(), game.getType(), getMatchInfo()
 				.getScoreCard());
 		// TODO, keep track of score, and switch first player...
@@ -189,15 +186,12 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		setGame(matchInfo.readGame(getContext()));
 	}
 
-	public void startGame(final boolean blackFirst, final String blackName,
+	public void startNewGame(final boolean blackFirst, final String blackName,
 			final String whiteName, final GameType type, final ScoreCard score) {
 		final Player whitePlayer = createWhitePlayer(whiteName);
 		final GameMode gameMode = getGameMode();
 
-		Tracker myTracker = EasyTracker.getTracker();
-		myTracker.sendEvent(getContext().getString(R.string.an_start_game_cat),
-				getContext().getString(R.string.an_start_ai_game_action), type
-						+ "", 0L);
+		sendAnalyticStartGameEvent(type);
 
 		final Player blackPlayer = HumanStrategy.createPlayer(blackName, true);
 		final Player firstPlayer = blackFirst ? blackPlayer : whitePlayer;
@@ -206,6 +200,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 				whiteName, score, blackPlayer, firstPlayer);
 		return;
 	}
+
 
 	protected void startGame(GameMode gameMode, GameType type,
 			boolean blackFirst, String blackName, Player whitePlayer,

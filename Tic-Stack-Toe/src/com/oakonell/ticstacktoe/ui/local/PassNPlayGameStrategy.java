@@ -2,6 +2,7 @@ package com.oakonell.ticstacktoe.ui.local;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
@@ -27,6 +28,10 @@ public class PassNPlayGameStrategy extends AbstractLocalStrategy {
 		return new PassNPlayMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
 				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, blackName, whiteName,
 				game, score);
+	}
+
+	protected int getAnalyticGameActionResId() {
+		return R.string.an_start_pass_n_play_game_action;
 	}
 
 	@Override

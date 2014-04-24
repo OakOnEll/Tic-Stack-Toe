@@ -128,11 +128,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public boolean onOptionsItemSelected(Fragment fragment, MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.action_refresh:
-//			refreshMatch();
-//			return true;
-//		}
+		// switch (item.getItemId()) {
+		// case R.id.action_refresh:
+		// refreshMatch();
+		// return true;
+		// }
 		return super.onOptionsItemSelected(fragment, item);
 	}
 
@@ -260,6 +260,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			blackPlayer = OnlineStrategy.createPlayer(getOpponentName(), true,
 					getOpponentParticipant().getIconImageUri());
 		}
+
+		sendAnalyticStartGameEvent(type);
 
 		if (!isRanked) {
 			startGame(match, blackPlayer, whitePlayer, score, null);
@@ -1445,5 +1447,15 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	protected String getMatchId() {
 		return mMatch.getMatchId();
+	}
+
+	@Override
+	protected int getAnalyticGameActionResId() {
+		if (isRanked) {
+			return isQuick ? R.string.an_start_ranked_quick_turn_game_action
+					: R.string.an_start_ranked_online_turn_game_action;
+		}
+		return isQuick ? R.string.an_start_quick_turn_game_action
+				: R.string.an_start_online_turn_game_action;
 	}
 }

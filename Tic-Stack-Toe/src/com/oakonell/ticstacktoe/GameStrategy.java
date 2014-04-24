@@ -13,6 +13,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
@@ -24,6 +26,7 @@ import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.AbstractMove;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.InvalidMoveException;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.RankInfo;
@@ -43,8 +46,9 @@ import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
 public abstract class GameStrategy {
+	private static final String TAG = "GameStrategy";
 	private GameContext gameContext;
-
+	
 	private Game game;
 	private ScoreCard score = new ScoreCard(0, 0, 0);
 
@@ -360,5 +364,16 @@ public abstract class GameStrategy {
 			ViewGroup container, FrameLayout frame) {
 
 	}
+
+	protected void sendAnalyticStartGameEvent(final GameType type) {
+		Tracker myTracker = EasyTracker.getTracker();
+		String gameAction = getContext()
+				.getString(getAnalyticGameActionResId());
+		Log.i(TAG, "Starting game " + gameAction + ", type=" + type + "");
+		myTracker.sendEvent(getContext().getString(R.string.an_start_game_cat),
+				gameAction, type + "", 0L);
+	}
+
+	protected abstract int getAnalyticGameActionResId();
 
 }
