@@ -83,7 +83,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		handleMenu();
 	}
 
-	private void handleMenu() {
+	protected void handleMenu() {
 		if (chatMenuItem == null)
 			return;
 
@@ -166,18 +166,9 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		// getGameFragment().resetThinkingText();
 	}
 
-	protected void invalidateMenu() {
-		if (!ActivityCompat.invalidateOptionsMenu(getActivity())) {
-			handleMenu();
-		} else {
-			honeyCombInvalidateMenu();
-		}
-	}
+	
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void honeyCombInvalidateMenu() {
-		getActivity().invalidateOptionsMenu();
-	}
+
 
 	abstract public void sendInChat(boolean b);
 

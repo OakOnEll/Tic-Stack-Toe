@@ -356,6 +356,9 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 	public void setGameStrategy(GameStrategy gameStrategy) {
 		this.gameStrategy = gameStrategy;
+		if (getGameFragment() != null) {
+			getGameFragment().updatedGameStrategy();
+		}
 	}
 
 	@Override

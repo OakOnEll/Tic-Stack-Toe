@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="achievement_finished_the_tutorial">CgkIl7iokM4HEAIQEw</string>
     <string name="achievement_beat_the_easy_junior_bot">CgkIl7iokM4HEAIQBQ</string>
     <string name="achievement_beat_the_medium_junior_bot">CgkIl7iokM4HEAIQBg</string>
     <string name="achievement_beta_the_hard_junior_bot">CgkIl7iokM4HEAIQBw</string>
@@ -15,7 +16,7 @@
     <string name="achievement_beat_a_friend_at_strict">CgkIl7iokM4HEAIQEA</string>
     <!--
   <string name="achievement_surprise">CgkIl7iokM4HEAIQEQ</string>
-  <string name="achievement_thanks">CgkIl7iokM4HEAIQEg</string>
+  <string name="achievement_thanks">CgkIl7iokM4HEAIQEg</string>
     -->
 
 </resources>

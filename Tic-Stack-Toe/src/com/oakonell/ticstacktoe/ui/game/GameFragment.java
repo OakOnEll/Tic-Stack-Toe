@@ -251,10 +251,6 @@ public class GameFragment extends AbstractGameFragment {
 				false);
 		frame.addView(view);
 
-		if (getGameStrategy().shouldHideAd()) {
-			gameContext.hideAd();
-		}
-
 		// Listen for changes in the back stack
 		getSherlockActivity().getSupportFragmentManager()
 				.addOnBackStackChangedListener(
@@ -362,13 +358,27 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		});
 
-		getGameStrategy().viewCreated(this, inflater, container, frame);
+		if (getGameStrategy() != null) {
+			if (getGameStrategy().shouldHideAd()) {
+				gameContext.hideAd();
+			}
+			getGameStrategy().viewCreated(this, inflater, container, frame);
+		}
 
 		if (inOnCreate != null) {
 			inOnCreate.run();
 		}
 
 		return frame;
+	}
+
+	public void updatedGameStrategy() {
+		if (getGameStrategy().shouldHideAd()) {
+			gameContext.hideAd();
+		}
+		getGameStrategy().viewCreated(this, LayoutInflater.from(getActivity()),
+				(ViewGroup) getView().getParent(), (FrameLayout) getView());
+		getGameStrategy().invalidateMenu();
 	}
 
 	private void storeViewReferences(final View view) {
@@ -1709,4 +1719,5 @@ public class GameFragment extends AbstractGameFragment {
 	public void disableDragging(boolean disable) {
 		disableButtons = disable;
 	}
+
 }

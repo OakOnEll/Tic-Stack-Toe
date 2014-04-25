@@ -1,8 +1,11 @@
 package com.oakonell.ticstacktoe;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +44,7 @@ import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
@@ -48,7 +52,7 @@ import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 public abstract class GameStrategy {
 	private static final String TAG = "GameStrategy";
 	private GameContext gameContext;
-	
+
 	private Game game;
 	private ScoreCard score = new ScoreCard(0, 0, 0);
 
@@ -227,6 +231,10 @@ public abstract class GameStrategy {
 		Log.i("GameStrategy", "Writing strategy to bundle: " + getGameMode()
 				+ ", " + getMatchId());
 		bundle.putInt("GAME_STRATEGY_TYPE", getGameMode().getVal());
+		writeDetailsToBundle(bundle);
+	}
+
+	protected void writeDetailsToBundle(Bundle bundle) {
 		bundle.putString("GAME_STRATEGY_MATCH_ID", getMatchId());
 	}
 
@@ -281,10 +289,19 @@ public abstract class GameStrategy {
 		case TURN_BASED:
 			loadTurnBasedStrategy(context, onLoad, matchId);
 			break;
+		case TUTORIAL:
+			loadTutorialStrategy(context, onLoad, matchId);
+			break;
 		case ONLINE:
 			onLoad.onFailure("Realtime game can't be restored...");
 			break;
 		}
+	}
+
+	private static void loadTutorialStrategy(GameContext context,
+			OnGameStrategyLoad onLoad, String matchId) {
+
+		onLoad.onSuccess(new TutorialGameStrategy(context, true));
 	}
 
 	private static void loadTurnBasedStrategy(final GameContext context,
@@ -376,4 +393,20 @@ public abstract class GameStrategy {
 
 	protected abstract int getAnalyticGameActionResId();
 
+	public void invalidateMenu() {
+		if (!ActivityCompat.invalidateOptionsMenu(getActivity())) {
+			handleMenu();
+		} else {
+			honeyCombInvalidateMenu();
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void honeyCombInvalidateMenu() {
+		getActivity().invalidateOptionsMenu();
+	}
+
+	protected void handleMenu() {
+		ActivityCompat.invalidateOptionsMenu(getActivity());
+	}
 }

@@ -2,6 +2,7 @@
 <resources>
 
     <string name="offline_achievement_label">Achievement</string>
+    <string name="achievement_finished_the_tutorial_label">Finished the Tutorial</string>
     <string name="achievement_beat_the_easy_junior_bot_label">Beat the Easy Bot at Junior Tic-Stack-Toe</string>
     <string name="achievement_beat_the_medium_junior_bot_label">Beat the Medium Bot at Junior Tic-Stack-Toe</string>
     <string name="achievement_beta_the_hard_junior_bot_label">Beat the Hard Bot at Junior Tic-Stack-Toe</string>

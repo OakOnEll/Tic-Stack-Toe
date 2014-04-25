@@ -74,6 +74,16 @@ public class Achievements {
 		}
 	}
 
+	Achievement finishedTutorial = new BooleanAchievement(
+			R.string.achievement_finished_the_tutorial,
+			R.string.achievement_finished_the_tutorial_label,
+			"Finished the Tutorial") {
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			unlock(gameHelper);
+		}
+	};
+
 	Achievement beatEasyJunior = new BeatAiAchievement(AILevel.EASY_AI,
 			R.string.achievement_beat_the_easy_junior_bot,
 			R.string.achievement_beat_the_easy_junior_bot_label,
@@ -327,7 +337,16 @@ public class Achievements {
 			if (each.isPending())
 				return true;
 		}
-		return false;
+		for (Achievement each : beatAiAchievements) {
+			if (each.isPending())
+				return true;
+		}
+		for (Achievement each : beatFriendAchievements) {
+			if (each.isPending())
+				return true;
+		}
+
+		return finishedTutorial.isPending();
 	}
 
 	public void pushToGoogle(GameContext helper) {
@@ -340,6 +359,14 @@ public class Achievements {
 		for (Achievement each : inGameAchievements) {
 			each.push(helper);
 		}
+		for (Achievement each : beatAiAchievements) {
+			each.push(helper);
+		}
+		for (Achievement each : beatFriendAchievements) {
+			each.push(helper);
+		}
+
+		finishedTutorial.push(helper);
 	}
 
 	public void testAndSetForInGameAchievements(GameContext gameHelper,
@@ -364,6 +391,11 @@ public class Achievements {
 			Game game, State outcome) {
 		testAndSetAchievements(gameHelper, game, outcome,
 				beatFriendAchievements, "Beat a Friend");
+	}
+
+	public void setFinishedTutorial(GameContext gameHelper, Game game,
+			State outcome) {
+		finishedTutorial.testAndSet(gameHelper, game, outcome);
 	}
 
 	private void testAndSetAchievements(GameContext gameHelper, Game game,

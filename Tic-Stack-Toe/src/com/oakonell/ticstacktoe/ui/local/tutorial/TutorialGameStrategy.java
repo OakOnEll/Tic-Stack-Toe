@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,7 @@ import com.oakonell.ticstacktoe.model.RankInfo;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
+import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy.TutorialPage.Type;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
@@ -60,7 +63,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	private TextView slideUpText;
 
 	private Map<Integer, List<TutorialPage>> tutorialPagesByMoveNum;
-	private int pageIndex = 0;
+	private int pageIndex = -1;
 
 	private Button dialogNext;
 
@@ -246,6 +249,56 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	public TutorialGameStrategy(GameContext context,
 			TutorialMatchInfo tutorialMatchInfo) {
 		super(context, tutorialMatchInfo);
+	}
+
+	public TutorialGameStrategy(GameContext context, boolean useSaveState) {
+		super(context);
+		Player blackPlayer = HumanStrategy.createPlayer("You", true);
+		Player whitePlayer = createWhitePlayer("Opponent");
+		Game game = new Game(GameType.JUNIOR, GameMode.TUTORIAL, blackPlayer,
+				whitePlayer, blackPlayer);
+		setGame(game);
+		setMatchInfo(new TutorialMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
+				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, "You", "Opponent",
+				System.currentTimeMillis(), game, new ScoreCard(0, 0, 0)));
+		if (!useSaveState)
+			return;
+
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		long lastPaused = preferences.getLong("tutorial_paused_time", 0);
+		if (System.currentTimeMillis() - lastPaused > TimeUnit.DAYS.toMillis(1))
+			return;
+		int moveNum = preferences.getInt("tutorial_move", -1);
+		if (moveNum <= 0)
+			return;
+
+		// reconstruct the tutorial game state, up to the moveNum
+		game.placePlayerPiece(0, new Cell(1, 1));
+		AbstractMove move = whitePlayer.getStrategy().move(getGame());
+		move.applyToGame(game);
+		if (moveNum <= 2)
+			return;
+
+		game.placePlayerPiece(1, new Cell(0, 2));
+		move = whitePlayer.getStrategy().move(getGame());
+		move.applyToGame(game);
+		if (moveNum <= 4)
+			return;
+
+		game.movePiece(new Cell(0, 2), new Cell(2, 1));
+		move = whitePlayer.getStrategy().move(getGame());
+		move.applyToGame(game);
+		if (moveNum <= 6)
+			return;
+
+		game.placePlayerPiece(0, new Cell(1, 2));
+		move = whitePlayer.getStrategy().move(getGame());
+		move.applyToGame(game);
+		if (moveNum <= 8)
+			return;
+
+		game.movePiece(new Cell(2, 1), new Cell(1, 0));
 	}
 
 	public void startGame() {
@@ -589,6 +642,11 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 			dialogNext.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					TicStackToe application = ((TicStackToe) getGameContext()
+							.getSherlockActivity().getApplication());
+					Achievements achievements = application.getAchievements();
+					achievements.setFinishedTutorial(getGameContext(),
+							getGame(), getGame().getBoard().getState());
 					leaveGame();
 				}
 			});
@@ -631,11 +689,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	protected void gameFinished() {
-		TicStackToe application = ((TicStackToe) getGameContext()
-				.getSherlockActivity().getApplication());
-		Achievements achievements = application.getAchievements();
-		achievements.testAndSetForBeatAiAchievements(getGameContext(),
-				getGame(), getGame().getBoard().getState());
+
 	}
 
 	public boolean shouldHideAd() {
@@ -648,6 +702,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 				.getDefaultSharedPreferences(getActivity());
 		Editor edit = preferences.edit();
 		edit.putBoolean(MenuFragment.SAW_TUTORIAL, true);
+		edit.remove("tutorial_move");
+		edit.remove("tutorial_paused_time");
 		edit.commit();
 		leaveGame();
 	}
@@ -666,6 +722,31 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		public void onAnimationRepeat(Animation animation) {
 		}
 
+	}
+
+	protected void saveToDB() {
+		// tutorial isn't actually saved to the db
+		// it is saved as a preference
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		Editor edit = preferences.edit();
+		edit.putInt("tutorial_move", getGame().getNumberOfMoves());
+		edit.putLong("tutorial_paused_time", System.currentTimeMillis());
+		edit.commit();
+	}
+
+	protected void insertMatch() {
+		saveToDB();
+		showAndStartGame();
+	}
+
+	protected void writeDetailsToBundle(Bundle bundle) {
+		bundle.putInt("tutorial_move", getGame().getNumberOfMoves());
+	}
+
+	@Override
+	public boolean warnToLeave() {
+		return true;
 	}
 
 }

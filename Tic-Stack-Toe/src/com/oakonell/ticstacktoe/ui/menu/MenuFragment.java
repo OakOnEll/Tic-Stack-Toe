@@ -730,13 +730,14 @@ public class MenuFragment extends SherlockFragment implements
 					conditionallyMarkRefreshComplete();
 					return;
 				}
-				updateRankView(juniorRankView, "junior",
-						rankStorage.getJuniorRank());
-				updateRankView(normalRankView, "normal",
-						rankStorage.getNormalRank());
-				updateRankView(strictRankView, "strict",
-						rankStorage.getStrictRank());
-
+				if (isVisible()) {
+					updateRankView(juniorRankView, "junior",
+							rankStorage.getJuniorRank());
+					updateRankView(normalRankView, "normal",
+							rankStorage.getNormalRank());
+					updateRankView(strictRankView, "strict",
+							rankStorage.getStrictRank());
+				}
 				conditionallyMarkRefreshComplete();
 			}
 		}, false);

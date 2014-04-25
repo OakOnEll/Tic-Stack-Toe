@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.GameStrategy;
@@ -46,7 +44,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		saveToDB();
 	}
 
-	private void saveToDB() {
+	protected void saveToDB() {
 		DatabaseHandler db = new DatabaseHandler(getContext());
 		db.updateMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
@@ -201,7 +199,6 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		return;
 	}
 
-
 	protected void startGame(GameMode gameMode, GameType type,
 			boolean blackFirst, String blackName, Player whitePlayer,
 			String whiteName, final ScoreCard score, Player blackPlayer,
@@ -216,33 +213,40 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			theMatchInfo
 					.setTurnStatus(TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN);
 		}
-		DatabaseHandler db = new DatabaseHandler(getContext());
 		matchInfo = theMatchInfo;
+		insertMatch();
+	}
+
+	protected void insertMatch() {
+		DatabaseHandler db = new DatabaseHandler(getContext());
 		db.insertMatch(getMatchInfo(), new OnLocalMatchUpdateListener() {
 			@Override
 			public void onUpdateSuccess(LocalMatchInfo matchInfo) {
-				GameFragment gameFragment = getGameFragment();
-				if (gameFragment == null) {
-					gameFragment = GameFragment.createFragment();
-
-					FragmentManager manager = getActivity()
-							.getSupportFragmentManager();
-					FragmentTransaction transaction = manager
-							.beginTransaction();
-					transaction.replace(R.id.main_frame, gameFragment,
-							GameContext.FRAG_TAG_GAME);
-					transaction.addToBackStack(null);
-					transaction.commit();
-				}
-				gameFragment.startGame(null, false);
+				showAndStartGame();
 
 			}
-
 			@Override
 			public void onUpdateFailure() {
 				showAlert("Error inserting match into the DB");
 			}
 		});
+	}
+
+	protected void showAndStartGame() {
+		GameFragment gameFragment = getGameFragment();
+		if (gameFragment == null) {
+			gameFragment = GameFragment.createFragment();
+
+			FragmentManager manager = getActivity()
+					.getSupportFragmentManager();
+			FragmentTransaction transaction = manager
+					.beginTransaction();
+			transaction.replace(R.id.main_frame, gameFragment,
+					GameContext.FRAG_TAG_GAME);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		}
+		gameFragment.startGame(null, false);
 	}
 
 	protected abstract LocalMatchInfo createNewMatchInfo(String blackName,

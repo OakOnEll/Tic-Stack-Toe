@@ -2,7 +2,7 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
@@ -28,14 +28,11 @@
 
     <!-- Application theme. -->
 
-
-    <!--
-         <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
+    <style name="WoodDialog.MyTheme" parent="@android:style/Theme.Dialog">
         <item name="android:background">@drawable/dialog</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="buttonStyle">@style/dark_button</item>
-    </style>
-    -->
+        <item name="android:buttonStyle">@style/dark_button</item>
+    </style>
 
     <style name="Widget.MyTheme.CompoundButton.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/wooden_check</item>
@@ -54,7 +51,7 @@
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <!--
               <item name="android:paddingBottom">5dp</item>       
-        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingTop">5dp</item>
         -->
     </style>
 
@@ -78,7 +75,7 @@
         <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2.75</item>
+        <item name="android:shadowRadius">2.75</item>
         -->
     </style>
 
@@ -87,7 +84,7 @@
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
-    </style>
+    </style>
     -->
     <style name="dark_button">
         <item name="android:background">@drawable/dark_button</item>
