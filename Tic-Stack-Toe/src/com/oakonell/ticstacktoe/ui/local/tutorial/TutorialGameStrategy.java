@@ -14,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
@@ -64,11 +66,14 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 	private View next;
 
+	private ImageButton min_max_tutorial;
+
+	private View tutorial_bottom;
+
 	protected int getAnalyticGameActionResId() {
 		return R.string.an_start_tutorial_game_action;
 	}
-	
-	
+
 	public static class TutorialPlayerStrategy extends PlayerStrategy {
 		protected TutorialPlayerStrategy() {
 			super(false);
@@ -133,8 +138,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
-		page.header = "Players place their pieces on the board";
-		page.descr = "to try to form a line to win.";
+		page.header = "";
+		page.descr = "Players place their pieces on the board to try to form a line to win.";
 		page.backgroundResId = R.drawable.tut_0_board;
 		pages.add(page);
 
@@ -170,8 +175,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		pages = new ArrayList<TutorialGameStrategy.TutorialPage>();
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
-		page.header = "You can move a piece already on the board";
-		page.descr = "to another empty space or place it over an existing smaller piece.";
+		page.header = "";
+		page.descr = "You can move a piece already on the board to another empty space or place it over an existing smaller piece.";
 		page.backgroundResId = 0;
 		pages.add(page);
 
@@ -224,8 +229,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void startGame() {
-		startNewGame(true, "You", "Opponent", GameType.JUNIOR, new ScoreCard(0, 0,
-				0));
+		startNewGame(true, "You", "Opponent", GameType.JUNIOR, new ScoreCard(0,
+				0, 0));
 	}
 
 	@Override
@@ -244,7 +249,24 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		slideUpText = (TextView) tutorialView
 				.findViewById(R.id.tutorial_bottom_text);
 		dialog = tutorialView.findViewById(R.id.tutorial_dialog);
-		slideUp = tutorialView.findViewById(R.id.tutorial_bottom);
+		slideUp = tutorialView.findViewById(R.id.tutorial_slideup);
+		tutorial_bottom = tutorialView.findViewById(R.id.tutorial_bottom);
+		min_max_tutorial = (ImageButton) tutorialView
+				.findViewById(R.id.min_max_tutorial);
+		min_max_tutorial.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (tutorial_bottom.getVisibility() == View.VISIBLE) {
+					tutorial_bottom.setVisibility(View.GONE);
+					min_max_tutorial
+							.setImageResource(R.drawable.maximize_tutorial_arrow);
+				} else {
+					tutorial_bottom.setVisibility(View.VISIBLE);
+					min_max_tutorial
+							.setImageResource(R.drawable.minimize_tutorial_arrow);
+				}
+			}
+		});
 
 		dialog.setVisibility(View.GONE);
 		slideUp.setVisibility(View.GONE);
@@ -418,6 +440,9 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	private void processTutorial() {
+		tutorial_bottom.setVisibility(View.VISIBLE);
+		min_max_tutorial.setImageResource(R.drawable.minimize_tutorial_arrow);
+
 		List<TutorialPage> pages = getTutorialPagesByMoveNum().get(
 				getGame().getNumberOfMoves());
 		final TutorialPage page = pages.get(pageIndex);
@@ -429,7 +454,20 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 			dialogText.setText(page.descr);
 		} else {
 			next.setVisibility(nextVisibility);
-			slideUpTitle.setText(page.header);
+			min_max_tutorial.setVisibility(isLastPage ? View.VISIBLE
+					: View.GONE);
+			if (page.header.length() == 0) {
+				LayoutParams layoutParams = slideUpTitle.getLayoutParams();
+				layoutParams.height = 0;
+				slideUpTitle.setLayoutParams(layoutParams);
+				slideUpTitle.requestLayout();
+			} else {
+				LayoutParams layoutParams = slideUpTitle.getLayoutParams();
+				layoutParams.height = LayoutParams.WRAP_CONTENT;
+				slideUpTitle.setLayoutParams(layoutParams);
+				slideUpTitle.requestLayout();
+				slideUpTitle.setText(page.header);
+			}
 			slideUpText.setText(page.descr);
 		}
 		getGameFragment().disableDragging(!isLastPage);

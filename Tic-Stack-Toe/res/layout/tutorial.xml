@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView1"
-            android:text="The challending game of getting 3 in a row, while using your memory!"
+            android:text="The challenging game of getting 3 in a row, while using your memory!"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="7dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingTop="7dp" >
 
             <Button
                 android:id="@+id/dialog_skip"
@@ -58,7 +58,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tutorial_bottom"
+        android:id="@+id/tutorial_slideup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -66,29 +66,40 @@
         android:background="@drawable/tutorial_slide_up"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tutorial_bottom_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Both players start with some pieces stacked"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/skip"
-                style="@style/dark_button"
+            <TextView
+                android:id="@+id/tutorial_bottom_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Both players start with some pieces stacked"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageButton
+                android:id="@+id/min_max_tutorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:text="Skip" />
+                android:layout_gravity="right|top"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/minimize_tutorial_arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tutorial_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tutorial_bottom_text"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
@@ -96,13 +107,32 @@
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <Button
-                android:id="@+id/next"
-                style="@style/dark_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
-                android:text="Continue" />
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/skip"
+                    style="@style/dark_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|bottom"
+                    android:text="Skip" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/next"
+                    style="@style/dark_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|bottom"
+                    android:text="Continue" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
