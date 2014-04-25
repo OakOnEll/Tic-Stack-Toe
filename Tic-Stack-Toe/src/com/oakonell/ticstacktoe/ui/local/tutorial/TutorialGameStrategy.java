@@ -166,6 +166,20 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
+		page.descr = "Except in a strict game, pieces dragged from the stacks can be placed over smaller pieces on the board.";
+		page.backgroundResId = 0;
+		pages.add(page);
+
+		page = new TutorialPage();
+		page.type = Type.SLIDE_UP;
+		page.header = "";
+		page.descr = "In a strict game, this is only allowed if your opponent already has all but one of their pieces in line.";
+		page.backgroundResId = 0;
+		pages.add(page);
+
+		page = new TutorialPage();
+		page.type = Type.SLIDE_UP;
+		page.header = "";
 		page.descr = "Drag the other large piece from the player stack to upper right corner.";
 		page.backgroundResId = R.drawable.tut_2_move;
 		pages.add(page);
@@ -182,9 +196,15 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
+		page.header = "";
+		page.descr = "It is possible to expose a win for your opponent this way!";
+		page.backgroundResId = 0;
+		pages.add(page);
+
+		page = new TutorialPage();
+		page.type = Type.SLIDE_UP;
 		page.header = "No peaking?";
-		page.descr = "In a strict game, there is no peaking- once you touch a piece on the board you have to move it.\n"
-				+ "It is possible to expose a win for your opponent this way.";
+		page.descr = "In a strict game, there is no peaking- once you touch a piece on the board you have to move it.";
 		page.backgroundResId = 0;
 		pages.add(page);
 
