@@ -50,6 +50,10 @@ import com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy;
 import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy.TutorialPage.Type;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 
+/**
+ * This class is a simple game strategy that walks the user through some
+ * predetermined moves against the computer, to learn how to play.
+ */
 public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 	private View tutorialView;

@@ -22,6 +22,10 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.rank.GameOutcome;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
 
+/**
+ * This class helps query and update AI ranks, hiding the local db caching and
+ * the server query.
+ */
 public class AIRankHelper {
 	private static final long RANKS_CACHE_TIME_MS = TimeUnit.DAYS.toMillis(1);
 	private final static String QUERY_URL_STRING = "http://ticstacktoe.appspot.com/airanks";

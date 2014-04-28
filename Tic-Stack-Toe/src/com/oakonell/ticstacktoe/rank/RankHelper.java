@@ -25,6 +25,10 @@ import com.oakonell.ticstacktoe.model.rank.RankingRater;
 import com.oakonell.ticstacktoe.model.rank.TypeRankStorage;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
+/**
+ * This class helps handle the save-game state storage of the user's rank
+ * 
+ */
 public class RankHelper {
 	private static final String TAG = RankHelper.class.getName();
 	private static final int RANK_APP_STATE_KEY = 1;

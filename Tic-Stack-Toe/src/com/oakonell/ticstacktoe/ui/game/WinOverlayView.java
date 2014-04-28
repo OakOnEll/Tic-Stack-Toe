@@ -15,6 +15,9 @@ import android.view.View;
 
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
+/**
+ * This View component helps draw the lines through the winning board tiles
+ */
 public class WinOverlayView extends View {
 	private final int OFFSET = 10;
 	private Paint linePaint;

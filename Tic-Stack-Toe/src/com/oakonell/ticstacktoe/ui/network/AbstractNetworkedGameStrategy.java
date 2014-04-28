@@ -3,9 +3,6 @@ package com.oakonell.ticstacktoe.ui.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;

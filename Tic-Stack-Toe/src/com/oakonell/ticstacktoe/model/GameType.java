@@ -5,6 +5,16 @@ import java.util.List;
 
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
 
+/**
+ * This designates the game type
+ * 
+ * <pre>
+ * *   * Junior= 3x3, 2x3 stacks
+ * *   * Normal= 4x4 3x4 stacks (allows "peeking")
+ * *   * Strict= 4x4 3x4 stacks (No peaking!)
+ * </pre>
+ * 
+ */
 public class GameType {
 	private final int numStacks;
 	private final int size;

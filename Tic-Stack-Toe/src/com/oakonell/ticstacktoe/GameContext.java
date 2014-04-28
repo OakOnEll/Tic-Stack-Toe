@@ -10,6 +10,10 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.SoundManager;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 
+/**
+ * An interface intended to be implemented by the main activity and passed
+ * everywhere
+ */
 public interface GameContext {
 	public final static int RC_UNUSED = 1;
 	// online play request codes

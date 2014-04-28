@@ -1,5 +1,9 @@
 package com.oakonell.ticstacktoe.model;
 
+/**
+ * This designates the game player mode
+ *
+ */
 public enum GameMode {
 	PASS_N_PLAY(0), AI(1), TURN_BASED(2), ONLINE(3), TUTORIAL(4);
 	private final int value;

@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
+/**
+ * This layout class helps maintain itself in a square.
+ */
 public class SquareRelativeLayoutView extends RelativeLayout {
 
 	public SquareRelativeLayoutView(Context context, AttributeSet attrs,

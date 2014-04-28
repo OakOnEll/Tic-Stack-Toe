@@ -9,6 +9,10 @@ import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 
+/**
+ * This class holds the MatchInfo for a tutorial game. It is not actually long
+ * lived- not stored in the DB.
+ */
 public class TutorialMatchInfo extends LocalMatchInfo {
 
 	public TutorialMatchInfo(long id, int matchStatus, int turnStatus,

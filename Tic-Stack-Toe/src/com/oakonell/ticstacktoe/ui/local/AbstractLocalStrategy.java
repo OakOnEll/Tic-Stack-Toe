@@ -22,6 +22,10 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.local.RankedAIPlayAgainFragment.RankedAIPlayAgainListener;
 
+/**
+ * Base class for pass-n-play, and AI game modes.
+ * 
+ */
 public abstract class AbstractLocalStrategy extends GameStrategy {
 	private LocalMatchInfo matchInfo;
 
@@ -225,6 +229,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 				showAndStartGame();
 
 			}
+
 			@Override
 			public void onUpdateFailure() {
 				showAlert("Error inserting match into the DB");
@@ -237,10 +242,8 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		if (gameFragment == null) {
 			gameFragment = GameFragment.createFragment();
 
-			FragmentManager manager = getActivity()
-					.getSupportFragmentManager();
-			FragmentTransaction transaction = manager
-					.beginTransaction();
+			FragmentManager manager = getActivity().getSupportFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.main_frame, gameFragment,
 					GameContext.FRAG_TAG_GAME);
 			transaction.addToBackStack(null);

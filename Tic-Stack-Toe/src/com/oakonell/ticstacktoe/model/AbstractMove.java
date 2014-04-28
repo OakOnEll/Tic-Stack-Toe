@@ -5,6 +5,10 @@ import java.util.List;
 import com.oakonell.ticstacktoe.model.Board.PieceStack;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
+/**
+ * This is a base class for either a stack->board move, or a board->board move
+ * 
+ */
 public abstract class AbstractMove {
 	public static final byte STACK_MOVE = 0;
 	public static final byte BOARD_MOVE = 1;

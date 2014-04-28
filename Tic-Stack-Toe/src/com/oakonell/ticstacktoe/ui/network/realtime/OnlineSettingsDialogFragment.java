@@ -14,7 +14,12 @@ import android.widget.CheckBox;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 
-
+/**
+ * This dialog fragment allows maintaining a subset of the settings while in a
+ * real time game, where otherwise launching the full preferences would end the
+ * game.
+ * 
+ */
 public class OnlineSettingsDialogFragment extends SherlockDialogFragment {
 
 	@Override

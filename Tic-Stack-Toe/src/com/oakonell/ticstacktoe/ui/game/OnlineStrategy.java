@@ -5,6 +5,9 @@ import android.net.Uri;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
+/**
+ * Strategy to await a networked opponent's move.
+ */
 public class OnlineStrategy extends PlayerStrategy {
 
 	public static Player createPlayer(String name, boolean isBlack,

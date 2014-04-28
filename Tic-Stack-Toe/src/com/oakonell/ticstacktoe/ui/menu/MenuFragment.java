@@ -70,6 +70,11 @@ import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
+/**
+ * The "main menu" entry to the main activity- prompts with "start a game" and
+ * lists of pending games.
+ * 
+ */
 public class MenuFragment extends SherlockFragment implements
 		OnTurnBasedMatchUpdateReceivedListener, OnInvitationReceivedListener {
 

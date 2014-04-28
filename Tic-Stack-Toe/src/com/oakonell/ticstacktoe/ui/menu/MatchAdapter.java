@@ -4,17 +4,12 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
@@ -133,42 +128,6 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 			menuitems[i++] = each.text;
 		}
 
-		// AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		// // builder.setItems(menuitems, new DialogInterface.OnClickListener()
-		// {
-		// // public void onClick(DialogInterface dialog, int which) {
-		// // // The 'which' argument contains the index
-		// // // position of the selected item
-		// // menus.get(which).execute.execute(fragment, objects);
-		// // notifyDataSetChanged();
-		// // }
-		// // });
-		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-		// android.R.layout.simple_list_item_1, menuitems) {
-		// @Override
-		// public View getView(int position, View convertView,
-		// ViewGroup parent) {
-		// View view = super.getView(position, convertView, parent);
-		// view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
-		// return view;
-		// }
-		//
-		// };
-		// builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-		// public void onClick(DialogInterface dialog, int which) {
-		// // The 'which' argument contains the index
-		// // position of the selected item
-		// menus.get(which).execute.execute(fragment, objects);
-		// notifyDataSetChanged();
-		// }
-		// });
-		// builder.setInverseBackgroundForced(true);
-		//
-		// AlertDialog dialog = builder.create();
-		// dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// dialog.getWindow().setBackgroundDrawableResource(
-		// R.drawable.dropdown_background);
-
 		PopupMenuDialogFragment frag = new PopupMenuDialogFragment();
 		frag.initialize(originatingView, menuitems, new OnItemSelected() {
 			@Override
@@ -180,31 +139,6 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 			}
 		});
 		frag.show(fragment.getFragmentManager(), "popup");
-
-//		PopupMenu popup = new PopupMenu(getContext(), originatingView);
-//		Menu menu = popup.getMenu();
-//		int pos = 0;
-//		for (String each : menuitems) {			
-//			menu.add(Menu.NONE, pos++, pos++, each);
-//		}
-//		menu.
-//		popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-//			@Override
-//			public boolean onMenuItemClick(MenuItem item) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//		});
-		
-//		WindowManager.LayoutParams wmlp = frag.getDialog().getWindow()
-//				.getAttributes();
-//
-//		wmlp.gravity = Gravity.TOP | Gravity.RIGHT;
-//		int pos[] = new int[2];
-//		originatingView.getLocationInWindow(pos);
-//		wmlp.x = pos[0];
-//		wmlp.y = pos[1];
-		
 	}
 
 	@Override

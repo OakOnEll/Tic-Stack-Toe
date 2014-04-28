@@ -7,6 +7,10 @@ import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.game.WinOverlayView.WinStyle;
 
+/**
+ * This class represents the game board, an nxn board where each tile is
+ * represented by a PieceStack or null.
+ */
 public class Board {
 	private final int size;
 	private final PieceStack[][] board;

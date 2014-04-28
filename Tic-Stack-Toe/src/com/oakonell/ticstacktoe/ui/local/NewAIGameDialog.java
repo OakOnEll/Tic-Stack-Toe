@@ -64,33 +64,6 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 		}
 	}
 
-	// @Override
-	// public Dialog onCreateDialog(Bundle savedInstanceState) {
-	// Dialog dialog = super.onCreateDialog(savedInstanceState);
-	//
-	// // request a window without the title
-	// //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	// dialog.getWindow().setBackgroundDrawable(
-	// new ColorDrawable(android.graphics.Color.TRANSPARENT));
-	// return dialog;
-	// }
-
-	// @Override
-	// public void onResume() {
-	// // Auto size the dialog based on it's contents
-	// getDialog().getWindow().setLayout(
-	// LinearLayout.LayoutParams.WRAP_CONTENT,
-	// LinearLayout.LayoutParams.WRAP_CONTENT);
-	// // Make sure there is no background behind our view
-	// getDialog().getWindow().setBackgroundDrawable(
-	// new ColorDrawable(Color.TRANSPARENT));
-	//
-	// // Disable standard dialog styling/frame/theme: our custom view should
-	// // create full UI
-	// setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme);
-	// super.onResume();
-	// }
-
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -121,7 +94,6 @@ public class NewAIGameDialog extends SherlockDialogFragment {
 				aiLevels);
 		aiLevelSpinner.setAdapter(aiLevelAdapter);
 		aiLevelSpinner.setSelection(1);
-//		aiLevelSpinner.setBackgroundResource(R.drawable.background);
 
 		final Spinner typeSpinner = (Spinner) view.findViewById(R.id.game_type);
 		GameTypeSpinnerHelper.populateSpinner(getActivity(), typeSpinner);

@@ -5,6 +5,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+/**
+ * UI Component for the player's stacks. It is mainly overridden in order to
+ * register itself with an onMeasure event, in order to properly size the board
+ * and pieces so the board is a square, and the stack pieces match the board's
+ * tile size.
+ * 
+ * See also {@link GameFragment#resizeBoardAndStacks} and its callers.
+ * 
+ */
 public class PieceStackImageView extends ImageView {
 
 	public PieceStackImageView(Context context) {

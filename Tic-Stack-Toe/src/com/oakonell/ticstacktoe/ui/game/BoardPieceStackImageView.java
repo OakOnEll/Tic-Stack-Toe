@@ -5,6 +5,11 @@ import android.util.AttributeSet;
 
 import com.oakonell.utils.activity.dragndrop.ImageDropTarget;
 
+/**
+ * UI Component for pieces on the board- implementing DropTarget to have pieces
+ * dropped on it.
+ * 
+ */
 public class BoardPieceStackImageView extends ImageDropTarget {
 
 	public BoardPieceStackImageView(Context context, AttributeSet attrs,

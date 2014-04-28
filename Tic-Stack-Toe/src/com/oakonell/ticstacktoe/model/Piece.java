@@ -2,6 +2,9 @@ package com.oakonell.ticstacktoe.model;
 
 import com.oakonell.ticstacktoe.R;
 
+/**
+ * An enumeration of all the differently sized pieces that exist in the game
+ */
 public enum Piece {
 	// Black pieces
 	BLACK1(1, R.drawable.black_piece1), //

@@ -6,6 +6,9 @@ import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 
+/**
+ * Strategy intended to take move input from drag/drop events.
+ */
 public class HumanStrategy extends PlayerStrategy {
 
 	public static Player createPlayer(String name, boolean isBlack) {

@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.PopupWindow;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -58,7 +56,7 @@ public class PopupMenuDialogFragment extends SherlockDialogFragment {
 		params.y = pos[1];
 		params.width = pixelWidth;
 		window.setAttributes(params);
-		
+
 		View popupView = inflater.inflate(R.layout.popup, container, true);
 		ListView listView = (ListView) popupView.findViewById(R.id.list);
 

@@ -3,7 +3,6 @@ package com.oakonell.ticstacktoe.ui.menu;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -41,13 +39,17 @@ import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewAIGameDialog.LocalAIGameModeListener;
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog;
 import com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog.LocalGameModeListener;
-import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog;
 import com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog.OnlineGameModeListener;
 import com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 
+/**
+ * This is the "start a game menu" of the main activity, presenting the user the
+ * different game modes
+ */
 public class StartAGameFragment extends SherlockFragment {
 	private static final String TAG = "StartAGameFragment";
 
@@ -342,7 +344,6 @@ public class StartAGameFragment extends SherlockFragment {
 				.setAutoMatchCriteria(autoMatchCriteria).setVariant(variant)
 				.build();
 
-		// TODO
 		final TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
 				context, type, true, isRanked);
 
@@ -544,8 +545,8 @@ public class StartAGameFragment extends SherlockFragment {
 		setInactive();
 		exitStartMenu();
 
-		listener.startNewGame(true, blackName, whiteName, type, new ScoreCard(0,
-				0, 0));
+		listener.startNewGame(true, blackName, whiteName, type, new ScoreCard(
+				0, 0, 0));
 	}
 
 	public void onSignInSucceeded() {

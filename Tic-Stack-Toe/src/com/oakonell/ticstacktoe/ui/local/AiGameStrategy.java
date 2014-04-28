@@ -30,6 +30,10 @@ import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
 import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
 import com.oakonell.ticstacktoe.ui.local.RankedAIPlayAgainFragment.RankedAIPlayAgainListener;
 
+/**
+ * Handles providing AI moves, saving the AI game state, and maintaining the AI
+ * ranks.
+ */
 public class AiGameStrategy extends AbstractLocalStrategy {
 
 	private final AILevel aiDepth;
@@ -111,14 +115,14 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		final RankedAIPlayAgainFragment playAgainDialog = new RankedAIPlayAgainFragment();
 
 		if (isRanked) {
-		updateRanks(new PostRankUpdate() {
-			@Override
-			public void ranksUpdated(short oldRank, short newRank,
-					short oldAiRank, short newAiRank) {
-				playAgainDialog.updateRanks(oldRank, newRank, oldAiRank,
-						newAiRank);
-			}
-		});
+			updateRanks(new PostRankUpdate() {
+				@Override
+				public void ranksUpdated(short oldRank, short newRank,
+						short oldAiRank, short newAiRank) {
+					playAgainDialog.updateRanks(oldRank, newRank, oldAiRank,
+							newAiRank);
+				}
+			});
 		}
 
 		playAgainDialog.initialize(new RankedAIPlayAgainListener() {
@@ -222,33 +226,39 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 					public void onSuccess(Map<AILevel, Integer> ranks) {
 						final int aiRank = ranks.get(aiDepth);
 						RankHelper.updateRank(getGameContext(), getGame()
-								.getType(), new RankedGame(getMatchInfo().getUpdatedTimestamp(), (short) aiRank,
-								outcome), new OnMyRankUpdated() {
-							@Override
-							public void onRankUpdated(final short oldRank,
-									final short newRank) {
-								AIRankHelper.updateRank(dbHandler, getGame()
-										.getType(), aiDepth,
-										outcome.opposite(), oldRank);
-								if (postUpdate != null) {
-									AIRankHelper.retrieveRanks(dbHandler,
-											getGame().getType(),
-											new OnRanksRetrieved() {
-												@Override
-												public void onSuccess(
-														Map<AILevel, Integer> ranks) {
-													int newAiRank = ranks
-															.get(aiDepth);
-													postUpdate.ranksUpdated(
-															oldRank, newRank,
-															(short) aiRank,
-															(short) newAiRank);
+								.getType(),
+								new RankedGame(getMatchInfo()
+										.getUpdatedTimestamp(), (short) aiRank,
+										outcome), new OnMyRankUpdated() {
+									@Override
+									public void onRankUpdated(
+											final short oldRank,
+											final short newRank) {
+										AIRankHelper.updateRank(dbHandler,
+												getGame().getType(), aiDepth,
+												outcome.opposite(), oldRank);
+										if (postUpdate != null) {
+											AIRankHelper.retrieveRanks(
+													dbHandler, getGame()
+															.getType(),
+													new OnRanksRetrieved() {
+														@Override
+														public void onSuccess(
+																Map<AILevel, Integer> ranks) {
+															int newAiRank = ranks
+																	.get(aiDepth);
+															postUpdate
+																	.ranksUpdated(
+																			oldRank,
+																			newRank,
+																			(short) aiRank,
+																			(short) newAiRank);
 
-												}
-											});
-								}
-							}
-						});
+														}
+													});
+										}
+									}
+								});
 
 					}
 				});

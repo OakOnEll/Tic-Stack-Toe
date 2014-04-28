@@ -49,6 +49,10 @@ import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
 
+/**
+ * The abstract base class for handling player interactions.
+ * 
+ */
 public abstract class GameStrategy {
 	private static final String TAG = "GameStrategy";
 	private GameContext gameContext;

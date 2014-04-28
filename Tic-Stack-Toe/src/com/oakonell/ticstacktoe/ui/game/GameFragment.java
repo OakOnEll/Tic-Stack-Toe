@@ -72,6 +72,10 @@ import com.oakonell.utils.activity.dragndrop.ImageDropTarget;
 import com.oakonell.utils.activity.dragndrop.OnDragListener;
 import com.oakonell.utils.activity.dragndrop.OnDropListener;
 
+/**
+ * Main complex UI for handling the actual game- dragging, dropping, interacting
+ * with the various player strategies
+ */
 public class GameFragment extends AbstractGameFragment {
 	private DragController mDragController;
 	private DragLayer mDragLayer;

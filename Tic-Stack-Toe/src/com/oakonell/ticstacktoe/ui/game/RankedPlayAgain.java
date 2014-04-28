@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.R;
 
+/**
+ * Base class to handle updating ranks when asking whether to play again.
+ */
 public abstract class RankedPlayAgain extends SherlockDialogFragment {
 	private boolean isRanked;
 	private String whiteName;
@@ -45,28 +48,28 @@ public abstract class RankedPlayAgain extends SherlockDialogFragment {
 	}
 
 	@Override
-	public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public final View onCreateView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState) {
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(
 				new ColorDrawable(Color.TRANSPARENT));
-		final View view = inflater.inflate(getMainLayoutResId(),
-				container, false);
+		final View view = inflater.inflate(getMainLayoutResId(), container,
+				false);
 		getDialog().setCancelable(false);
 		onCreateRankView(view);
-		
+
 		continueCreateView(container, view, savedInstanceState);
-		
+
 		return view;
 	}
 
 	protected void continueCreateView(ViewGroup container, View view,
 			Bundle savedInstanceState) {
-		
+
 	}
 
-	abstract protected int getMainLayoutResId() ;
-	
+	abstract protected int getMainLayoutResId();
+
 	protected void onCreateRankView(final View view) {
 		if (isRanked) {
 			TextView blackNameText = (TextView) view
