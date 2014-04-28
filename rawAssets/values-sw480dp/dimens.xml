@@ -5,7 +5,7 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
     <dimen name="player_stack_size">75dp</dimen>
-    <dimen name="player_pic_size">50dp</dimen>    
-	<dimen name="player_name_size">22sp</dimen>
+    <dimen name="player_pic_size">50dp</dimen>
 
+    
 </resources>

@@ -1162,6 +1162,14 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f090013;
         public static final int menu_button_height=0x7f090015;
         public static final int menu_button_width=0x7f090014;
+        public static final int player_name_size=0x7f090018;
+        public static final int player_pic_size=0x7f090017;
+        /** 
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+    
+         */
+        public static final int player_stack_size=0x7f090016;
         public static final int ptr_progress_bar_stroke_width=0x7f090002;
         public static final int spb_default_stroke_separator_length=0x7f090000;
         public static final int spb_default_stroke_width=0x7f090001;
@@ -1348,52 +1356,49 @@ containing a value of this type.
         public static final int invites_icon_15777=0x7f0200b2;
         public static final int leaderboard_icon_17975=0x7f0200b3;
         public static final int light_bulb_icon_23392=0x7f0200b4;
-        public static final int light_wood_texture=0x7f0200b5;
-        public static final int line=0x7f0200b6;
-        public static final int list_background=0x7f0200b7;
-        public static final int list_bottom=0x7f0200b8;
-        public static final int list_header=0x7f0200b9;
-        public static final int list_item=0x7f0200ba;
-        public static final int list_item_selected=0x7f0200bb;
-        public static final int list_item_selector=0x7f0200bc;
-        public static final int maximize_tutorial_arrow=0x7f0200bd;
-        public static final int message_available_icon_1332=0x7f0200be;
-        public static final int message_icon_27709=0x7f0200bf;
-        public static final int minimize_tutorial_arrow=0x7f0200c0;
-        public static final int no_invites_icon_15776=0x7f0200c1;
-        public static final int online_game_icon_27324=0x7f0200c2;
-        public static final int pass_n_play_icon_27531=0x7f0200c3;
-        public static final int popup_background=0x7f0200c4;
-        public static final int popup_item_selector=0x7f0200c5;
-        public static final int quick_game_icon_18148=0x7f0200c6;
-        public static final int rank_background=0x7f0200c7;
-        public static final int robot_icon_699=0x7f0200c8;
-        public static final int silhouette_icon_4520=0x7f0200c9;
-        public static final int spinner=0x7f0200ca;
-        public static final int swap_icon_17858=0x7f0200cb;
-        public static final int tab=0x7f0200cc;
-        public static final int text_input=0x7f0200cd;
-        public static final int text_input_on_wood=0x7f0200ce;
-        public static final int tut_0_board=0x7f0200cf;
-        public static final int tut_0_move=0x7f0200d0;
-        public static final int tut_0_point_stacks=0x7f0200d1;
-        public static final int tut_2_move=0x7f0200d2;
-        public static final int tut_4_move=0x7f0200d3;
-        public static final int tut_6_move=0x7f0200d4;
-        public static final int tut_8_move=0x7f0200d5;
-        public static final int tutorial_1_point_stacks=0x7f0200d6;
-        public static final int tutorial_slide_up=0x7f0200d7;
-        public static final int unchecked=0x7f0200d8;
-        public static final int white_piece1=0x7f0200d9;
-        public static final int white_piece2=0x7f0200da;
-        public static final int white_piece3=0x7f0200db;
-        public static final int white_piece4=0x7f0200dc;
-        public static final int wood_10_=0x7f0200dd;
-        public static final int wood_10_new=0x7f0200de;
-        public static final int wood_grid_3x3=0x7f0200df;
-        public static final int wood_grid_4x4=0x7f0200e0;
-        public static final int wooden_button=0x7f0200e1;
-        public static final int wooden_check=0x7f0200e2;
+        public static final int line=0x7f0200b5;
+        public static final int list_background=0x7f0200b6;
+        public static final int list_bottom=0x7f0200b7;
+        public static final int list_header=0x7f0200b8;
+        public static final int list_item=0x7f0200b9;
+        public static final int list_item_selected=0x7f0200ba;
+        public static final int list_item_selector=0x7f0200bb;
+        public static final int maximize_tutorial_arrow=0x7f0200bc;
+        public static final int message_available_icon_1332=0x7f0200bd;
+        public static final int message_icon_27709=0x7f0200be;
+        public static final int minimize_tutorial_arrow=0x7f0200bf;
+        public static final int no_invites_icon_15776=0x7f0200c0;
+        public static final int online_game_icon_27324=0x7f0200c1;
+        public static final int pass_n_play_icon_27531=0x7f0200c2;
+        public static final int popup_background=0x7f0200c3;
+        public static final int popup_item_selector=0x7f0200c4;
+        public static final int quick_game_icon_18148=0x7f0200c5;
+        public static final int rank_background=0x7f0200c6;
+        public static final int robot_icon_699=0x7f0200c7;
+        public static final int silhouette_icon_4520=0x7f0200c8;
+        public static final int spinner=0x7f0200c9;
+        public static final int swap_icon_17858=0x7f0200ca;
+        public static final int tab=0x7f0200cb;
+        public static final int text_input=0x7f0200cc;
+        public static final int text_input_on_wood=0x7f0200cd;
+        public static final int tut_0_board=0x7f0200ce;
+        public static final int tut_0_move=0x7f0200cf;
+        public static final int tut_0_point_stacks=0x7f0200d0;
+        public static final int tut_2_move=0x7f0200d1;
+        public static final int tut_4_move=0x7f0200d2;
+        public static final int tut_6_move=0x7f0200d3;
+        public static final int tut_8_move=0x7f0200d4;
+        public static final int tutorial_1_point_stacks=0x7f0200d5;
+        public static final int tutorial_slide_up=0x7f0200d6;
+        public static final int unchecked=0x7f0200d7;
+        public static final int white_piece1=0x7f0200d8;
+        public static final int white_piece2=0x7f0200d9;
+        public static final int white_piece3=0x7f0200da;
+        public static final int white_piece4=0x7f0200db;
+        public static final int wood_grid_3x3=0x7f0200dc;
+        public static final int wood_grid_4x4=0x7f0200dd;
+        public static final int wooden_button=0x7f0200de;
+        public static final int wooden_check=0x7f0200df;
     }
     public static final class id {
         public static final int about_description=0x7f0700c9;
@@ -2133,21 +2138,6 @@ containing a value of this type.
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
  <item name="android:background">@drawable/background</item> 
  <item name="android:dialogTheme" tools:targetApi="11">@style/Dialog.MyTheme</item> 
  <item name="dialogTheme" >@style/Dialog.MyTheme</item> 
@@ -2176,19 +2166,6 @@ containing a value of this type.
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
         <item name="android:shadowRadius">2.75</item>
-
-
-
-
-
-
-
-
-
-
-
-
-        
          */
         public static final int Widget_MyTheme_KeyboardView=0x7f0d0069;
         public static final int Widget_ProgressBar_PullToRefresh=0x7f0d0002;
@@ -2247,33 +2224,16 @@ containing a value of this type.
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
     </style>
-
-
-
-
-
-
-
-
-
-
-    
          */
         public static final int dark_button=0x7f0d006a;
         public static final int game_button=0x7f0d005c;
         /** 
               <item name="android:paddingBottom">5dp</item>       
         <item name="android:paddingTop">5dp</item>
-
-
-
-
-
-
-
-        
          */
         public static final int game_piece_inset=0x7f0d0067;
+        /**  <item name="android:textAppearance">?android:attr/textAppearanceLarge</item> 
+         */
         public static final int game_profile_name=0x7f0d006c;
         public static final int game_profile_pic=0x7f0d006b;
         public static final int game_profile_rank=0x7f0d006d;

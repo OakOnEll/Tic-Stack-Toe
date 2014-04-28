@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="player_stack_size">40dp</dimen>
+    <dimen name="player_pic_size">10dp</dimen>
+
+</resources>

@@ -429,7 +429,18 @@ public class GameFragment extends AbstractGameFragment {
 		squareView.requestLayout();
 		getView().requestLayout();
 
+		View blackProfile = view.findViewById(R.id.black_back);
+		resizeProfile(blackProfile, size);
+		View whiteProfile = view.findViewById(R.id.white_back);
+		resizeProfile(whiteProfile, size);
+
 		resizeInfo = null;
+	}
+
+	private void resizeProfile(View blackProfile, int size) {
+		blackProfile.getLayoutParams().width = size;
+		blackProfile.getLayoutParams().height = size;
+		blackProfile.requestLayout();
 	}
 
 	private void configureDisplayHomeUp() {

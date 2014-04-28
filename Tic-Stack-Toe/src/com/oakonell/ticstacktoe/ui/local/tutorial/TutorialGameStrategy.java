@@ -647,6 +647,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 					Achievements achievements = application.getAchievements();
 					achievements.setFinishedTutorial(getGameContext(),
 							getGame(), getGame().getBoard().getState());
+					markTutorialFinished();
 					leaveGame();
 				}
 			});
@@ -697,7 +698,11 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	private void skipTutorial() {
-		// TODO delete this tutorial match from DB
+		markTutorialFinished();
+		leaveGame();
+	}
+
+	private void markTutorialFinished() {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		Editor edit = preferences.edit();
@@ -705,7 +710,6 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		edit.remove("tutorial_move");
 		edit.remove("tutorial_paused_time");
 		edit.commit();
-		leaveGame();
 	}
 
 	private static class BaseAnimationListener implements AnimationListener {

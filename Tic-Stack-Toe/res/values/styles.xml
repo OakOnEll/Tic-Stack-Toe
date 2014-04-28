@@ -2,8 +2,7 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.-->
     <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
         <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.MyTheme.ActionBar</item>
@@ -51,14 +50,13 @@
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <!--
               <item name="android:paddingBottom">5dp</item>       
-        <item name="android:paddingTop">5dp</item>
-        -->
+        <item name="android:paddingTop">5dp</item>-->
     </style>
 
     <style name="player_stack">
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">75dp</item>
-        <item name="android:layout_height">75dp</item>
+        <item name="android:layout_width">@dimen/player_stack_size</item>
+        <item name="android:layout_height">@dimen/player_stack_size</item>
         <!-- <item name="android:scaleType">fitCenter</item> -->
     </style>
 
@@ -75,8 +73,7 @@
         <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2.75</item>
-        -->
+        <item name="android:shadowRadius">2.75</item>-->
     </style>
 
     <!--
@@ -84,8 +81,7 @@
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
-    </style>
-    -->
+    </style>-->
     <style name="dark_button">
         <item name="android:background">@drawable/dark_button</item>
         <item name="android:paddingTop">15dp</item>
@@ -96,8 +92,8 @@
 
     <style name="game_profile_pic">
         <item name="android:layout_margin">5dp</item>
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">@dimen/player_pic_size</item>
+        <item name="android:layout_height">@dimen/player_pic_size</item>
         <item name="android:layout_gravity">center_vertical|center_horizontal</item>
     </style>
 
@@ -107,7 +103,8 @@
         <item name="android:layout_gravity">left|center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textSize">@dimen/player_name_size</item>
+        <!-- <item name="android:textAppearance">?android:attr/textAppearanceLarge</item> -->
     </style>
 
     <style name="game_profile_rank">
