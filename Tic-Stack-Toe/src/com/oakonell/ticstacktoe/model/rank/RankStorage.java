@@ -5,6 +5,10 @@ import java.nio.ByteBuffer;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
+/**
+ * This class stores the rank for the user for each type of game.
+ * It is used to help resolve conflicts in saved games that the rank is stored in.
+ */
 public class RankStorage {
 	private TypeRankStorage juniorRank;
 	private TypeRankStorage normalRank;

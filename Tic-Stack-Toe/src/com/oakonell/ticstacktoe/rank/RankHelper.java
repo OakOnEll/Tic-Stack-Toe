@@ -146,11 +146,11 @@ public class RankHelper {
 						RankingRater ranker = RankingRater.Factory.getRanker();
 						short initialRank = ranker.initialRank();
 						TypeRankStorage junior = new TypeRankStorage(
-								GameType.JUNIOR, initialRank, false);
+								GameType.JUNIOR, initialRank);
 						TypeRankStorage normal = new TypeRankStorage(
-								GameType.NORMAL, initialRank, false);
+								GameType.NORMAL, initialRank);
 						TypeRankStorage strict = new TypeRankStorage(
-								GameType.STRICT, initialRank, false);
+								GameType.STRICT, initialRank);
 						RankStorage rankStorage = new RankStorage(junior,
 								normal, strict);
 						return rankStorage;
@@ -199,7 +199,6 @@ public class RankHelper {
 			@Override
 			public void receivedRank(RankStorage storage) {
 				TypeRankStorage typeStorage = storage.getRank(type);
-				typeStorage.hasPlayed(true);
 				RankingRater ranker = RankingRater.Factory.getRanker();
 				short currentRank = typeStorage.getRank();
 				short myNewRank = ranker.calculateRank(currentRank,
@@ -207,6 +206,7 @@ public class RankHelper {
 				Log.i(TAG, "  Calculating new rank: " + currentRank + "->"
 						+ myNewRank);
 
+				rankedGame.setMyRank(currentRank);
 				typeStorage.setRank(myNewRank);
 
 				TicStackToe application = ((TicStackToe) gameContext
@@ -214,7 +214,7 @@ public class RankHelper {
 				Leaderboards leaderboards = application.getLeaderboards();
 				leaderboards.submitRank(gameContext, type, myNewRank);
 
-				typeStorage.getGames().add(rankedGame);
+				typeStorage.add(rankedGame);
 				if (onRankUpdated != null) {
 					onRankUpdated.onRankUpdated(currentRank, myNewRank);
 				}

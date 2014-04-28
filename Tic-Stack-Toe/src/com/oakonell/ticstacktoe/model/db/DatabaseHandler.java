@@ -26,8 +26,8 @@ import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.LocalMatchInfo.LocalMatchVisitor;
-import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
 import com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo;
+import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
 import com.oakonell.utils.StringUtils;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -35,7 +35,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private static final String TAG = "DatabaseHandler";
 
-	// All Static variables
 	// Database Version
 	private static final int DATABASE_VERSION = 10;
 
@@ -43,10 +42,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "localMatches";
 
 	private static class TableLocalMatches {
-		// Contacts table name
+		// Table name
 		private static final String NAME = "local_matches";
 
-		// Contacts Table Columns names
+		// Table Columns names
 		private static final String KEY_ID = "id";
 		private static final String KEY_MODE = "mode";
 		private static final String KEY_MATCH_STATUS = "match_status";
@@ -76,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static class TableAIRanks {
 		private static final String NAME = "ai_ranks";
 
-		// Contacts Table Columns names
+		// Table Columns names
 		private static final String KEY_AI_ID = "id";
 		private static final String KEY_AI_TYPE = "mode";
 		private static final String KEY_AI_RANDOM_RANK = "random_rank";
@@ -88,7 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static class TableAIRanksUpdated {
 		private static final String NAME = "ai_ranks_updated";
 
-		// Contacts Table Columns names
+		// Table Columns names
 		private static final String KEY_AI_UPDATED_ID = "id";
 		private static final String KEY_AI_UPDATED_UPDATED = "updated";
 	}
@@ -157,7 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + TableAIRanksUpdated.NAME);
 
-		// delete the existing match files as well?
+		// delete the existing match files as well
 		File dir = context.getFilesDir();
 		String[] matchFiles = dir.list(new FilenameFilter() {
 			@Override
@@ -259,6 +258,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								"Error updating match record");
 					}
 
+					// Write the game bytes file
 					matchInfo.writeGame(context);
 					return id;
 				} finally {
@@ -327,7 +327,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			@Override
 			protected LocalMatchInfo doInBackground(Void... params) {
 				SQLiteDatabase db = getReadableDatabase();
-				String[] columnsNames = getColumnNames();
+				String[] columnsNames = getMatchColumnNames();
 				Cursor query = db.query(TableLocalMatches.NAME, columnsNames,
 						TableLocalMatches.KEY_ID + "=?",
 						new String[] { Long.toString(id) }, null, null, null);
@@ -361,7 +361,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	}
 
-	private String[] getColumnNames() {
+	private String[] getMatchColumnNames() {
 		String columnsNames[] = new String[] { TableLocalMatches.KEY_ID,
 				TableLocalMatches.KEY_MODE, TableLocalMatches.KEY_MATCH_STATUS,
 				TableLocalMatches.KEY_TURN_STATUS,
@@ -436,11 +436,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						.getWhiteAILevel().getValue());
 
 			}
-			
+
 			@Override
 			public void visitTutorial(TutorialMatchInfo info) {
 				values.put(TableLocalMatches.KEY_MODE,
-						GameMode.TUTORIAL.getVal());								
+						GameMode.TUTORIAL.getVal());
 			}
 
 		};
@@ -486,7 +486,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		AsyncTask<Void, Void, LocalMatchesBuffer> task = new AsyncTask<Void, Void, LocalMatchesBuffer>() {
 			@Override
 			protected LocalMatchesBuffer doInBackground(Void... params) {
-				String[] columnsNames = getColumnNames();
+				String[] columnsNames = getMatchColumnNames();
 
 				SQLiteDatabase db = getReadableDatabase();
 				Cursor cursor = null;
@@ -590,11 +590,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				fileName, score, rematchId, winner, isRanked);
 	}
 
-	public Map<AILevel, Integer> getRanks(GameType type) {
+	public Map<AILevel, Integer> getCachedAiRanks(GameType type) {
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			Log.i("DB", "getting ranks");
+			Log.i("DB", "getting locally cached AI ranks");
 			String[] columnsNames = new String[] { TableAIRanks.KEY_AI_TYPE,
 					TableAIRanks.KEY_AI_RANDOM_RANK,
 					TableAIRanks.KEY_AI_EASY_RANK,
@@ -638,11 +638,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	}
 
-	public void updateRanks(
+	public void updateCachedAiRanks(
 			Map<GameType, Map<AILevel, Integer>> aiRanksByGameType) {
 
 		SQLiteDatabase db = getWritableDatabase();
 		try {
+			Log.i("DB", "Updating locally cached AI ranks");
 			for (Entry<GameType, Map<AILevel, Integer>> entry : aiRanksByGameType
 					.entrySet()) {
 				GameType type = entry.getKey();
@@ -659,13 +660,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						ranks.get(AILevel.MEDIUM_AI));
 				values.put(TableAIRanks.KEY_AI_HARD_RANK,
 						ranks.get(AILevel.HARD_AI));
+				// try to update an existing row
 				int updated = db.update(TableAIRanks.NAME, values,
 						TableAIRanks.KEY_AI_TYPE + " = ?",
 						new String[] { String.valueOf(type.getVariant()) });
 				if (updated != 1) {
+					// if it didn't exist, insert a new one
 					long id = db.insert(TableAIRanks.NAME, null, values);
 					if (id < 0) {
-						// TODO throw an error
+						// TODO throw/report an error
+						Log.e(TAG, "Error updating/inserting AI rank");
 					}
 				}
 			}
@@ -677,9 +681,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			int updated = db.update(TableAIRanksUpdated.NAME, values, null,
 					null);
 			if (updated < 1) {
+				// if one didn't exist to update, insert it now
 				long id = db.insert(TableAIRanksUpdated.NAME, null, values);
 				if (id < 0) {
-					// TODO throw an error
+					// TODO throw/report an error
+					Log.e(TAG,
+							"Error updating/inserting the AI rank updated record");
 				}
 			}
 
@@ -689,7 +696,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	}
 
-	public long ranksLastUpdated() {
+	public long aiRanksLastUpdated() {
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
 		try {

@@ -603,7 +603,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		// update the final official starting ranks, as of this last move
 
 		RankHelper.updateRank(getGameContext(), getGame().getType(),
-				new RankedGame(opponentRank, outcome), new OnMyRankUpdated() {
+				new RankedGame(mMatch.getLastUpdatedTimestamp(), opponentRank,
+						outcome), new OnMyRankUpdated() {
 					@Override
 					public void onRankUpdated(short oldRank, short newRank) {
 						if (iAmBlackPlayer()) {
@@ -1276,7 +1277,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 											turnInvitesFromPlayer, invites);
 								}
 								invites.close();
-
 							}
 
 						});

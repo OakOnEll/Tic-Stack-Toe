@@ -15,6 +15,9 @@ import com.oakonell.ticstacktoe.model.Piece;
 import com.oakonell.ticstacktoe.model.PlaceNewPieceMove;
 import com.oakonell.ticstacktoe.model.Player;
 
+/**
+ * A utility class to get the list of valid moves for a given game type.
+ */
 public class AIMoveHelper {
 	public static List<AbstractMove> getValidMoves(GameType type,
 			List<PieceStack> blackPlayerPieces,

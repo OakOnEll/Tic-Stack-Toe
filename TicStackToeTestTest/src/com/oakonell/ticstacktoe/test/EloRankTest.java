@@ -10,12 +10,12 @@ import com.oakonell.ticstacktoe.model.rank.RankingRater;
 public class EloRankTest extends TestCase {
 	public void testSimple() {
 		RankingRater rater = new EloRanker();
-		long a = rater.initialRank();
-		long b = rater.initialRank();
+		short a = rater.initialRank();
+		short b = rater.initialRank();
 
 		for (int i = 0; i < 100000; i++) {
-			long newA = rater.calculateRank(a, b, GameOutcome.WIN);
-			long newB = rater.calculateRank(b, a, GameOutcome.LOSE);
+			short newA = rater.calculateRank(a, b, GameOutcome.WIN);
+			short newB = rater.calculateRank(b, a, GameOutcome.LOSE);
 			long diffA = newA - a;
 			long diffB = newB - b;
 			if (Math.abs(diffA - diffB) > 1) {

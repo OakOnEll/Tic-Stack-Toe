@@ -21,11 +21,11 @@ import com.oakonell.ticstacktoe.model.rank.RankingRater;
 public class RankAITest extends TestCase {
 
 	private static class RankedAIPlayer {
-		int aiLevel;
-		long rank;
-		private List<Long> ranks = new ArrayList<Long>();
+		AILevel aiLevel;
+		short rank;
+		private List<Short> ranks = new ArrayList<Short>();
 
-		public RankedAIPlayer(int aiLevel, long rank) {
+		public RankedAIPlayer(AILevel aiLevel, short rank) {
 			this.aiLevel = aiLevel;
 			this.rank = rank;
 		}
@@ -35,7 +35,7 @@ public class RankAITest extends TestCase {
 					isBlack, aiLevel);
 		}
 
-		public void setNewRank(long calculateRank) {
+		public void setNewRank(short calculateRank) {
 			rank = calculateRank;
 			ranks.add(calculateRank);
 		}
@@ -45,10 +45,10 @@ public class RankAITest extends TestCase {
 	List<RankedAIPlayer> getAIPlayers(RankingRater rater) {
 		ArrayList<RankedAIPlayer> result = new ArrayList<RankedAIPlayer>();
 
-		result.add(new RankedAIPlayer(AiPlayerStrategy.RANDOM_AI, 620));
-		result.add(new RankedAIPlayer(AiPlayerStrategy.EASY_AI, 1570));
-		result.add(new RankedAIPlayer(AiPlayerStrategy.MEDIUM_AI, 1850));
-		result.add(new RankedAIPlayer(AiPlayerStrategy.HARD_AI, 1920));
+		result.add(new RankedAIPlayer(AILevel.RANDOM_AI, (short) 620));
+		result.add(new RankedAIPlayer(AILevel.EASY_AI, (short) 1570));
+		result.add(new RankedAIPlayer(AILevel.MEDIUM_AI, (short) 1850));
+		result.add(new RankedAIPlayer(AILevel.HARD_AI, (short) 1920));
 
 		return result;
 
@@ -57,7 +57,7 @@ public class RankAITest extends TestCase {
 	public void testRankAIs() {
 		RankingRater rater = new EloRanker();
 		List<RankedAIPlayer> aiPlayers = getAIPlayers(rater);
-		Map<RankedAIPlayer, Long> currentRanks = new HashMap<RankAITest.RankedAIPlayer, Long>();
+		Map<RankedAIPlayer, Short> currentRanks = new HashMap<RankAITest.RankedAIPlayer, Short>();
 		for (RankedAIPlayer each : aiPlayers) {
 			currentRanks.put(each, each.rank);
 		}
@@ -73,14 +73,14 @@ public class RankAITest extends TestCase {
 	}
 
 	private void displayRanks(int iterationNum, List<RankedAIPlayer> aiPlayers,
-			Map<RankedAIPlayer, Long> currentRanks) {
+			Map<RankedAIPlayer, Short> currentRanks) {
 		StringBuilder builder = new StringBuilder("AI Ranks after "
 				+ iterationNum + ":\n");
 		for (RankedAIPlayer each : aiPlayers) {
 			builder.append(each.aiLevel);
 			builder.append(" : ");
 			builder.append(each.rank);
-			Long originalRank = currentRanks.get(each);
+			Short originalRank = currentRanks.get(each);
 			builder.append("(" + (originalRank - each.rank) + ")");
 			builder.append("\n");
 		}
@@ -174,11 +174,11 @@ public class RankAITest extends TestCase {
 	}
 
 	private static class Stats {
-		public long sum(List<Long> a) {
+		public long sum(List<Short> a) {
 			if (a.size() > 0) {
 				int sum = 0;
 
-				for (Long i : a) {
+				for (Short i : a) {
 					sum += i;
 				}
 				return sum;
@@ -186,14 +186,14 @@ public class RankAITest extends TestCase {
 			return 0;
 		}
 
-		public double mean(List<Long> a) {
+		public double mean(List<Short> a) {
 			long sum = sum(a);
 			double mean = 0;
 			mean = sum / (a.size() * 1.0);
 			return mean;
 		}
 
-		public double median(List<Long> a) {
+		public double median(List<Short> a) {
 			int middle = a.size() / 2;
 
 			if (a.size() % 2 == 1) {
@@ -203,11 +203,11 @@ public class RankAITest extends TestCase {
 			}
 		}
 
-		public double sd(List<Long> a) {
+		public double sd(List<Short> a) {
 			long sum = 0;
 			double mean = mean(a);
 
-			for (Long i : a)
+			for (Short i : a)
 				sum += Math.pow((i - mean), 2);
 			return Math.sqrt(sum / (a.size() - 1)); // sample
 		}

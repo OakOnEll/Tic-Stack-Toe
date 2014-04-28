@@ -502,28 +502,33 @@ public class MenuFragment extends SherlockFragment implements
 					public void onResult(LoadInvitationsResult result) {
 						int statusCode = result.getStatus().getStatusCode();
 						InvitationBuffer buffer = result.getInvitations();
-						// remove existing invite matches from myTurn list, and
-						// add back these
-						clearInvites();
-						if (statusCode == GamesClient.STATUS_OK) {
-							// update the online invites button with the count
-							int count = buffer.getCount();
-							if (count != 0) {
-								for (int i = 0; i < count; i++) {
-									Invitation invite = buffer.get(i);
-									InviteMatchInfo matchInfo = new InviteMatchInfo(
-											context.getGameHelper(), invite);
-									myTurns.add(matchInfo);
+						try {
+							// remove existing invite matches from myTurn list,
+							// and
+							// add back these
+							clearInvites();
+							if (statusCode == GamesClient.STATUS_OK) {
+								// update the online invites button with the
+								// count
+								int count = buffer.getCount();
+								if (count != 0) {
+									for (int i = 0; i < count; i++) {
+										Invitation invite = buffer.get(i);
+										InviteMatchInfo matchInfo = new InviteMatchInfo(
+												context.getGameHelper(), invite);
+										myTurns.add(matchInfo);
+									}
 								}
+								myTurnsAdapter.notifyDataSetChanged();
+							} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
+
+							} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
+
+							} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
+
 							}
-							myTurnsAdapter.notifyDataSetChanged();
+						} finally {
 							buffer.close();
-						} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
-
-						} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
-
-						} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
-
 						}
 
 					}
@@ -789,6 +794,7 @@ public class MenuFragment extends SherlockFragment implements
 						populateMatches(completedMatchesBuffer,
 								completedMatchesAdapter, completedMatches);
 
+						response.close();
 						networkRefreshed = true;
 						conditionallyMarkRefreshComplete();
 					}

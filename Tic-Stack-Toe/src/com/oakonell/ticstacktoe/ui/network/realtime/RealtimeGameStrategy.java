@@ -850,8 +850,8 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		final short opponentRank = iAmBlack ? rankInfo.whiteRank() : rankInfo
 				.blackRank();
 		RankHelper.updateRank(getGameContext(), getGame().getType(),
-				new RankedGame((short) opponentRank, outcome),
-				new OnMyRankUpdated() {
+				new RankedGame(System.currentTimeMillis(),
+						(short) opponentRank, outcome), new OnMyRankUpdated() {
 					@Override
 					public void onRankUpdated(short oldRank, short newRank) {
 						sendPlayAgainRank(newRank);

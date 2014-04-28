@@ -222,7 +222,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 					public void onSuccess(Map<AILevel, Integer> ranks) {
 						final int aiRank = ranks.get(aiDepth);
 						RankHelper.updateRank(getGameContext(), getGame()
-								.getType(), new RankedGame((short) aiRank,
+								.getType(), new RankedGame(getMatchInfo().getUpdatedTimestamp(), (short) aiRank,
 								outcome), new OnMyRankUpdated() {
 							@Override
 							public void onRankUpdated(final short oldRank,

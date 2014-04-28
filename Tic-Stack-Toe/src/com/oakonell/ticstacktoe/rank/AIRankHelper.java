@@ -107,7 +107,7 @@ public class AIRankHelper {
 			protected Map<AILevel, Integer> doInBackground(String... uri) {
 				// check if cache is relatively new, skip retrieve from the
 				// server
-				long lastUpdated = db.ranksLastUpdated();
+				long lastUpdated = db.aiRanksLastUpdated();
 				if (System.currentTimeMillis() - lastUpdated > RANKS_CACHE_TIME_MS) {
 					return queryForRanks(uri);
 				}
@@ -160,7 +160,7 @@ public class AIRankHelper {
 	private static Map<AILevel, Integer> returnCachedRanks(DatabaseHandler db,
 			GameType type) {
 		Log.i(TAG, "  Retrieving cached AI ranks...");
-		return db.getRanks(type);
+		return db.getCachedAiRanks(type);
 	}
 
 	private static Map<AILevel, Integer> storeRanksAndReturn(
@@ -201,12 +201,12 @@ public class AIRankHelper {
 			aiRanksByGameType.put(GameType.STRICT, strict);
 
 			Log.i(TAG, "  updating DB stored AI ranks");
-			db.updateRanks(aiRanksByGameType);
+			db.updateCachedAiRanks(aiRanksByGameType);
 		} catch (Exception e) {
 			Log.e(TAG, "Error reading JSON result from '" + result + "'", e);
 		}
 
 		Log.i(TAG, "  querying DB for AI rank");
-		return db.getRanks(type);
+		return db.getCachedAiRanks(type);
 	}
 }

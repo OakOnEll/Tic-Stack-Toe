@@ -1,5 +1,9 @@
 package com.oakonell.ticstacktoe.model.rank;
 
+/**
+ * Use the standard ELO ranking system, with some fancy weighting factors
+ * gleaned from https://en.wikipedia.org/wiki/Elo_rating_system for the USCF
+ */
 public class EloRanker implements RankingRater {
 
 	@Override
