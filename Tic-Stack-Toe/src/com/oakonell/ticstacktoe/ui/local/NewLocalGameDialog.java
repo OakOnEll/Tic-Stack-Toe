@@ -228,7 +228,7 @@ public class NewLocalGameDialog extends SherlockDialogFragment {
 		Editor edit = sharedPrefs.edit();
 		edit.putString(PREF_X_NAME, blackName);
 		edit.putString(PREF_O_NAME, whiteName);
-		edit.commit();
+		edit.apply();
 	}
 
 	@Override

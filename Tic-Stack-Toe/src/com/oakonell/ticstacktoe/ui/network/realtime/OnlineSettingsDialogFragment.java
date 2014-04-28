@@ -42,7 +42,7 @@ public class OnlineSettingsDialogFragment extends SherlockDialogFragment {
 						R.string.pref_sound_fx_key);
 				Editor edit = preferences.edit();
 				edit.putBoolean(soundFxPrefKey, useSounds);
-				edit.commit();
+				edit.apply();
 			}
 		});
 

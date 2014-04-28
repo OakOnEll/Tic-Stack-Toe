@@ -713,7 +713,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		edit.putBoolean(MenuFragment.SAW_TUTORIAL, true);
 		edit.remove("tutorial_move");
 		edit.remove("tutorial_paused_time");
-		edit.commit();
+		edit.apply();
 	}
 
 	private static class BaseAnimationListener implements AnimationListener {
@@ -740,7 +740,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		Editor edit = preferences.edit();
 		edit.putInt("tutorial_move", getGame().getNumberOfMoves());
 		edit.putLong("tutorial_paused_time", System.currentTimeMillis());
-		edit.commit();
+		edit.apply();
 	}
 
 	protected void insertMatch() {
