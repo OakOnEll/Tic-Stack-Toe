@@ -199,6 +199,7 @@
                         android:orientation="vertical" >
 
                         <LinearLayout
+                            android:id="@+id/button_row1"
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
                             android:layout_weight="1"
@@ -228,6 +229,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/button_row2"
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
                             android:layout_weight="1"
@@ -257,6 +259,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/button_row3"
                             android:layout_width="match_parent"
                             android:layout_height="fill_parent"
                             android:layout_weight="1"
