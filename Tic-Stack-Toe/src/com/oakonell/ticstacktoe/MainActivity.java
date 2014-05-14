@@ -259,7 +259,11 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 
 	public void loadRank(final OnRankReceived onRankLoaded,
 			boolean initializeIfNone) {
-		if (rankRequest == null) {
+		if (rankRequest == null
+				|| (rankRequest.rankStorage == null && initializeIfNone)) {
+			final OnRankReceived oldOnRankLoaded = rankRequest != null ? rankRequest.onRankLoaded
+					: null;
+
 			rankRequest = new RankRequest();
 			rankRequest.onRankLoaded = onRankLoaded;
 			RankHelper.loadRankStorage(this, new OnRankReceived() {
@@ -268,12 +272,16 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 					// mark in some way that a null was loaded?
 					rankRequest.rankLoaded = true;
 					rankRequest.rankStorage = rankStorage;
+					if (oldOnRankLoaded != null) {
+						oldOnRankLoaded.receivedRank(rankStorage);
+					}
 					if (rankRequest.onRankLoaded != null) {
 						rankRequest.onRankLoaded.receivedRank(rankStorage);
 					}
 					rankRequest.onRankLoaded = null;
 				}
-			}, false);
+			}, initializeIfNone);
+			return;
 		}
 
 		if (!rankRequest.rankLoaded) {

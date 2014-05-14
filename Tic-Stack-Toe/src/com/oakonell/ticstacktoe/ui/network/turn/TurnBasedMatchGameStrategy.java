@@ -507,7 +507,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			runnable.run();
 			return;
 		}
-		RankHelper.loadRankStorage(getGameContext(), new OnRankReceived() {
+		getGameContext().loadRank(new OnRankReceived() {
 			@Override
 			public void receivedRank(RankStorage storage) {
 				TypeRankStorage typeRank = storage.getRank(getGame().getType());
@@ -1071,6 +1071,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			Log.i("TurnListener", "  marking that we saw the opponent's move");
 			state.wasSeen = true;
 
+			setGame(state.game);
+			setScore(state.score);
+
 			updateRankInfo(new Runnable() {
 				@Override
 				public void run() {
@@ -1121,8 +1124,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		// TODO Undo the last move, so it can be reapplied and animated?
 
-		setGame(state.game);
-		setScore(state.score);
 
 		// play winning sound, and animate the move received
 		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;

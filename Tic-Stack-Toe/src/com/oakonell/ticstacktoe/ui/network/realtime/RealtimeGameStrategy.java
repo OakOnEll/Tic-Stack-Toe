@@ -779,7 +779,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 
-		RankHelper.loadRankStorage(getGameContext(), new OnRankReceived() {
+		getGameContext().loadRank(new OnRankReceived() {
 			@Override
 			public void receivedRank(RankStorage storage) {
 				short myRank = storage.getRank(getGame().getType()).getRank();

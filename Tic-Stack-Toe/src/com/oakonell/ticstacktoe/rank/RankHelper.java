@@ -166,6 +166,7 @@ public class RankHelper {
 		Log.i(TAG, "  Saving ranks: ");
 		AppStateManager.update(context.getGameHelper().getApiClient(),
 				RANK_APP_STATE_KEY, ranks.toBytes());
+		context.updateCachedRank(ranks);
 	}
 
 	public interface RankInfoUpdated {
@@ -174,7 +175,7 @@ public class RankHelper {
 
 	public static void createRankInfo(GameContext context, final GameType type,
 			final boolean iAmBlack, final RankInfoUpdated infoUpdated) {
-		loadRankStorage(context, new OnRankReceived() {
+		context.loadRank(new OnRankReceived() {
 			@Override
 			public void receivedRank(RankStorage storage) {
 				TypeRankStorage typeRank = storage.getRank(type);
