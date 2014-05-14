@@ -54,6 +54,9 @@ import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
  * 
  */
 public abstract class GameStrategy {
+	private static final String BUNDLE_KEY_GAME_STRATEGY_MATCH_ID = "GAME_STRATEGY_MATCH_ID";
+	private static final String BUNDLE_KEY_GAME_STRATEGY_TYPE = "GAME_STRATEGY_TYPE";
+
 	private static final String TAG = "GameStrategy";
 	private GameContext gameContext;
 
@@ -234,12 +237,12 @@ public abstract class GameStrategy {
 	public void writeToBundle(Bundle bundle) {
 		Log.i("GameStrategy", "Writing strategy to bundle: " + getGameMode()
 				+ ", " + getMatchId());
-		bundle.putInt("GAME_STRATEGY_TYPE", getGameMode().getVal());
+		bundle.putInt(BUNDLE_KEY_GAME_STRATEGY_TYPE, getGameMode().getVal());
 		writeDetailsToBundle(bundle);
 	}
 
 	protected void writeDetailsToBundle(Bundle bundle) {
-		bundle.putString("GAME_STRATEGY_MATCH_ID", getMatchId());
+		bundle.putString(BUNDLE_KEY_GAME_STRATEGY_MATCH_ID, getMatchId());
 	}
 
 	protected abstract String getMatchId();
@@ -255,9 +258,9 @@ public abstract class GameStrategy {
 		private final String matchId;
 
 		StrategyId(Bundle bundle) {
-			int modeVal = bundle.getInt("GAME_STRATEGY_TYPE");
+			int modeVal = bundle.getInt(BUNDLE_KEY_GAME_STRATEGY_TYPE);
 			mode = GameMode.fromValue(modeVal);
-			matchId = bundle.getString("GAME_STRATEGY_MATCH_ID");
+			matchId = bundle.getString(BUNDLE_KEY_GAME_STRATEGY_MATCH_ID);
 		}
 
 		public boolean waitTillSignIn() {
@@ -267,7 +270,7 @@ public abstract class GameStrategy {
 
 	public static StrategyId readFromBundle(final GameContext context,
 			Bundle bundle) {
-		if (!bundle.containsKey("GAME_STRATEGY_TYPE"))
+		if (!bundle.containsKey(BUNDLE_KEY_GAME_STRATEGY_TYPE))
 			return null;
 		return new StrategyId(bundle);
 	}

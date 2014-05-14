@@ -3,6 +3,9 @@ package com.oakonell.ticstacktoe.utils;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+/**
+ * A wrapper around a ByteBuffer that can conditionally log the components being read/written to the ByteBuffer 
+ */
 public class ByteBufferDebugger {
 	private ByteBuffer buffer;
 

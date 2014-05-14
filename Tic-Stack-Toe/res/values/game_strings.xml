@@ -13,6 +13,7 @@
     <string name="you_lost">You LOST!</string>
     <string name="opponent">Opponent</string>
     
+    <string name="opponent_thinking">%s is thinking...</string>
     <string name="button_send">Send</string>
     <string name="action_chat">Chat</string>
     <string name="action_refresh">Refresh</string>    

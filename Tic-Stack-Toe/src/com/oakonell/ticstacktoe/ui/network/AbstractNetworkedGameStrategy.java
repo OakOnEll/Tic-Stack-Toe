@@ -107,8 +107,8 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		});
 		progressView.setVisibility(opponentInChat ? View.VISIBLE
 				: View.INVISIBLE);
-//		chatMenuItemImageView
-//				.setBackgroundResource(R.drawable.action_bar_inset);
+		// chatMenuItemImageView
+		// .setBackgroundResource(R.drawable.action_bar_inset);
 		if (numNewMessages > 0) {
 			chatMenuItemTextView.setText("" + numNewMessages);
 			chatMenuItemImageView
@@ -125,7 +125,7 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 	public void messageRecieved(Participant opponentParticipant, String string) {
 		messages.add(new ChatMessage(opponentParticipant, string, false, System
 				.currentTimeMillis()));
-		playSound(Sounds.CHAT_RECIEVED);
+		playSound(Sounds.CHAT_RECEIVED);
 		if (chatDialog != null) {
 			chatDialog.newMessage();
 		} else {
@@ -163,10 +163,6 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		// getGameFragment().resetThinkingText();
 	}
 
-	
-
-
-
 	abstract public void sendInChat(boolean b);
 
 	abstract public Participant getMeForChat();
@@ -178,7 +174,6 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 	@Override
 	protected void acceptNonHumanPlayerMove(PlayerStrategy currentStrategy) {
 		// wait for the networked player's move
-		getGameFragment().showStatusText(getOpponentName() + " is thinking...");
+		getGameFragment().showStatusText(getActivity().getString(R.string.opponent_thinking, getOpponentName()));
 	}
-
 }

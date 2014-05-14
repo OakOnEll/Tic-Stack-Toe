@@ -31,7 +31,8 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	public void initialize(TurnBasedMatchGameStrategy listener,
 			String opponentName, String winner, boolean isRanked,
 			boolean iAmBlack) {
-		initialize(isRanked, getActivity().getString(R.string.you), opponentName, iAmBlack);
+		initialize(isRanked, getActivity().getString(R.string.you),
+				opponentName, iAmBlack);
 		this.opponentName = opponentName;
 		this.listener = listener;
 		this.winnerName = winner;
@@ -40,7 +41,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	@Override
 	protected void continueCreateView(ViewGroup container, View view,
 			Bundle savedInstanceState) {
-		setTitle(view, winnerName + " Won!");
+		setTitle(view, getActivity().getString(R.string.player_won, winnerName));
 
 		opponentPlayAgainText = (TextView) view.findViewById(R.id.text);
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);

@@ -150,7 +150,7 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		soundManager = new SoundManager(this);
 		soundManager.addSound(Sounds.INVALID_MOVE,
 				R.raw.invalid_move_metal_gong_dianakc_109711828);
-		soundManager.addSound(Sounds.CHAT_RECIEVED,
+		soundManager.addSound(Sounds.CHAT_RECEIVED,
 				R.raw.chat_received_sounds_954_all_eyes_on_me);
 		soundManager.addSound(Sounds.INVITE_RECEIVED,
 				R.raw.invite_received_sounds_1044_inquisitiveness);
