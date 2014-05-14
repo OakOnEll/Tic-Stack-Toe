@@ -28,7 +28,7 @@ public class OnlinePlayAgainFragment extends RankedPlayAgain {
 
 	public void initialize(RealtimeGameStrategy fragment, String opponentName,
 			String title, boolean iAmBlack) {
-		initialize(fragment.isRanked(), "You", opponentName, iAmBlack);
+		initialize(fragment.isRanked(), getActivity().getString(R.string.you), opponentName, iAmBlack);
 		this.opponentName = opponentName;
 		this.title = title;
 		this.listener = fragment;

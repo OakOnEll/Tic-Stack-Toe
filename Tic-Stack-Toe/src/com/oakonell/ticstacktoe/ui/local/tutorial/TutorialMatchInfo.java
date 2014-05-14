@@ -1,8 +1,10 @@
 package com.oakonell.ticstacktoe.ui.local.tutorial;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
@@ -33,13 +35,14 @@ public class TutorialMatchInfo extends LocalMatchInfo {
 		visitor.visitTutorial(this);
 	}
 
-	protected CharSequence whiteWon() {
-		return "You LOST!";
+	protected CharSequence whiteWon(Context context) {
+		return context.getString(R.string.you_lost);
 	}
 
-	protected CharSequence blackWon() {
-		return "You WON!";
+	protected CharSequence blackWon(Context context) {
+		return context.getString(R.string.you_won);
 	}
+
 
 	@Override
 	protected Player createWhitePlayerStrategy() {

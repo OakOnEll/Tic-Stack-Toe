@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string  name="tutor">Tutor</string>
+    <!-- First pages -->
+
+    <string name="welcome_header">Welcome to Tic-Stack-Toe!</string>
+    <string name="welcome_text">A game of strategy and memory.</string>
+    <!--  -->
+    <string name="stack_header">Each player starts with some nesting stacks of pieces.</string>
+    <string name="stack_text">Two stacks of three for the Junior 3x3 game.\n
+Three stacks of four for the full-sized 4x4 games</string>
+    <!--  -->
+    <string name="board">Players place their pieces on the board to try to form a line to win.</string>
+    <!--  -->
+    <string name="first_move_header">Your move first.</string>
+    <string name="first_move_text">Drag one of your stack pieces to the middle tile.</string>
+
+    <!-- Second set of pages -->
+    <string name="move_1a_text">Except in a strict game, pieces dragged from the stacks can be placed over smaller pieces on the board.</string>
+    <string name="move_1b_text">In a strict game, this is only allowed if your opponent already has all but one of their pieces in line.</string>
+    <string name="move_1c_text">Drag the other large piece from the player stack to upper right corner.</string>
+
+    <!-- Third set of pages -->
+    <string name="move_2a_text">You can move a piece already on the board to another empty space or place it over an existing smaller piece.</string>
+    <string name="move_2b_text">It is possible to expose a win for your opponent this way!</string>
+    <!--  -->
+    <string name="no_peek_header">No peeking?</string>
+    <string name="no_peek_text">In a strict game, there is no peeking- once you touch a piece on the board you have to move it.</string>
+    <!--  -->
+    <string name="move_3_text">Drag the upper right piece to the lower middle tile to block your opponent.</string>
+
+    <!-- Fourth set -->
+    <string name="move_4">Place a new piece from your stacks into the middle right tile.</string>
+
+    <!-- Fifth set -->
+    <string name="move_5_header">Go for the Win!</string>
+    <string name="move_5_text">Pick up the big lower middle piece, and place it over your opponent\'s middle left piece, getting three in a row!</string>
+
+    <!-- Post pages -->
+    <!-- Post page 1 -->
+    <string name="congratulations_header">Congratulations!</string>
+    <string name="congratulations_text">You won this match, and have finished the tutorial.</string>
+    <!-- Post page 2 -->
+    <string name="play_modes_header">Play modes</string>
+    <string name="play_modes_text">You can play against\n
+  * Friends on the same device\n
+  * AIs of various difficulties\n
+  * Friends or Anonymous strangers over the network\n
+    . Either real-time\n
+    . Or Turn-based at your leisure</string>
+    <!-- Post page 3 -->
+    <string name="ranked_games_header">Ranked Play</string>
+    <string name="ranked_games_text">You can choose to play ranked games against an AI or someone over the network. The ELO ranking system is used, with a starting rank of 1200.</string>
+
+    <!-- invalid move hints -->
+    <string name="move_1_hint">Drag to the center tile!</string>
+    <string name="move_2_hint">Drag to the upper right tile!"</string>
+    <string name="move_3_hint">Drag the upper right piece to the lower middle!</string>
+    <string name="move_4_hint">Place a new piece from your stacks into the middle right tile.</string>
+    <string name="move_5_hint">Drag the bottom middle piece to the left middle edge, covering the opponent\'s piece!</string>
+
+</resources>

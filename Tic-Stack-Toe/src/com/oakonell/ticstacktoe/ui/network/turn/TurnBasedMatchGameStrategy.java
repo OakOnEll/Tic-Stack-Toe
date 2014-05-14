@@ -1158,13 +1158,13 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		String winnerName;
 		if (state.game.getBoard().getState().getWinner().isBlack()) {
 			if (blackParticipantId.equals(getMeForChat().getParticipantId())) {
-				winnerName = "You";
+				winnerName = getActivity().getString(R.string.you);
 			} else {
 				winnerName = getOpponentName();
 			}
 		} else {
 			if (!blackParticipantId.equals(getMeForChat().getParticipantId())) {
-				winnerName = "You";
+				winnerName = getActivity().getString(R.string.you);
 			} else {
 				winnerName = getOpponentName();
 			}

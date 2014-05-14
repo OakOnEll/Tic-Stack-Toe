@@ -55,6 +55,8 @@ import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
  * predetermined moves against the computer, to learn how to play.
  */
 public class TutorialGameStrategy extends AbstractLocalStrategy {
+	private static final String PREF_TUTORIAL_MOVE = "tutorial_move";
+	private static final String PREF_TUTORIAL_PAUSED_TIME = "tutorial_paused_time";
 
 	private View tutorialView;
 
@@ -65,17 +67,16 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	private View slideUp;
 	private TextView slideUpTitle;
 	private TextView slideUpText;
+	private View tutorial_bottom;
 
 	private Map<Integer, List<TutorialPage>> tutorialPagesByMoveNum;
 	private int pageIndex = -1;
 
 	private Button dialogNext;
-
 	private View next;
 
 	private ImageButton min_max_tutorial;
 
-	private View tutorial_bottom;
 
 	protected int getAnalyticGameActionResId() {
 		return R.string.an_start_tutorial_game_action;
@@ -131,29 +132,36 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		List<TutorialPage> pages = new ArrayList<TutorialGameStrategy.TutorialPage>();
 		TutorialPage page = new TutorialPage();
 		page.type = Type.DIALOG;
-		page.header = "Welcome to Tic-Stack-Toe!";
-		page.descr = "A game of strategy and memory.";
+		// Welcome to Tic-Stack-Toe!
+		page.header = getActivity().getString(R.string.welcome_header);
+		// A game of strategy and memory.
+		page.descr = getActivity().getString(R.string.welcome_text);
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.DIALOG;
-		page.header = "Each player starts with some nesting stacks of pieces.";
-		page.descr = "Two stacks of three for the Junior 3x3 game.\n"
-				+ "Three stacks of four for the full-sized 4x4 games.";
+		// Each player starts with some nesting stacks of pieces.
+		page.header = getActivity().getString(R.string.stack_header);
+		// Two stacks of three for the Junior 3x3 game.
+		// Three stacks of four for the full-sized 4x4 games
+		page.descr = getActivity().getString(R.string.stack_text);
 		page.backgroundResId = R.drawable.tut_0_point_stacks;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "Players place their pieces on the board to try to form a line to win.";
+		// Players place their pieces on the board to try to form a line to win.
+		page.descr = getActivity().getString(R.string.board);
 		page.backgroundResId = R.drawable.tut_0_board;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
-		page.header = "Your move first.";
-		page.descr = "Drag one of your pieces to the middle tile.";
+		// Your move first.
+		page.header = getActivity().getString(R.string.first_move_header);
+		// Drag one of your pieces to the middle tile.
+		page.descr = getActivity().getString(R.string.first_move_text);
 		page.backgroundResId = R.drawable.tut_0_move;
 		pages.add(page);
 		tutorialPagesByMoveNum.put(0, pages);
@@ -173,21 +181,27 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "Except in a strict game, pieces dragged from the stacks can be placed over smaller pieces on the board.";
+		// Except in a strict game, pieces dragged from the stacks can be placed
+		// over smaller pieces on the board.
+		page.descr = getActivity().getString(R.string.move_1a_text);
 		page.backgroundResId = 0;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "In a strict game, this is only allowed if your opponent already has all but one of their pieces in line.";
+		// In a strict game, this is only allowed if your opponent already has
+		// all but one of their pieces in line.
+		page.descr = getActivity().getString(R.string.move_1b_text);
 		page.backgroundResId = 0;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "Drag the other large piece from the player stack to upper right corner.";
+		// Drag the other large piece from the player stack to upper right
+		// corner.
+		page.descr = getActivity().getString(R.string.move_1c_text);
 		page.backgroundResId = R.drawable.tut_2_move;
 		pages.add(page);
 		tutorialPagesByMoveNum.put(2, pages);
@@ -197,28 +211,36 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "You can move a piece already on the board to another empty space or place it over an existing smaller piece.";
+		// You can move a piece already on the board to another empty space or
+		// place it over an existing smaller piece.
+		page.descr = getActivity().getString(R.string.move_2a_text);
 		page.backgroundResId = 0;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "It is possible to expose a win for your opponent this way!";
+		// It is possible to expose a win for your opponent this way!
+		page.descr = getActivity().getString(R.string.move_2b_text);
 		page.backgroundResId = 0;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
-		page.header = "No peaking?";
-		page.descr = "In a strict game, there is no peaking- once you touch a piece on the board you have to move it.";
+		// No peeking?
+		page.header = getActivity().getString(R.string.no_peek_header);
+		// In a strict game, there is no peeking- once you touch a piece on the
+		// board you have to move it.
+		page.descr = getActivity().getString(R.string.no_peek_text);
 		page.backgroundResId = 0;
 		pages.add(page);
 
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "Drag the upper right piece to the lower middle tile to block your opponent.";
+		// Drag the upper right piece to the lower middle tile to block your
+		// opponent.
+		page.descr = getActivity().getString(R.string.move_3_text);
 		page.backgroundResId = R.drawable.tut_4_move;
 		pages.add(page);
 		tutorialPagesByMoveNum.put(4, pages);
@@ -228,7 +250,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
 		page.header = "";
-		page.descr = "Place a new piece from your stacks into the middle right tile.";
+		// Place a new piece from your stacks into the middle right tile.
+		page.descr = getActivity().getString(R.string.move_4);
 		page.backgroundResId = R.drawable.tut_6_move;
 		pages.add(page);
 		tutorialPagesByMoveNum.put(6, pages);
@@ -237,8 +260,9 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		pages = new ArrayList<TutorialGameStrategy.TutorialPage>();
 		page = new TutorialPage();
 		page.type = Type.SLIDE_UP;
-		page.header = "Go for the Win!";
-		page.descr = "Pick up the big lower middle piece, and place it over your opponent's middle left piece, getting three in a row!";
+		// Go for the Win!
+		page.header = getActivity().getString(R.string.move_5_header);
+		page.descr = getActivity().getString(R.string.move_5_text);
 		page.backgroundResId = R.drawable.tut_8_move;
 		pages.add(page);
 		tutorialPagesByMoveNum.put(8, pages);
@@ -257,23 +281,23 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 	public TutorialGameStrategy(GameContext context, boolean useSaveState) {
 		super(context);
-		Player blackPlayer = HumanStrategy.createPlayer("You", true);
-		Player whitePlayer = createWhitePlayer("Opponent");
+		Player blackPlayer = HumanStrategy.createPlayer(getActivity().getString(R.string.you), true);
+		Player whitePlayer = createWhitePlayer(getActivity().getString(R.string.tutor));
 		Game game = new Game(GameType.JUNIOR, GameMode.TUTORIAL, blackPlayer,
 				whitePlayer, blackPlayer);
 		setGame(game);
 		setMatchInfo(new TutorialMatchInfo(TurnBasedMatch.MATCH_STATUS_ACTIVE,
-				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, "You", "Opponent",
+				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN, getActivity().getString(R.string.you), getActivity().getString(R.string.tutor),
 				System.currentTimeMillis(), game, new ScoreCard(0, 0, 0)));
 		if (!useSaveState)
 			return;
 
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(getContext());
-		long lastPaused = preferences.getLong("tutorial_paused_time", 0);
+		long lastPaused = preferences.getLong(PREF_TUTORIAL_PAUSED_TIME, 0);
 		if (System.currentTimeMillis() - lastPaused > TimeUnit.DAYS.toMillis(1))
 			return;
-		int moveNum = preferences.getInt("tutorial_move", -1);
+		int moveNum = preferences.getInt(PREF_TUTORIAL_MOVE, -1);
 		if (moveNum <= 0)
 			return;
 
@@ -306,7 +330,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	public void startGame() {
-		startNewGame(true, "You", "Opponent", GameType.JUNIOR, new ScoreCard(0,
+		startNewGame(true, getActivity().getString(R.string.you), getActivity().getString(R.string.tutor), GameType.JUNIOR, new ScoreCard(0,
 				0, 0));
 	}
 
@@ -401,7 +425,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 
 	public static Uri getTutorialImageUri() {
 		return Uri.parse("android.resource://com.oakonell.ticstacktoe/"
-				+ R.drawable.dice_icon_14730);
+				+ R.drawable.tutor_icon_11937);
 	}
 
 	public static Player staticCreateWhitePlayer(String name) {
@@ -423,7 +447,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 			if (move.getTargetCell().getX() != 1
 					|| move.getTargetCell().getY() != 1) {
 				onHumanMove.onInvalid(new InvalidMoveException(
-						"Drag to the center tile!", R.string.about_title));
+						"Drag to the center tile!", R.string.move_1_hint));
 				return;
 			}
 			break;
@@ -433,7 +457,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 					|| move.getTargetCell().getY() != 2
 					|| move.getPlayedPiece() != Piece.BLACK4) {
 				onHumanMove.onInvalid(new InvalidMoveException(
-						"Drag to the upper right tile!", R.string.about_title));
+						"Drag to the upper right tile!", R.string.move_2_hint));
 				return;
 			}
 			break;
@@ -445,7 +469,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 					|| ((ExistingPieceMove) move).getSource().getX() != 0) {
 				onHumanMove.onInvalid(new InvalidMoveException(
 						"Drag the uper right to the lower middle!",
-						R.string.about_title));
+						R.string.move_3_hint));
 				return;
 			}
 			break;
@@ -454,9 +478,10 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 					|| move.getTargetCell().getX() != 1
 					|| move.getTargetCell().getY() != 2
 					|| move.getPlayedPiece() != Piece.BLACK3) {
-				onHumanMove.onInvalid(new InvalidMoveException(
-						"Drag the uper right to the lower middle!",
-						R.string.about_title));
+				onHumanMove
+						.onInvalid(new InvalidMoveException(
+								">Place a new piece from your stacks into the middle right tile.",
+								R.string.move_4_hint));
 				return;
 			}
 			break;
@@ -469,7 +494,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 				onHumanMove
 						.onInvalid(new InvalidMoveException(
 								"Drag the lower middle to the left edge, covering the opponent's piece!",
-								R.string.about_title));
+								R.string.move_5_hint));
 				return;
 			}
 			break;
@@ -642,7 +667,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		BaseTutorial page = getPostNotes().get(pageIndex);
 		if (pageIndex == getPostNotes().size() - 1) {
 			dialogSkip.setVisibility(View.GONE);
-			dialogNext.setText("OK");
+			dialogNext.setText(R.string.ok);
 			dialogNext.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -670,24 +695,31 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		}
 		postNotes = new ArrayList<BaseTutorial>();
 		BaseTutorial page = new BaseTutorial();
-		page.header = "Congratulations!";
-		page.descr = "You won this match, and have finished the tutorial.";
+		// Congratulations!
+		page.header = getActivity().getString(R.string.congratulations_header);
+		// You won this match, and have finished the tutorial.
+		page.descr = getActivity().getString(R.string.congratulations_text);
 		postNotes.add(page);
 
 		page = new BaseTutorial();
-		page.header = "Play modes";
-		page.descr = "You can play against\n"
-				+ "  * Friends on the same device\n"
-				+ "  * AIs of various difficulties\n"
-				+ "  * Friends or Anonymous strangers over the network\n" //
-				+ "     . Either real-time\n"
-				+ "     . Or Turn-based at your liesure";
+		// Play modes
+		page.header = getActivity().getString(R.string.play_modes_header);
+		/*
+		 * "You can play against\n" + "  * Friends on the same device\n" +
+		 * "  * AIs of various difficulties\n" +
+		 * "  * Friends or Anonymous strangers over the network\n" // +
+		 * "     . Either real-time\n" + "     . Or Turn-based at your leisure";
+		 */
+		page.descr = getActivity().getString(R.string.play_modes_text);
 		postNotes.add(page);
 
 		page = new BaseTutorial();
-		page.header = "Ranked Play";
-		page.descr = "You can choose to play ranked games against an AI or someone over the network."
-				+ "The ELO ranking system is used, with a starting rank of 1200.";
+		// Ranked Play
+		page.header = getActivity().getString(R.string.ranked_games_header);
+		// You can choose to play ranked games against an AI or someone over the
+		// network. The ELO ranking system is used, with a starting rank of
+		// 1200.
+		page.descr = getActivity().getString(R.string.ranked_games_text);
 		postNotes.add(page);
 
 		return postNotes;
@@ -711,8 +743,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 				.getDefaultSharedPreferences(getActivity());
 		Editor edit = preferences.edit();
 		edit.putBoolean(MenuFragment.SAW_TUTORIAL, true);
-		edit.remove("tutorial_move");
-		edit.remove("tutorial_paused_time");
+		edit.remove(PREF_TUTORIAL_MOVE);
+		edit.remove(PREF_TUTORIAL_PAUSED_TIME);
 		edit.apply();
 	}
 
@@ -738,8 +770,8 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(getContext());
 		Editor edit = preferences.edit();
-		edit.putInt("tutorial_move", getGame().getNumberOfMoves());
-		edit.putLong("tutorial_paused_time", System.currentTimeMillis());
+		edit.putInt(PREF_TUTORIAL_MOVE, getGame().getNumberOfMoves());
+		edit.putLong(PREF_TUTORIAL_PAUSED_TIME, System.currentTimeMillis());
 		edit.apply();
 	}
 
@@ -749,7 +781,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	}
 
 	protected void writeDetailsToBundle(Bundle bundle) {
-		bundle.putInt("tutorial_move", getGame().getNumberOfMoves());
+		bundle.putInt(PREF_TUTORIAL_MOVE, getGame().getNumberOfMoves());
 	}
 
 	@Override

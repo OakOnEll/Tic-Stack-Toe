@@ -13,6 +13,7 @@ import android.text.format.DateUtils;
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.GameContext;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.Player;
@@ -89,11 +90,11 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	public CharSequence getText(Context context) {
 		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
 			if (winner == 1) {
-				return blackWon();
+				return blackWon(context);
 			} else if (winner == -1) {
-				return whiteWon();
+				return whiteWon(context);
 			}
-			return "DRAW!";
+			return context.getString(R.string.draw);
 		}
 		if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
 			return blackName;
@@ -101,9 +102,9 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		return whiteName;
 	}
 
-	abstract protected CharSequence whiteWon();
+	abstract protected CharSequence whiteWon(Context context);
 
-	abstract protected CharSequence blackWon();
+	abstract protected CharSequence blackWon(Context context);
 
 	@Override
 	public CharSequence getSubtext(Context context) {

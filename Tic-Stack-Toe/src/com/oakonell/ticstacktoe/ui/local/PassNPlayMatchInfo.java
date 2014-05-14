@@ -1,5 +1,6 @@
 package com.oakonell.ticstacktoe.ui.local;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.oakonell.ticstacktoe.GameContext;
@@ -45,11 +46,11 @@ public class PassNPlayMatchInfo extends LocalMatchInfo {
 		return HumanStrategy.createPlayer(getWhiteName(), false);
 	}
 
-	protected CharSequence whiteWon() {
-		return getWhiteName() + " WON!";
+	protected CharSequence whiteWon(Context context) {
+		return context.getString(R.string.player_won, getWhiteName());
 	}
 
-	protected CharSequence blackWon() {
-		return getBlackName() + " WON!";
+	protected CharSequence blackWon(Context context) {
+		return context.getString(R.string.player_won, getBlackName());
 	}
 }
