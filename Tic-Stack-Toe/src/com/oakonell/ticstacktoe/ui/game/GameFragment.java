@@ -29,6 +29,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -417,14 +418,94 @@ public class GameFragment extends AbstractGameFragment {
 			return;
 		}
 
-		int size = (resizeInfo.boardHeight + 2 * resizeInfo.pieceStackHeight)
-				/ (boardSize + 2);
-		int newBoardPixSize = size * boardSize;
-		Log.i("GameFragment", "resizing: Board height = "
-				+ resizeInfo.boardHeight + ", piece height = "
+		int topMargin;
+		int bottomMargin;
+		int height;
+		int leftMargin;
+		int rightMargin;
+		int width;
+		// image specific margins/sizes
+		if (boardSize == 4) {
+			topMargin = 55;
+			bottomMargin = 66;
+			height = 950;
+			leftMargin = 50;
+			rightMargin = 47;
+			width = 950;
+		} else {
+			topMargin = 55;
+			bottomMargin = 68;
+			height = 950;
+			leftMargin = 70;
+			rightMargin = 52;
+			width = 950;
+		}
+
+		// calculate the scaled size of a piece so it fits on the board nicely
+		double topBottomMarginRatio = (topMargin + bottomMargin) * 1.0 / height;
+		int totalHeight = (resizeInfo.boardHeight + 2 * resizeInfo.pieceStackHeight);
+
+		int size = (int) (totalHeight * (1 - topBottomMarginRatio) / (boardSize + 2 * (1 - topBottomMarginRatio)));
+
+		int newBoardPixSize = (int) (size * boardSize / (1 - topBottomMarginRatio));
+
+		int newLeftMargin = (int) ((leftMargin * 1.0 / width) * newBoardPixSize);
+		int newRightMargin = (int) ((rightMargin * 1.0 / width) * newBoardPixSize);
+		int newTopMargin = (int) (topMargin * 1.0 / height * newBoardPixSize);
+		int newBottomMargin = (int) (bottomMargin * 1.0 / height * newBoardPixSize);
+
+		Log.i("GameFragment", "resizing: original image height = "
+				+ resizeInfo.boardHeight + ", original piece height = "
 				+ resizeInfo.pieceStackHeight
-				+ ", calculated single piece size =" + size + ", new board = "
-				+ newBoardPixSize);
+				+ ", calculated new single piece size =" + size
+				+ ", new board = " + newBoardPixSize + ", board left margin="
+				+ newLeftMargin + ", board left margin=" + newLeftMargin
+				+ ", board top margin = " + newTopMargin
+				+ ", board bottom margin=" + newBottomMargin);
+
+		/*
+		 * android:id="@+id/button_row1" android:layout_marginLeft="19dp"
+		 * android:layout_marginTop="7dp"
+		 */
+
+		// android.widget.LinearLayout.LayoutParams row1 =
+		// (android.widget.LinearLayout.LayoutParams) getView()
+		// .findViewById(R.id.button_row1).getLayoutParams();
+		// row1.leftMargin = newLeftMargin;
+		// row1.rightMargin = newRightMargin;
+		// android.widget.LinearLayout.LayoutParams row2 =
+		// (android.widget.LinearLayout.LayoutParams) getView()
+		// .findViewById(R.id.button_row2).getLayoutParams();
+		// row2.leftMargin = newLeftMargin;
+		// row2.rightMargin = newRightMargin;
+		// android.widget.LinearLayout.LayoutParams row3 =
+		// (android.widget.LinearLayout.LayoutParams) getView()
+		// .findViewById(R.id.button_row3).getLayoutParams();
+		// row3.leftMargin = newLeftMargin;
+		// row3.rightMargin = newRightMargin;
+		// android.widget.LinearLayout.LayoutParams row4 =
+		// (android.widget.LinearLayout.LayoutParams) getView()
+		// .findViewById(R.id.button_row4).getLayoutParams();
+		// row4.leftMargin = newLeftMargin;
+		// row4.rightMargin = newRightMargin;
+		//
+		// android.widget.LinearLayout.LayoutParams lastRow;
+		// if (boardSize==3) {
+		// lastRow =row3;
+		// } else {
+		// lastRow = row4;
+		// }
+		// row1.topMargin = newTopMargin;
+		// lastRow.bottomMargin = newBottomMargin;
+		
+		View gridContainer = view.findViewById(R.id.board_rows);
+		android.widget.RelativeLayout.LayoutParams layoutParams2 = (android.widget.RelativeLayout.LayoutParams) gridContainer
+				.getLayoutParams();
+		layoutParams2.bottomMargin = newBottomMargin;
+		layoutParams2.topMargin = newTopMargin;
+		layoutParams2.leftMargin = newLeftMargin;
+		layoutParams2.rightMargin = newRightMargin;
+
 
 		resizePlayerStacks(getView(), size);
 

@@ -63,7 +63,7 @@
 
                     <ImageView
                         android:id="@+id/black_back"
-                        style="@style/game_profile_pic"                        
+                        style="@style/game_profile_pic"
                         android:src="@color/abs__background_holo_dark" />
 
                     <ImageView
@@ -103,8 +103,7 @@
                             <com.oakonell.ticstacktoe.ui.game.PieceStackImageView
                                 android:id="@+id/black_piece_stack3"
                                 style="@style/player_stack"
-                                android:src="@drawable/black_piece4"
-                                />
+                                android:src="@drawable/black_piece4" />
                         </LinearLayout>
 
                         <ImageView
@@ -193,6 +192,7 @@
                     android:gravity="center_horizontal|center_vertical" >
 
                     <LinearLayout
+                        android:id="@+id/board_rows"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_centerInParent="true"
