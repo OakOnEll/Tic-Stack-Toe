@@ -43,6 +43,8 @@
     <string name="type_normal">Normal (4x4)</string>
     <string name="type_strict">Strict (4x4)</string>
 
+    <string name="remove_ads">Remove Ads</string>
+    
     <string name="type_junior_name">Junior</string>
     <string name="type_normal_name">Normal</string>
     <string name="type_strict_name">Strict</string>

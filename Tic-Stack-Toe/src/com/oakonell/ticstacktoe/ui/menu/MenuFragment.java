@@ -111,6 +111,8 @@ public class MenuFragment extends SherlockFragment implements
 
 	private MergeAdapter menuAdapter;
 
+	private View removeAds;
+
 	public MenuFragment() {
 		// for reference finding
 	}
@@ -372,6 +374,16 @@ public class MenuFragment extends SherlockFragment implements
 				}
 			}
 		});
+
+		removeAds = view.findViewById(R.id.remove_ads);
+		removeAds.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				context.purchaseUpgrade();
+
+			}
+		});
+		updatePremiumUI();
 
 		return view;
 	}
@@ -885,5 +897,13 @@ public class MenuFragment extends SherlockFragment implements
 	public void gameEnded() {
 		setActive();
 		refreshMatches();
+	}
+
+	public void updatePremiumUI() {
+		if (!context.isPremium()) {
+			removeAds.setVisibility(View.VISIBLE);
+		} else {
+			removeAds.setVisibility(View.GONE);
+		}
 	}
 }

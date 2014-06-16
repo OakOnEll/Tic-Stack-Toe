@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".MainActivity" >
-<!--     android:background="@drawable/background"  -->
+
+    <!-- android:background="@drawable/background" -->
 
     <LinearLayout
         android:id="@+id/view_achievements"
@@ -21,10 +22,9 @@
             android:id="@+id/view_achievements_text"
             style="@style/menu_button_text"
             android:text="@string/achievements" />
-        <ImageView
-            style="@style/menu_button_filler"
-            />
-        </LinearLayout>
+
+        <ImageView style="@style/menu_button_filler" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/view_leaderboards"
@@ -38,9 +38,16 @@
             android:id="@+id/view_leaderboards_text"
             style="@style/menu_button_text"
             android:text="@string/leaderboards" />
-        <ImageView
-            style="@style/menu_button_filler"
-            />
-        </LinearLayout>
+
+        <ImageView style="@style/menu_button_filler" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/remove_ads"
+        style="@style/dark_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remove_ads" >
+    </Button>
 
 </LinearLayout>

@@ -52,4 +52,9 @@ public interface GameContext {
 	void updateCachedRank(RankStorage storage);
 
 	void backFromRealtimeWaitingRoom();
+
+	void purchaseUpgrade();
+	
+	boolean isPremium();
+	
 }

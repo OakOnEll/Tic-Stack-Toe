@@ -8,8 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -25,6 +29,10 @@ import com.oakonell.ticstacktoe.GameStrategy.OnGameStrategyLoad;
 import com.oakonell.ticstacktoe.GameStrategy.StrategyId;
 import com.oakonell.ticstacktoe.googleapi.BaseGameActivity;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.googleapi.inappbill.IabHelper;
+import com.oakonell.ticstacktoe.googleapi.inappbill.IabResult;
+import com.oakonell.ticstacktoe.googleapi.inappbill.Inventory;
+import com.oakonell.ticstacktoe.googleapi.inappbill.Purchase;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.rank.RankStorage;
@@ -41,6 +49,8 @@ import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.AppLaunchUtils;
 
 public class MainActivity extends BaseGameActivity implements GameContext {
+	private static final String PREF_IS_PREMIUM = "isPremium";
+	private static final String TAG = "MainActivity";
 	private GameStrategy gameStrategy;
 	private InterstitialAd mInterstitialAd;
 	private AdView mAdView;
@@ -62,14 +72,26 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	@Override
 	protected void onActivityResult(int request, int response, Intent data) {
 		super.onActivityResult(request, response, data);
-		if (request == GameContext.RC_WAITING_ROOM) {
-			if (getStartFragment() != null && getStartFragment().isVisible()) {
-				getStartFragment().onActivityResult(request, response, data);
-			} else {
-				backFromRealtimeWaitingRoom();
+		// Pass on the activity result to the helper for handling
+		if (mHelper == null
+				|| !mHelper.handleActivityResult(request, response, data)) {
+			// not handled, so handle it ourselves (here's where you'd
+			// perform any handling of activity results not related to in-app
+			// billing...
+
+			if (request == GameContext.RC_WAITING_ROOM) {
+				if (getStartFragment() != null
+						&& getStartFragment().isVisible()) {
+					getStartFragment()
+							.onActivityResult(request, response, data);
+				} else {
+					backFromRealtimeWaitingRoom();
+				}
+			} else if (request == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
+				getGameStrategy().leaveRoom();
 			}
-		} else if (request == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-			getGameStrategy().leaveRoom();
+		} else {
+			Log.d(TAG, "onActivityResult handled by IABUtil.");
 		}
 	}
 
@@ -87,6 +109,11 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		Utils.enableStrictMode();
 		setContentView(R.layout.main_activity);
 
+		// check the status of the preference for premium as a short cut, while
+		// waiting for billing repsonse
+		SharedPreferences sharedPrefs = PreferenceManager
+				.getDefaultSharedPreferences(getSherlockActivity());
+		mIsPremium = sharedPrefs.getBoolean(PREF_IS_PREMIUM, false);
 		initializeAds();
 
 		initializeSoundManager();
@@ -122,6 +149,42 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		// TODO no longer used signing in/out resource
 		// setSignInMessages(getString(R.string.signing_in),
 		// getString(R.string.signing_out));
+
+		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyPlmnk70AzLTBT59JoASBbg+reJVHYU3BB7qypm5Er8leaj"
+				+ "MmQOiPdPeU1eLCyr0bx09LSEZpN3K3HgwIU161w2mL1VPp3cMUDgFixuzN+eP6tsDSxjW1nws6NB3TNsJ235OdRRR1MbU4CzdU74OCcWsF2Skw"
+				+ "tOLE9aUAcPUJe/6cOp8FZEIyx/JiiofOXcUuSrAtpy9JY9JS1P74Vu0wVhZ7oSxVUomAMYFIoJnwwst1gQZEICf+/vj6URl4SLXNcgcKCU8hcC9vUQq7u"
+				+ "aOn1lulNadJ5MfzPp7LntRg96EpA2Tuoz5MROGlHtCeevSi1d4Qf7PVE+UImdTrE04mwIDAQAB";
+		// Create the helper, passing it our context and the public key to
+		// verify signatures with
+		Log.d(TAG, "Creating IAB helper.");
+		mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+		// enable debug logging (for a production application, you should set
+		// this to false).
+		mHelper.enableDebugLogging(true);
+		Log.d(TAG, "Starting setup.");
+
+		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+			public void onIabSetupFinished(IabResult result) {
+				Log.d(TAG, "Setup finished.");
+
+				if (!result.isSuccess()) {
+					// Oh noes, there was a problem.
+					complain("Problem setting up in-app billing: " + result);
+					return;
+				}
+
+				// Have we been disposed of in the meantime? If so, quit.
+				if (mHelper == null) {
+					return;
+				}
+
+				// IAB is fully set up. Now, let's get an inventory of stuff we
+				// own.
+				Log.d(TAG, "Billing Setup successful. Querying inventory.");
+				mHelper.queryInventoryAsync(mGotInventoryListener);
+			}
+		});
 	}
 
 	private void loadStrategy(StrategyId strategyId) {
@@ -168,10 +231,15 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	}
 
 	private void initializeAds() {
-		initializeInterstitialAd();
-
-		// initialize banner ad
 		mAdView = (AdView) findViewById(R.id.adView);
+		if (isPremium()) {
+			mAdView.setVisibility(View.GONE);
+			return;
+		}
+		mAdView.setVisibility(View.VISIBLE);
+
+		initializeInterstitialAd();
+		// initialize banner ad
 		mAdView.loadAd(createAdRequest());
 	}
 
@@ -346,16 +414,21 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	}
 
 	public void gameEnded() {
-		possiblyShowInterstitialAd();
 		gameStrategy = null;
-		mAdView.setVisibility(View.VISIBLE);
 		getMenuFragment().gameEnded();
-
+		if (!isPremium()) {
+			possiblyShowInterstitialAd();
+			mAdView.setVisibility(View.VISIBLE);
+		} else {
+			mAdView.setVisibility(View.GONE);
+		}
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 
 	public void hideAd() {
-		mAdView.setVisibility(View.GONE);
+		if (!isPremium()) {
+			mAdView.setVisibility(View.GONE);
+		}
 	}
 
 	public GameStrategy getGameStrategy() {
@@ -457,6 +530,12 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		mAdView.destroy();
 		soundManager.release();
 		super.onDestroy();
+		// very important:
+		Log.d(TAG, "Destroying helper.");
+		if (mHelper != null) {
+			mHelper.dispose();
+			mHelper = null;
+		}
 	}
 
 	private void possiblyShowInterstitialAd() {
@@ -491,4 +570,160 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		return this;
 	}
 
+	// The in-app billing helper object
+	// (arbitrary) request code for the purchase flow
+	static final int RC_REQUEST = 10001;
+	private boolean mIsPremium;
+	private IabHelper mHelper;
+	private static final String SKU_PREMIUM = "remove_ads";
+	// TODO this should be unique per user!
+	private String premium_payload = "premium...";
+
+	IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+
+		public void onQueryInventoryFinished(IabResult result,
+				Inventory inventory) {
+			Log.d(TAG, "Query inventory finished.");
+
+			// Have we been disposed of in the meantime? If so, quit.
+			if (mHelper == null)
+				return;
+
+			// Is it a failure?
+			if (result.isFailure()) {
+				complain("Failed to query inventory: " + result);
+				return;
+			}
+
+			Log.d(TAG, "Query inventory was successful.");
+
+			/*
+			 * Check for items we own. Notice that for each purchase, we check
+			 * the developer payload to see if it's correct! See
+			 * verifyDeveloperPayload().
+			 */
+
+			// Do we have the premium upgrade?
+			Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
+			boolean prevIsPremium = mIsPremium;
+			mIsPremium = (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase));
+			if (prevIsPremium == mIsPremium) {
+				Log.d(TAG, "No change to premium status: User is "
+						+ (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
+				return;
+			}
+			Log.d(TAG, "Premium status changed: User is "
+					+ (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
+
+			updatePremiumUi();
+			// setWaitScreen(false);
+			Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+		}
+	};
+
+	// Callback for when a purchase is finished
+	IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+		public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+			Log.d(TAG, "Purchase finished: " + result + ", purchase: "
+					+ purchase);
+
+			// if we were disposed of in the meantime, quit.
+			if (mHelper == null)
+				return;
+
+			if (result.isFailure()) {
+				complain("Error purchasing: " + result);
+				// setWaitScreen(false);
+				return;
+			}
+			if (!verifyDeveloperPayload(purchase)) {
+				complain("Error purchasing. Authenticity verification failed.");
+				// setWaitScreen(false);
+				return;
+			}
+
+			Log.d(TAG, "Purchase successful.");
+
+			if (purchase.getSku().equals(SKU_PREMIUM)) {
+				// bought the premium upgrade!
+				Log.d(TAG, "Purchase is premium upgrade. Congratulating user.");
+				alert("Thank you for upgrading to premium!");
+				mIsPremium = true;
+
+				SharedPreferences sharedPrefs = PreferenceManager
+						.getDefaultSharedPreferences(getSherlockActivity());
+				Editor edit = sharedPrefs.edit();
+				edit.putBoolean(PREF_IS_PREMIUM, true);
+				edit.apply();
+
+				updatePremiumUi();
+				// setWaitScreen(false);
+			} else {
+				// unknown purchase
+				Log.d(TAG, "Unknown purchase was returned... ignoring");
+			}
+		}
+	};
+
+	@Override
+	public void purchaseUpgrade() {
+		mHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST,
+				mPurchaseFinishedListener, premium_payload);
+
+	}
+
+	protected void updatePremiumUi() {
+		getMenuFragment().updatePremiumUI();
+		initializeAds();
+	}
+
+	public boolean isPremium() {
+		return mIsPremium;
+	}
+
+	/** Verifies the developer payload of a purchase. */
+	boolean verifyDeveloperPayload(Purchase p) {
+		String payload = p.getDeveloperPayload();
+
+		/*
+		 * TODO: verify that the developer payload of the purchase is correct.
+		 * It will be the same one that you sent when initiating the purchase.
+		 * 
+		 * WARNING: Locally generating a random string when starting a purchase
+		 * and verifying it here might seem like a good approach, but this will
+		 * fail in the case where the user purchases an item on one device and
+		 * then uses your app on a different device, because on the other device
+		 * you will not have access to the random string you originally
+		 * generated.
+		 * 
+		 * So a good developer payload has these characteristics:
+		 * 
+		 * 1. If two different users purchase an item, the payload is different
+		 * between them, so that one user's purchase can't be replayed to
+		 * another user.
+		 * 
+		 * 2. The payload must be such that you can verify it even when the app
+		 * wasn't the one who initiated the purchase flow (so that items
+		 * purchased by the user on one device work on other devices owned by
+		 * the user).
+		 * 
+		 * Using your own server to store and verify developer payloads across
+		 * app installations is recommended.
+		 */
+
+		return true;
+	}
+
+	void complain(String message) {
+		Log.e(TAG, "****  Error: " + message);
+		alert("Error: " + message);
+	}
+
+	void alert(String message) {
+		AlertDialog.Builder bld = new AlertDialog.Builder(this);
+		bld.setMessage(message);
+		bld.setNeutralButton("OK", null);
+		Log.d(TAG, "Showing alert dialog: " + message);
+		bld.create().show();
+	}
 }
