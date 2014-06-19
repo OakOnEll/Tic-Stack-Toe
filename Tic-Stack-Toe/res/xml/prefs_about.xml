@@ -6,12 +6,18 @@
         <CheckBoxPreference
             android:key="@string/pref_sound_fx_key"
             android:title="@string/pref_sound_fx" android:defaultValue="true"/>
+        <Preference
+            android:key="@string/pref_premium_key"
+            android:title="@string/pref__upgrade_to_premium" />
         <Preference 
             android:title="About" 
             android:key="@string/pref_about_key"/>
         <Preference
             android:key="@string/pref_rate_app_key"
             android:title="@string/pref_rate_app" />
+        <Preference
+            android:key="downgrade_from_premium"
+            android:title="Downgrade from Premium" />
         <Preference
             android:key="@string/pref_changes_key"
             android:title="@string/pref_changes" />

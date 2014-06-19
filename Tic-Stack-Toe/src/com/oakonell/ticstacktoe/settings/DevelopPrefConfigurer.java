@@ -22,8 +22,7 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 
 	@Override
 	public void configure() {
-		Preference deleteRanks = finder
-				.findPreference("delete_ranks");
+		Preference deleteRanks = finder.findPreference("delete_ranks");
 		deleteRanks
 				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 					@Override
@@ -31,8 +30,10 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 						TicStackToe app = (TicStackToe) activity
 								.getApplication();
 						Info info = app.getDevelopInfo();
-						if (info== null) {
-							Toast.makeText(activity, "Not connected", Toast.LENGTH_SHORT).show();;
+						if (info == null) {
+							Toast.makeText(activity, "Not connected",
+									Toast.LENGTH_SHORT).show();
+							;
 							return true;
 						}
 
@@ -41,7 +42,6 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 					}
 				});
 
-		
 		Preference resetAchievements = finder
 				.findPreference("reset_achievements");
 		resetAchievements
@@ -51,8 +51,10 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 						TicStackToe app = (TicStackToe) activity
 								.getApplication();
 						Info info = app.getDevelopInfo();
-						if (info== null) {
-							Toast.makeText(activity, "Not connected", Toast.LENGTH_SHORT).show();;
+						if (info == null) {
+							Toast.makeText(activity, "Not connected",
+									Toast.LENGTH_SHORT).show();
+							;
 							return true;
 						}
 
@@ -70,8 +72,9 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 						TicStackToe app = (TicStackToe) activity
 								.getApplication();
 						Info info = app.getDevelopInfo();
-						if (info== null) {
-							Toast.makeText(activity, "Not connected", Toast.LENGTH_SHORT).show();
+						if (info == null) {
+							Toast.makeText(activity, "Not connected",
+									Toast.LENGTH_SHORT).show();
 							return true;
 						}
 
@@ -79,6 +82,9 @@ public class DevelopPrefConfigurer implements PreferenceConfigurer {
 						return true;
 					}
 				});
+
+
+
 	}
 
 }

@@ -357,7 +357,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		playAgainDialog = new TurnBasedPlayAgainFragment();
-		playAgainDialog.initialize(this, getOpponentName(), winner,
+		playAgainDialog.initialize(this, getActivity().getString(R.string.you), getOpponentName(), winner,
 				iAmBlackPlayer(), isRanked);
 		// TODO... this uses new api
 		if (fragment.getActivity() == null) {

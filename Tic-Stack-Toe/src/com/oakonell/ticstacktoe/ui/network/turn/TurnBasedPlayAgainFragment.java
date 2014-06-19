@@ -28,11 +28,10 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 	private TurnBasedMatchGameStrategy listener;
 	private Runnable configure;
 
-	public void initialize(TurnBasedMatchGameStrategy listener,
+	public void initialize(TurnBasedMatchGameStrategy listener, String myName,
 			String opponentName, String winner, boolean isRanked,
 			boolean iAmBlack) {
-		initialize(isRanked, getActivity().getString(R.string.you),
-				opponentName, iAmBlack);
+		initialize(isRanked, myName, opponentName, iAmBlack);
 		this.opponentName = opponentName;
 		this.listener = listener;
 		this.winnerName = winner;

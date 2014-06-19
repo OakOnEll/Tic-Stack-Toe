@@ -5,10 +5,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,8 +24,14 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.googleapi.inappbill.IabHelper;
+import com.oakonell.ticstacktoe.googleapi.inappbill.IabHelper.OnConsumeFinishedListener;
+import com.oakonell.ticstacktoe.googleapi.inappbill.IabResult;
+import com.oakonell.ticstacktoe.googleapi.inappbill.Inventory;
+import com.oakonell.ticstacktoe.googleapi.inappbill.Purchase;
 import com.oakonell.ticstacktoe.rank.RankHelper;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnRankDeleted;
 
@@ -205,6 +215,133 @@ public class DevelopmentUtil {
 		client[0] = builder.build();
 		client[0].connect();
 
+	}
+
+	public static void downgradeFromPremium(final Activity activity,
+			final OnConsumeFinishedListener listener) {
+		try {
+			// complain(activity, "Starting downgrade");
+			String base64EncodedPublicKey = BillingHelper.getPublicKey();
+			// Create the helper, passing it our context and the public key to
+			// verify signatures with
+			Log.d(LogTag, "Creating IAB helper.");
+			final IabHelper mHelper = new IabHelper(activity,
+					base64EncodedPublicKey);
+
+			// enable debug logging (for a production application, you should
+			// set
+			// this to false).
+			mHelper.enableDebugLogging(true);
+			Log.d(LogTag, "Starting setup.");
+			final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+
+				public void onQueryInventoryFinished(IabResult result,
+						Inventory inventory) {
+					// complain(activity, "query finished");
+
+					Log.d(LogTag, "Query inventory finished.");
+
+					// Have we been disposed of in the meantime? If so, quit.
+					// if (mHelper == null)
+					// return;
+
+					// Is it a failure?
+					if (result.isFailure()) {
+						complain(activity, "Failed to query inventory: "
+								+ result);
+						mHelper.dispose();
+						return;
+					}
+
+					Log.d(LogTag, "Query inventory was successful.");
+
+					/*
+					 * Check for items we own. Notice that for each purchase, we
+					 * check the developer payload to see if it's correct! See
+					 * verifyDeveloperPayload().
+					 */
+
+					// Do we have the premium upgrade?
+					Purchase premiumPurchase = inventory
+							.getPurchase(BillingHelper.SKU_PREMIUM);
+					if (premiumPurchase != null) {
+						mHelper.consumeAsync(premiumPurchase,
+								new OnConsumeFinishedListener() {
+									@Override
+									public void onConsumeFinished(
+											Purchase purchase, IabResult result) {
+										if (result.isSuccess()) {
+											SharedPreferences sharedPrefs = PreferenceManager
+													.getDefaultSharedPreferences(activity);
+											Editor edit = sharedPrefs.edit();
+											edit.putBoolean(
+													activity.getString(R.string.pref_premium_key),
+													false);
+											edit.apply();
+
+											Toast.makeText(activity,
+													"Downgraded",
+													Toast.LENGTH_LONG).show();
+										} else {
+											complain(
+													activity,
+													"Unable to downgrade: "
+															+ result.getMessage());
+										}
+										listener.onConsumeFinished(purchase,
+												result);
+										mHelper.dispose();
+									}
+								});
+					} else {
+						Toast.makeText(activity,
+								"Not currently a premium upgrade",
+								Toast.LENGTH_LONG).show();
+					}
+				}
+			};
+
+			mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+				public void onIabSetupFinished(IabResult result) {
+					// complain(activity, "Setup finished");
+					Log.d(LogTag, "Setup finished.");
+
+					if (!result.isSuccess()) {
+						// Oh noes, there was a problem.
+						String message = "Problem setting up in-app billing: "
+								+ result;
+						complain(activity, message);
+						mHelper.dispose();
+
+						return;
+					}
+
+					// Have we been disposed of in the meantime? If so, quit.
+					// if (mHelper == null) {
+					// return;
+					// }
+
+					// IAB is fully set up. Now, let's get an inventory of stuff
+					// we
+					// own.
+					Log.d(LogTag,
+							"Billing Setup successful. Querying inventory.");
+					mHelper.queryInventoryAsync(mGotInventoryListener);
+				}
+
+			});
+		} catch (Exception e) {
+			complain(activity,
+					"Got an exception trying to downgrade..." + e.getMessage());
+		}
+	}
+
+	private static void complain(final Activity activity, String message) {
+		AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+		bld.setMessage(message);
+		bld.setNeutralButton("OK", null);
+		Log.d(LogTag, "Showing alert dialog: " + message);
+		bld.show();
 	}
 
 }
