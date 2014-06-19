@@ -21,6 +21,7 @@
 
             <TextView
                 android:id="@+id/opponent_name"
+                android:paddingRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -45,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:paddingRight="5dp"
                 android:text="@string/game_type" />
 
             <Spinner
@@ -65,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:paddingRight="5dp"
                 android:text="@string/game_type_short_descr" />
 
             <TextView
@@ -82,6 +85,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="5dp"
                 android:gravity="right"
                 android:text="Ranked Game" />
 

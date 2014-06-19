@@ -33,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Original Rank"
+                android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -53,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Player Name"
+                android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -80,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Easy AI"
+                android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView

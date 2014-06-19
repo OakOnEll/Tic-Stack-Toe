@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:paddingRight="5dp"
                 android:text="@string/label_player_black_name" />
 
             <EditText
@@ -67,6 +68,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="5dp"
                 android:gravity="right"
                 android:text="@string/label_player_white_name" />
 
@@ -90,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:paddingRight="5dp"
                 android:text="@string/game_type" />
 
             <Spinner
@@ -110,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:paddingRight="5dp"
                 android:text="@string/game_type_short_descr" />
 
             <TextView
