@@ -113,6 +113,8 @@ public class MenuFragment extends SherlockFragment implements
 
 	private View removeAds;
 
+	private View rankDisplayView;
+
 	public MenuFragment() {
 		// for reference finding
 	}
@@ -233,18 +235,18 @@ public class MenuFragment extends SherlockFragment implements
 		ListView listView = (ListView) view.findViewById(R.id.list);
 		menuAdapter = new MergeAdapter();
 
-		juniorRankView = inflater.inflate(R.layout.rank_layout, null);
+		rankDisplayView = inflater.inflate(R.layout.rank_display, null);
+
+		juniorRankView = rankDisplayView.findViewById(R.id.junior_rank);
 		juniorRankView.setVisibility(View.GONE);
-		menuAdapter.addView(juniorRankView);
-		menuAdapter.setActive(juniorRankView, false);
-		normalRankView = inflater.inflate(R.layout.rank_layout, null);
+		normalRankView = rankDisplayView.findViewById(R.id.normal_rank);
 		normalRankView.setVisibility(View.GONE);
-		menuAdapter.addView(normalRankView);
-		menuAdapter.setActive(normalRankView, false);
-		strictRankView = inflater.inflate(R.layout.rank_layout, null);
+		strictRankView = rankDisplayView.findViewById(R.id.strict_rank);
 		strictRankView.setVisibility(View.GONE);
-		menuAdapter.addView(strictRankView);
-		menuAdapter.setActive(strictRankView, false);
+
+		menuAdapter.addView(rankDisplayView);
+		rankDisplayView.setVisibility(View.GONE);
+		menuAdapter.setActive(rankDisplayView, false);
 
 		menuAdapter.addView(main);
 
@@ -487,7 +489,8 @@ public class MenuFragment extends SherlockFragment implements
 			return;
 		}
 		rankView.setVisibility(View.VISIBLE);
-		menuAdapter.setActive(rankView, true);
+		rankDisplayView.setVisibility(View.VISIBLE);
+		menuAdapter.setActive(rankDisplayView, true);
 		TextView label = (TextView) rankView.findViewById(R.id.rank_label);
 		label.setText("Your " + typeString + " rank");
 		TextView rankText = (TextView) rankView.findViewById(R.id.rank);
@@ -497,11 +500,10 @@ public class MenuFragment extends SherlockFragment implements
 	public void signOut() {
 		context.clearRanks();
 		juniorRankView.setVisibility(View.GONE);
-		menuAdapter.setActive(juniorRankView, false);
 		normalRankView.setVisibility(View.GONE);
-		menuAdapter.setActive(normalRankView, false);
 		strictRankView.setVisibility(View.GONE);
-		menuAdapter.setActive(strictRankView, false);
+		rankDisplayView.setVisibility(View.GONE);
+		menuAdapter.setActive(rankDisplayView, false);
 
 		clearInvites();
 		clearNonLocalMatches(myTurns);

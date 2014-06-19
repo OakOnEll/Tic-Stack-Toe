@@ -316,7 +316,7 @@ public final class R {
 		public static final int disableHome = 0x7f070012;
 		public static final int edit_query = 0x7f070033;
 		public static final int homeAsUp = 0x7f07000f;
-		public static final int icon = 0x7f0700ea;
+		public static final int icon = 0x7f0700ed;
 		public static final int icon_image = 0x7f0700ca;
 		public static final int increment = 0x7f0700d5;
 		public static final int label = 0x7f0700a7;
@@ -371,9 +371,9 @@ public final class R {
 		public static final int dialog_app_rater = 0x7f03001b;
 		public static final int generic_about_activity = 0x7f03002a;
 		public static final int number_picker = 0x7f03002e;
-		public static final int share_row = 0x7f030036;
-		public static final int sherlock_spinner_dropdown_item = 0x7f030037;
-		public static final int sherlock_spinner_item = 0x7f030038;
+		public static final int share_row = 0x7f030037;
+		public static final int sherlock_spinner_dropdown_item = 0x7f030038;
+		public static final int sherlock_spinner_item = 0x7f030039;
 	}
 	public static final class string {
 		public static final int about_title = 0x7f0b0045;
