@@ -38,6 +38,7 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchReadListener;
 import com.oakonell.ticstacktoe.settings.SettingsActivity;
+import com.oakonell.ticstacktoe.ui.GameTypeDialogFragment;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.local.AiMatchInfo;
@@ -132,13 +133,22 @@ public abstract class GameStrategy {
 		case R.id.action_settings:
 			showSettings(fragment);
 			return true;
+		case R.id.action_help:
+			showGameTypeDialog();
+			return true;
 		}
 		return false;
 	}
 
+	private void showGameTypeDialog() {
+		GameTypeDialogFragment dialog = new GameTypeDialogFragment();
+		dialog.initialize(getGameContext());
+		dialog.show(getActivity().getSupportFragmentManager(), "gamehelp");
+	}
+
 	public void onCreateOptionsMenu(Fragment fragment, Menu menu,
 			MenuInflater inflater) {
-		inflater.inflate(R.menu.menu, menu);
+		inflater.inflate(R.menu.menu_game, menu);
 	}
 
 	public void onPrepareOptionsMenu(Fragment fragment, Menu menu) {

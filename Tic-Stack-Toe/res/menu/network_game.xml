@@ -6,13 +6,17 @@
         android:icon="@android:drawable/ic_menu_call"
         android:orderInCategory="101"
         android:showAsAction="always"
-        
         android:title="@string/action_chat"/>
-    
+    <item
+        android:id="@+id/action_help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_help"/>
     <item
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:orderInCategory="102"
+        android:orderInCategory="110"
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
 
