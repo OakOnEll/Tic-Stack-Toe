@@ -476,7 +476,7 @@ public class MenuFragment extends SherlockFragment implements
 			// game notification. If that's the case, you should go straight
 			// into
 			// the game.
-			updateMatch(aMatch);
+			updateMatch(aMatch, true);
 			return;
 		}
 
@@ -643,7 +643,7 @@ public class MenuFragment extends SherlockFragment implements
 									return;
 								}
 								TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-										context, result.getMatch());
+										context, result.getMatch(), true);
 
 								listener.showGame();
 							}
@@ -666,7 +666,7 @@ public class MenuFragment extends SherlockFragment implements
 									setActive();
 									return;
 								}
-								updateMatch(result.getMatch());
+								updateMatch(result.getMatch(), false);
 
 							}
 						});
@@ -674,7 +674,7 @@ public class MenuFragment extends SherlockFragment implements
 
 	// This is the main function that gets called when players choose a match
 	// from the inbox, or else create a match and want to start it.
-	public void updateMatch(TurnBasedMatch match) {
+	public void updateMatch(TurnBasedMatch match, boolean fromInvite) {
 		// if sign in just succeeded, but another game is in progress, don't
 		// interrupt
 		// / may need to check if gameFragment exists?
@@ -683,7 +683,7 @@ public class MenuFragment extends SherlockFragment implements
 
 		setInactive();
 		TurnBasedMatchGameStrategy listener = new TurnBasedMatchGameStrategy(
-				context, match);
+				context, match, fromInvite);
 
 		listener.showFromMenu();
 	}

@@ -140,7 +140,7 @@ public abstract class GameStrategy {
 		return false;
 	}
 
-	private void showGameTypeDialog() {
+	protected void showGameTypeDialog() {
 		GameTypeDialogFragment dialog = new GameTypeDialogFragment();
 		dialog.initialize(getGameContext());
 		dialog.show(getActivity().getSupportFragmentManager(), "gamehelp");
@@ -149,6 +149,7 @@ public abstract class GameStrategy {
 	public void onCreateOptionsMenu(Fragment fragment, Menu menu,
 			MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_game, menu);
+		// possibly change the help icon, based on the game type
 	}
 
 	public void onPrepareOptionsMenu(Fragment fragment, Menu menu) {
@@ -343,7 +344,7 @@ public abstract class GameStrategy {
 									return;
 								}
 								onLoad.onSuccess(new TurnBasedMatchGameStrategy(
-										context, match));
+										context, match, false));
 
 							}
 						});
@@ -396,7 +397,7 @@ public abstract class GameStrategy {
 
 	public void viewCreated(GameFragment gameFragment, LayoutInflater inflater,
 			ViewGroup container, FrameLayout frame) {
-
+		
 	}
 
 	protected void sendAnalyticStartGameEvent(final GameType type) {

@@ -323,6 +323,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 		if (!isRanked) {
 			startGame(gameFragment, blackPlayer, whitePlayer, score, null);
+			if (!isQuick && !initiatedTheGame) {
+				showGameTypeDialog();
+			}
 			return;
 		}
 		final Player theBlackPlayer = blackPlayer;
@@ -347,6 +350,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 						}
 						startGame(gameFragment, theBlackPlayer, theWhitePlayer,
 								score, rankInfo);
+						if (!isQuick && !initiatedTheGame) {
+							showGameTypeDialog();
+						}
 					}
 				});
 
@@ -767,8 +773,9 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void promptToPlayAgain(String winner, String title) {
 		onlinePlayAgainDialog = new OnlinePlayAgainFragment();
-		onlinePlayAgainDialog.initialize(this, getActivity().getString(R.string.you),
-				getOpponentName(), title, iAmBlack);
+		onlinePlayAgainDialog.initialize(this,
+				getActivity().getString(R.string.you), getOpponentName(),
+				title, iAmBlack);
 
 		// TODO store the completed real-time game in the db, to show in the
 		// history

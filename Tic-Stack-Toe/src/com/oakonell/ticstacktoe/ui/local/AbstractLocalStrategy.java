@@ -200,7 +200,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 
 		startGame(gameMode, type, blackFirst, blackName, whitePlayer,
 				whiteName, score, blackPlayer, firstPlayer);
-		return;
+
 	}
 
 	protected void startGame(GameMode gameMode, GameType type,

@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 
 public class GameTypeDialogFragment extends SherlockDialogFragment {
 	private GameContext context;
@@ -32,24 +33,22 @@ public class GameTypeDialogFragment extends SherlockDialogFragment {
 
 		View view = inflater.inflate(R.layout.complex_game_mode_help_dialog,
 				container, true);
-		int titleRes = 0;
 		int howToPlayRes = 0;
 
 		GameType type = context.getGameStrategy().getGame().getType();
 		if (type.isJunior()) {
-			titleRes = R.string.type_junior;
 			howToPlayRes = R.string.type_junior_short_descr;
 		} else if (type.isNormal()) {
-			titleRes = R.string.type_normal;
 			howToPlayRes = R.string.type_normal_short_descr;
 		} else if (type.isStrict()) {
-			titleRes = R.string.type_strict;
 			howToPlayRes = R.string.type_strict_short_descr;
 		}
 
-		getDialog().setTitle(titleRes);
+		CharSequence title = GameTypeSpinnerHelper.getTypeName(getActivity(),
+				context.getGameStrategy().getGame().getType());
+		getDialog().setTitle(title);
 		TextView titleView = (TextView) view.findViewById(R.id.title);
-		titleView.setText(titleRes);
+		titleView.setText(title);
 
 		TextView descriptionView = (TextView) view
 				.findViewById(R.id.how_to_play_text);

@@ -77,6 +77,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	private GameType type;
 	private boolean isQuick;
+	private boolean fromInvite;
 	private boolean isRanked;
 	private String blackParticipantId;
 
@@ -91,11 +92,13 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		registerThisAsMatchListener();
 	}
 
-	public TurnBasedMatchGameStrategy(GameContext context, TurnBasedMatch match) {
+	public TurnBasedMatchGameStrategy(GameContext context,
+			TurnBasedMatch match, boolean fromInvite) {
 		super(context);
 		registerThisAsMatchListener();
 
 		mMatch = match;
+		this.fromInvite = fromInvite;
 
 		if (match != null) {
 			mMyParticipantId = match.getParticipantId(Games.Players
@@ -169,7 +172,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	private void refreshMatch() {
-		getGameFragment().showStatusText("Refreshing Match");
+		if (getGameFragment() != null) {
+			getGameFragment().showStatusText("Refreshing Match");
+		}
 		Games.TurnBasedMultiplayer.loadMatch(getHelper().getApiClient(),
 				mMatch.getMatchId()).setResultCallback(
 				new ResultCallback<TurnBasedMultiplayer.LoadMatchResult>() {
@@ -215,6 +220,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	public void showFromMenu() {
 		showOrStartMatch(mMatch);
+		// if I was invited to a new game (the other player has moved), show the
+		// type of game
+		if (mMatch.getData() != null && !isQuick && fromInvite
+				&& getGame().getNumberOfMoves() == 1) {
+			showGameTypeDialog();
+		}
 	}
 
 	private void startMatch(final TurnBasedMatch match) {
@@ -265,6 +276,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		if (!isRanked) {
 			startGame(match, blackPlayer, whitePlayer, score, null);
+			if (!isQuick && fromInvite) {
+				showGameTypeDialog();
+			}
 			return;
 		}
 
@@ -277,6 +291,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					public void onRankInfoUpdated(RankInfo info) {
 						startGame(match, theBlackPlayer, theWhitePlayer,
 								theScore, new TurnRankInfo(info));
+						if (!isQuick && fromInvite) {
+							showGameTypeDialog();
+						}
 					}
 				});
 	}
@@ -357,8 +374,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		playAgainDialog = new TurnBasedPlayAgainFragment();
-		playAgainDialog.initialize(this, getActivity().getString(R.string.you), getOpponentName(), winner,
-				iAmBlackPlayer(), isRanked);
+		playAgainDialog.initialize(this, getActivity().getString(R.string.you),
+				getOpponentName(), winner, iAmBlackPlayer(), isRanked);
 		// TODO... this uses new api
 		if (fragment.getActivity() == null) {
 			// huh?
@@ -794,6 +811,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		mMyParticipantId = match.getParticipantId(Games.Players
 				.getCurrentPlayerId(getHelper().getApiClient()));
 		showGame();
+
 	}
 
 	public static class TurnRankInfo extends RankInfo {
@@ -1123,7 +1141,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				"   showGame - move#" + state.game.getNumberOfMoves());
 
 		// TODO Undo the last move, so it can be reapplied and animated?
-
 
 		// play winning sound, and animate the move received
 		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
