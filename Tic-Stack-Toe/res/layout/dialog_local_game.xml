@@ -28,6 +28,7 @@
 
             <EditText
                 android:id="@+id/player_x_name"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_input_on_wood"
@@ -74,6 +75,7 @@
 
             <EditText
                 android:id="@+id/player_o_name"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_input_on_wood"
@@ -97,6 +99,7 @@
 
             <Spinner
                 android:id="@+id/game_type"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner"
@@ -118,6 +121,7 @@
 
             <TextView
                 android:id="@+id/game_type_descr"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>

@@ -42,23 +42,19 @@
     <string name="type_junior">Junior (3x3)</string>
     <string name="type_normal">Normal (4x4)</string>
     <string name="type_strict">Strict (4x4)</string>
-
     <string name="remove_ads">Remove Ads</string>
-    
     <string name="type_junior_name">Junior</string>
     <string name="type_normal_name">Normal</string>
     <string name="type_strict_name">Strict</string>
-    
-    
-    <string name="game_type_short_descr">Game Description</string>
-    <string name="type_junior_short_descr">Plays on a 3x3 board with two player stacks of three pieces each.\n
-        Pieces from a player stack can be played anywhere on the board.\n
-        Board pieces can be peeked under.</string>
-    <string name="type_normal_short_descr">Plays on a 4x4 board with three player stacks of four pieces each.\n
-        Pieces from a player stack can be played anywhere on the board.\n
-        Board pieces can be peeked under.</string>
-    <string name="type_strict_short_descr">Plays on a 4x4 board with three player stacks of four pieces each.\n
-        Pieces from a player stack can only be played on empty board squares, except that a piece may cover an existing piece in a given line where there are three opponent pieces.\n
-        A board piece touched must be played. (No peeking!)</string>
+    <string name="game_type_short_descr">Description</string>
+    <string name="type_junior_short_descr">*Plays on a 3x3 board with two player stacks of three pieces each.\n
+*Pieces from a player stack can be played anywhere on the board.\n
+*Board pieces can be peeked under.</string>
+    <string name="type_normal_short_descr">*Plays on a 4x4 board with three player stacks of four pieces each.\n
+*Pieces from a player stack can be played anywhere on the board.\n
+*Board pieces can be peeked under.</string>
+    <string name="type_strict_short_descr">*Plays on a 4x4 board with three player stacks of four pieces each.\n
+*Pieces from a player stack can only be played on empty board squares, except a piece may cover an existing piece in a given line where there are three opponent pieces.\n
+*A board piece touched must be played. (No peeking!)</string>
 
 </resources>

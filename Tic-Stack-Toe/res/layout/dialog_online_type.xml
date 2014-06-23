@@ -27,6 +27,7 @@
 
             <Spinner
                 android:id="@+id/game_type"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner"
@@ -48,6 +49,7 @@
 
             <TextView
                 android:id="@+id/game_type_descr"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </TableRow>
@@ -67,6 +69,7 @@
 
             <CheckBox
                 android:id="@+id/realtime"
+                android:layout_weight="1"
                 style="@style/Widget.MyTheme.CompoundButton.CheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,10 +87,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="5dp"
-                android:text="Ranked Game" />
+                android:text="Ranked" />
 
             <CheckBox
                 android:id="@+id/ranked_game"
+                android:layout_weight="1"
                 style="@style/Widget.MyTheme.CompoundButton.CheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
