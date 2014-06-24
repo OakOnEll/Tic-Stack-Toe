@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -75,7 +76,7 @@ public class GameTypeSpinnerHelper {
 		GameTypeSpinnerHelper.populateDescription(activity, typeDescr, type);
 	}
 
-	public static CharSequence getTypeName(FragmentActivity activity,
+	public static CharSequence getTypeName(Context activity,
 			GameType type) {
 		int descrId;
 		if (type.isJunior()) {

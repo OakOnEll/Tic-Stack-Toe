@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 
 import com.google.analytics.tracking.android.Log;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
@@ -16,6 +15,7 @@ import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
@@ -46,6 +46,8 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	private ScoreCard scoreCard;
 	private int winner;
 
+	private GameType type;
+
 	public interface LocalMatchVisitor {
 		void visitPassNPlay(PassNPlayMatchInfo info);
 
@@ -56,7 +58,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public abstract void accept(LocalMatchVisitor visitor);
 
-	protected LocalMatchInfo(long id, int matchStatus, int turnStatus,
+	protected LocalMatchInfo(long id, GameType type, int matchStatus, int turnStatus,
 			String blackName, String whiteName, long lastUpdated,
 			String fileName, ScoreCard score, long rematchId, int winner) {
 		this.id = id;
@@ -70,6 +72,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		this.rematchId = rematchId;
 		this.scoreCard = score;
 		this.winner = winner;
+		this.type = type;
 	}
 
 	protected LocalMatchInfo(int matchStatus, int turnStatus, String blackName,
@@ -108,18 +111,24 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	@Override
 	public CharSequence getSubtext(Context context) {
-		CharSequence timeSpanString = DateUtils.getRelativeDateTimeString(
-				context, lastUpdated, DateUtils.MINUTE_IN_MILLIS,
-				DateUtils.WEEK_IN_MILLIS, 0);
+		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
+				lastUpdated);
 		String lastPlayed;
 		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
-			lastPlayed = " finished " + timeSpanString + "("
-					+ getScoreCard().getBlackWins() + " / "
-					+ getScoreCard().getWhiteWins() + ")";
+			lastPlayed = " finished " + timeSpanString;
+			// + "("
+			// + getScoreCard().getBlackWins() + " / "
+			// + getScoreCard().getWhiteWins() + ")";
 		} else {
-			lastPlayed = " last played " + timeSpanString;
+			lastPlayed = " played " + timeSpanString;
 		}
-		return "Local " + blackName + " vs. " + whiteName + lastPlayed;
+		// TODO
+		// CharSequence type = GameTypeSpinnerHelper.getTypeName(context,
+		// game.getType());
+
+		return "Local " + (isRanked() ? "Ranked " : "") +
+		// type +
+				", " + blackName + " vs. " + whiteName + lastPlayed;
 	}
 
 	@Override
@@ -285,17 +294,17 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public abstract AbstractLocalStrategy createStrategy(GameContext context);
 
-	public static LocalMatchInfo createLocalMatch(GameMode mode, long id,
-			int matchStatus, int turnStatus, String blackName,
+	public static LocalMatchInfo createLocalMatch(GameMode mode, GameType type,
+			long id, int matchStatus, int turnStatus, String blackName,
 			String whiteName, AILevel aiLevel, long lastUpdated,
 			String fileName, ScoreCard score, long rematchId, int winner,
 			boolean isRanked) {
 		if (mode == GameMode.AI) {
-			return new AiMatchInfo(id, matchStatus, turnStatus, blackName,
-					whiteName, aiLevel, lastUpdated, fileName, score,
-					rematchId, winner, isRanked);
+			return new AiMatchInfo(id, type, matchStatus, turnStatus,
+					blackName, whiteName, aiLevel, lastUpdated, fileName,
+					score, rematchId, winner, isRanked);
 		} else if (mode == GameMode.PASS_N_PLAY) {
-			return new PassNPlayMatchInfo(id, matchStatus, turnStatus,
+			return new PassNPlayMatchInfo(id, type, matchStatus, turnStatus,
 					blackName, whiteName, lastUpdated, fileName, score,
 					rematchId, winner);
 		} else if (mode == GameMode.TUTORIAL) {

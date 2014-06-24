@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
@@ -21,7 +22,7 @@ public class TutorialMatchInfo extends LocalMatchInfo {
 			String blackName, String whiteName, AILevel aiLevel,
 			long lastUpdated, String fileName, ScoreCard score, long rematchId,
 			int winner) {
-		super(id, matchStatus, turnStatus, blackName, whiteName, lastUpdated,
+		super(id, GameType.JUNIOR, matchStatus, turnStatus, blackName, whiteName, lastUpdated,
 				fileName, score, rematchId, winner);
 	}
 

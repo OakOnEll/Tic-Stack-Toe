@@ -36,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String TAG = "DatabaseHandler";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 
 	// Database Name
 	private static final String DATABASE_NAME = "localMatches";
@@ -48,6 +48,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Table Columns names
 		private static final String KEY_ID = "id";
 		private static final String KEY_MODE = "mode";
+
+		private static final String KEY_TYPE = "type";
+
 		private static final String KEY_MATCH_STATUS = "match_status";
 		private static final String KEY_TURN_STATUS = "turn_status";
 
@@ -104,6 +107,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TableLocalMatches.NAME
 				+ "(" + TableLocalMatches.KEY_ID + " INTEGER PRIMARY KEY," //
 				+ TableLocalMatches.KEY_MODE + " TEXT," //
+				+ TableLocalMatches.KEY_TYPE + " TEXT," //
 				+ TableLocalMatches.KEY_MATCH_STATUS + " INTEGER," //
 				+ TableLocalMatches.KEY_TURN_STATUS + " INTEGER," //
 				+ TableLocalMatches.KEY_BLACK_NAME + " TEXT," //
@@ -363,7 +367,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private String[] getMatchColumnNames() {
 		String columnsNames[] = new String[] { TableLocalMatches.KEY_ID,
-				TableLocalMatches.KEY_MODE, TableLocalMatches.KEY_MATCH_STATUS,
+				TableLocalMatches.KEY_MODE, TableLocalMatches.KEY_TYPE,
+				TableLocalMatches.KEY_MATCH_STATUS,
 				TableLocalMatches.KEY_TURN_STATUS,
 				TableLocalMatches.KEY_BLACK_NAME,
 				TableLocalMatches.KEY_WHITE_NAME,
@@ -420,6 +425,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			}
 		}
 		values.put(TableLocalMatches.KEY_WINNER, winner);
+		values.put(TableLocalMatches.KEY_TYPE, game.getType().getVariant());
 
 		LocalMatchVisitor visitor = new LocalMatchVisitor() {
 
@@ -543,6 +549,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		long id = query.getLong(query.getColumnIndex(TableLocalMatches.KEY_ID));
 		int modeNum = query.getInt(query
 				.getColumnIndex(TableLocalMatches.KEY_MODE));
+		int typeNum = query.getInt(query
+				.getColumnIndex(TableLocalMatches.KEY_TYPE));
 		int matchStatus = query.getInt(query
 				.getColumnIndex(TableLocalMatches.KEY_MATCH_STATUS));
 		int turnStatus = query.getInt(query
@@ -584,8 +592,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				.getColumnIndex(TableLocalMatches.KEY_WINNER));
 
 		GameMode mode = GameMode.fromValue(modeNum);
-
-		return LocalMatchInfo.createLocalMatch(mode, id, matchStatus,
+		GameType type = GameType.fromVariant(typeNum);
+		return LocalMatchInfo.createLocalMatch(mode, type, id, matchStatus,
 				turnStatus, blackName, whiteName, aiLevel, lastUpdated,
 				fileName, score, rematchId, winner, isRanked);
 	}

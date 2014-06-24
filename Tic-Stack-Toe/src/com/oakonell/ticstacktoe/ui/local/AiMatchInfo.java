@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.model.Game;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
@@ -16,11 +17,11 @@ public class AiMatchInfo extends LocalMatchInfo {
 	private AILevel aiLevel;
 	private boolean isRanked;
 
-	public AiMatchInfo(long id, int matchStatus, int turnStatus,
+	public AiMatchInfo(long id, GameType type , int matchStatus, int turnStatus,
 			String blackName, String whiteName, AILevel aiLevel,
 			long lastUpdated, String fileName, ScoreCard score, long rematchId,
 			int winner, boolean isRanked) {
-		super(id, matchStatus, turnStatus, blackName, whiteName, lastUpdated,
+		super(id, type, matchStatus, turnStatus, blackName, whiteName, lastUpdated,
 				fileName, score, rematchId, winner);
 		this.aiLevel = aiLevel;
 		this.isRanked = isRanked;

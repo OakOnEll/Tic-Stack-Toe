@@ -6,8 +6,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.format.DateUtils;
 
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 
@@ -37,13 +39,38 @@ public interface MatchInfo {
 			}
 		};
 
+		public static int getVariant(GameType type, boolean isRanked) {
+			if (isRanked) {
+				return type.getVariant() + 100;
+			}
+			return type.getVariant();
+		}
+
+		public static boolean isRanked(int variant) {
+			return variant > 100;
+		}
+
+		public static GameType getType(int variant) {
+			if (variant > 100) {
+				return GameType.fromVariant(variant - 100);
+			}
+			return GameType.fromVariant(variant);
+		}
+
+		public static CharSequence getTimeSince(Context context, long time) {
+			return DateUtils.getRelativeDateTimeString(context, time,
+					DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS,
+					DateUtils.FORMAT_ABBREV_RELATIVE);
+		}
+
 		public static Comparator<MatchInfo> getComparator() {
 			return comparator;
 		}
 
 		public static void addDismissThisAndOlder(List<MatchMenuItem> result,
 				final MatchInfo info) {
-			if (info.getMatchStatus() != TurnBasedMatch.MATCH_STATUS_COMPLETE && info.getMatchStatus() != TurnBasedMatch.MATCH_STATUS_EXPIRED) {
+			if (info.getMatchStatus() != TurnBasedMatch.MATCH_STATUS_COMPLETE
+					&& info.getMatchStatus() != TurnBasedMatch.MATCH_STATUS_EXPIRED) {
 				return;
 			}
 			MatchMenuItem dismissOlder = new MatchMenuItem(

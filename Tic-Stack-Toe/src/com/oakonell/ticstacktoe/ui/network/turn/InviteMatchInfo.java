@@ -5,13 +5,14 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
-import android.text.format.DateUtils;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -25,6 +26,7 @@ public class InviteMatchInfo implements MatchInfo {
 	private final boolean isTurnBased;
 
 	private GameHelper helper;
+	private int variant;
 
 	public InviteMatchInfo(GameHelper gameHelper, Invitation invite) {
 		this.helper = gameHelper;
@@ -35,6 +37,7 @@ public class InviteMatchInfo implements MatchInfo {
 		opponentName = player.getDisplayName();
 		opponentPicUri = player.getIconImageUri();
 		isTurnBased = invite.getInvitationType() == Invitation.INVITATION_TYPE_TURN_BASED;
+		variant = invite.getVariant();
 	}
 
 	public CharSequence getOpponentName() {
@@ -84,10 +87,17 @@ public class InviteMatchInfo implements MatchInfo {
 
 	@Override
 	public CharSequence getSubtext(Context context) {
-		CharSequence timeSpanString = DateUtils.getRelativeDateTimeString(
-				context, getLastUpdatedTimestamp(), DateUtils.MINUTE_IN_MILLIS,
-				DateUtils.WEEK_IN_MILLIS, 0);
-		return timeSpanString;
+		CharSequence subtext;
+		boolean isRanked = MatchUtils.isRanked(variant);
+		GameType type = MatchUtils.getType(variant);
+
+		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
+				getLastUpdatedTimestamp());
+		subtext = "Invited to " + (isRanked ? "Ranked " : "")
+				+ GameTypeSpinnerHelper.getTypeName(context, type) + " "
+				+ timeSpanString;
+
+		return subtext;
 	}
 
 	@Override

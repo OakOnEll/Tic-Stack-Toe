@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.text.format.DateUtils;
 
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
@@ -16,8 +15,10 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
+import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -76,11 +77,17 @@ public class TurnBasedMatchInfo implements MatchInfo {
 			canRematch = false;
 			text = opponentName;
 		}
+		int variant = match.getVariant();
+		boolean isRanked = MatchUtils.isRanked(variant);
+		GameType type = MatchUtils.getType(variant);
 
-		CharSequence timeSpanString = DateUtils.getRelativeDateTimeString(
-				context, lastUpdated, DateUtils.MINUTE_IN_MILLIS,
-				DateUtils.WEEK_IN_MILLIS, 0);
-		subtext = "Last Played " + timeSpanString;
+		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
+				lastUpdated);
+		subtext = GameTypeSpinnerHelper.getTypeName(context, type)
+				+ " played " + timeSpanString;
+		if (isRanked) {
+			subtext = "Ranked " + subtext;
+		}
 
 	}
 

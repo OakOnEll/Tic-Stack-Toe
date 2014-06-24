@@ -336,9 +336,7 @@ public class StartAGameFragment extends SherlockFragment {
 			Bundle autoMatchCriteria, boolean isRanked) {
 		setInactive();
 
-		int variant = type.getVariant();
-		if (isRanked)
-			variant += 100;
+		int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
 
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
 				.setAutoMatchCriteria(autoMatchCriteria).setVariant(variant)
@@ -373,10 +371,7 @@ public class StartAGameFragment extends SherlockFragment {
 
 	protected void createRealtimeBasedQuickMatch(GameType type,
 			Bundle autoMatchCriteria, boolean isRanked) {
-		int variant = type.getVariant();
-		if (isRanked)
-			variant += 100;
-
+		int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
 		RealtimeGameStrategy roomListener = new RealtimeGameStrategy(context,
 				type, true, true, isRanked);
 
@@ -448,7 +443,10 @@ public class StartAGameFragment extends SherlockFragment {
 
 		setInactive();
 
+		int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
+
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
+				.setVariant(variant)
 				.addInvitedPlayers(invitees)
 				.setAutoMatchCriteria(autoMatchCriteria).build();
 
@@ -500,9 +498,8 @@ public class StartAGameFragment extends SherlockFragment {
 		rtmConfigBuilder.setMessageReceivedListener(strategy);
 		rtmConfigBuilder.setRoomStatusUpdateListener(strategy);
 		if (autoMatchCriteria != null) {
-			int variant = type.getVariant();
-			if (isRanked)
-				variant += 1000;
+			int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
+
 			rtmConfigBuilder.setVariant(variant);
 			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		}
