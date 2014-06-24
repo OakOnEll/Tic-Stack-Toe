@@ -10,8 +10,9 @@
 
     <ImageView
         android:id="@+id/opponnet_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="5dp"
         android:src="@drawable/silhouette_icon_4520" />
 
     <LinearLayout
