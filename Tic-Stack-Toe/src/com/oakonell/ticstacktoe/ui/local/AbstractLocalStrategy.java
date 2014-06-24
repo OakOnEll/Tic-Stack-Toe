@@ -168,7 +168,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		ScoreCard score = getMatchInfo().getScoreCard();
 		setScore(score);
 
-		gameFragment.startGame(null, true);
+		gameFragment.startGame(true);
 
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -249,7 +249,7 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 			transaction.addToBackStack(null);
 			transaction.commit();
 		}
-		gameFragment.startGame(null, false);
+		gameFragment.startGame(false);
 	}
 
 	protected abstract LocalMatchInfo createNewMatchInfo(String blackName,

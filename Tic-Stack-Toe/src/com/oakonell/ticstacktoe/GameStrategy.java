@@ -390,7 +390,7 @@ public abstract class GameStrategy {
 	}
 
 	public void showGame() {
-		getGameFragment().startGame(null, false);
+		getGameFragment().startGame(false);
 	}
 
 	public abstract RankInfo getRankInfo();

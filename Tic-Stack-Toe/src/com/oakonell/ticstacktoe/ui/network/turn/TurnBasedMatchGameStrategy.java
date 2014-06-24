@@ -1030,18 +1030,27 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		int turnStatus = mMatch.getTurnStatus();
 
 		String waitingText = null;
+		boolean showProgress = true;
 		switch (status) {
 		case TurnBasedMatch.MATCH_STATUS_CANCELED:
+			showProgress = false;
+			waitingText =			"This game was canceled!";
 			showWarning("Canceled!", "This game was canceled!");
+			break;
 		case TurnBasedMatch.MATCH_STATUS_EXPIRED:
 			showWarning("Expired!", "This game is expired.  So sad!");
+			waitingText =			"This game is expired.  So sad!";
+			showProgress = false;
+			break;
 		case TurnBasedMatch.MATCH_STATUS_AUTO_MATCHING:
-			showWarning("Waiting for auto-match...",
+			showWarning("Automatching...",
 					"We're still waiting for an automatch partner.");
 			waitingText = "Waiting for someone to join";
+			break;
 		case TurnBasedMatch.MATCH_STATUS_COMPLETE:
 			Log.i("TurnListener", "   showGame - complete");
-			// handled down below
+			break;
+		// handled down below
 		}
 
 		// OK, it's active. Check on turn status.
@@ -1144,7 +1153,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		// play winning sound, and animate the move received
 		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
-		gameFragment.startGame(waitingText, showMove);
+		gameFragment.startGame(waitingText, showProgress, showMove);
 
 		// show if someone won
 		State state2 = state.game.getBoard().getState();
@@ -1187,7 +1196,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			}
 		}
 		String winTitle = winnerName + " won!";
-		gameFragment.showStatusText(winTitle);
+		gameFragment.showStatusText(winTitle, false);
 
 		// check if the state has ranks to use to calculate my rank
 		boolean showRanks = false;
@@ -1387,7 +1396,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	public void promptToPlayAgain(final String winner, final String title,
 			final GameFragment fragment, boolean showRanks) {
 		Log.i("TurnListener", "promptToPlayAgain");
-		fragment.showStatusText(title);
+		fragment.showStatusText(title, false);
 		if (mMatch.getStatus() != TurnBasedMatch.MATCH_STATUS_COMPLETE) {
 			// wait till we receive notice of our move, and then prompt whether
 			// to play again

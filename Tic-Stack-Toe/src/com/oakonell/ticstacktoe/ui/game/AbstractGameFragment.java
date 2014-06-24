@@ -1,6 +1,7 @@
 package com.oakonell.ticstacktoe.ui.game;
 
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -9,10 +10,14 @@ import com.oakonell.ticstacktoe.R;
 public abstract class AbstractGameFragment extends SherlockFragment {
 
 	private static class StatusText {
-		private View thinking;
-		private TextView thinkingText;
-		private String thinkingString;
 		private boolean isVisible;
+		private View thinking;
+
+		private boolean progressIsVisible;
+		private ProgressBar thinking_progress;
+
+		private String thinkingString;
+		private TextView thinkingText;
 	}
 
 	private StatusText statusText = new StatusText();
@@ -21,10 +26,12 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 		statusText.thinkingText = (TextView) view
 				.findViewById(R.id.thinking_text);
 		statusText.thinking = view.findViewById(R.id.thinking);
+		statusText.thinking_progress = (ProgressBar) view.findViewById(R.id.thinking_progress);
 
 		if (statusText.thinkingString != null) {
 			if (statusText.isVisible) {
-				showStatusText(statusText.thinkingString);
+				showStatusText(statusText.thinkingString,
+						statusText.progressIsVisible);
 			} else {
 				statusText.thinkingText.setText(statusText.thinkingString);
 			}
@@ -40,16 +47,26 @@ public abstract class AbstractGameFragment extends SherlockFragment {
 	}
 
 	public void showStatusText(String string) {
+		showStatusText(string, true);
+	}
+
+	public void showStatusText(String string, boolean progress) {
 		setStatusText(string);
 		statusText.isVisible = true;
+		statusText.progressIsVisible = progress;
 		if (statusText.thinking == null) {
 			return;
 		}
 		statusText.thinking.setVisibility(View.VISIBLE);
+		if (progress) {
+			statusText.thinking_progress.setVisibility(View.VISIBLE);
+		} else {
+			statusText.thinking_progress.setVisibility(View.GONE);
+		}
 		statusText.thinkingText.setVisibility(View.VISIBLE);
 	}
 
-	public void setStatusText(String string) {
+	private void setStatusText(String string) {
 		statusText.thinkingString = string;
 		if (statusText.thinking == null) {
 			return;

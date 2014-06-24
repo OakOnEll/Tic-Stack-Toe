@@ -366,7 +366,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 		setGame(game);
 		setScore(score);
 
-		gameFragment.startGame(null, true);
+		gameFragment.startGame(true);
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.main_frame, gameFragment,
@@ -963,7 +963,7 @@ public class RealtimeGameStrategy extends AbstractNetworkedGameStrategy
 				game.getWhitePlayer(), currentPlayer);
 		setGame(game);
 
-		gameFragment.startGame(null, false);
+		gameFragment.startGame( false);
 
 	}
 
