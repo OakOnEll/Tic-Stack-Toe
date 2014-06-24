@@ -375,7 +375,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		playAgainDialog = new TurnBasedPlayAgainFragment();
 		playAgainDialog.initialize(this, getActivity().getString(R.string.you),
-				getOpponentName(), winner, iAmBlackPlayer(), isRanked);
+				getOpponentName(), winner, isRanked, iAmBlackPlayer());
 		// TODO... this uses new api
 		if (fragment.getActivity() == null) {
 			// huh?
@@ -1091,7 +1091,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				&& !state.wasSeen) {
 			Log.i("TurnListener", "  marking that we saw the opponent's move");
 			state.wasSeen = true;
-
 
 			updateRankInfo(new Runnable() {
 				@Override
