@@ -91,13 +91,15 @@ public class InviteMatchInfo implements MatchInfo {
 		boolean isRanked = MatchUtils.isRanked(variant);
 		GameType type = MatchUtils.getType(variant);
 
-		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
-				getLastUpdatedTimestamp());
 		subtext = "Invited to " + (isRanked ? "Ranked " : "")
-				+ GameTypeSpinnerHelper.getTypeName(context, type) + " "
-				+ timeSpanString;
+				+ GameTypeSpinnerHelper.getTypeName(context, type);
 
 		return subtext;
+	}
+
+	@Override
+	public CharSequence getUpdatedText(Context context) {
+		return MatchUtils.getTimeSince(context, getLastUpdatedTimestamp());
 	}
 
 	@Override

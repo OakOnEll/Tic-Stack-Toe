@@ -21,6 +21,7 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
+import com.oakonell.ticstacktoe.ui.menu.MatchInfo.MatchUtils;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy.GameState;
@@ -28,7 +29,8 @@ import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy.GameS
 public class TurnBasedMatchInfo implements MatchInfo {
 
 	private String text;
-	private String subtext;
+	private CharSequence subtext;
+	private String updatedtext;
 	private Uri opponentPicUri;
 	private String matchId;
 	private boolean canRematch;
@@ -82,9 +84,9 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		GameType type = MatchUtils.getType(variant);
 
 		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
-				lastUpdated);
-		subtext = GameTypeSpinnerHelper.getTypeName(context, type)
-				+ " played " + timeSpanString;
+				lastUpdated);				
+		updatedtext = "Played " + timeSpanString;
+		subtext = GameTypeSpinnerHelper.getTypeName(context, type);
 		if (isRanked) {
 			subtext = "Ranked " + subtext;
 		}
@@ -157,7 +159,10 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	public CharSequence getSubtext(Context context) {
 		return subtext;
 	}
-
+	@Override
+	public CharSequence getUpdatedText(Context context) {
+		return updatedtext;
+	}
 	@Override
 	public CharSequence getText(Context context) {
 		return text;

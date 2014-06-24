@@ -18,6 +18,8 @@ public interface MatchInfo {
 
 	public CharSequence getSubtext(Context context);
 
+	public CharSequence getUpdatedText(Context context);
+
 	public Uri getIconImageUri();
 
 	public long getUpdatedTimestamp();

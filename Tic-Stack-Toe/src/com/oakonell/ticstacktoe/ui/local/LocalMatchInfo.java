@@ -23,6 +23,7 @@ import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListe
 import com.oakonell.ticstacktoe.model.solver.AILevel;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
+import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -58,9 +59,10 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	public abstract void accept(LocalMatchVisitor visitor);
 
-	protected LocalMatchInfo(long id, GameType type, int matchStatus, int turnStatus,
-			String blackName, String whiteName, long lastUpdated,
-			String fileName, ScoreCard score, long rematchId, int winner) {
+	protected LocalMatchInfo(long id, GameType type, int matchStatus,
+			int turnStatus, String blackName, String whiteName,
+			long lastUpdated, String fileName, ScoreCard score, long rematchId,
+			int winner) {
 		this.id = id;
 		this.matchStatus = matchStatus;
 		this.turnStatus = turnStatus;
@@ -111,6 +113,15 @@ public abstract class LocalMatchInfo implements MatchInfo {
 
 	@Override
 	public CharSequence getSubtext(Context context) {
+		CharSequence typeString = GameTypeSpinnerHelper.getTypeName(context,
+				type);
+
+		return "Local " + (isRanked() ? "Ranked " : "") + typeString + ", "
+				+ blackName + " vs. " + whiteName;
+	}
+
+	@Override
+	public CharSequence getUpdatedText(Context context) {
 		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
 				lastUpdated);
 		String lastPlayed;
@@ -120,15 +131,9 @@ public abstract class LocalMatchInfo implements MatchInfo {
 			// + getScoreCard().getBlackWins() + " / "
 			// + getScoreCard().getWhiteWins() + ")";
 		} else {
-			lastPlayed = " played " + timeSpanString;
+			lastPlayed = "Played " + timeSpanString;
 		}
-		// TODO
-		// CharSequence type = GameTypeSpinnerHelper.getTypeName(context,
-		// game.getType());
-
-		return "Local " + (isRanked() ? "Ranked " : "") +
-		// type +
-				", " + blackName + " vs. " + whiteName + lastPlayed;
+		return lastPlayed;
 	}
 
 	@Override

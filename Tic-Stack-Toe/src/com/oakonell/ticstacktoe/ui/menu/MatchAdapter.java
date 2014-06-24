@@ -54,6 +54,7 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 		TextView name;
 		TextView subtitle;
 		ImageView itemMenu;
+		public TextView lastUpdated;
 	}
 
 	@Override
@@ -67,6 +68,8 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 			holder.name = (TextView) view.findViewById(R.id.opponent_name);
 			holder.image = (ImageView) view.findViewById(R.id.opponnet_image);
 			holder.subtitle = (TextView) view.findViewById(R.id.subtitle);
+			holder.lastUpdated = (TextView) view
+					.findViewById(R.id.last_updated);
 			holder.itemMenu = (ImageView) view.findViewById(R.id.item_menu);
 			view.setTag(holder);
 		} else {
@@ -75,6 +78,7 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 		final MatchInfo item = getItem(position);
 
 		holder.subtitle.setText(item.getSubtext(context));
+		holder.lastUpdated.setText(item.getUpdatedText(context));
 
 		ImageHelper.displayImage(imgManager, holder.image,
 				item.getIconImageUri(), R.drawable.silhouette_icon_4520);
