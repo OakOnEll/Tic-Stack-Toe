@@ -1083,14 +1083,15 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		setRankInfo(state.getRankInfo());
 		isRanked = state.getRankInfo() != null;
 
+		setGame(state.game);
+		setScore(state.score);
+
 		if (!state.game.getBoard().getState().isOver()
 				&& turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN
 				&& !state.wasSeen) {
 			Log.i("TurnListener", "  marking that we saw the opponent's move");
 			state.wasSeen = true;
 
-			setGame(state.game);
-			setScore(state.score);
 
 			updateRankInfo(new Runnable() {
 				@Override
