@@ -81,7 +81,7 @@ public class Leaderboards {
 								.getScoreResult(
 										LeaderboardVariant.TIME_SPAN_ALL_TIME);
 						Context context = gameHelper.getContext();
-						if (allTimeResult.newBest) {
+						if (allTimeResult != null && allTimeResult.newBest) {
 							Toast.makeText(
 									context,
 									context.getResources().getString(
@@ -94,7 +94,7 @@ public class Leaderboards {
 						Result weeklyResult = result.getScoreData()
 								.getScoreResult(
 										LeaderboardVariant.TIME_SPAN_WEEKLY);
-						if (weeklyResult.newBest) {
+						if (weeklyResult != null && weeklyResult.newBest) {
 							Toast.makeText(
 									context,
 									context.getResources().getString(
@@ -107,7 +107,7 @@ public class Leaderboards {
 						Result dailyResult = result.getScoreData()
 								.getScoreResult(
 										LeaderboardVariant.TIME_SPAN_DAILY);
-						if (dailyResult.newBest) {
+						if (dailyResult != null && dailyResult.newBest) {
 							Toast.makeText(
 									context,
 									context.getResources().getString(daily_res,

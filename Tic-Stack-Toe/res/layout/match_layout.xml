@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/opponnet_image"
-        android:layout_gravity="center_vertical"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
         android:padding="5dp"
         android:src="@drawable/silhouette_icon_4520" />
 
@@ -35,18 +35,21 @@
             android:layout_height="wrap_content"
             android:text="TextView" />
 
+
+
         <TextView
             android:id="@+id/last_updated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
-
+            android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/item_menu"
-        android:layout_width="30dp"
+        android:layout_width="32dp"
         android:layout_height="30dp"
+        android:paddingLeft="2dp"
         android:src="@drawable/ic_item_menu" />
 
 </LinearLayout>
