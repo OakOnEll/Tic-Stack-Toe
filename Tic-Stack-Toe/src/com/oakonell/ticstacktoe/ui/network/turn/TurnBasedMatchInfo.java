@@ -74,6 +74,8 @@ public class TurnBasedMatchInfo implements MatchInfo {
 				} catch (Exception e) {
 					text = "Error reading match";
 				}
+			} else {
+				text = opponentName;
 			}
 		} else {
 			canRematch = false;
@@ -84,7 +86,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		GameType type = MatchUtils.getType(variant);
 
 		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
-				lastUpdated);				
+				lastUpdated);
 		updatedtext = "Played " + timeSpanString;
 		subtext = GameTypeSpinnerHelper.getTypeName(context, type);
 		if (isRanked) {
@@ -159,10 +161,12 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	public CharSequence getSubtext(Context context) {
 		return subtext;
 	}
+
 	@Override
 	public CharSequence getUpdatedText(Context context) {
 		return updatedtext;
 	}
+
 	@Override
 	public CharSequence getText(Context context) {
 		return text;
