@@ -11,8 +11,24 @@ public class ImageHelper {
 		if (iconImageUri == null
 				|| iconImageUri.getEncodedSchemeSpecificPart().contains(
 						"gms.games")) {
+			if (iconImageUri != null) {
+				if (iconImageUri.equals(image.getTag())) {
+					return;
+				}
+				image.setTag(iconImageUri);
+			} else {
+				Integer defResInt = defaultResource;
+				if (defResInt.equals(image.getTag())) {
+					return;
+				}
+				image.setTag(defResInt);
+			}
 			imgManager.loadImage(image, iconImageUri, defaultResource);
 		} else {
+			if (iconImageUri.equals(image.getTag())) {
+				return;
+			}
+			image.setTag(iconImageUri);
 			image.setImageURI(iconImageUri);
 		}
 	}
