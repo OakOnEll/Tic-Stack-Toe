@@ -29,7 +29,6 @@ import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,7 +89,7 @@ public class GameFragment extends AbstractGameFragment {
 	private TextView gameNumber;
 	private TextView numMoves;
 
-	private int boardSize;
+	// private int boardSize;
 
 	private SquareRelativeLayoutView squareView;
 
@@ -146,10 +145,18 @@ public class GameFragment extends AbstractGameFragment {
 		}
 	}
 
-	public void startGame(final String waitingText, final boolean showMove) {
+	public void startGame(final boolean showMove) {
+		startGame(null, false, showMove);
+	}
+
+	public void startGame(final String waitingText, final boolean showProgress,
+			final boolean showMove) {
 		inOnCreate = new Runnable() {
 			@Override
 			public void run() {
+				if (waitingText != null) {
+					showStatusText(waitingText, showProgress);
+				}
 				Game game = getGameStrategy().getGame();
 				boolean undoAndAnimateMove = false;
 				final State endState = game.getBoard().getState();
@@ -243,7 +250,7 @@ public class GameFragment extends AbstractGameFragment {
 	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
-		bundle.putInt("GAME_BOARD_SIZE", boardSize);
+		bundle.putInt("GAME_BOARD_SIZE", getGame().getBoard().getSize());
 	}
 
 	@Override
@@ -302,6 +309,7 @@ public class GameFragment extends AbstractGameFragment {
 		});
 
 		boolean keepScreenOn = false;
+		int boardSize = 4;
 		if (savedInstanceState != null) {
 			// will need to wait for the strategy/match to load
 			keepScreenOn = false;
@@ -310,7 +318,8 @@ public class GameFragment extends AbstractGameFragment {
 		} else {
 			// Don't know why this is null on a restored Activity in the middle
 			// of a game fragment, and then back is hit
-			if (getGameStrategy() != null) {
+			// How can the game be null?
+			if (getGameStrategy() != null && getGame() != null) {
 				boardSize = getGame().getBoard().getSize();
 				keepScreenOn = getGameStrategy().shouldKeepScreenOn();
 				configureBoardButtons(view);
@@ -424,6 +433,7 @@ public class GameFragment extends AbstractGameFragment {
 		int leftMargin;
 		int rightMargin;
 		int width;
+		int boardSize = getGame().getBoard().getSize();
 		// image specific margins/sizes
 		if (boardSize == 4) {
 			topMargin = 55;
@@ -497,7 +507,7 @@ public class GameFragment extends AbstractGameFragment {
 		// }
 		// row1.topMargin = newTopMargin;
 		// lastRow.bottomMargin = newBottomMargin;
-		
+
 		View gridContainer = view.findViewById(R.id.board_rows);
 		android.widget.RelativeLayout.LayoutParams layoutParams2 = (android.widget.RelativeLayout.LayoutParams) gridContainer
 				.getLayoutParams();
@@ -505,7 +515,6 @@ public class GameFragment extends AbstractGameFragment {
 		layoutParams2.topMargin = newTopMargin;
 		layoutParams2.leftMargin = newLeftMargin;
 		layoutParams2.rightMargin = newRightMargin;
-
 
 		resizePlayerStacks(getView(), size);
 
@@ -1353,8 +1362,8 @@ public class GameFragment extends AbstractGameFragment {
 		if (rankInfo != null) {
 			blackRank.setVisibility(View.VISIBLE);
 			whiteRank.setVisibility(View.VISIBLE);
-			blackRank.setText(rankInfo.blackRank() + "");
-			whiteRank.setText(rankInfo.whiteRank() + "");
+			displayRank(blackRank, rankInfo.blackRank());
+			displayRank(whiteRank, rankInfo.whiteRank());
 		} else {
 			blackRank.setVisibility(View.GONE);
 			whiteRank.setVisibility(View.GONE);
@@ -1381,6 +1390,15 @@ public class GameFragment extends AbstractGameFragment {
 		}
 
 		updateGameStatDisplay();
+	}
+
+	private void displayRank(TextView rankTextView, short rank) {
+		rankTextView.setVisibility(View.VISIBLE);
+		if (rank < 0) {
+			rankTextView.setText(R.string.rank_unknown);
+		} else {
+			rankTextView.setText(rank + "");
+		}
 	}
 
 	private void updateGameStatDisplay() {

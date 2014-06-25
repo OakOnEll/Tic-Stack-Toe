@@ -57,6 +57,8 @@
         <item quantity="other">%d Draws</item>
     </plurals>
 
+    <string name="rank_unknown">Unknown</string>   
+    
     <string name="onJoinedRoom">Joining Room</string>
     <string name="onRoomConnected">Connecting to Room</string>
     <string name="onRoomCreated">Creating Room</string>
