@@ -88,6 +88,11 @@ public class InviteMatchInfo implements MatchInfo {
 	@Override
 	public CharSequence getSubtext(Context context) {
 		CharSequence subtext;
+		if (variant < 0) {
+			// TODO for some reason, turn based game invites do not have the variant available?!
+			//  https://stackoverflow.com/questions/24288312/invitation-getvariant-is-always-1
+			return "";//"Invited to ???";
+		}
 		boolean isRanked = MatchUtils.isRanked(variant);
 		GameType type = MatchUtils.getType(variant);
 
