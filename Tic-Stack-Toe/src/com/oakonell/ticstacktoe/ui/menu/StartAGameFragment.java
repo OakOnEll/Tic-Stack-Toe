@@ -178,13 +178,13 @@ public class StartAGameFragment extends SherlockFragment {
 	}
 
 	public void setActive() {
-		context.getMenuFragment().setActive();
+		// context.getMenuFragment().setActive();
 		waiting.setVisibility(View.INVISIBLE);
 		Log.i(TAG, "Setting active");
 	}
 
 	public void setInactive() {
-		context.getMenuFragment().setInactive();
+		// context.getMenuFragment().setInactive();
 		waiting.setVisibility(View.VISIBLE);
 		Log.i(TAG, "Setting inactive");
 	}
@@ -446,9 +446,9 @@ public class StartAGameFragment extends SherlockFragment {
 		int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
 
 		TurnBasedMatchConfig tbmc = TurnBasedMatchConfig.builder()
-				.setVariant(variant)
 				.addInvitedPlayers(invitees)
-				.setAutoMatchCriteria(autoMatchCriteria).build();
+				.setAutoMatchCriteria(autoMatchCriteria).setVariant(variant)
+				.build();
 
 		final TurnBasedMatchGameStrategy strategy = new TurnBasedMatchGameStrategy(
 				context, type, false, isRanked);
@@ -497,10 +497,9 @@ public class StartAGameFragment extends SherlockFragment {
 		rtmConfigBuilder.addPlayersToInvite(invitees);
 		rtmConfigBuilder.setMessageReceivedListener(strategy);
 		rtmConfigBuilder.setRoomStatusUpdateListener(strategy);
+		int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
+		rtmConfigBuilder.setVariant(variant);
 		if (autoMatchCriteria != null) {
-			int variant = MatchInfo.MatchUtils.getVariant(type, isRanked);
-
-			rtmConfigBuilder.setVariant(variant);
 			rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		}
 		setInactive();

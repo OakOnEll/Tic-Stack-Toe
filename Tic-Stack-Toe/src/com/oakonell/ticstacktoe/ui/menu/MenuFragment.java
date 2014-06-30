@@ -88,6 +88,7 @@ public class MenuFragment extends SherlockFragment implements
 	private View signOutView;
 
 	private ProgressBar waiting;
+	private boolean isWaiting;
 
 	private MatchAdapter completedMatchesAdapter;
 	private MatchAdapter theirTurnsAdapter;
@@ -204,7 +205,11 @@ public class MenuFragment extends SherlockFragment implements
 						View.INVISIBLE);
 			}
 		});
+
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
+		if (isWaiting) {
+			setInactive();
+		}
 
 		View main = configureMainView(inflater, view);
 		View mainFooter = configureMainViewFooter(inflater, view);
@@ -318,7 +323,7 @@ public class MenuFragment extends SherlockFragment implements
 				if (sawTutorial) {
 					StartAGameFragment fragment = StartAGameFragment
 							.createStartGameFragment();
-
+					context.getMenuFragment().setInactive();
 					FragmentManager manager = getActivity()
 							.getSupportFragmentManager();
 					FragmentTransaction transaction = manager
@@ -576,6 +581,7 @@ public class MenuFragment extends SherlockFragment implements
 	// }
 
 	public void setActive() {
+		isWaiting = false;
 		if (waiting == null)
 			return;
 		waiting.setVisibility(View.INVISIBLE);
@@ -583,6 +589,7 @@ public class MenuFragment extends SherlockFragment implements
 	}
 
 	public void setInactive() {
+		isWaiting = true;
 		if (waiting == null)
 			return;
 		waiting.setVisibility(View.VISIBLE);
@@ -908,4 +915,5 @@ public class MenuFragment extends SherlockFragment implements
 			removeAds.setVisibility(View.GONE);
 		}
 	}
+
 }
