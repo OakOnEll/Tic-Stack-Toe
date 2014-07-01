@@ -738,7 +738,13 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 
 		public String getDisplayName() {
-			if (participant == null || isQuick) {
+			// note that even if started as a quick game, the new game behavior
+			// may return the real name of a friend
+			// / this should be knowable if the icon is not null
+			boolean isAnonymous = participant != null
+					&& participant.getIconImageUri() == null;
+			if (participant == null || isAnonymous// || isQuick
+			) {
 				return "Anonymous";
 			}
 			return participant.getDisplayName();
@@ -1034,12 +1040,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		switch (status) {
 		case TurnBasedMatch.MATCH_STATUS_CANCELED:
 			showProgress = false;
-			waitingText =			"This game was canceled!";
+			waitingText = "This game was canceled!";
 			showWarning("Canceled!", "This game was canceled!");
 			break;
 		case TurnBasedMatch.MATCH_STATUS_EXPIRED:
 			showWarning("Expired!", "This game is expired.  So sad!");
-			waitingText =			"This game is expired.  So sad!";
+			waitingText = "This game is expired.  So sad!";
 			showProgress = false;
 			break;
 		case TurnBasedMatch.MATCH_STATUS_AUTO_MATCHING:
