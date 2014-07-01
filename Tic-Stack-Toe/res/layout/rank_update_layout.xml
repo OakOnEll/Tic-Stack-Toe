@@ -19,7 +19,29 @@
         android:layout_centerVertical="true" >
 
         <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_weight="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_weight="2"
+                android:text="Ranks"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+        <TableRow
             android:id="@+id/tableRow1"
+            android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -32,20 +54,23 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Original Rank"
+                android:layout_weight="1"
+                android:text="Original"
                 android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/textView2"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Rank"
+                android:text="New"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow2"
+            android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -59,6 +84,7 @@
 
             <TextView
                 android:id="@+id/original_rank"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1200"
@@ -66,6 +92,7 @@
 
             <TextView
                 android:id="@+id/new_rank"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1300"
@@ -74,6 +101,7 @@
 
         <TableRow
             android:id="@+id/tableRow3"
+            android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -87,6 +115,7 @@
 
             <TextView
                 android:id="@+id/original_ai_rank"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1200"
@@ -94,6 +123,7 @@
 
             <TextView
                 android:id="@+id/new_ai_rank"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1100"

@@ -48,8 +48,8 @@ public class Player {
 	}
 
 	public void updatePlayerImage(ImageManager imgManager, ImageView image) {
-		int defaultResource = strategy.isBlack() ? R.color.abs__background_holo_dark
-				: R.color.abs__background_holo_light;
+		int defaultResource = strategy.isBlack() ? R.drawable.silhouette_icon_4520
+				: R.drawable.white_silhouette_icon_4520;
 		ImageHelper.displayImage(imgManager, image, iconImageUri,
 				defaultResource);
 	}
