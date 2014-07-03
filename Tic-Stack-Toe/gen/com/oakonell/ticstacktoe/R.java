@@ -1397,13 +1397,14 @@ containing a value of this type.
         public static final int white_piece2=0x7f0200db;
         public static final int white_piece3=0x7f0200dc;
         public static final int white_piece4=0x7f0200dd;
-        public static final int wood_grid_3x3=0x7f0200de;
-        public static final int wood_grid_4x4=0x7f0200df;
-        public static final int wooden_button=0x7f0200e0;
-        public static final int wooden_check=0x7f0200e1;
+        public static final int white_silhouette_icon_4520=0x7f0200de;
+        public static final int wood_grid_3x3=0x7f0200df;
+        public static final int wood_grid_4x4=0x7f0200e0;
+        public static final int wooden_button=0x7f0200e1;
+        public static final int wooden_check=0x7f0200e2;
     }
     public static final class id {
-        public static final int about_description=0x7f0700cf;
+        public static final int about_description=0x7f0700d0;
         public static final int abs__action_bar=0x7f07002d;
         public static final int abs__action_bar_container=0x7f07002c;
         public static final int abs__action_bar_subtitle=0x7f07001e;
@@ -1443,17 +1444,17 @@ containing a value of this type.
         public static final int abs__textButton=0x7f070020;
         public static final int abs__title=0x7f070028;
         public static final int abs__up=0x7f070014;
-        public static final int action_chat=0x7f070100;
-        public static final int action_help=0x7f0700fe;
-        public static final int action_settings=0x7f0700ff;
+        public static final int action_chat=0x7f070103;
+        public static final int action_help=0x7f070101;
+        public static final int action_settings=0x7f070102;
         public static final int actionbar_notifcation_imageview=0x7f070044;
         public static final int actionbar_notifcation_progress=0x7f070046;
         public static final int actionbar_notifcation_textview=0x7f070045;
         public static final int adView=0x7f07003f;
-        public static final int ad_frame=0x7f0700d1;
+        public static final int ad_frame=0x7f0700d2;
         public static final int ai_level=0x7f070054;
-        public static final int ai_name=0x7f0700e9;
-        public static final int app_name_id=0x7f0700cc;
+        public static final int ai_name=0x7f0700ec;
+        public static final int app_name_id=0x7f0700cd;
         public static final int blackName=0x7f070066;
         public static final int blackPieceLayout=0x7f07006a;
         public static final int black_back=0x7f070069;
@@ -1493,11 +1494,11 @@ containing a value of this type.
         public static final int button_row3=0x7f070082;
         public static final int button_row4=0x7f070088;
         public static final int button_row5=0x7f07008e;
-        public static final int cancel=0x7f0700ed;
+        public static final int cancel=0x7f0700f0;
         public static final int close=0x7f070043;
-        public static final int decrement=0x7f0700d7;
-        public static final int dialog_next=0x7f0700f6;
-        public static final int dialog_skip=0x7f0700f5;
+        public static final int decrement=0x7f0700d9;
+        public static final int dialog_next=0x7f0700f9;
+        public static final int dialog_skip=0x7f0700f8;
         public static final int disableHome=0x7f070012;
         public static final int drag_layer=0x7f070063;
         public static final int edit_query=0x7f070033;
@@ -1510,80 +1511,81 @@ containing a value of this type.
         public static final int homeAsUp=0x7f07000f;
         public static final int how_to_play_text=0x7f070047;
         public static final int hybrid=0x7f07001c;
-        public static final int icon=0x7f0700ee;
-        public static final int icon_image=0x7f0700cb;
-        public static final int image=0x7f0700ef;
-        public static final int increment=0x7f0700d6;
+        public static final int icon=0x7f0700f1;
+        public static final int icon_image=0x7f0700cc;
+        public static final int image=0x7f0700f2;
+        public static final int increment=0x7f0700d8;
         public static final int inside=0x7f070004;
-        public static final int item_menu=0x7f0700d4;
-        public static final int junior_rank=0x7f0700e0;
-        public static final int label=0x7f0700a8;
+        public static final int item_menu=0x7f0700d6;
+        public static final int junior_rank=0x7f0700e2;
+        public static final int label=0x7f0700a9;
+        public static final int last_updated=0x7f0700d5;
         public static final int linearLayout1=0x7f07004a;
-        public static final int list=0x7f0700a6;
+        public static final int list=0x7f0700a7;
         public static final int listMode=0x7f07000b;
         public static final int main=0x7f070064;
-        public static final int main_frame=0x7f0700d0;
+        public static final int main_frame=0x7f0700d1;
         public static final int message=0x7f070041;
         public static final int messages=0x7f070040;
-        public static final int min_max_tutorial=0x7f0700f9;
+        public static final int min_max_tutorial=0x7f0700fc;
         public static final int moving_view=0x7f070062;
-        public static final int negative=0x7f0700f1;
-        public static final int new_ai_rank=0x7f0700eb;
-        public static final int new_game=0x7f0700a9;
-        public static final int new_game_live=0x7f0700b7;
-        public static final int new_game_live_text=0x7f0700b8;
-        public static final int new_game_same_device=0x7f0700b0;
-        public static final int new_game_same_device_text=0x7f0700b1;
-        public static final int new_game_text=0x7f0700aa;
-        public static final int new_game_vs_ai=0x7f0700b2;
-        public static final int new_game_vs_ai_text=0x7f0700b3;
-        public static final int new_quick_play=0x7f0700b5;
-        public static final int new_quick_play_text=0x7f0700b6;
-        public static final int new_rank=0x7f0700e8;
-        public static final int next=0x7f0700fd;
+        public static final int negative=0x7f0700f4;
+        public static final int new_ai_rank=0x7f0700ee;
+        public static final int new_game=0x7f0700aa;
+        public static final int new_game_live=0x7f0700b8;
+        public static final int new_game_live_text=0x7f0700b9;
+        public static final int new_game_same_device=0x7f0700b1;
+        public static final int new_game_same_device_text=0x7f0700b2;
+        public static final int new_game_text=0x7f0700ab;
+        public static final int new_game_vs_ai=0x7f0700b3;
+        public static final int new_game_vs_ai_text=0x7f0700b4;
+        public static final int new_quick_play=0x7f0700b6;
+        public static final int new_quick_play_text=0x7f0700b7;
+        public static final int new_rank=0x7f0700eb;
+        public static final int next=0x7f070100;
         public static final int no_button=0x7f07004c;
         public static final int none=0x7f070019;
         public static final int normal=0x7f07000a;
-        public static final int normal_rank=0x7f0700e1;
-        public static final int not_play_again=0x7f0700df;
+        public static final int normal_rank=0x7f0700e3;
+        public static final int not_play_again=0x7f0700e1;
         public static final int num_black_wins=0x7f070068;
-        public static final int num_draws=0x7f0700ca;
+        public static final int num_draws=0x7f0700cb;
         public static final int num_games_container=0x7f07006f;
         public static final int num_moves=0x7f070073;
         public static final int num_moves_container=0x7f070071;
         public static final int num_moves_lbl=0x7f070072;
-        public static final int num_white_wins=0x7f07009f;
-        public static final int o_losses=0x7f0700c8;
-        public static final int o_name=0x7f0700c6;
-        public static final int o_wins=0x7f0700c7;
-        public static final int ok=0x7f0700d9;
+        public static final int num_white_wins=0x7f0700a0;
+        public static final int o_losses=0x7f0700c9;
+        public static final int o_name=0x7f0700c7;
+        public static final int o_wins=0x7f0700c8;
+        public static final int ok=0x7f0700db;
         public static final int ok_button=0x7f070048;
         public static final int opponent_name=0x7f070053;
-        public static final int opponent_wants_to_play_again=0x7f0700dc;
-        public static final int opponent_wants_to_play_again_progress=0x7f0700db;
-        public static final int opponent_wants_to_play_again_text=0x7f0700dd;
-        public static final int opponnet_image=0x7f0700d2;
-        public static final int original_ai_rank=0x7f0700ea;
-        public static final int original_rank=0x7f0700e7;
+        public static final int opponent_wants_to_play_again=0x7f0700de;
+        public static final int opponent_wants_to_play_again_progress=0x7f0700dd;
+        public static final int opponent_wants_to_play_again_text=0x7f0700df;
+        public static final int opponnet_image=0x7f0700d3;
+        public static final int original_ai_rank=0x7f0700ed;
+        public static final int original_rank=0x7f0700ea;
         public static final int outside=0x7f070005;
-        public static final int play_again=0x7f0700de;
-        public static final int play_again_text=0x7f0700da;
-        public static final int play_icon=0x7f0700b4;
-        public static final int player_name=0x7f0700e6;
-        public static final int player_o=0x7f0700c5;
+        public static final int play_again=0x7f0700e0;
+        public static final int play_again_text=0x7f0700dc;
+        public static final int play_icon=0x7f0700b5;
+        public static final int player_name=0x7f0700e9;
+        public static final int player_o=0x7f0700c6;
         public static final int player_o_name=0x7f07005d;
-        public static final int player_pic=0x7f0700bb;
-        public static final int player_x=0x7f0700bf;
+        public static final int player_pic=0x7f0700bc;
+        public static final int player_x=0x7f0700c0;
         public static final int player_x_name=0x7f07005b;
-        public static final int positive=0x7f0700f0;
-        public static final int pref_sound_fx_key=0x7f0700d8;
+        public static final int positive=0x7f0700f3;
+        public static final int pref_sound_fx_key=0x7f0700da;
         public static final int ptr_content=0x7f070006;
-        public static final int ptr_layout=0x7f0700a5;
+        public static final int ptr_layout=0x7f0700a6;
         public static final int ptr_progress=0x7f070008;
         public static final int ptr_text=0x7f070007;
-        public static final int rank=0x7f0700e4;
-        public static final int rank_label=0x7f0700e3;
-        public static final int rank_layout=0x7f0700e5;
+        public static final int rank=0x7f0700e6;
+        public static final int rank_label=0x7f0700e5;
+        public static final int rank_layout=0x7f0700e7;
         public static final int ranked_game=0x7f070059;
         public static final int rate_bar=0x7f07004f;
         public static final int rate_no_thanks=0x7f070052;
@@ -1592,73 +1594,75 @@ containing a value of this type.
         public static final int rate_text=0x7f07004e;
         public static final int realtime=0x7f07005f;
         public static final int remember_checkbox=0x7f07004d;
-        public static final int remove_ads=0x7f0700af;
+        public static final int remove_ads=0x7f0700b0;
         public static final int satellite=0x7f07001a;
         public static final int send=0x7f070042;
         public static final int showCustom=0x7f070011;
         public static final int showHome=0x7f07000e;
         public static final int showTitle=0x7f070010;
-        public static final int sign_in_bar=0x7f0700a3;
-        public static final int sign_in_button=0x7f0700a4;
-        public static final int sign_out_bar=0x7f0700a0;
-        public static final int sign_out_button=0x7f0700a2;
-        public static final int signed_in_as_text=0x7f0700a1;
-        public static final int skip=0x7f0700fc;
+        public static final int sign_in_bar=0x7f0700a4;
+        public static final int sign_in_button=0x7f0700a5;
+        public static final int sign_out_bar=0x7f0700a1;
+        public static final int sign_out_button=0x7f0700a3;
+        public static final int signed_in_as_text=0x7f0700a2;
+        public static final int skip=0x7f0700ff;
         public static final int spb_interpolator_accelerate=0x7f070000;
         public static final int spb_interpolator_acceleratedecelerate=0x7f070002;
         public static final int spb_interpolator_decelerate=0x7f070003;
         public static final int spb_interpolator_linear=0x7f070001;
         public static final int start=0x7f07005a;
-        public static final int strict_rank=0x7f0700e2;
-        public static final int subtitle=0x7f0700d3;
+        public static final int strict_rank=0x7f0700e4;
+        public static final int subtitle=0x7f0700d4;
         public static final int switch_players=0x7f07005c;
         public static final int tabMode=0x7f07000c;
-        public static final int tableRow1=0x7f0700bc;
-        public static final int tableRow2=0x7f0700be;
-        public static final int tableRow3=0x7f0700c4;
-        public static final int tableRow4=0x7f0700bd;
-        public static final int tableRow5=0x7f0700c3;
-        public static final int tableRow6=0x7f0700c9;
+        public static final int tableRow0=0x7f0700e8;
+        public static final int tableRow1=0x7f0700bd;
+        public static final int tableRow2=0x7f0700bf;
+        public static final int tableRow3=0x7f0700c5;
+        public static final int tableRow4=0x7f0700be;
+        public static final int tableRow5=0x7f0700c4;
+        public static final int tableRow6=0x7f0700ca;
         public static final int terrain=0x7f07001b;
-        public static final int text=0x7f0700d5;
+        public static final int text=0x7f0700d7;
         public static final int textView1=0x7f070049;
         public static final int textView2=0x7f070055;
         public static final int textView3=0x7f070057;
         public static final int textView4=0x7f07005e;
-        public static final int textView7=0x7f0700ec;
+        public static final int textView7=0x7f0700ef;
         public static final int thinking=0x7f070095;
-        public static final int thinking_text=0x7f070096;
-        public static final int timestamp=0x7f0700ba;
+        public static final int thinking_progress=0x7f070096;
+        public static final int thinking_text=0x7f070097;
+        public static final int timestamp=0x7f0700bb;
         public static final int title=0x7f070060;
-        public static final int tutorial=0x7f0700b9;
-        public static final int tutorial_bottom=0x7f0700fa;
-        public static final int tutorial_bottom_text=0x7f0700fb;
-        public static final int tutorial_bottom_title=0x7f0700f8;
-        public static final int tutorial_dialog=0x7f0700f2;
-        public static final int tutorial_dialog_text=0x7f0700f4;
-        public static final int tutorial_dialog_title=0x7f0700f3;
-        public static final int tutorial_slideup=0x7f0700f7;
-        public static final int urlId=0x7f0700ce;
+        public static final int tutorial=0x7f0700ba;
+        public static final int tutorial_bottom=0x7f0700fd;
+        public static final int tutorial_bottom_text=0x7f0700fe;
+        public static final int tutorial_bottom_title=0x7f0700fb;
+        public static final int tutorial_dialog=0x7f0700f5;
+        public static final int tutorial_dialog_text=0x7f0700f7;
+        public static final int tutorial_dialog_title=0x7f0700f6;
+        public static final int tutorial_slideup=0x7f0700fa;
+        public static final int urlId=0x7f0700cf;
         public static final int useLogo=0x7f07000d;
-        public static final int version=0x7f0700cd;
-        public static final int view_achievements=0x7f0700ab;
-        public static final int view_achievements_text=0x7f0700ac;
-        public static final int view_leaderboards=0x7f0700ad;
-        public static final int view_leaderboards_text=0x7f0700ae;
-        public static final int waiting=0x7f0700a7;
-        public static final int whiteName=0x7f07009d;
-        public static final int whitePieceLayout=0x7f070099;
-        public static final int white_back=0x7f070098;
-        public static final int white_name_layout=0x7f070097;
-        public static final int white_piece_stack1=0x7f07009a;
-        public static final int white_piece_stack2=0x7f07009b;
-        public static final int white_piece_stack3=0x7f07009c;
-        public static final int white_rank=0x7f07009e;
+        public static final int version=0x7f0700ce;
+        public static final int view_achievements=0x7f0700ac;
+        public static final int view_achievements_text=0x7f0700ad;
+        public static final int view_leaderboards=0x7f0700ae;
+        public static final int view_leaderboards_text=0x7f0700af;
+        public static final int waiting=0x7f0700a8;
+        public static final int whiteName=0x7f07009e;
+        public static final int whitePieceLayout=0x7f07009a;
+        public static final int white_back=0x7f070099;
+        public static final int white_name_layout=0x7f070098;
+        public static final int white_piece_stack1=0x7f07009b;
+        public static final int white_piece_stack2=0x7f07009c;
+        public static final int white_piece_stack3=0x7f07009d;
+        public static final int white_rank=0x7f07009f;
         public static final int win_overlay=0x7f070094;
         public static final int wrap_content=0x7f070009;
-        public static final int x_losses=0x7f0700c2;
-        public static final int x_name=0x7f0700c0;
-        public static final int x_wins=0x7f0700c1;
+        public static final int x_losses=0x7f0700c3;
+        public static final int x_name=0x7f0700c1;
+        public static final int x_wins=0x7f0700c2;
         public static final int yes_button=0x7f07004b;
     }
     public static final class integer {
@@ -1826,7 +1830,7 @@ containing a value of this type.
         public static final int action_help=0x7f0b0081;
         public static final int action_refresh=0x7f0b00af;
         public static final int action_settings=0x7f0b0080;
-        public static final int admob_id=0x7f0b00d8;
+        public static final int admob_id=0x7f0b00d9;
         public static final int ai_easy=0x7f0b008c;
         public static final int ai_hard=0x7f0b008e;
         public static final int ai_level=0x7f0b008a;
@@ -1847,8 +1851,8 @@ containing a value of this type.
         public static final int an_start_tutorial_game_action=0x7f0b0065;
         /**  <string name="app_id" translatable="false">316906139838</string> 
          */
-        public static final int app_id=0x7f0b00d9;
-        public static final int app_name=0x7f0b00e6;
+        public static final int app_id=0x7f0b00da;
+        public static final int app_name=0x7f0b00e7;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
          */
@@ -1872,21 +1876,21 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f0b0025;
-        public static final int beat_all_time_junior_rank=0x7f0b00dd;
-        public static final int beat_all_time_normal_rank=0x7f0b00e0;
-        public static final int beat_all_time_strict_rank=0x7f0b00e3;
-        public static final int beat_daily_junior_rank=0x7f0b00df;
-        public static final int beat_daily_normal_rank=0x7f0b00e2;
-        public static final int beat_daily_strict_rank=0x7f0b00e5;
-        public static final int beat_weekly_junior_rank=0x7f0b00de;
-        public static final int beat_weekly_normal_rank=0x7f0b00e1;
-        public static final int beat_weekly_strict_rank=0x7f0b00e4;
+        public static final int beat_all_time_junior_rank=0x7f0b00de;
+        public static final int beat_all_time_normal_rank=0x7f0b00e1;
+        public static final int beat_all_time_strict_rank=0x7f0b00e4;
+        public static final int beat_daily_junior_rank=0x7f0b00e0;
+        public static final int beat_daily_normal_rank=0x7f0b00e3;
+        public static final int beat_daily_strict_rank=0x7f0b00e6;
+        public static final int beat_weekly_junior_rank=0x7f0b00df;
+        public static final int beat_weekly_normal_rank=0x7f0b00e2;
+        public static final int beat_weekly_strict_rank=0x7f0b00e5;
         /**   
          */
-        public static final int board=0x7f0b00fc;
+        public static final int board=0x7f0b00fd;
         public static final int button_send=0x7f0b00ad;
-        public static final int cancel=0x7f0b00e8;
-        public static final int cannot_invite_non_tester=0x7f0b00d2;
+        public static final int cancel=0x7f0b00e9;
+        public static final int cannot_invite_non_tester=0x7f0b00d3;
         public static final int chat_actionbar_image_content=0x7f0b00c2;
         public static final int chat_title=0x7f0b00be;
         public static final int choose_ai_mode_title=0x7f0b0089;
@@ -1894,7 +1898,7 @@ containing a value of this type.
         public static final int choose_online_game_mode_title=0x7f0b0094;
         public static final int choose_online_opponent=0x7f0b0095;
         public static final int choose_quick_game_mode_title=0x7f0b0093;
-        public static final int client_reconnect_required=0x7f0b00f1;
+        public static final int client_reconnect_required=0x7f0b00f2;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -1966,12 +1970,12 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f0b0024;
-        public static final int communication_error=0x7f0b00d1;
+        public static final int communication_error=0x7f0b00d2;
         /**  Post pages 
  Post page 1 
          */
-        public static final int congratulations_header=0x7f0b010a;
-        public static final int congratulations_text=0x7f0b010b;
+        public static final int congratulations_header=0x7f0b010b;
+        public static final int congratulations_text=0x7f0b010c;
         public static final int connectionProblem=0x7f0b0034;
         public static final int copied_to_clipboard=0x7f0b0038;
         public static final int copySubjectToClipboardAsWorkAroundForFacebookAppBug=0x7f0b0037;
@@ -1982,18 +1986,18 @@ containing a value of this type.
         public static final int exit_waiting_play_again=0x7f0b00b3;
         /**   
          */
-        public static final int first_move_header=0x7f0b00fd;
-        public static final int first_move_text=0x7f0b00fe;
-        public static final int ga_trackingId=0x7f0b00d7;
+        public static final int first_move_header=0x7f0b00fe;
+        public static final int first_move_text=0x7f0b00ff;
+        public static final int ga_trackingId=0x7f0b00d8;
         public static final int game_stats_title=0x7f0b00c5;
         public static final int game_type=0x7f0b0097;
         public static final int game_type_short_descr=0x7f0b009f;
-        public static final int gamehelper_app_misconfigured=0x7f0b00d4;
-        public static final int gamehelper_license_failed=0x7f0b00d5;
-        public static final int gamehelper_sign_in_failed=0x7f0b00d3;
-        public static final int gamehelper_unknown_error=0x7f0b00d6;
+        public static final int gamehelper_app_misconfigured=0x7f0b00d5;
+        public static final int gamehelper_license_failed=0x7f0b00d6;
+        public static final int gamehelper_sign_in_failed=0x7f0b00d4;
+        public static final int gamehelper_unknown_error=0x7f0b00d7;
         public static final int httpError=0x7f0b0033;
-        public static final int internal_error=0x7f0b00f3;
+        public static final int internal_error=0x7f0b00f4;
         public static final int invalid_move_need_empty=0x7f0b00a3;
         public static final int invalid_move_need_nonempty=0x7f0b00a4;
         public static final int invalid_move_source_is_empty=0x7f0b00a6;
@@ -2001,45 +2005,45 @@ containing a value of this type.
         public static final int invalid_stack_move_in_strict=0x7f0b00a7;
         public static final int label_player_black_name=0x7f0b0085;
         public static final int label_player_white_name=0x7f0b0086;
-        public static final int leaderboard_junior_rank=0x7f0b00da;
-        public static final int leaderboard_normal_rank=0x7f0b00db;
-        public static final int leaderboard_strict_rank=0x7f0b00dc;
+        public static final int leaderboard_junior_rank=0x7f0b00db;
+        public static final int leaderboard_normal_rank=0x7f0b00dc;
+        public static final int leaderboard_strict_rank=0x7f0b00dd;
         public static final int leaderboards=0x7f0b007b;
         public static final int leaderboards_not_available=0x7f0b007d;
         public static final int leave_game_message=0x7f0b00bc;
         public static final int leave_game_title=0x7f0b00bb;
         public static final int local_player_name=0x7f0b00bd;
         public static final int losses_stat_label=0x7f0b00c8;
-        public static final int match_error_already_rematched=0x7f0b00f0;
-        public static final int match_error_inactive_match=0x7f0b00f5;
-        public static final int match_error_locally_modified=0x7f0b00f6;
+        public static final int match_error_already_rematched=0x7f0b00f1;
+        public static final int match_error_inactive_match=0x7f0b00f6;
+        public static final int match_error_locally_modified=0x7f0b00f7;
         /**  invalid move hints 
          */
-        public static final int move_1_hint=0x7f0b0110;
+        public static final int move_1_hint=0x7f0b0111;
         /**  Second set of pages 
          */
-        public static final int move_1a_text=0x7f0b00ff;
-        public static final int move_1b_text=0x7f0b0100;
-        public static final int move_1c_text=0x7f0b0101;
-        public static final int move_2_hint=0x7f0b0111;
+        public static final int move_1a_text=0x7f0b0100;
+        public static final int move_1b_text=0x7f0b0101;
+        public static final int move_1c_text=0x7f0b0102;
+        public static final int move_2_hint=0x7f0b0112;
         /**  Third set of pages 
          */
-        public static final int move_2a_text=0x7f0b0102;
-        public static final int move_2b_text=0x7f0b0103;
-        public static final int move_3_hint=0x7f0b0112;
+        public static final int move_2a_text=0x7f0b0103;
+        public static final int move_2b_text=0x7f0b0104;
+        public static final int move_3_hint=0x7f0b0113;
         /**   
          */
-        public static final int move_3_text=0x7f0b0106;
+        public static final int move_3_text=0x7f0b0107;
         /**  Fourth set 
          */
-        public static final int move_4=0x7f0b0107;
-        public static final int move_4_hint=0x7f0b0113;
+        public static final int move_4=0x7f0b0108;
+        public static final int move_4_hint=0x7f0b0114;
         /**  Fifth set 
          */
-        public static final int move_5_header=0x7f0b0108;
-        public static final int move_5_hint=0x7f0b0114;
-        public static final int move_5_text=0x7f0b0109;
-        public static final int network_error_operation_failed=0x7f0b00f2;
+        public static final int move_5_header=0x7f0b0109;
+        public static final int move_5_hint=0x7f0b0115;
+        public static final int move_5_text=0x7f0b010a;
+        public static final int network_error_operation_failed=0x7f0b00f3;
         public static final int new_game_live=0x7f0b0079;
         public static final int new_game_same_device=0x7f0b0076;
         public static final int new_game_vs_ai=0x7f0b0077;
@@ -2047,17 +2051,17 @@ containing a value of this type.
         public static final int no=0x7f0b003a;
         /**   
          */
-        public static final int no_peek_header=0x7f0b0104;
-        public static final int no_peek_text=0x7f0b0105;
+        public static final int no_peek_header=0x7f0b0105;
+        public static final int no_peek_text=0x7f0b0106;
         public static final int num_games_lbl=0x7f0b00c4;
         public static final int num_move_lbl=0x7f0b00c3;
         public static final int num_picker_add_sign=0x7f0b0047;
         public static final int num_picker_minus_sign=0x7f0b0048;
         public static final int offline_achievement_label=0x7f0b0056;
-        public static final int ok=0x7f0b00e7;
-        public static final int onJoinedRoom=0x7f0b00cc;
-        public static final int onRoomConnected=0x7f0b00cd;
-        public static final int onRoomCreated=0x7f0b00ce;
+        public static final int ok=0x7f0b00e8;
+        public static final int onJoinedRoom=0x7f0b00cd;
+        public static final int onRoomConnected=0x7f0b00ce;
+        public static final int onRoomCreated=0x7f0b00cf;
         public static final int online_setting_title=0x7f0b00c0;
         public static final int opponent=0x7f0b00ab;
         public static final int opponent_does_not_want_to_play_again=0x7f0b00b7;
@@ -2071,13 +2075,13 @@ containing a value of this type.
         public static final int play_again_waiting=0x7f0b00bf;
         /**  Post page 2 
          */
-        public static final int play_modes_header=0x7f0b010c;
-        public static final int play_modes_text=0x7f0b010d;
+        public static final int play_modes_header=0x7f0b010d;
+        public static final int play_modes_text=0x7f0b010e;
         public static final int player_black_lbl=0x7f0b00ca;
         public static final int player_stat_label=0x7f0b00c6;
         public static final int player_white_lbl=0x7f0b00cb;
         public static final int player_won=0x7f0b00b0;
-        public static final int pref__upgrade_to_premium=0x7f0b00ed;
+        public static final int pref__upgrade_to_premium=0x7f0b00ee;
         public static final int pref_about=0x7f0b0030;
         public static final int pref_about_key=0x7f0b002c;
         public static final int pref_changes=0x7f0b0031;
@@ -2085,8 +2089,8 @@ containing a value of this type.
         public static final int pref_confirm_reset_preferences=0x7f0b0032;
         public static final int pref_copy_for_face_book=0x7f0b003c;
         public static final int pref_copy_for_face_book_key=0x7f0b002e;
-        public static final int pref_is_premium=0x7f0b00ee;
-        public static final int pref_premium_key=0x7f0b00ec;
+        public static final int pref_is_premium=0x7f0b00ef;
+        public static final int pref_premium_key=0x7f0b00ed;
         public static final int pref_rate_app=0x7f0b0044;
         public static final int pref_rate_app_key=0x7f0b0043;
         /**  translate 
@@ -2095,17 +2099,18 @@ containing a value of this type.
         /**  do not translate 
          */
         public static final int pref_reset_preferences_key=0x7f0b002b;
-        public static final int pref_sound_fx=0x7f0b00eb;
-        public static final int pref_sound_fx_key=0x7f0b00ea;
+        public static final int pref_sound_fx=0x7f0b00ec;
+        public static final int pref_sound_fx_key=0x7f0b00eb;
         public static final int prompt_player_name=0x7f0b0084;
         public static final int prompt_title_player_name=0x7f0b0083;
         public static final int pull_to_refresh_pull_label=0x7f0b0001;
         public static final int pull_to_refresh_refreshing_label=0x7f0b0003;
         public static final int pull_to_refresh_release_label=0x7f0b0002;
+        public static final int rank_unknown=0x7f0b00cc;
         /**  Post page 3 
          */
-        public static final int ranked_games_header=0x7f0b010e;
-        public static final int ranked_games_text=0x7f0b010f;
+        public static final int ranked_games_header=0x7f0b010f;
+        public static final int ranked_games_text=0x7f0b0110;
         public static final int rate_app=0x7f0b003d;
         public static final int rate_no_thanks=0x7f0b0040;
         public static final int rate_redirects_to_market=0x7f0b0042;
@@ -2116,8 +2121,8 @@ containing a value of this type.
         public static final int remember_this_choice=0x7f0b003b;
         public static final int remove_ads=0x7f0b009b;
         public static final int select_opponent=0x7f0b0096;
-        public static final int sendMove=0x7f0b00d0;
-        public static final int sendRealTimeMessage=0x7f0b00cf;
+        public static final int sendMove=0x7f0b00d1;
+        public static final int sendRealTimeMessage=0x7f0b00d0;
         public static final int settings=0x7f0b0046;
         public static final int share=0x7f0b0035;
         public static final int shareVia=0x7f0b0036;
@@ -2130,12 +2135,12 @@ containing a value of this type.
         public static final int spb_default_speed=0x7f0b0000;
         /**   
          */
-        public static final int stack_header=0x7f0b00fa;
-        public static final int stack_text=0x7f0b00fb;
+        public static final int stack_header=0x7f0b00fb;
+        public static final int stack_text=0x7f0b00fc;
         public static final int start=0x7f0b0087;
-        public static final int status_multiplayer_error_not_trusted_tester=0x7f0b00ef;
-        public static final int title_game=0x7f0b00e9;
-        public static final int tutor=0x7f0b00f7;
+        public static final int status_multiplayer_error_not_trusted_tester=0x7f0b00f0;
+        public static final int title_game=0x7f0b00ea;
+        public static final int tutor=0x7f0b00f8;
         public static final int type_junior=0x7f0b0098;
         public static final int type_junior_name=0x7f0b009c;
         public static final int type_junior_short_descr=0x7f0b00a0;
@@ -2145,13 +2150,13 @@ containing a value of this type.
         public static final int type_strict=0x7f0b009a;
         public static final int type_strict_name=0x7f0b009e;
         public static final int type_strict_short_descr=0x7f0b00a2;
-        public static final int unexpected_status=0x7f0b00f4;
+        public static final int unexpected_status=0x7f0b00f5;
         public static final int unique_error_o_name=0x7f0b0092;
         public static final int waiting_for_opponent_to_decide_to_play_again=0x7f0b00b5;
         /**  First pages 
          */
-        public static final int welcome_header=0x7f0b00f8;
-        public static final int welcome_text=0x7f0b00f9;
+        public static final int welcome_header=0x7f0b00f9;
+        public static final int welcome_text=0x7f0b00fa;
         public static final int wins_stat_label=0x7f0b00c7;
         public static final int yes=0x7f0b0039;
         public static final int you=0x7f0b00a8;
@@ -2220,6 +2225,9 @@ containing a value of this type.
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+    
  <item name="android:background">@drawable/background</item> 
  <item name="android:dialogTheme" tools:targetApi="11">@style/Dialog.MyTheme</item> 
  <item name="dialogTheme" >@style/Dialog.MyTheme</item> 
@@ -2248,6 +2256,9 @@ containing a value of this type.
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
         <item name="android:shadowRadius">2.75</item>
+
+
+        
          */
         public static final int Widget_MyTheme_KeyboardView=0x7f0d0069;
         public static final int Widget_ProgressBar_PullToRefresh=0x7f0d0002;
@@ -2306,12 +2317,18 @@ containing a value of this type.
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
     </style>
+
+
+    
          */
         public static final int dark_button=0x7f0d006a;
         public static final int game_button=0x7f0d005c;
         /** 
               <item name="android:paddingBottom">5dp</item>       
         <item name="android:paddingTop">5dp</item>
+
+
+        
          */
         public static final int game_piece_inset=0x7f0d0067;
         /**  <item name="android:textAppearance">?android:attr/textAppearanceLarge</item> 

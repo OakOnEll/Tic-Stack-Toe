@@ -2,7 +2,8 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.-->
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
     <style name="Theme.MyTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
         <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.MyTheme.ActionBar</item>
@@ -17,11 +18,14 @@
     </style>
 
     <style name="Widget.MyTheme.ActionButton" parent="Widget.Sherlock.ActionButton">
+         <item name="android:paddingRight">5dp</item>
         <item name="android:background">@drawable/action_bar_button</item>
-        <item name="android:dividerPadding" tools:targetApi="11">5dp</item>
+        <item name="android:dividerPadding" tools:targetApi="11">25dp</item>
     </style>
 
     <style name="Widget.MyTheme.ActionBar" parent="Widget.Sherlock.ActionBar">
+<!--         <item name="android:paddingRight">32dp</item> -->
+        <item name="background">@drawable/action_bar</item>
         <item name="android:background">@drawable/action_bar</item>
     </style>
 
@@ -50,7 +54,8 @@
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <!--
               <item name="android:paddingBottom">5dp</item>       
-        <item name="android:paddingTop">5dp</item>-->
+        <item name="android:paddingTop">5dp</item>
+        -->
     </style>
 
     <style name="player_stack">
@@ -73,7 +78,8 @@
         <item name="android:popupLayout">@android:layout/keyboard_popup_keyboard</item>
         <item name="android:verticalCorrection">-10dip</item>
         <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2.75</item>-->
+        <item name="android:shadowRadius">2.75</item>
+        -->
     </style>
 
     <!--
@@ -81,7 +87,8 @@
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spinner</item>
         <item name="android:popupBackground">@drawable/dropdown_background</item>
-    </style>-->
+    </style>
+    -->
     <style name="dark_button">
         <item name="android:background">@drawable/dark_button</item>
         <item name="android:paddingTop">15dp</item>
