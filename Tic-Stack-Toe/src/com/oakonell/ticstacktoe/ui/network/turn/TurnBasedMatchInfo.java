@@ -21,7 +21,6 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
-import com.oakonell.ticstacktoe.ui.menu.MatchInfo.MatchUtils;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.MenuFragment;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy.GameState;
