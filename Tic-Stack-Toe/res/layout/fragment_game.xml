@@ -7,6 +7,7 @@
 
     <ImageView
         android:id="@+id/moving_view"
+        android:contentDescription="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
@@ -43,7 +44,7 @@
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/blackName"
                         style="@style/game_profile_name"
-                        android:text="Black name" />
+                        android:text="ex:Black name" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/black_rank"
@@ -67,6 +68,7 @@
                         android:src="@color/abs__background_holo_dark" />
 
                     <ImageView
+                        android:contentDescription="@null"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
@@ -80,6 +82,7 @@
                         android:orientation="vertical" >
 
                         <ImageView
+                            android:contentDescription="@null"
                             android:layout_width="match_parent"
                             android:layout_height="2px" />
 
@@ -107,6 +110,7 @@
                         </LinearLayout>
 
                         <ImageView
+                            android:contentDescription="@null"
                             android:layout_width="match_parent"
                             android:layout_height="2px" />
                     </LinearLayout>
@@ -147,7 +151,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginRight="5dp"
-                    android:text="Type"
+                    android:text="@string/type"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <LinearLayout
@@ -413,6 +417,7 @@
                         android:src="@color/abs__background_holo_light" />
 
                     <ImageView
+                        android:contentDescription="@null"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
@@ -425,6 +430,7 @@
                         android:orientation="vertical" >
 
                         <ImageView
+                            android:contentDescription="@null"
                             android:layout_width="match_parent"
                             android:layout_height="2px" />
 
@@ -452,6 +458,7 @@
                         </LinearLayout>
 
                         <ImageView
+                            android:contentDescription="@null"
                             android:layout_width="match_parent"
                             android:layout_height="2px" />
                     </LinearLayout>
@@ -466,7 +473,7 @@
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/whiteName"
                         style="@style/game_profile_name"
-                        android:text="White Name" />
+                        android:text="ex:White Name" />
 
                     <com.oakonell.ticstacktoe.ui.CustomFontTextView
                         android:id="@+id/white_rank"

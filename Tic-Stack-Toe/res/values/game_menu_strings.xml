@@ -51,5 +51,12 @@
     <string name="type_junior_short_descr">&#9658; Plays on a 3x3 board with 2 player stacks of 3 pieces each.\n&#9658; Pieces from a player stack can be played anywhere on the board.\n&#9658; Board pieces can be peeked under.</string>
     <string name="type_normal_short_descr">&#9658; Plays on a 4x4 board with 3 player stacks of 4 pieces each.\n&#9658; Pieces from a player stack can be played anywhere on the board.\n&#9658; Board pieces can be peeked under.</string>
     <string name="type_strict_short_descr">&#9658; Plays on a 4x4 board with 3 player stacks of 4 pieces each.\n&#9658; Pieces from a player stack can only be played on empty board squares, except a piece may cover an existing piece in a given line where there are 3 opponent pieces.\n&#9658; A board piece touched must be played; No peeking!</string>
-
+    <string name="realtime">Real-time</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="yourRank">Your Rank</string>
+    <string name="startGame">Start a Game</string>
+    <string name="continueLbl">Continue</string>
+    <string name="skip">Skip</string>
+    <string name="type">Type</string>
+    <string name="rankedLabel">Ranked</string>
 </resources>

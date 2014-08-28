@@ -17,15 +17,14 @@
             android:id="@+id/tutorial_dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to Tic-Stack-Toe"
+            android:text="ex:Welcome to Tic-Stack-Toe"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/tutorial_dialog_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
-            android:text="The challenging game of getting 3 in a row, while using your memory!"
+            android:layout_height="wrap_content"            
+            android:text="ex:The challenging game of getting 3 in a row, while using your memory!"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
@@ -40,9 +39,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="Skip" />
+                android:text="@string/skip" />
 
             <ImageView
+                android:contentDescription="@null"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Continue" />
+                android:text="@string/continueLbl" />
         </LinearLayout>
     </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Both players start with some pieces stacked"
+                android:text="ex:Both players start with some pieces stacked"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <ImageButton
@@ -118,9 +118,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|bottom"
-                    android:text="Skip" />
+                    android:text="@string/skip" />
 
                 <ImageView
+                    android:contentDescription="@null"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
@@ -131,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:text="Continue" />
+                    android:text="@string/continueLbl" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -60,12 +60,12 @@
             android:gravity="center_vertical" >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="5dp"
-                android:text="Real-time" />
+                android:text="@string/realtime" />
 
             <CheckBox
                 android:id="@+id/realtime"
@@ -82,12 +82,12 @@
             android:gravity="center_vertical" >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="5dp"
-                android:text="Ranked" />
+                android:text="@string/rankedLabel" />
 
             <CheckBox
                 android:id="@+id/ranked_game"
@@ -99,6 +99,7 @@
     </TableLayout>
 
     <ImageView
+        android:contentDescription="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"

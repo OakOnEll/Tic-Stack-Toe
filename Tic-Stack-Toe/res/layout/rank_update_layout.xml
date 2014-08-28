@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_weight="2"
-                android:text="Ranks"
+                android:text="@string/ranks"
                 android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Original"
+                android:text="@string/originalRank"
                 android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -64,7 +64,7 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New"
+                android:text="@string/newRank"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -78,7 +78,7 @@
                 android:id="@+id/player_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player Name"
+                android:text="ex:Player Name"
                 android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -109,7 +109,7 @@
                 android:id="@+id/ai_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Easy AI"
+                android:text="ex:Easy AI"
                 android:paddingRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 

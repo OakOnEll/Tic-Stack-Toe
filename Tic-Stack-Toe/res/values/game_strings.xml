@@ -66,5 +66,8 @@
     <string name="sendMove">Sending Message</string>
     <string name="communication_error">Error in communication:</string>
     <string name="cannot_invite_non_tester">Can\'t invite non-tester from a tester account</string>
-    
+    <string name="ranks">Ranks</string>
+    <string name="originalRank">Original</string>
+    <string name="newRank">New</string>
+    <string name="playAgain">Play Again?</string>
 </resources>

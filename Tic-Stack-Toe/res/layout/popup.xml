@@ -9,6 +9,7 @@
 <!--  Encountered silly layout BUG again, need this to constrain the size of the listview/dialog,
          without it, the dialog is nearly the full width of the screen -->
     <ImageView
+        android:contentDescription="@null"
         android:visibility="invisible"
         android:layout_width="300dp"
         android:layout_height="1dp" />

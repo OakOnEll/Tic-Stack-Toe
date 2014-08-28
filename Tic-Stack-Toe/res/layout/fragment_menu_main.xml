@@ -19,7 +19,7 @@
         <com.oakonell.ticstacktoe.ui.CustomFontTextView
             android:id="@+id/new_game_text"
             style="@style/menu_button_text"
-            android:text="Start a Game" />
+            android:text="@string/startGame" />
         <ImageView
             style="@style/menu_button_filler"
             />

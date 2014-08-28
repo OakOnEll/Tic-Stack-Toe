@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,7 +70,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 	private TextView slideUpText;
 	private View tutorial_bottom;
 
-	private Map<Integer, List<TutorialPage>> tutorialPagesByMoveNum;
+	private SparseArray< List<TutorialPage>> tutorialPagesByMoveNum;
 	private int pageIndex = -1;
 
 	private Button dialogNext;
@@ -122,11 +123,11 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 		int backgroundResId;
 	}
 
-	Map<Integer, List<TutorialPage>> getTutorialPagesByMoveNum() {
+	SparseArray< List<TutorialPage>> getTutorialPagesByMoveNum() {
 		if (tutorialPagesByMoveNum != null) {
 			return tutorialPagesByMoveNum;
 		}
-		tutorialPagesByMoveNum = new HashMap<Integer, List<TutorialPage>>();
+		tutorialPagesByMoveNum = new SparseArray< List<TutorialPage>>();
 
 		/** ----------------- First Move */
 		List<TutorialPage> pages = new ArrayList<TutorialGameStrategy.TutorialPage>();
