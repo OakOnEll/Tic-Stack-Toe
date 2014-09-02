@@ -13,12 +13,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.oakonell.ticstacktoe.Achievements;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.GameStrategy;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
+import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.PlayerStrategy;
 import com.oakonell.ticstacktoe.model.RankInfo;
+import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.utils.StringUtils;
 
 public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
@@ -174,6 +177,15 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 	@Override
 	protected void acceptNonHumanPlayerMove(PlayerStrategy currentStrategy) {
 		// wait for the networked player's move
-		getGameFragment().showStatusText(getActivity().getString(R.string.opponent_thinking, getOpponentName()));
+		getGameFragment().showStatusText(
+				getActivity().getString(R.string.opponent_thinking,
+						getOpponentName()));
 	}
+
+	public void evaluateGameEndAchievements(Achievements achievements,
+			GameContext gameContext, Game game, State outcome) {
+		achievements.testAndSetForBeatAFriendAchievements(gameContext, game,
+				outcome);
+	}
+
 }

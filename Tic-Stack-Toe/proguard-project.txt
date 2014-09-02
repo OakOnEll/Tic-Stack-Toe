@@ -35,3 +35,19 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+# For action bar sherlock
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class com.actionbarsherlock.** { *; }
+-keep interface com.actionbarsherlock.** { *; }
+
+-keepattributes *Annotation*
+
+# to reference the drawables
+## eg, https://stackoverflow.com/questions/6280188/prevent-proguard-to-remove-specific-drawables
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+-keep class **.R$*
