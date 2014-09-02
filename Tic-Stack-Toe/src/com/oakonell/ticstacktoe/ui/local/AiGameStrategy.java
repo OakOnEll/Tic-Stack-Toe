@@ -273,4 +273,9 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 				getGame(), getGame().getBoard().getState());
 	}
 
+	public void evaluateGameEndAchievements(Achievements achievements,
+			GameContext gameContext, Game game, State outcome) {
+		achievements
+				.testAndSetForBeatAiAchievements(gameContext, game, outcome);
+	}
 }

@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="Settings" >
-    
+
     <PreferenceCategory android:title="App Info" >
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/pref_sound_fx_key"
-            android:title="@string/pref_sound_fx" android:defaultValue="true"/>
+            android:title="@string/pref_sound_fx" />
+
         <Preference
             android:key="@string/pref_premium_key"
             android:title="@string/pref__upgrade_to_premium" />
-        <Preference 
-            android:title="About" 
-            android:key="@string/pref_about_key"/>
+        <Preference
+            android:key="@string/pref_about_key"
+            android:title="About" />
         <Preference
             android:key="@string/pref_rate_app_key"
             android:title="@string/pref_rate_app" />
-        <Preference
+        <!--
+         <Preference
             android:key="downgrade_from_premium"
-            android:title="Downgrade from Premium" />
+            android:title="Downgrade from Premium" />
+        -->
         <Preference
             android:key="@string/pref_changes_key"
             android:title="@string/pref_changes" />

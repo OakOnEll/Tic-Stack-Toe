@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.inappbill.IabHelper;
@@ -19,6 +20,8 @@ import com.oakonell.utils.preference.PrefsActivity.PreferenceFinder;
 
 public class PremiumConfigurer implements PreferenceConfigurer {
 	private static final String LogTag = "PremiumConfigurer";
+	// TODO FOR RELEASE
+	private static final boolean ALLOW_DOWNGRADE = false;
 	private PreferenceFinder finder;
 	private SettingsActivity activity;
 
@@ -58,7 +61,15 @@ public class PremiumConfigurer implements PreferenceConfigurer {
 
 		Preference downgrade_from_premium = finder
 				.findPreference("downgrade_from_premium");
-		if (isPremium) {
+		if (!ALLOW_DOWNGRADE) {
+			if (downgrade_from_premium != null) {
+				downgrade_from_premium.setEnabled(false);
+				Toast.makeText(
+						activity,
+						"The downgrade from premium preference is visible- please remove it",
+						Toast.LENGTH_SHORT).show();
+			}
+		} else if (isPremium) {
 			downgrade_from_premium.setEnabled(true);
 			downgrade_from_premium
 					.setOnPreferenceClickListener(new OnPreferenceClickListener() {

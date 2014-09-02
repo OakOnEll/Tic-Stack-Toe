@@ -397,7 +397,7 @@ public abstract class GameStrategy {
 
 	public void viewCreated(GameFragment gameFragment, LayoutInflater inflater,
 			ViewGroup container, FrameLayout frame) {
-		
+
 	}
 
 	protected void sendAnalyticStartGameEvent(final GameType type) {
@@ -426,5 +426,10 @@ public abstract class GameStrategy {
 
 	protected void handleMenu() {
 		ActivityCompat.invalidateOptionsMenu(getActivity());
+	}
+
+	public void evaluateGameEndAchievements(Achievements achievements,
+			GameContext gameContext2, Game game2, State outcome) {
+		// do nothing- subclasses override
 	}
 }

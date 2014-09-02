@@ -97,7 +97,7 @@ public class GameFragment extends AbstractGameFragment {
 	private WinOverlayView winOverlayView;
 
 	private static class SquareBoardResizeInfo {
-		int boardWidth;
+		// int boardWidth;
 		int boardHeight;
 		int boardSize;
 		int pieceStackHeight;
@@ -365,7 +365,7 @@ public class GameFragment extends AbstractGameFragment {
 					int size, int origWidth, int origHeight) {
 				if (resizeInfo != null) {
 					resizeInfo.boardHeight = origHeight;
-					resizeInfo.boardWidth = origWidth;
+					// resizeInfo.boardWidth = origWidth;
 					resizeInfo.boardSize = size;
 					resizeBoardAndStacks(view);
 				}
@@ -1759,6 +1759,7 @@ public class GameFragment extends AbstractGameFragment {
 		Achievements achievements = application.getAchievements();
 		achievements.testAndSetForGameEndAchievements(gameContext, getGame(),
 				outcome);
+		getGameStrategy().evaluateGameEndAchievements(achievements, gameContext, getGame(), outcome);
 	}
 
 	private void evaluateInGameAchievements(State outcome) {
@@ -1773,6 +1774,7 @@ public class GameFragment extends AbstractGameFragment {
 		TicStackToe application = ((TicStackToe) getActivity().getApplication());
 
 		Leaderboards leaderboards = application.getLeaderboards();
+		// TODO
 		// leaderboards.submitGame(gameContext.getGameHelper(),
 		// gameContext.getContext(), getGame(), outcome, getScore());
 

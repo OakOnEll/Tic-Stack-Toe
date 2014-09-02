@@ -1,8 +1,10 @@
 package com.oakonell.ticstacktoe.utils;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -86,8 +88,10 @@ public class DevelopmentUtil {
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
+				String scope =  "oauth2:" +
+				 "https://www.googleapis.com/auth/games";
 				String accesstoken = GoogleAuthUtil.getToken(mContext,
-						helper.accountName, helper.scopes);
+						helper.accountName, scope);
 
 				HttpClient client = new DefaultHttpClient();
 				// Reset a single achievement like this:
@@ -103,9 +107,16 @@ public class DevelopmentUtil {
 						+ "/games/v1management" + "/achievements"
 						+ "/reset?access_token=" + accesstoken);
 
-				client.execute(post);
-				Log.i(LogTag, "Reset achievements done.");
+				HttpResponse response = client.execute(post);
+				int callResponseCode = response.getStatusLine().getStatusCode();
+				String stringResponse = EntityUtils.toString(response
+						.getEntity());
+				Log.i(LogTag, "Reset achievements done: " + callResponseCode
+						+ "-- " + stringResponse);
 			} catch (Exception e) {
+				Toast.makeText(mContext,
+						"Error resetting achievements: " + e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 				Log.e(LogTag, "Failed to reset: " + e.getMessage(), e);
 			}
 
@@ -139,8 +150,10 @@ public class DevelopmentUtil {
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
+				String scope = "oauth2:https://www.googleapis.com/auth/games";
+
 				String accesstoken = GoogleAuthUtil.getToken(mContext,
-						helper.accountName, helper.scopes);
+						helper.accountName, scope);
 
 				TicStackToe app = (TicStackToe) mContext.getApplication();
 				for (String leaderboardid : app.getLeaderboards()
@@ -152,10 +165,18 @@ public class DevelopmentUtil {
 							+ leaderboardid + "/scores/reset?access_token="
 							+ accesstoken);
 
-					client.execute(post);
+					HttpResponse response = client.execute(post);
+					int callResponseCode = response.getStatusLine().getStatusCode();
+					String stringResponse = EntityUtils.toString(response
+							.getEntity());
+					Log.i(LogTag, "Reset leaderboard done: " + callResponseCode
+							+ "-- " + stringResponse);
 				}
 				Log.i(LogTag, "Reset leaderboards done.");
 			} catch (Exception e) {
+				Toast.makeText(mContext,
+						"Error resetting leaderboards: " + e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 				Log.e(LogTag,
 						"Failed to reset leaderboards: " + e.getMessage(), e);
 			}
