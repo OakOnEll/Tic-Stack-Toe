@@ -85,7 +85,7 @@ public class StartAGameFragment extends SherlockFragment {
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
 		setActive();
 		final ActionBar ab = getSherlockActivity().getSupportActionBar();
-		ab.setTitle("Start a Game");
+		ab.setTitle(R.string.startGame);
 
 		// Listen for changes in the back stack
 		getSherlockActivity().getSupportFragmentManager()
@@ -234,6 +234,8 @@ public class StartAGameFragment extends SherlockFragment {
 			if (response == Activity.RESULT_OK) {
 				setInactive();
 				context.backFromRealtimeWaitingRoom();
+				final ActionBar ab = getSherlockActivity().getSupportActionBar();
+				ab.setTitle(R.string.app_name);
 			} else if (response == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 				// player actively indicated that they want to leave the room
 
@@ -255,7 +257,7 @@ public class StartAGameFragment extends SherlockFragment {
 	private void exitStartMenu() {
 		getActivity().getSupportFragmentManager().popBackStack();
 		final ActionBar ab = getSherlockActivity().getSupportActionBar();
-		ab.setTitle("Tic-Stack-Toe");
+		ab.setTitle(R.string.app_name);
 	}
 
 	private void selectAIGame() {

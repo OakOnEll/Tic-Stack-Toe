@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dialog"
+    
     android:minWidth="200dp"
     android:minHeight="150dp"
     android:orientation="vertical" >
@@ -12,7 +13,7 @@
     <include layout="@layout/rank_update_layout" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/play_again_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

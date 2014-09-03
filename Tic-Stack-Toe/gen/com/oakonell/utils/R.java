@@ -316,7 +316,7 @@ public final class R {
 		public static final int disableHome = 0x7f070012;
 		public static final int edit_query = 0x7f070033;
 		public static final int homeAsUp = 0x7f07000f;
-		public static final int icon = 0x7f0700f2;
+		public static final int icon = 0x7f0700f1;
 		public static final int icon_image = 0x7f0700cd;
 		public static final int increment = 0x7f0700d9;
 		public static final int label = 0x7f0700aa;
