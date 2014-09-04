@@ -112,10 +112,14 @@ public class GameFragment extends AbstractGameFragment {
 
 	// state management
 	private Runnable inOnResume;
-	private Runnable inOnCreate;
+	private OnCreateRunnableWithView inOnCreate;
 	private GameContext gameContext;
 	private TextView gameTypeTextView;
 
+	private abstract static class OnCreateRunnableWithView implements Runnable {
+		View view;
+	}
+	
 	public GameFragment() {
 		// for finding references
 	}
@@ -151,7 +155,7 @@ public class GameFragment extends AbstractGameFragment {
 
 	public void startGame(final String waitingText, final boolean showProgress,
 			final boolean showMove) {
-		inOnCreate = new Runnable() {
+		inOnCreate = new OnCreateRunnableWithView() {
 			@Override
 			public void run() {
 				if (waitingText != null) {
@@ -167,12 +171,13 @@ public class GameFragment extends AbstractGameFragment {
 				}
 				gameTypeTextView.setText(GameTypeSpinnerHelper.getTypeName(
 						getActivity(), game.getType()));
+				
 				if (undoAndAnimateMove) {
 					game.undo(move);
 
-					if (getView() != null) {
-						configureBoardButtons(getView());
-						updateHeader(getView());
+					if (view != null) {
+						configureBoardButtons(view);
+						updateHeader(view);
 						winOverlayView.clearWins();
 						winOverlayView.invalidate();
 					}
@@ -192,13 +197,14 @@ public class GameFragment extends AbstractGameFragment {
 							});
 						}
 					};
+					// if we are already constructed, we can run resume now- otherwise need to await for it to be called
 					if (getView() != null) {
 						inOnResume.run();
 					}
 				} else {
-					if (getView() != null) {
-						configureBoardButtons(getView());
-						updateHeader(getView());
+					if (view != null) {
+						configureBoardButtons(view);
+						updateHeader(view);
 						winOverlayView.clearWins();
 						winOverlayView.invalidate();
 					}
@@ -380,6 +386,7 @@ public class GameFragment extends AbstractGameFragment {
 		}
 
 		if (inOnCreate != null) {
+			inOnCreate.view = frame;
 			inOnCreate.run();
 		}
 
