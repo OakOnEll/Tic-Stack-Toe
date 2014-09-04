@@ -70,4 +70,13 @@
     <string name="originalRank">Original</string>
     <string name="newRank">New</string>
     <string name="playAgain">Play Again?</string>
+    
+    <string name="multiple_invites_title">Multiple Invites</string>
+    <string name="multiple_invites">Multiple invites from %s, cannot tell which is the rematch.</string>
+    <string name="multiple_invites_status">Rematch requested, multiple invites from %s...</string>
+    
+    <string name="invite_removed">An invitation was removed.</string>
+    <string name="rematch_updated">The re-match was updated.</string>
+    <string name="match_updated">A match was updated.</string>
+    <string name="match_removed">A match was removed.</string>
 </resources>

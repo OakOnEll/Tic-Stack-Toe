@@ -357,8 +357,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 		Toast.makeText(
 				getContext(),
-				"An invitation has arrived from "
-						+ invitation.getInviter().getDisplayName(), TOAST_DELAY)
+				getContext().getResources().getString(
+						R.string.received_invite_from,
+						invitation.getInviter().getDisplayName()), TOAST_DELAY)
 				.show();
 	}
 
@@ -394,7 +395,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void onInvitationRemoved(String invitationId) {
-		Toast.makeText(getContext(), "An invitation was removed.", TOAST_DELAY)
+		Toast.makeText(getContext(),
+				getContext().getString(R.string.invite_removed), TOAST_DELAY)
 				.show();
 	}
 
@@ -406,18 +408,21 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		if (match.getMatchId().equals(rematchId)) {
-			Toast.makeText(getContext(), "The re-match was updated.",
+			Toast.makeText(getContext(),
+					getContext().getString(R.string.rematch_updated),
 					TOAST_DELAY).show();
 			updateMatch(match);
 			return;
 		}
-		Toast.makeText(getContext(), "A match was updated.", TOAST_DELAY)
+		Toast.makeText(getContext(),
+				getContext().getString(R.string.match_updated), TOAST_DELAY)
 				.show();
 	}
 
 	@Override
 	public void onTurnBasedMatchRemoved(String matchId) {
-		Toast.makeText(getContext(), "A match was removed.", TOAST_DELAY)
+		Toast.makeText(getContext(),
+				getContext().getString(R.string.match_removed), TOAST_DELAY)
 				.show();
 
 	}
@@ -431,10 +436,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		case GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED:
 			// This is OK; the action is stored by Google Play Services and will
 			// be dealt with later.
-			Toast.makeText(
-					getContext(),
-					"Stored action for later.  (Please remove this toast before release.)",
-					TOAST_DELAY).show();
+			// Toast.makeText(
+			// getContext(),
+			// "Stored action for later.  (Please remove this toast before release.)",
+			// TOAST_DELAY).show();
 			// NOTE: This toast is for informative reasons only; please remove
 			// it from your final application.
 			return true;
@@ -1382,10 +1387,14 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			Log.i("TurnListener", "  askToAcceptRematchInvite multiple invites");
 			// TODO show a list prompt...
 			getGameFragment().showStatusText(
-					title + "Rematch requested, multiple invites from "
-							+ getOpponentName() + "...");
-			showWarning("Multiple invites", "Multiple invites from "
-					+ getOpponentName() + ", can't tell which is the rematch.");
+					title
+							+ getContext().getString(
+									R.string.multiple_invites_status,
+									getOpponentName()));
+			showWarning(
+					getContext().getString(R.string.multiple_invites_title),
+					getContext().getString(R.string.multiple_invites,
+							getOpponentName()));
 		}
 	}
 
