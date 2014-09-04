@@ -216,6 +216,7 @@ public class GameFragment extends AbstractGameFragment {
 			}
 		};
 		if (getActivity() != null) {
+			inOnCreate.view = getView();
 			inOnCreate.run();
 		}
 	}

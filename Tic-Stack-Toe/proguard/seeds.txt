@@ -6980,7 +6980,6 @@ com.oakonell.ticstacktoe.R$id: int textView2
 com.oakonell.ticstacktoe.R$id: int textView3
 com.oakonell.ticstacktoe.R$id: int textView4
 com.oakonell.ticstacktoe.R$id: int textView5
-com.oakonell.ticstacktoe.R$id: int textView7
 com.oakonell.ticstacktoe.R$id: int thinking
 com.oakonell.ticstacktoe.R$id: int thinking_progress
 com.oakonell.ticstacktoe.R$id: int thinking_text
