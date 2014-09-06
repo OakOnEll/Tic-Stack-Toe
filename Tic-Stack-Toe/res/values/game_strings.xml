@@ -3,20 +3,17 @@
 
     <string name="invalid_move_need_empty">Play in an empty square.</string>
     <string name="invalid_move_need_nonempty">Place bomb on an existing marker.</string>
-    
     <string name="invalid_move_space_has_bigger_piece">Place that piece in an empty space or over a smaller piece already on the board.</string>
     <string name="invalid_move_source_is_empty">There is no piece at the source to move.</string>
     <string name="invalid_stack_move_in_strict">A piece from the stacj must be moved to either (1) an empty space, or (2) a space to gobble an opponent’s piece that is part of three in a row (for the opponent).</string>
-        
     <string name="you">You</string>
     <string name="you_won">You WON!</string>
     <string name="you_lost">You LOST!</string>
     <string name="opponent">Opponent</string>
-    
     <string name="opponent_thinking">%s is thinking...</string>
     <string name="button_send">Send</string>
     <string name="action_chat">Chat</string>
-    <string name="action_refresh">Refresh</string>    
+    <string name="action_refresh">Refresh</string>
     <string name="player_won">%s won!</string>
     <string name="draw">Draw Game!</string>
     <string name="play_again">Play again?</string>
@@ -57,8 +54,7 @@
         <item quantity="other">%d Draws</item>
     </plurals>
 
-    <string name="rank_unknown">Unknown</string>   
-    
+    <string name="rank_unknown">Unknown</string>
     <string name="onJoinedRoom">Joining Room</string>
     <string name="onRoomConnected">Connecting to Room</string>
     <string name="onRoomCreated">Creating Room</string>
@@ -70,13 +66,16 @@
     <string name="originalRank">Original</string>
     <string name="newRank">New</string>
     <string name="playAgain">Play Again?</string>
-    
     <string name="multiple_invites_title">Multiple Invites</string>
     <string name="multiple_invites">Multiple invites from %s, cannot tell which is the rematch.</string>
     <string name="multiple_invites_status">Rematch requested, multiple invites from %s...</string>
-    
     <string name="invite_removed">An invitation was removed.</string>
     <string name="rematch_updated">The re-match was updated.</string>
     <string name="match_updated">A match was updated.</string>
     <string name="match_removed">A match was removed.</string>
+    <string name="rematch_look_for_invite">Rematch requested, looking for match invite.</string>
+    <string name="rematch_awaiting_move_from">Rematch requested, awaiting a move from %s</string>
+    <string name="reconnecting">Reconnecting...</string>
+    <string name="opponent_hasnt_seen_move">%s hasn\'t seen your move.</string>
+
 </resources>

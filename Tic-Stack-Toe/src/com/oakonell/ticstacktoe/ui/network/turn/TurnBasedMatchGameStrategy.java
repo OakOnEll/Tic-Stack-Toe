@@ -343,8 +343,11 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	@Override
 	public void onInvitationReceived(final Invitation invitation) {
 		if (invitation.getInvitationType() == Invitation.INVITATION_TYPE_TURN_BASED) {
-			if (invitation.getInviter().getDisplayName()
-					.equals(getOpponentParticipant().getActualDisplayName())
+			if (invitation
+					.getInviter()
+					.getDisplayName()
+					.equals(getOpponentParticipant().getActualDisplayName(
+							getContext()))
 					&& rematchId != null) {
 				rematchId = null;
 
@@ -742,20 +745,24 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return participant.getIconImageUri();
 		}
 
-		public String getDisplayName() {
+		public String getDisplayName(Context context) {
 			// note that even if started as a quick game, the new game behavior
 			// may return the real name of a friend
 			// / this should be knowable if the icon is not null
-			boolean isAnonymous = participant != null
-					&& participant.getIconImageUri() == null;
-			if (participant == null || isAnonymous// || isQuick
-			) {
-				return "Anonymous";
+
+			// boolean isAnonymous = participant != null
+			// && (isQuick &&participant.getIconImageUri() == null);
+			// if (participant == null || isAnonymous// || isQuick
+			// ) {
+			// return context.getString(R.string.anonymous);
+			// }
+			if (participant==null) {
+				return context.getString(R.string.anonymous);
 			}
 			return participant.getDisplayName();
 		}
 
-		public Object getActualDisplayName() {
+		public Object getActualDisplayName(Context context) {
 			if (participant == null) {
 				return "null";
 			}
@@ -777,7 +784,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public String getOpponentName() {
-		return getOpponentParticipant().getDisplayName();
+		return getOpponentParticipant().getDisplayName(getContext());
 	}
 
 	@Override
@@ -1004,7 +1011,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				blackPlayer = HumanStrategy.createPlayer(localPlayerName, true,
 						me.getIconImageUri());
 				whitePlayer = OnlineStrategy.createPlayer(
-						opponent.getDisplayName(), false,
+						opponent.getDisplayName(context), false,
 						opponent.getIconImageUri());
 				if (myTurn) {
 					currentPlayer = blackPlayer;
@@ -1015,7 +1022,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				whitePlayer = HumanStrategy.createPlayer(localPlayerName,
 						false, me.getIconImageUri());
 				blackPlayer = OnlineStrategy.createPlayer(
-						opponent.getDisplayName(), true,
+						opponent.getDisplayName(context), true,
 						opponent.getIconImageUri());
 				if (!myTurn) {
 					currentPlayer = blackPlayer;
@@ -1174,12 +1181,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		if (!state.wasSeen) {
-			gameFragment.showStatusText(getOpponentName()
-					+ " hasn't seen your move.");
+			gameFragment.showStatusText(getContext().getString(R.string.opponent_hasnt_seen_move, getOpponentName()));
 		} else {
 			if (!showMove) {
-				gameFragment.showStatusText(getOpponentName()
-						+ " is thinking...");
+				gameFragment.showStatusText(getContext().getString(R.string.opponent_is_thinking, getOpponentName()));
 			}
 		}
 	}
@@ -1206,7 +1211,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				winnerName = getOpponentName();
 			}
 		}
-		String winTitle = winnerName + " won!";
+		String winTitle = getContext().getString(R.string.player_won,
+				winnerName);
 		gameFragment.showStatusText(winTitle, false);
 
 		// check if the state has ranks to use to calculate my rank
@@ -1259,7 +1265,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	private void lookForInviteForRematch(final String winner,
 			final String title, final String rematchId) {
 		getGameFragment().showStatusText(
-				title + "Rematch requested, looking for match invite.");
+				title
+						+ getContext().getString(
+								R.string.rematch_look_for_invite));
 		Games.Invitations
 				.loadInvitations(getHelper().getApiClient())
 				.setResultCallback(
@@ -1285,7 +1293,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 												.getInviter()
 												.getDisplayName()
 												.equals(getOpponentParticipant()
-														.getActualDisplayName())) {
+														.getActualDisplayName(
+																getContext()))) {
 											turnInvitesFromPlayer.add(invite);
 										}
 									}
@@ -1299,9 +1308,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 									getGameFragment()
 											.showStatusText(
 													title
-															+ "Rematch requested, awaiting a move from "
-															+ getOpponentName()
-															+ ".");
+															+ getContext()
+																	.getString(
+																			R.string.rematch_awaiting_move_from,
+																			getOpponentName()));
 									// listen for invites
 									Games.Invitations
 											.registerInvitationListener(
@@ -1461,7 +1471,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	public void onActivityResume(MainActivity theActivity) {
 		if (!getHelper().isSignedIn()) {
 			if (getHelper().getApiClient().isConnecting()) {
-				getGameFragment().showStatusText("Reconnecting...");
+				getGameFragment().showStatusText(
+						getContext().getString(R.string.reconnecting));
 			}
 		}
 
