@@ -15095,6 +15095,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int an_start_ranked_quick_game_action -> an_start_ranked_quick_game_action
     int an_start_ranked_quick_turn_game_action -> an_start_ranked_quick_turn_game_action
     int an_start_tutorial_game_action -> an_start_tutorial_game_action
+    int anonymous -> anonymous
     int app_id -> app_id
     int app_name -> app_name
     int auth_client_needs_enabling_title -> auth_client_needs_enabling_title
@@ -15151,11 +15152,14 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int continueLbl -> continueLbl
     int copied_to_clipboard -> copied_to_clipboard
     int copySubjectToClipboardAsWorkAroundForFacebookAppBug -> copySubjectToClipboardAsWorkAroundForFacebookAppBug
+    int decline -> decline
+    int dismiss -> dismiss
     int draw -> draw
     int draws_stat_label -> draws_stat_label
     int error_black_name -> error_black_name
     int error_white_name -> error_white_name
     int exit_waiting_play_again -> exit_waiting_play_again
+    int expired_game -> expired_game
     int first_move_header -> first_move_header
     int first_move_text -> first_move_text
     int ga_trackingId -> ga_trackingId
@@ -15174,6 +15178,8 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int invalid_move_space_has_bigger_piece -> invalid_move_space_has_bigger_piece
     int invalid_stack_move_in_strict -> invalid_stack_move_in_strict
     int invite_removed -> invite_removed
+    int invited_to_realtime_match -> invited_to_realtime_match
+    int invited_to_turn_match -> invited_to_turn_match
     int label_player_black_name -> label_player_black_name
     int label_player_white_name -> label_player_white_name
     int leaderboard_junior_rank -> leaderboard_junior_rank
@@ -15183,7 +15189,11 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int leaderboards_not_available -> leaderboards_not_available
     int leave_game_message -> leave_game_message
     int leave_game_title -> leave_game_title
+    int local_completed_match_text -> local_completed_match_text
+    int local_played_last_text -> local_played_last_text
     int local_player_name -> local_player_name
+    int local_ranked_match_subtext -> local_ranked_match_subtext
+    int local_unranked_match_subtext -> local_unranked_match_subtext
     int losses_stat_label -> losses_stat_label
     int match_error_already_rematched -> match_error_already_rematched
     int match_error_inactive_match -> match_error_inactive_match
@@ -15228,11 +15238,13 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int online_setting_title -> online_setting_title
     int opponent -> opponent
     int opponent_does_not_want_to_play_again -> opponent_does_not_want_to_play_again
+    int opponent_hasnt_seen_move -> opponent_hasnt_seen_move
     int opponent_is_in_chat -> opponent_is_in_chat
     int opponent_is_thinking -> opponent_is_thinking
     int opponent_left_exit_play_again -> opponent_left_exit_play_again
     int opponent_thinking -> opponent_thinking
     int opponent_wants_to_play_again -> opponent_wants_to_play_again
+    int opponent_won -> opponent_won
     int originalRank -> originalRank
     int peer_left_the_game -> peer_left_the_game
     int playAgain -> playAgain
@@ -15240,6 +15252,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int play_again_waiting -> play_again_waiting
     int play_modes_header -> play_modes_header
     int play_modes_text -> play_modes_text
+    int played_ago -> played_ago
     int player_black_lbl -> player_black_lbl
     int player_stat_label -> player_stat_label
     int player_white_lbl -> player_white_lbl
@@ -15267,6 +15280,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int pull_to_refresh_release_label -> pull_to_refresh_release_label
     int rank_unknown -> rank_unknown
     int rankedLabel -> rankedLabel
+    int ranked_game_subtext -> ranked_game_subtext
     int ranked_games_header -> ranked_games_header
     int ranked_games_text -> ranked_games_text
     int ranks -> ranks
@@ -15278,6 +15292,10 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int rate_unknown_app_title -> rate_unknown_app_title
     int realtime -> realtime
     int received_invite_from -> received_invite_from
+    int reconnecting -> reconnecting
+    int rematch -> rematch
+    int rematch_awaiting_move_from -> rematch_awaiting_move_from
+    int rematch_look_for_invite -> rematch_look_for_invite
     int rematch_updated -> rematch_updated
     int remember_this_choice -> remember_this_choice
     int remove_ads -> remove_ads
@@ -15300,6 +15318,8 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int start -> start
     int startGame -> startGame
     int status_multiplayer_error_not_trusted_tester -> status_multiplayer_error_not_trusted_tester
+    int subtext_invited_to_ranked_match -> subtext_invited_to_ranked_match
+    int subtext_invited_to_unranked_match -> subtext_invited_to_unranked_match
     int title_game -> title_game
     int tutor -> tutor
     int tutorial -> tutorial
@@ -15322,6 +15342,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int yes -> yes
     int you -> you
     int you_are_signed_in_as -> you_are_signed_in_as
+    int you_beat_opponent -> you_beat_opponent
     int you_left_the_game -> you_left_the_game
     int you_lost -> you_lost
     int you_won -> you_won
@@ -16989,25 +17010,25 @@ com.oakonell.ticstacktoe.ui.local.LocalMatchInfo -> com.oakonell.ticstacktoe.ui.
     java.lang.CharSequence getSubtext(android.content.Context) -> d
     java.lang.CharSequence getUpdatedText(android.content.Context) -> e
     long getUpdatedTimestamp() -> e
-    java.util.List getMenuItems() -> f
+    java.util.List getMenuItems(android.content.Context) -> f
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
-    int getMatchStatus() -> g
-    int getTurnStatus() -> h
-    java.lang.String getBlackName() -> i
-    java.lang.String getWhiteName() -> j
-    java.lang.String getFilename() -> k
-    long getId() -> l
+    int getMatchStatus() -> f
+    int getTurnStatus() -> g
+    java.lang.String getBlackName() -> h
+    java.lang.String getWhiteName() -> i
+    java.lang.String getFilename() -> j
+    long getId() -> k
     void setId(long) -> a
     void setFileName(java.lang.String) -> a
-    void writeGame(android.content.Context) -> f
-    com.oakonell.ticstacktoe.model.Game readGame(android.content.Context) -> g
+    void writeGame(android.content.Context) -> g
+    com.oakonell.ticstacktoe.model.Game readGame(android.content.Context) -> h
     com.oakonell.ticstacktoe.model.Player createWhitePlayerStrategy() -> c
     void setTurnStatus(int) -> a
     void setMatchStatus(int) -> b
     com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy createStrategy(com.oakonell.ticstacktoe.GameContext) -> a
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo createLocalMatch(com.oakonell.ticstacktoe.model.GameMode,com.oakonell.ticstacktoe.model.GameType,long,int,int,java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.solver.AILevel,long,java.lang.String,com.oakonell.ticstacktoe.model.ScoreCard,long,int,boolean) -> a
-    com.oakonell.ticstacktoe.model.ScoreCard getScoreCard() -> m
-    long getRematchId() -> n
+    com.oakonell.ticstacktoe.model.ScoreCard getScoreCard() -> l
+    long getRematchId() -> m
     void setWinner(int) -> c
     void setScoreCard(com.oakonell.ticstacktoe.model.ScoreCard) -> a
     void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
@@ -17345,9 +17366,9 @@ com.oakonell.ticstacktoe.ui.menu.MatchInfo -> com.oakonell.ticstacktoe.ui.a.j:
     java.lang.CharSequence getUpdatedText(android.content.Context) -> e
     android.net.Uri getIconImageUri() -> b
     long getUpdatedTimestamp() -> e
-    int getMatchStatus() -> g
+    int getMatchStatus() -> f
     void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
-    java.util.List getMenuItems() -> f
+    java.util.List getMenuItems(android.content.Context) -> f
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
 com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils -> com.oakonell.ticstacktoe.ui.a.k:
     java.util.Comparator comparator -> a
@@ -17920,13 +17941,13 @@ com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo -> com.oakonell.ticstac
     java.lang.CharSequence getOpponentName() -> a
     android.net.Uri getIconImageUri() -> b
     long getLastUpdatedTimestamp() -> c
-    java.util.List getMenuItems() -> f
+    java.util.List getMenuItems(android.content.Context) -> f
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
     java.lang.CharSequence getSubtext(android.content.Context) -> d
     java.lang.CharSequence getUpdatedText(android.content.Context) -> e
     java.lang.CharSequence getText(android.content.Context) -> c
     long getUpdatedTimestamp() -> e
-    int getMatchStatus() -> g
+    int getMatchStatus() -> f
     void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
     boolean access$0(com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo) -> a
     com.oakonell.ticstacktoe.googleapi.GameHelper access$1(com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo) -> b
@@ -18120,8 +18141,8 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrap
     boolean isQuick -> b
     java.lang.String getParticipantId() -> a
     android.net.Uri getIconImageUri() -> b
-    java.lang.String getDisplayName() -> c
-    java.lang.Object getActualDisplayName() -> d
+    java.lang.String getDisplayName(android.content.Context) -> a
+    java.lang.Object getActualDisplayName(android.content.Context) -> b
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo -> com.oakonell.ticstacktoe.ui.b.b.x:
     short newBlackRank -> a
     short newWhiteRank -> b
@@ -18148,14 +18169,14 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo -> com.oakonell.tics
     android.content.Context context -> a
     android.net.Uri getIconImageUri() -> b
     java.lang.String getMatchId() -> a
-    java.util.List getMenuItems() -> f
+    java.util.List getMenuItems(android.content.Context) -> f
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
     java.lang.CharSequence getSubtext(android.content.Context) -> d
     java.lang.CharSequence getUpdatedText(android.content.Context) -> e
     java.lang.CharSequence getText(android.content.Context) -> c
     long getUpdatedTimestamp() -> e
     void showAlert(java.lang.String) -> a
-    int getMatchStatus() -> g
+    int getMatchStatus() -> f
     void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
     com.oakonell.ticstacktoe.googleapi.GameHelper access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> a
     java.lang.String access$1(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> b

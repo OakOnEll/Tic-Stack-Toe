@@ -7168,6 +7168,7 @@ com.oakonell.ticstacktoe.R$string: int an_start_ranked_online_turn_game_action
 com.oakonell.ticstacktoe.R$string: int an_start_ranked_quick_game_action
 com.oakonell.ticstacktoe.R$string: int an_start_ranked_quick_turn_game_action
 com.oakonell.ticstacktoe.R$string: int an_start_tutorial_game_action
+com.oakonell.ticstacktoe.R$string: int anonymous
 com.oakonell.ticstacktoe.R$string: int app_id
 com.oakonell.ticstacktoe.R$string: int app_name
 com.oakonell.ticstacktoe.R$string: int auth_client_needs_enabling_title
@@ -7224,11 +7225,14 @@ com.oakonell.ticstacktoe.R$string: int connectionProblem
 com.oakonell.ticstacktoe.R$string: int continueLbl
 com.oakonell.ticstacktoe.R$string: int copied_to_clipboard
 com.oakonell.ticstacktoe.R$string: int copySubjectToClipboardAsWorkAroundForFacebookAppBug
+com.oakonell.ticstacktoe.R$string: int decline
+com.oakonell.ticstacktoe.R$string: int dismiss
 com.oakonell.ticstacktoe.R$string: int draw
 com.oakonell.ticstacktoe.R$string: int draws_stat_label
 com.oakonell.ticstacktoe.R$string: int error_black_name
 com.oakonell.ticstacktoe.R$string: int error_white_name
 com.oakonell.ticstacktoe.R$string: int exit_waiting_play_again
+com.oakonell.ticstacktoe.R$string: int expired_game
 com.oakonell.ticstacktoe.R$string: int first_move_header
 com.oakonell.ticstacktoe.R$string: int first_move_text
 com.oakonell.ticstacktoe.R$string: int ga_trackingId
@@ -7247,6 +7251,8 @@ com.oakonell.ticstacktoe.R$string: int invalid_move_source_is_empty
 com.oakonell.ticstacktoe.R$string: int invalid_move_space_has_bigger_piece
 com.oakonell.ticstacktoe.R$string: int invalid_stack_move_in_strict
 com.oakonell.ticstacktoe.R$string: int invite_removed
+com.oakonell.ticstacktoe.R$string: int invited_to_realtime_match
+com.oakonell.ticstacktoe.R$string: int invited_to_turn_match
 com.oakonell.ticstacktoe.R$string: int label_player_black_name
 com.oakonell.ticstacktoe.R$string: int label_player_white_name
 com.oakonell.ticstacktoe.R$string: int leaderboard_junior_rank
@@ -7256,7 +7262,11 @@ com.oakonell.ticstacktoe.R$string: int leaderboards
 com.oakonell.ticstacktoe.R$string: int leaderboards_not_available
 com.oakonell.ticstacktoe.R$string: int leave_game_message
 com.oakonell.ticstacktoe.R$string: int leave_game_title
+com.oakonell.ticstacktoe.R$string: int local_completed_match_text
+com.oakonell.ticstacktoe.R$string: int local_played_last_text
 com.oakonell.ticstacktoe.R$string: int local_player_name
+com.oakonell.ticstacktoe.R$string: int local_ranked_match_subtext
+com.oakonell.ticstacktoe.R$string: int local_unranked_match_subtext
 com.oakonell.ticstacktoe.R$string: int losses_stat_label
 com.oakonell.ticstacktoe.R$string: int match_error_already_rematched
 com.oakonell.ticstacktoe.R$string: int match_error_inactive_match
@@ -7301,11 +7311,13 @@ com.oakonell.ticstacktoe.R$string: int onRoomCreated
 com.oakonell.ticstacktoe.R$string: int online_setting_title
 com.oakonell.ticstacktoe.R$string: int opponent
 com.oakonell.ticstacktoe.R$string: int opponent_does_not_want_to_play_again
+com.oakonell.ticstacktoe.R$string: int opponent_hasnt_seen_move
 com.oakonell.ticstacktoe.R$string: int opponent_is_in_chat
 com.oakonell.ticstacktoe.R$string: int opponent_is_thinking
 com.oakonell.ticstacktoe.R$string: int opponent_left_exit_play_again
 com.oakonell.ticstacktoe.R$string: int opponent_thinking
 com.oakonell.ticstacktoe.R$string: int opponent_wants_to_play_again
+com.oakonell.ticstacktoe.R$string: int opponent_won
 com.oakonell.ticstacktoe.R$string: int originalRank
 com.oakonell.ticstacktoe.R$string: int peer_left_the_game
 com.oakonell.ticstacktoe.R$string: int playAgain
@@ -7313,6 +7325,7 @@ com.oakonell.ticstacktoe.R$string: int play_again
 com.oakonell.ticstacktoe.R$string: int play_again_waiting
 com.oakonell.ticstacktoe.R$string: int play_modes_header
 com.oakonell.ticstacktoe.R$string: int play_modes_text
+com.oakonell.ticstacktoe.R$string: int played_ago
 com.oakonell.ticstacktoe.R$string: int player_black_lbl
 com.oakonell.ticstacktoe.R$string: int player_stat_label
 com.oakonell.ticstacktoe.R$string: int player_white_lbl
@@ -7340,6 +7353,7 @@ com.oakonell.ticstacktoe.R$string: int pull_to_refresh_refreshing_label
 com.oakonell.ticstacktoe.R$string: int pull_to_refresh_release_label
 com.oakonell.ticstacktoe.R$string: int rank_unknown
 com.oakonell.ticstacktoe.R$string: int rankedLabel
+com.oakonell.ticstacktoe.R$string: int ranked_game_subtext
 com.oakonell.ticstacktoe.R$string: int ranked_games_header
 com.oakonell.ticstacktoe.R$string: int ranked_games_text
 com.oakonell.ticstacktoe.R$string: int ranks
@@ -7351,6 +7365,10 @@ com.oakonell.ticstacktoe.R$string: int rate_text
 com.oakonell.ticstacktoe.R$string: int rate_unknown_app_title
 com.oakonell.ticstacktoe.R$string: int realtime
 com.oakonell.ticstacktoe.R$string: int received_invite_from
+com.oakonell.ticstacktoe.R$string: int reconnecting
+com.oakonell.ticstacktoe.R$string: int rematch
+com.oakonell.ticstacktoe.R$string: int rematch_awaiting_move_from
+com.oakonell.ticstacktoe.R$string: int rematch_look_for_invite
 com.oakonell.ticstacktoe.R$string: int rematch_updated
 com.oakonell.ticstacktoe.R$string: int remember_this_choice
 com.oakonell.ticstacktoe.R$string: int remove_ads
@@ -7373,6 +7391,8 @@ com.oakonell.ticstacktoe.R$string: int stack_text
 com.oakonell.ticstacktoe.R$string: int start
 com.oakonell.ticstacktoe.R$string: int startGame
 com.oakonell.ticstacktoe.R$string: int status_multiplayer_error_not_trusted_tester
+com.oakonell.ticstacktoe.R$string: int subtext_invited_to_ranked_match
+com.oakonell.ticstacktoe.R$string: int subtext_invited_to_unranked_match
 com.oakonell.ticstacktoe.R$string: int title_game
 com.oakonell.ticstacktoe.R$string: int tutor
 com.oakonell.ticstacktoe.R$string: int tutorial
@@ -7395,6 +7415,7 @@ com.oakonell.ticstacktoe.R$string: int wins_stat_label
 com.oakonell.ticstacktoe.R$string: int yes
 com.oakonell.ticstacktoe.R$string: int you
 com.oakonell.ticstacktoe.R$string: int you_are_signed_in_as
+com.oakonell.ticstacktoe.R$string: int you_beat_opponent
 com.oakonell.ticstacktoe.R$string: int you_left_the_game
 com.oakonell.ticstacktoe.R$string: int you_lost
 com.oakonell.ticstacktoe.R$string: int you_won

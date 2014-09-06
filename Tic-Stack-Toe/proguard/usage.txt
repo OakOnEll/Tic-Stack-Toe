@@ -3375,12 +3375,12 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy:
     private static final byte MSG_PLAY_AGAIN_RANK
     766:766:public boolean isInitiatedTheGame()
 com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo:
-    57:57:public java.lang.String getInviteId()
+    58:58:public java.lang.String getInviteId()
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy:
     private static final int TOAST_DELAY
     private static final java.lang.String TAG
     private static final int PROTOCOL_VERSION
-    1455:1458:public void onFragmentResume()
+    1465:1468:public void onFragmentResume()
 com.oakonell.ticstacktoe.utils.BillingHelper:
     public static final java.lang.String SKU_PREMIUM
     private static final java.lang.String TAG
