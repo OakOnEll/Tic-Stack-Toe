@@ -14,6 +14,7 @@ import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
@@ -47,7 +48,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		status = match.getStatus();
 		this.context = context;
 
-		String opponentName = "Anonymous";
+		String opponentName = context.getString(R.string.anonymous);
 		String currentPlayerId = Games.Players.getCurrentPlayerId(helper
 				.getApiClient());
 		for (Participant participant : match.getParticipants()) {
@@ -69,13 +70,22 @@ public class TurnBasedMatchInfo implements MatchInfo {
 							match);
 					State state2 = state.game.getBoard().getState();
 					Player winner = state2.getWinner();
-					text = winner.getName() + " won!";
+					if (winner.getStrategy().isHuman()) {
+						text = context.getString(R.string.you_beat_opponent,
+								opponentName);
+					} else {
+						text = context.getString(R.string.opponent_won,
+								winner.getName());
+					}
 				} catch (Exception e) {
 					text = "Error reading match";
 				}
 			} else {
 				text = opponentName;
 			}
+		} else if (match.getStatus() == TurnBasedMatch.MATCH_STATUS_EXPIRED) {
+			canRematch = false;
+			text = context.getString(R.string.expired_game, opponentName);
 		} else {
 			canRematch = false;
 			text = opponentName;
@@ -86,10 +96,10 @@ public class TurnBasedMatchInfo implements MatchInfo {
 
 		CharSequence timeSpanString = MatchUtils.getTimeSince(context,
 				lastUpdated);
-		updatedtext = "Played " + timeSpanString;
+		updatedtext = context.getString(R.string.played_ago, timeSpanString);
 		subtext = GameTypeSpinnerHelper.getTypeName(context, type);
 		if (isRanked) {
-			subtext = "Ranked " + subtext;
+			subtext = context.getString(R.string.ranked_game_subtext, subtext);
 		}
 
 	}
@@ -102,12 +112,12 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		return matchId;
 	}
 
-	public List<MatchMenuItem> getMenuItems() {
+	public List<MatchMenuItem> getMenuItems(Context context) {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
 
 		if (canRematch) {
-			MatchMenuItem rematch = new MatchMenuItem("Rematch",
-					new ItemExecute() {
+			MatchMenuItem rematch = new MatchMenuItem(
+					context.getString(R.string.rematch), new ItemExecute() {
 						@Override
 						public void execute(final MenuFragment fragment,
 								List<MatchInfo> matches) {
@@ -139,12 +149,14 @@ public class TurnBasedMatchInfo implements MatchInfo {
 			result.add(rematch);
 		}
 
-		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
-			@Override
-			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				dismiss(fragment, matches);
-			}
-		});
+		MatchMenuItem dismiss = new MatchMenuItem(
+				context.getString(R.string.dismiss), new ItemExecute() {
+					@Override
+					public void execute(MenuFragment fragment,
+							List<MatchInfo> matches) {
+						dismiss(fragment, matches);
+					}
+				});
 		result.add(dismiss);
 		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 

@@ -115,9 +115,12 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	public CharSequence getSubtext(Context context) {
 		CharSequence typeString = GameTypeSpinnerHelper.getTypeName(context,
 				type);
-
-		return "Local " + (isRanked() ? "Ranked " : "") + typeString + ", "
-				+ blackName + " vs. " + whiteName;
+		if (isRanked()) {
+			return context.getString(R.string.local_ranked_match_subtext,
+					typeString, blackName, whiteName);
+		}
+		return context.getString(R.string.local_unranked_match_subtext,
+				typeString, blackName, whiteName);
 	}
 
 	@Override
@@ -126,12 +129,14 @@ public abstract class LocalMatchInfo implements MatchInfo {
 				lastUpdated);
 		String lastPlayed;
 		if (matchStatus == TurnBasedMatch.MATCH_STATUS_COMPLETE) {
-			lastPlayed = " finished " + timeSpanString;
+			lastPlayed = context.getString(R.string.local_completed_match_text,
+					timeSpanString);
 			// + "("
 			// + getScoreCard().getBlackWins() + " / "
 			// + getScoreCard().getWhiteWins() + ")";
 		} else {
-			lastPlayed = "Played " + timeSpanString;
+			lastPlayed = context.getString(R.string.local_played_last_text,
+					timeSpanString);
 		}
 		return lastPlayed;
 	}
@@ -141,15 +146,17 @@ public abstract class LocalMatchInfo implements MatchInfo {
 		return lastUpdated;
 	}
 
-	public List<MatchMenuItem> getMenuItems() {
+	@Override
+	public List<MatchMenuItem> getMenuItems(Context context) {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem("Dismiss", new ItemExecute() {
-			@Override
-			public void execute(final MenuFragment fragment,
-					List<MatchInfo> matches) {
-				dismiss(fragment, matches);
-			}
-		});
+		MatchMenuItem dismiss = new MatchMenuItem(
+				context.getString(R.string.dismiss), new ItemExecute() {
+					@Override
+					public void execute(final MenuFragment fragment,
+							List<MatchInfo> matches) {
+						dismiss(fragment, matches);
+					}
+				});
 		result.add(dismiss);
 		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
 

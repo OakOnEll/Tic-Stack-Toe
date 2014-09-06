@@ -10,6 +10,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
@@ -57,21 +58,23 @@ public class InviteMatchInfo implements MatchInfo {
 		return inviteId;
 	}
 
-	public List<MatchMenuItem> getMenuItems() {
+	public List<MatchMenuItem> getMenuItems(Context context) {
 		List<MatchMenuItem> result = new ArrayList<MatchMenuItem>();
-		MatchMenuItem dismiss = new MatchMenuItem("Decline", new ItemExecute() {
-			@Override
-			public void execute(MenuFragment fragment, List<MatchInfo> matches) {
-				if (isTurnBased) {
-					Games.TurnBasedMultiplayer.declineInvitation(
-							helper.getApiClient(), inviteId);
-				} else {
-					Games.RealTimeMultiplayer.declineInvitation(
-							helper.getApiClient(), inviteId);
-				}
-				matches.remove(InviteMatchInfo.this);
-			}
-		});
+		MatchMenuItem dismiss = new MatchMenuItem(
+				context.getString(R.string.decline), new ItemExecute() {
+					@Override
+					public void execute(MenuFragment fragment,
+							List<MatchInfo> matches) {
+						if (isTurnBased) {
+							Games.TurnBasedMultiplayer.declineInvitation(
+									helper.getApiClient(), inviteId);
+						} else {
+							Games.RealTimeMultiplayer.declineInvitation(
+									helper.getApiClient(), inviteId);
+						}
+						matches.remove(InviteMatchInfo.this);
+					}
+				});
 		result.add(dismiss);
 		return result;
 	}
@@ -87,19 +90,21 @@ public class InviteMatchInfo implements MatchInfo {
 
 	@Override
 	public CharSequence getSubtext(Context context) {
-		CharSequence subtext;
 		if (variant < 0) {
-			// TODO for some reason, turn based game invites do not have the variant available?!
-			//  https://stackoverflow.com/questions/24288312/invitation-getvariant-is-always-1
-			return "";//"Invited to ???";
+			// TODO for some reason, turn based game invites do not have the
+			// variant available?!
+			// https://stackoverflow.com/questions/24288312/invitation-getvariant-is-always-1
+			return "";// "Invited to ???";
 		}
 		boolean isRanked = MatchUtils.isRanked(variant);
 		GameType type = MatchUtils.getType(variant);
 
-		subtext = "Invited to " + (isRanked ? "Ranked " : "")
-				+ GameTypeSpinnerHelper.getTypeName(context, type);
-
-		return subtext;
+		if (isRanked) {
+			return context.getString(R.string.subtext_invited_to_ranked_match,
+					GameTypeSpinnerHelper.getTypeName(context, type));
+		}
+		return context.getString(R.string.subtext_invited_to_unranked_match,
+				GameTypeSpinnerHelper.getTypeName(context, type));
 	}
 
 	@Override
@@ -110,10 +115,11 @@ public class InviteMatchInfo implements MatchInfo {
 	@Override
 	public CharSequence getText(Context context) {
 		if (isTurnBased) {
-			return "Invited by " + getOpponentName();
-		} else {
-			return "Real-time Invited by " + getOpponentName();
+			return context.getString(R.string.invited_to_turn_match,
+					getOpponentName());
 		}
+		return context.getString(R.string.invited_to_realtime_match, getOpponentName());
+
 	}
 
 	@Override

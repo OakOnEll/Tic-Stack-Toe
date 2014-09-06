@@ -85,7 +85,7 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 
 		holder.name.setText(item.getText(context));
 
-		final List<MatchMenuItem> menus = item.getMenuItems();
+		final List<MatchMenuItem> menus = item.getMenuItems(context);
 		if (menus.size() == 0) {
 			holder.itemMenu.setVisibility(View.GONE);
 		} else {

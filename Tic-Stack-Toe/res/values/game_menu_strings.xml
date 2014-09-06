@@ -59,4 +59,21 @@
     <string name="skip">Skip</string>
     <string name="type">Type</string>
     <string name="rankedLabel">Ranked</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="you_beat_opponent">You beat %s!</string>
+    <string name="opponent_won">%s Won!</string>
+    <string name="ranked_game_subtext">Ranked %s</string>
+    <string name="played_ago">Played %s</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="decline">Decline</string>
+    <string name="invited_to_turn_match">Invited by %s</string>
+    <string name="invited_to_realtime_match">Real-time Invited by %s</string>
+    <string name="subtext_invited_to_ranked_match">Invited to Ranked %s</string>
+    <string name="subtext_invited_to_unranked_match">Invited to %s</string>
+    <string name="rematch">Rematch</string>
+    <string name="local_ranked_match_subtext">Local Ranked %1$s, %2$s vs. %3$s</string>
+    <string name="local_unranked_match_subtext">Local %1$s, %2$s vs. %3$s</string>
+    <string name="local_completed_match_text">Finished %s</string>
+    <string name="local_played_last_text">Played %s</string>
+    <string name="expired_game">Expired game with %s</string>
 </resources>

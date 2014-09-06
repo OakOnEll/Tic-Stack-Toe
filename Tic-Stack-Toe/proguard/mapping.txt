@@ -15173,6 +15173,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int invalid_move_source_is_empty -> invalid_move_source_is_empty
     int invalid_move_space_has_bigger_piece -> invalid_move_space_has_bigger_piece
     int invalid_stack_move_in_strict -> invalid_stack_move_in_strict
+    int invite_removed -> invite_removed
     int label_player_black_name -> label_player_black_name
     int label_player_white_name -> label_player_white_name
     int leaderboard_junior_rank -> leaderboard_junior_rank
@@ -15187,6 +15188,8 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int match_error_already_rematched -> match_error_already_rematched
     int match_error_inactive_match -> match_error_inactive_match
     int match_error_locally_modified -> match_error_locally_modified
+    int match_removed -> match_removed
+    int match_updated -> match_updated
     int move_1_hint -> move_1_hint
     int move_1a_text -> move_1a_text
     int move_1b_text -> move_1b_text
@@ -15201,6 +15204,9 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int move_5_header -> move_5_header
     int move_5_hint -> move_5_hint
     int move_5_text -> move_5_text
+    int multiple_invites -> multiple_invites
+    int multiple_invites_status -> multiple_invites_status
+    int multiple_invites_title -> multiple_invites_title
     int network_error_operation_failed -> network_error_operation_failed
     int newRank -> newRank
     int new_game_live -> new_game_live
@@ -15272,6 +15278,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int rate_unknown_app_title -> rate_unknown_app_title
     int realtime -> realtime
     int received_invite_from -> received_invite_from
+    int rematch_updated -> rematch_updated
     int remember_this_choice -> remember_this_choice
     int remove_ads -> remove_ads
     int select_opponent -> select_opponent

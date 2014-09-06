@@ -28,7 +28,7 @@ public interface MatchInfo {
 
 	public void dismiss(MenuFragment fragment, List<MatchInfo> matches);
 
-	public List<MatchMenuItem> getMenuItems();
+	public List<MatchMenuItem> getMenuItems(Context context);
 
 	public void onClick(MenuFragment fragment);
 
