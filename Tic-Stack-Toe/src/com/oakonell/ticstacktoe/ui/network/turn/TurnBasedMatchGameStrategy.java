@@ -3,14 +3,18 @@ package com.oakonell.ticstacktoe.ui.network.turn;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -62,6 +66,7 @@ import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
+import com.oakonell.ticstacktoe.ui.network.ChatMessage;
 import com.oakonell.ticstacktoe.utils.ByteBufferDebugger;
 
 public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
@@ -70,7 +75,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener {
 	private static final int TOAST_DELAY = Toast.LENGTH_SHORT;
 	private static final String TAG = "TurnBasedMatchGameStrategy";
-	private static final int PROTOCOL_VERSION = 1;
+	private static final int PROTOCOL_VERSION = 2;
 
 	private TurnBasedMatch mMatch;
 	private String mMyParticipantId;
@@ -305,9 +310,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		// write the game data
 		GameState gameState = new GameState(game, score, blackParticipantId,
-				isQuick, false, rankInfo);
+				isQuick, false, rankInfo, getChatMessages(),
+				getNumNewMessages());
 
-		byte[] bytes = gameState.toBytes(getHelper());
+		byte[] bytes = gameState.toBytes(getContext(), getHelper());
 
 		// Taking this turn will cause turnBasedMatchUpdated (not with new API?)
 		Games.TurnBasedMultiplayer.takeTurn(getHelper().getApiClient(),
@@ -367,6 +373,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	}
 
 	Runnable onResume;
+	private boolean showNewMessage;
 
 	public void playAgainClosed() {
 		playAgainDialog = null;
@@ -502,7 +509,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		showWarning("Warning", string);
 	}
 
-	private void showWarning(String title, String message) {
+	private void showWarning(String title, CharSequence message) {
 		Toast.makeText(getContext(), title + ": " + message, Toast.LENGTH_LONG)
 				.show();
 	}
@@ -516,8 +523,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				@Override
 				public void run() {
 					GameState gameState = new GameState(getGame(), getScore(),
-							blackParticipantId, isQuick, true, getRankInfo());
-					byte[] bytes = gameState.toBytes(getHelper());
+							blackParticipantId, isQuick, true, getRankInfo(),
+							getChatMessages(), getNumNewMessages());
+					byte[] bytes = gameState.toBytes(getContext(), getHelper());
 					Games.TurnBasedMultiplayer.takeTurn(getHelper()
 							.getApiClient(), mMatch.getMatchId(), bytes,
 							getMeForChat().getParticipantId());
@@ -551,22 +559,33 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	@Override
 	public void sendHumanMove() {
+		SendMoveFragment sendMove = new SendMoveFragment();
+		sendMove.initialize(this);
+		sendMove.setCancelable(false);
+		sendMove.show(getGameFragment().getChildFragmentManager(), "sendMove");
+	}
+
+	protected void takeTurn() {
 		// store the game, take turn
 		final Game game = getGame();
 		getGameFragment().showStatusText(
-				getOpponentName() + " hasn't seen your move.");
+				getContext().getString(R.string.opponent_hasnt_seen_move,
+						getOpponentName()));
 		updateRankInfo(new Runnable() {
 			@Override
 			public void run() {
 				GameState gameState = new GameState(game, getScore(),
-						blackParticipantId, isQuick, false, getRankInfo());
+						blackParticipantId, isQuick, false, getRankInfo(),
+						getChatMessages(), getNumNewMessages());
 				State state = game.getBoard().getState();
 				if (state.isOver()) {
 					finishGame(gameState, state);
 				} else {
-					byte[] bytes = gameState.toBytes(getHelper());
+					byte[] bytes = gameState.toBytes(getContext(), getHelper());
 					final ProgressDialog progress = ProgressDialog.show(
-							getContext(), "Sending Move", "Please wait");
+							getContext(),
+							getContext().getString(R.string.sending_move),
+							getContext().getString(R.string.please_wait));
 
 					Games.TurnBasedMultiplayer
 							.takeTurn(getHelper().getApiClient(),
@@ -690,7 +709,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		final ProgressDialog progress = ProgressDialog.show(getContext(),
 				"Finishing Move", "Please wait");
 
-		byte[] bytes = gameState.toBytes(getHelper());
+		byte[] bytes = gameState.toBytes(getContext(), getHelper());
 		Games.TurnBasedMultiplayer
 				.finishMatch(getHelper().getApiClient(), mMatch.getMatchId(),
 						bytes, myResult, opponentResult)
@@ -710,6 +729,16 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	public boolean iAmBlackPlayer() {
 		return blackParticipantId.equals(mMyParticipantId);
+	}
+
+	public static Map<String, Participant> getParticipantsById(
+			TurnBasedMatch match) {
+		Map<String, Participant> participantsById = new HashMap<String, Participant>();
+		ArrayList<Participant> mParticipants = match.getParticipants();
+		for (Participant each : mParticipants) {
+			participantsById.put(each.getParticipantId(), each);
+		}
+		return participantsById;
 	}
 
 	@Override
@@ -756,7 +785,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			// ) {
 			// return context.getString(R.string.anonymous);
 			// }
-			if (participant==null) {
+			if (participant == null) {
 				return context.getString(R.string.anonymous);
 			}
 			return participant.getDisplayName();
@@ -770,7 +799,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		}
 	}
 
-	private OpponentWrapper getOpponentParticipant() {
+	public OpponentWrapper getOpponentParticipant() {
 		ArrayList<Participant> mParticipants = mMatch.getParticipants();
 
 		if (!mParticipants.get(0).getParticipantId().equals(mMyParticipantId)) {
@@ -884,15 +913,20 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		public final boolean isQuick;
 		public boolean wasSeen;
 		private TurnRankInfo rankInfo;
+		private List<ChatMessage> messages;
+		private int numNewMessages = 0;
 
 		public GameState(Game game, ScoreCard score, String blackPlayerId,
-				boolean isQuick, boolean wasSeen, TurnRankInfo rankInfo) {
+				boolean isQuick, boolean wasSeen, TurnRankInfo rankInfo,
+				List<ChatMessage> messages, int numNew) {
 			this.game = game;
 			this.score = score;
 			this.blackPlayerId = blackPlayerId;
 			this.isQuick = isQuick;
 			this.wasSeen = wasSeen;
 			this.rankInfo = rankInfo;
+			this.messages = messages;
+			this.numNewMessages = numNew;
 		}
 
 		public RankInfo getRankInfo() {
@@ -903,7 +937,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			this.rankInfo = rankInfo2;
 		}
 
-		public byte[] toBytes(GameHelper helper) {
+		public byte[] toBytes(Context context, GameHelper helper) {
 			ByteBuffer theBuffer = ByteBuffer
 					.allocate(Games.TurnBasedMultiplayer
 							.getMaxMatchDataSize(helper.getApiClient()));
@@ -935,7 +969,24 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 			game.writeBytes(blackPlayerId, buffer);
 
+			buffer.putInt("num messages", messages.size());
+			buffer.putInt("num new messages", numNewMessages);
+
+			for (ChatMessage each : messages) {
+				each.writeToBytes(context, buffer);
+			}
+
 			return theBuffer.array();
+		}
+
+		public static Map<String, Participant> getParticipantsById(
+				TurnBasedMatch match) {
+			Map<String, Participant> participantsById = new HashMap<String, Participant>();
+			ArrayList<Participant> mParticipants = match.getParticipants();
+			for (Participant each : mParticipants) {
+				participantsById.put(each.getParticipantId(), each);
+			}
+			return participantsById;
 		}
 
 		public static GameState fromMatch(Context context, GameHelper helper,
@@ -952,7 +1003,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 			int protocolVersion = buffer.getInt("Protocol version");
 			if (protocolVersion != PROTOCOL_VERSION) {
-				// TODO uh oh...
+				if (protocolVersion == 1) {
+					// doesn't contain chat messages, it is OK
+				}
 			}
 			boolean wasSeen = buffer.get("wasSeen") == 1;
 			boolean isQuick = buffer.get("isQuick") == 1;
@@ -1034,8 +1087,22 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			Game game = Game.fromBytes(blackPlayer, whitePlayer, currentPlayer,
 					buffer);
 
+			List<ChatMessage> messages = new ArrayList<ChatMessage>();
+			int numNewMsgs = 0;
+			if (protocolVersion >= 2) {
+				// read optional messages
+				int numMsgs = buffer.getInt("num messages");
+				numNewMsgs = buffer.getInt("num new messages");
+				for (int i = 0; i < numMsgs; i++) {
+					ChatMessage msg = ChatMessage.fromBytes(context,
+							getParticipantsById(match), buffer);
+					messages.add(msg);
+				}
+			}
+
 			GameState gameState = new GameState(game, score,
-					blackPlayerIdString, isQuick, wasSeen, info);
+					blackPlayerIdString, isQuick, wasSeen, info, messages,
+					numNewMsgs);
 
 			return gameState;
 		}
@@ -1104,6 +1171,18 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 		final GameState state = GameState.fromMatch(getContext(), getHelper(),
 				mMatch);
+		getChatMessages().clear();
+		getChatMessages().addAll(state.messages);
+		setNumNewMessages(0);
+		if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
+			// Need to show the possibly new message
+			if (state.numNewMessages != 0) {
+				showNewMessage = true;
+			}
+		} else {
+			showNewMessage = false;
+		}
+
 		blackParticipantId = state.blackPlayerId;
 		type = state.game.getType();
 		isQuick = state.isQuick;
@@ -1128,7 +1207,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					Games.TurnBasedMultiplayer
 							.takeTurn(getHelper().getApiClient(),
 									mMatch.getMatchId(),
-									state.toBytes(getHelper()),
+									state.toBytes(getContext(), getHelper()),
 									mMyParticipantId)
 							.setResultCallback(
 									new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
@@ -1167,8 +1246,6 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		Log.i("TurnListener",
 				"   showGame - move#" + state.game.getNumberOfMoves());
 
-		// TODO Undo the last move, so it can be reapplied and animated?
-
 		// play winning sound, and animate the move received
 		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
 		gameFragment.startGame(waitingText, showProgress, showMove);
@@ -1181,11 +1258,46 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			return;
 		}
 		if (!state.wasSeen) {
-			gameFragment.showStatusText(getContext().getString(R.string.opponent_hasnt_seen_move, getOpponentName()));
+			gameFragment.showStatusText(getContext().getString(
+					R.string.opponent_hasnt_seen_move, getOpponentName()));
 		} else {
 			if (!showMove) {
-				gameFragment.showStatusText(getContext().getString(R.string.opponent_is_thinking, getOpponentName()));
+				gameFragment.showStatusText(getContext().getString(
+						R.string.opponent_is_thinking, getOpponentName()));
 			}
+		}
+	}
+
+	public void postMove(final Runnable postMove) {
+		if (showNewMessage) {
+			// consume the message
+			showNewMessage = false;
+			AlertDialog.Builder builder = new Builder(getContext());
+			builder.setTitle(getContext().getString(R.string.opponent_says,
+					getOpponentName()));
+			ChatMessage message = getChatMessages().get(
+					getChatMessages().size() - 1);
+			if (message.getParticipant().equals(getMeForChat())) {
+				postMove.run();
+			}
+
+			builder.setMessage(message.getMessage());
+			builder.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					postMove.run();
+				}
+			});
+			builder.setPositiveButton(R.string.ok, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					postMove.run();
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		} else {
+			postMove.run();
 		}
 	}
 

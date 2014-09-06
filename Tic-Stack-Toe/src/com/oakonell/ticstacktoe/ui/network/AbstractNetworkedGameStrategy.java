@@ -125,6 +125,18 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 		}
 	}
 
+	public List<ChatMessage> getChatMessages() {
+		return messages;
+	}
+
+	public int getNumNewMessages() {
+		return numNewMessages;
+	}
+
+	public void setNumNewMessages(int i) {
+		this.numNewMessages = i;
+	}
+
 	public void messageRecieved(Participant opponentParticipant, String string) {
 		messages.add(new ChatMessage(opponentParticipant, string, false, System
 				.currentTimeMillis()));

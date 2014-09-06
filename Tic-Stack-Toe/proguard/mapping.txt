@@ -14092,6 +14092,7 @@ com.oakonell.ticstacktoe.GameStrategy -> com.oakonell.ticstacktoe.u:
     void honeyCombInvalidateMenu() -> y
     void handleMenu() -> w
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.Achievements,com.oakonell.ticstacktoe.GameContext,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.State) -> a
+    void postMove(java.lang.Runnable) -> a
     int[] $SWITCH_TABLE$com$oakonell$ticstacktoe$model$GameMode() -> x
 com.oakonell.ticstacktoe.GameStrategy$1 -> com.oakonell.ticstacktoe.v:
     com.oakonell.ticstacktoe.GameStrategy$OnGameStrategyLoad val$onLoad -> a
@@ -15008,6 +15009,7 @@ com.oakonell.ticstacktoe.R$layout -> com.oakonell.ticstacktoe.R$layout:
     int sherlock_spinner_item -> sherlock_spinner_item
     int simple_game_mode_help_dialog -> simple_game_mode_help_dialog
     int turn_play_again_dialog -> turn_play_again_dialog
+    int turn_send_move_message -> turn_send_move_message
     int tutorial -> tutorial
 com.oakonell.ticstacktoe.R$menu -> com.oakonell.ticstacktoe.R$menu:
     int match_game -> match_game
@@ -15200,6 +15202,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int match_error_locally_modified -> match_error_locally_modified
     int match_removed -> match_removed
     int match_updated -> match_updated
+    int message_hint -> message_hint
     int move_1_hint -> move_1_hint
     int move_1a_text -> move_1a_text
     int move_1b_text -> move_1b_text
@@ -15257,6 +15260,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int player_stat_label -> player_stat_label
     int player_white_lbl -> player_white_lbl
     int player_won -> player_won
+    int please_wait -> please_wait
     int pref__upgrade_to_premium -> pref__upgrade_to_premium
     int pref_about -> pref_about
     int pref_about_key -> pref_about_key
@@ -15302,6 +15306,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int select_opponent -> select_opponent
     int sendMove -> sendMove
     int sendRealTimeMessage -> sendRealTimeMessage
+    int sending_move -> sending_move
     int settings -> settings
     int share -> share
     int shareVia -> shareVia
@@ -16585,6 +16590,9 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     void access$20(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView) -> b
     com.oakonell.utils.activity.dragndrop.ImageDropTarget access$21(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Cell) -> a
     void access$22(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Player,int) -> a
+    void access$23(com.oakonell.ticstacktoe.ui.game.GameFragment) -> k
+    void access$24(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State,boolean) -> b
+    void access$25(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State) -> a
 com.oakonell.ticstacktoe.ui.game.GameFragment$1 -> com.oakonell.ticstacktoe.ui.game.d:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     java.lang.String val$waitingText -> c
@@ -16678,27 +16686,32 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$16 -> com.oakonell.ticstacktoe.ui.
     void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
     void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
     void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
-com.oakonell.ticstacktoe.ui.game.GameFragment$2 -> com.oakonell.ticstacktoe.ui.game.r:
+com.oakonell.ticstacktoe.ui.game.GameFragment$17 -> com.oakonell.ticstacktoe.ui.game.r:
+    com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
+    com.oakonell.ticstacktoe.model.State val$outcome -> b
+    boolean val$playSound -> c
+    void run() -> run
+com.oakonell.ticstacktoe.ui.game.GameFragment$2 -> com.oakonell.ticstacktoe.ui.game.s:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onBackStackChanged() -> onBackStackChanged
-com.oakonell.ticstacktoe.ui.game.GameFragment$3 -> com.oakonell.ticstacktoe.ui.game.s:
+com.oakonell.ticstacktoe.ui.game.GameFragment$3 -> com.oakonell.ticstacktoe.ui.game.t:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$4 -> com.oakonell.ticstacktoe.ui.game.t:
+com.oakonell.ticstacktoe.ui.game.GameFragment$4 -> com.oakonell.ticstacktoe.ui.game.u:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$4$1 -> com.oakonell.ticstacktoe.ui.game.u:
+com.oakonell.ticstacktoe.ui.game.GameFragment$4$1 -> com.oakonell.ticstacktoe.ui.game.v:
     com.oakonell.ticstacktoe.ui.game.GameFragment$4 this$1 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$5 -> com.oakonell.ticstacktoe.ui.game.v:
+com.oakonell.ticstacktoe.ui.game.GameFragment$5 -> com.oakonell.ticstacktoe.ui.game.w:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.view.View val$view -> b
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.game.PieceStackImageView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$6 -> com.oakonell.ticstacktoe.ui.game.w:
+com.oakonell.ticstacktoe.ui.game.GameFragment$6 -> com.oakonell.ticstacktoe.ui.game.x:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.view.View val$view -> b
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.game.x:
+com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.game.y:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView val$stackView -> c
@@ -16708,11 +16721,11 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.g
     void update() -> b
     void access$0(com.oakonell.ticstacktoe.ui.game.GameFragment$7) -> a
     com.oakonell.ticstacktoe.ui.game.GameFragment access$1(com.oakonell.ticstacktoe.ui.game.GameFragment$7) -> b
-com.oakonell.ticstacktoe.ui.game.GameFragment$7$1 -> com.oakonell.ticstacktoe.ui.game.y:
+com.oakonell.ticstacktoe.ui.game.GameFragment$7$1 -> com.oakonell.ticstacktoe.ui.game.z:
     com.oakonell.ticstacktoe.ui.game.GameFragment$7 this$1 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     void run() -> run
-com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.game.z:
+com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.game.aa:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.utils.activity.dragndrop.DragSource val$dragSource -> c
@@ -16720,7 +16733,7 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.g
     int val$stackNum -> e
     boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
     com.oakonell.ticstacktoe.ui.game.GameFragment access$0(com.oakonell.ticstacktoe.ui.game.GameFragment$8) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui.game.aa:
+com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui.game.ab:
     com.oakonell.ticstacktoe.ui.game.GameFragment$8 this$1 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView val$stackView -> c
@@ -16731,27 +16744,27 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui
     int getMovedImageResourceId() -> b
     android.widget.ImageView getSourceView() -> c
     void update() -> d
-com.oakonell.ticstacktoe.ui.game.GameFragment$9 -> com.oakonell.ticstacktoe.ui.game.ab:
+com.oakonell.ticstacktoe.ui.game.GameFragment$9 -> com.oakonell.ticstacktoe.ui.game.ac:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.widget.ImageView val$movingView -> b
     java.lang.Runnable val$runnable -> c
     void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
     void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
     void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
-com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView -> com.oakonell.ticstacktoe.ui.game.ac:
+com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView -> com.oakonell.ticstacktoe.ui.game.ad:
     android.view.View view -> b
-com.oakonell.ticstacktoe.ui.game.GameFragment$OnDropMove -> com.oakonell.ticstacktoe.ui.game.ad:
+com.oakonell.ticstacktoe.ui.game.GameFragment$OnDropMove -> com.oakonell.ticstacktoe.ui.game.ae:
     com.oakonell.ticstacktoe.model.AbstractMove createMove(com.oakonell.ticstacktoe.model.Cell) -> a
     void update() -> d
     android.widget.ImageView getSourceView() -> c
     int getMovedImageResourceId() -> b
     boolean originatedFrom(com.oakonell.ticstacktoe.model.Cell) -> b
     void postMove() -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo -> com.oakonell.ticstacktoe.ui.game.ae:
+com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo -> com.oakonell.ticstacktoe.ui.game.af:
     int boardHeight -> a
     int boardSize -> b
     int pieceStackHeight -> c
-com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstacktoe.ui.game.af:
+com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstacktoe.ui.game.ag:
     com.oakonell.ticstacktoe.ui.game.GameFragment parent -> a
     com.oakonell.ticstacktoe.model.ScoreCard score -> b
     com.oakonell.ticstacktoe.model.Game game -> c
@@ -16761,23 +16774,23 @@ com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstack
     android.app.Dialog onCreateDialog(android.os.Bundle) -> onCreateDialog
     void onCancel(android.content.DialogInterface) -> onCancel
     com.oakonell.ticstacktoe.ui.game.GameFragment access$0(com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment) -> a
-com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment$1 -> com.oakonell.ticstacktoe.ui.game.ag:
+com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment$1 -> com.oakonell.ticstacktoe.ui.game.ah:
     com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.HumanStrategy -> com.oakonell.ticstacktoe.ui.game.ah:
+com.oakonell.ticstacktoe.ui.game.HumanStrategy -> com.oakonell.ticstacktoe.ui.game.ai:
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean) -> a
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean,android.net.Uri) -> a
     android.net.Uri getImage(boolean) -> a
     boolean isHuman() -> a
-com.oakonell.ticstacktoe.ui.game.OnlineStrategy -> com.oakonell.ticstacktoe.ui.game.ai:
+com.oakonell.ticstacktoe.ui.game.OnlineStrategy -> com.oakonell.ticstacktoe.ui.game.aj:
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean,android.net.Uri) -> a
 com.oakonell.ticstacktoe.ui.game.PieceStackImageView -> com.oakonell.ticstacktoe.ui.game.PieceStackImageView:
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent listener -> a
     void onMeasure(int,int) -> onMeasure
     void setOnMeasureDependent(com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent) -> setOnMeasureDependent
-com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.game.aj:
+com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.game.ak:
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.game.PieceStackImageView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.game.ak:
+com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.game.al:
     boolean isRanked -> a
     java.lang.String whiteName -> b
     java.lang.String blackName -> c
@@ -16794,7 +16807,7 @@ com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.
     int getMainLayoutResId() -> b
     void onCreateRankView(android.view.View) -> a
     void updateRanks(short,short,short,short) -> a
-com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.game.al:
+com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.game.am:
     android.media.SoundPool mSoundPool -> a
     java.util.Map mSoundPoolMap -> b
     android.media.AudioManager mAudioManager -> c
@@ -16806,7 +16819,7 @@ com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.gam
     int playSound(java.lang.Object,boolean) -> a
     void release() -> a
     void access$0(com.oakonell.ticstacktoe.ui.game.SoundManager,boolean) -> a
-com.oakonell.ticstacktoe.ui.game.SoundManager$1 -> com.oakonell.ticstacktoe.ui.game.am:
+com.oakonell.ticstacktoe.ui.game.SoundManager$1 -> com.oakonell.ticstacktoe.ui.game.an:
     com.oakonell.ticstacktoe.ui.game.SoundManager this$0 -> a
     java.lang.String val$soundFxPrefKey -> b
     void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
@@ -16822,7 +16835,7 @@ com.oakonell.ticstacktoe.ui.game.WinOverlayView -> com.oakonell.ticstacktoe.ui.g
     void onDraw(android.graphics.Canvas) -> onDraw
     void setBoardSize(int) -> setBoardSize
     int[] $SWITCH_TABLE$com$oakonell$ticstacktoe$ui$game$WinOverlayView$WinStyle() -> b
-com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle -> com.oakonell.ticstacktoe.ui.game.an:
+com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle -> com.oakonell.ticstacktoe.ui.game.ao:
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW1 -> a
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW2 -> b
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW3 -> c
@@ -17644,19 +17657,22 @@ com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy -> com.oakonel
     void setRankInfo(com.oakonell.ticstacktoe.model.RankInfo) -> a
     boolean iAmBlackPlayer() -> y
     boolean onOptionsItemSelected(android.support.v4.app.Fragment,com.actionbarsherlock.view.MenuItem) -> a
-    void openChatDialog() -> E
+    void openChatDialog() -> G
     void onCreateOptionsMenu(android.support.v4.app.Fragment,com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     void inflateMenu(com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     void onPrepareOptionsMenu(android.support.v4.app.Fragment,com.actionbarsherlock.view.Menu) -> a
     void handleMenu() -> w
+    java.util.List getChatMessages() -> z
+    int getNumNewMessages() -> A
+    void setNumNewMessages(int) -> a
     void messageRecieved(com.google.android.gms.games.multiplayer.Participant,java.lang.String) -> a
-    void chatClosed() -> z
-    void opponentInChat() -> A
-    void opponentClosedChat() -> B
+    void chatClosed() -> B
+    void opponentInChat() -> C
+    void opponentClosedChat() -> D
     void sendInChat(boolean) -> a
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> C
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
     void sendMessage(java.lang.String) -> c
-    java.lang.String getOpponentName() -> D
+    java.lang.String getOpponentName() -> F
     void acceptNonHumanPlayerMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> b
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.Achievements,com.oakonell.ticstacktoe.GameContext,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.State) -> a
     void access$0(com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy) -> a
@@ -17705,6 +17721,8 @@ com.oakonell.ticstacktoe.ui.network.ChatMessage -> com.oakonell.ticstacktoe.ui.b
     com.google.android.gms.games.multiplayer.Participant getParticipant() -> b
     boolean isLocal() -> c
     java.lang.CharSequence getTimestamp(android.content.Context) -> a
+    com.oakonell.ticstacktoe.ui.network.ChatMessage fromBytes(android.content.Context,java.util.Map,com.oakonell.ticstacktoe.utils.ByteBufferDebugger) -> a
+    void writeToBytes(android.content.Context,com.oakonell.ticstacktoe.utils.ByteBufferDebugger) -> a
 com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog -> com.oakonell.ticstacktoe.ui.b.j:
     com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog$OnlineGameModeListener listener -> a
     boolean isQuick -> b
@@ -17819,35 +17837,35 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy -> com.oakonel
     void showAlert(java.lang.String) -> e
     void showWaitingRoom(com.google.android.gms.games.multiplayer.realtime.Room) -> f
     void leaveRoom() -> b
-    java.lang.String getOpponentName() -> D
-    com.google.android.gms.games.multiplayer.Participant getOpponentParticipant() -> P
-    java.lang.String getOpponentId() -> E
-    java.lang.String getRoomId() -> F
+    java.lang.String getOpponentName() -> F
+    com.google.android.gms.games.multiplayer.Participant getOpponentParticipant() -> R
+    java.lang.String getOpponentId() -> G
+    java.lang.String getRoomId() -> H
     void backFromWaitingRoom() -> d
-    void sendProtocolVersion() -> Q
+    void sendProtocolVersion() -> S
     void checkWhoIsFirstAndAttemptToStart(boolean) -> c
     void sendHumanMove() -> c
-    void restartGame() -> G
+    void restartGame() -> I
     void receivePlayAgain(boolean) -> d
-    com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy$PlayAgainState getOpponentPlayAgainState() -> H
+    com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy$PlayAgainState getOpponentPlayAgainState() -> J
     void sendPlayAgain(java.lang.Runnable,java.lang.Runnable) -> a
     void sendNotPlayAgain(java.lang.Runnable,java.lang.Runnable) -> b
     void sendPlayAgain(boolean,java.lang.Runnable,java.lang.Runnable) -> a
     void sendMessage(java.lang.String) -> c
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> C
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
     void sendInChat(boolean) -> a
     boolean warnToLeave() -> e
     void promptToPlayAgain(java.lang.String,java.lang.String) -> a
-    void conditionallyUpdateRanks() -> R
+    void conditionallyUpdateRanks() -> T
     void updatePlayAgainOpponentRank(short) -> b
     void updateRanks(com.oakonell.ticstacktoe.ui.local.AiGameStrategy$PostRankUpdate) -> a
     void sendPlayAgainRank(short) -> c
-    void opponentWillPlayAgain() -> I
-    void opponentWillNotPlayAgain() -> J
-    void playAgainClosed() -> K
-    void opponentLeft() -> L
-    void leaveGame() -> M
-    void playAgain() -> N
+    void opponentWillPlayAgain() -> K
+    void opponentWillNotPlayAgain() -> L
+    void playAgainClosed() -> M
+    void opponentLeft() -> N
+    void leaveGame() -> O
+    void playAgain() -> P
     void sendRank(short) -> d
     void onSignInSuccess(com.oakonell.ticstacktoe.MainActivity) -> a
     void onActivityResume(com.oakonell.ticstacktoe.MainActivity) -> c
@@ -17857,7 +17875,7 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy -> com.oakonel
     void onlineMoveReceived(com.oakonell.ticstacktoe.utils.ByteBufferDebugger) -> a
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
     java.lang.String getMatchId() -> r
-    boolean isRanked() -> O
+    boolean isRanked() -> Q
     boolean iAmBlackPlayer() -> y
     void access$0(com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy,short) -> a
     void access$1(com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy,com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.model.RankInfo) -> a
@@ -17955,7 +17973,17 @@ com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo -> com.oakonell.ticstac
 com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo$1 -> com.oakonell.ticstacktoe.ui.b.b.b:
     com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo this$0 -> a
     void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakonell.ticstacktoe.ui.b.b.c:
+com.oakonell.ticstacktoe.ui.network.turn.SendMoveFragment -> com.oakonell.ticstacktoe.ui.b.b.c:
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy turnStrategy -> a
+    void initialize(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> a
+    android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
+    void setTitle(android.view.View,java.lang.String) -> a
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy access$0(com.oakonell.ticstacktoe.ui.network.turn.SendMoveFragment) -> a
+com.oakonell.ticstacktoe.ui.network.turn.SendMoveFragment$1 -> com.oakonell.ticstacktoe.ui.b.b.d:
+    com.oakonell.ticstacktoe.ui.network.turn.SendMoveFragment this$0 -> a
+    android.widget.TextView val$message -> b
+    void onClick(android.view.View) -> onClick
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakonell.ticstacktoe.ui.b.b.e:
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch mMatch -> d
     java.lang.String mMyParticipantId -> e
     com.oakonell.ticstacktoe.model.GameType type -> f
@@ -17965,25 +17993,26 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     java.lang.String blackParticipantId -> j
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment playAgainDialog -> a
     java.lang.Runnable onResume -> b
+    boolean showNewMessage -> k
     java.lang.String rematchId -> c
-    boolean alreadyLoadingRematch -> k
-    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo getRankInfo() -> E
+    boolean alreadyLoadingRematch -> l
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo getRankInfo() -> G
     void setRankInfo(com.oakonell.ticstacktoe.model.RankInfo) -> a
     void inflateMenu(com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     boolean onOptionsItemSelected(android.support.v4.app.Fragment,com.actionbarsherlock.view.MenuItem) -> a
-    void registerThisAsMatchListener() -> I
+    void registerThisAsMatchListener() -> M
     void onSignInFailed(com.actionbarsherlock.app.SherlockFragmentActivity) -> a
     void onSignInSuccess(com.oakonell.ticstacktoe.MainActivity) -> a
-    void refreshMatch() -> J
+    void refreshMatch() -> N
     void onTurnBasedMatchInitiated(int,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
     void showOrStartMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> c
-    void showFromMenu() -> F
+    void showFromMenu() -> H
     void startMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> d
     void startGame(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo) -> a
     void onTurnBasedMatchUpdated(int,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> b
     void acceptInvite(java.lang.String) -> d
     void onInvitationReceived(com.google.android.gms.games.multiplayer.Invitation) -> a
-    void playAgainClosed() -> G
+    void playAgainClosed() -> I
     void openPlayAgain(com.oakonell.ticstacktoe.ui.game.GameFragment,java.lang.String) -> a
     void onInvitationRemoved(java.lang.String) -> a
     void onTurnBasedMatchReceived(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
@@ -17991,20 +18020,22 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     boolean checkStatusCode(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,int) -> a
     void showErrorMessage(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,int,int) -> a
     void showErrorMessage(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,int,java.lang.String) -> a
-    void showWarning(java.lang.String,java.lang.String) -> b
+    void showWarning(java.lang.String,java.lang.CharSequence) -> a
     void leaveRoom() -> b
-    void updateRankInfo(java.lang.Runnable) -> a
+    void updateRankInfo(java.lang.Runnable) -> b
     void sendHumanMove() -> c
+    void takeTurn() -> J
     void finishGame(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> b
     void finishGame2(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> a
     boolean iAmBlackPlayer() -> y
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> C
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper getOpponentParticipant() -> K
-    java.lang.String getOpponentName() -> D
+    java.lang.String getOpponentName() -> F
     void backFromWaitingRoom() -> d
-    void rematch() -> H
+    void rematch() -> L
     void updateMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> b
     void showGame() -> s
+    void postMove(java.lang.Runnable) -> a
     void handleGameOver(int,int,com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState) -> a
     boolean completeMatch(int,int) -> a
     void lookForInviteForRematch(java.lang.String,java.lang.String,java.lang.String) -> a
@@ -18027,123 +18058,135 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     boolean access$5(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> c
     void access$6(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> d
     java.lang.String access$7(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> e
-    com.oakonell.ticstacktoe.googleapi.GameHelper access$8(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> f
-    com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch access$9(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> g
-    void access$10(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> a
-    android.content.Context access$11(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> h
-    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper access$12(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> i
-    java.lang.String access$13(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> j
-    void access$14(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.String) -> a
-    void access$15(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,boolean) -> a
-    void access$16(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,com.oakonell.ticstacktoe.ui.game.GameFragment,java.lang.String) -> a
-    void access$17(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.String,java.util.List,com.google.android.gms.games.multiplayer.InvitationBuffer) -> a
-    void access$18(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.String,java.lang.String) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$1 -> com.oakonell.ticstacktoe.ui.b.b.d:
+    android.content.Context access$8(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> f
+    com.oakonell.ticstacktoe.googleapi.GameHelper access$9(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> g
+    com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch access$10(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> h
+    void access$11(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> a
+    java.lang.String access$12(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> i
+    void access$13(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.CharSequence) -> a
+    void access$14(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,boolean) -> a
+    void access$15(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,com.oakonell.ticstacktoe.ui.game.GameFragment,java.lang.String) -> a
+    void access$16(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.String,java.util.List,com.google.android.gms.games.multiplayer.InvitationBuffer) -> a
+    void access$17(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,java.lang.String,java.lang.String,java.lang.String) -> a
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$1 -> com.oakonell.ticstacktoe.ui.b.b.f:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$10 -> com.oakonell.ticstacktoe.ui.b.b.e:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$10 -> com.oakonell.ticstacktoe.ui.b.b.g:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     android.app.ProgressDialog val$progress -> b
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$11 -> com.oakonell.ticstacktoe.ui.b.b.f:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$11 -> com.oakonell.ticstacktoe.ui.b.b.h:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     android.app.ProgressDialog val$progress -> b
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$InitiateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12 -> com.oakonell.ticstacktoe.ui.b.b.g:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12 -> com.oakonell.ticstacktoe.ui.b.b.i:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState val$state -> b
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12$1 -> com.oakonell.ticstacktoe.ui.b.b.h:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12$1 -> com.oakonell.ticstacktoe.ui.b.b.j:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12 this$1 -> a
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$13 -> com.oakonell.ticstacktoe.ui.b.b.i:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$13 -> com.oakonell.ticstacktoe.ui.b.b.k:
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
+    java.lang.Runnable val$postMove -> b
+    void onCancel(android.content.DialogInterface) -> onCancel
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$14 -> com.oakonell.ticstacktoe.ui.b.b.l:
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
+    java.lang.Runnable val$postMove -> b
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$15 -> com.oakonell.ticstacktoe.ui.b.b.m:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$14 -> com.oakonell.ticstacktoe.ui.b.b.j:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$16 -> com.oakonell.ticstacktoe.ui.b.b.n:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     java.lang.String val$winner -> b
     java.lang.String val$title -> c
     java.lang.String val$rematchId -> d
     void onResult(com.google.android.gms.games.multiplayer.Invitations$LoadInvitationsResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$15 -> com.oakonell.ticstacktoe.ui.b.b.k:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$17 -> com.oakonell.ticstacktoe.ui.b.b.o:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     java.lang.String val$winner -> b
     java.lang.String val$title -> c
     java.lang.String val$rematchId -> d
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$LoadMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$16 -> com.oakonell.ticstacktoe.ui.b.b.l:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$18 -> com.oakonell.ticstacktoe.ui.b.b.p:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$2 -> com.oakonell.ticstacktoe.ui.b.b.m:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$2 -> com.oakonell.ticstacktoe.ui.b.b.q:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$LoadMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$3 -> com.oakonell.ticstacktoe.ui.b.b.n:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$3 -> com.oakonell.ticstacktoe.ui.b.b.r:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch val$match -> b
     com.oakonell.ticstacktoe.model.Player val$theBlackPlayer -> c
     com.oakonell.ticstacktoe.model.Player val$theWhitePlayer -> d
     com.oakonell.ticstacktoe.model.ScoreCard val$theScore -> e
     void onRankInfoUpdated(com.oakonell.ticstacktoe.model.RankInfo) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$4 -> com.oakonell.ticstacktoe.ui.b.b.o:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$4 -> com.oakonell.ticstacktoe.ui.b.b.s:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$5 -> com.oakonell.ticstacktoe.ui.b.b.p:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$5 -> com.oakonell.ticstacktoe.ui.b.b.t:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     com.oakonell.ticstacktoe.ui.game.GameFragment val$fragment -> b
     void run() -> run
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$6 -> com.oakonell.ticstacktoe.ui.b.b.q:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$6 -> com.oakonell.ticstacktoe.ui.b.b.u:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void run() -> run
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$7 -> com.oakonell.ticstacktoe.ui.b.b.r:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$7 -> com.oakonell.ticstacktoe.ui.b.b.v:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     java.lang.Runnable val$runnable -> b
     void receivedRank(com.oakonell.ticstacktoe.model.rank.RankStorage) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8 -> com.oakonell.ticstacktoe.ui.b.b.s:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8 -> com.oakonell.ticstacktoe.ui.b.b.w:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     com.oakonell.ticstacktoe.model.Game val$game -> b
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8$1 -> com.oakonell.ticstacktoe.ui.b.b.t:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8$1 -> com.oakonell.ticstacktoe.ui.b.b.x:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$8 this$1 -> a
     android.app.ProgressDialog val$progress -> b
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$9 -> com.oakonell.ticstacktoe.ui.b.b.u:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$9 -> com.oakonell.ticstacktoe.ui.b.b.y:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo val$rankInfo -> b
     com.oakonell.ticstacktoe.model.rank.GameOutcome val$theOutcome -> c
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState val$gameState -> d
     com.oakonell.ticstacktoe.model.State val$state -> e
     void onRankUpdated(short,short) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState -> com.oakonell.ticstacktoe.ui.b.b.v:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState -> com.oakonell.ticstacktoe.ui.b.b.z:
     com.oakonell.ticstacktoe.model.Game game -> a
     com.oakonell.ticstacktoe.model.ScoreCard score -> b
     java.lang.String blackPlayerId -> c
     boolean isQuick -> d
     boolean wasSeen -> e
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo rankInfo -> f
+    java.util.List messages -> g
+    int numNewMessages -> h
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> a
     void setRankInfo(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo) -> a
-    byte[] toBytes(com.oakonell.ticstacktoe.googleapi.GameHelper) -> a
+    byte[] toBytes(android.content.Context,com.oakonell.ticstacktoe.googleapi.GameHelper) -> a
+    java.util.Map getParticipantsById(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState fromMatch(android.content.Context,com.oakonell.ticstacktoe.googleapi.GameHelper,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState fromBytes(android.content.Context,com.oakonell.ticstacktoe.googleapi.GameHelper,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,byte[],boolean) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper -> com.oakonell.ticstacktoe.ui.b.b.w:
+    java.util.List access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState) -> a
+    int access$1(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState) -> b
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper -> com.oakonell.ticstacktoe.ui.b.b.aa:
     com.google.android.gms.games.multiplayer.Participant participant -> a
     boolean isQuick -> b
     java.lang.String getParticipantId() -> a
     android.net.Uri getIconImageUri() -> b
     java.lang.String getDisplayName(android.content.Context) -> a
     java.lang.Object getActualDisplayName(android.content.Context) -> b
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo -> com.oakonell.ticstacktoe.ui.b.b.x:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo -> com.oakonell.ticstacktoe.ui.b.b.ab:
     short newBlackRank -> a
     short newWhiteRank -> b
     boolean blackCalculated -> c
@@ -18156,7 +18199,7 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo
     void access$3(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo,short) -> b
     void access$4(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo,boolean) -> a
     void access$5(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo,boolean) -> b
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo -> com.oakonell.ticstacktoe.ui.b.b.y:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo -> com.oakonell.ticstacktoe.ui.b.b.ac:
     java.lang.String text -> b
     java.lang.CharSequence subtext -> c
     java.lang.String updatedtext -> d
@@ -18180,19 +18223,19 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo -> com.oakonell.tics
     void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
     com.oakonell.ticstacktoe.googleapi.GameHelper access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> a
     java.lang.String access$1(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> b
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1 -> com.oakonell.ticstacktoe.ui.b.b.z:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1 -> com.oakonell.ticstacktoe.ui.b.b.ad:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo this$0 -> a
     void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1$1 -> com.oakonell.ticstacktoe.ui.b.b.aa:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1$1 -> com.oakonell.ticstacktoe.ui.b.b.ae:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1 this$1 -> a
     com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> b
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$InitiateMatchResult) -> a
     void onResult(com.google.android.gms.common.api.Result) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$2 -> com.oakonell.ticstacktoe.ui.b.b.ab:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$2 -> com.oakonell.ticstacktoe.ui.b.b.af:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo this$0 -> a
     void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment -> com.oakonell.ticstacktoe.ui.b.b.ac:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment -> com.oakonell.ticstacktoe.ui.b.b.ag:
     java.lang.String opponentName -> a
     java.lang.String winnerName -> b
     android.widget.ProgressBar waiting -> c
@@ -18221,45 +18264,45 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment -> com.oakon
     android.widget.TextView access$7(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment) -> g
     android.widget.ImageView access$8(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment) -> h
     android.widget.ProgressBar access$9(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment) -> i
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1 -> com.oakonell.ticstacktoe.ui.b.b.ad:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1 -> com.oakonell.ticstacktoe.ui.b.b.ah:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment this$0 -> a
     java.lang.String val$invitationId -> b
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1$1 -> com.oakonell.ticstacktoe.ui.b.b.ae:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1$1 -> com.oakonell.ticstacktoe.ui.b.b.ai:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1 this$1 -> a
     java.lang.String val$invitationId -> b
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1$2 -> com.oakonell.ticstacktoe.ui.b.b.af:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1$2 -> com.oakonell.ticstacktoe.ui.b.b.aj:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$1 this$1 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2 -> com.oakonell.ticstacktoe.ui.b.b.ag:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2 -> com.oakonell.ticstacktoe.ui.b.b.ak:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment this$0 -> a
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2$1 -> com.oakonell.ticstacktoe.ui.b.b.ah:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2$1 -> com.oakonell.ticstacktoe.ui.b.b.al:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$2 this$1 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3 -> com.oakonell.ticstacktoe.ui.b.b.ai:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3 -> com.oakonell.ticstacktoe.ui.b.b.am:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment this$0 -> a
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch val$match -> b
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3$1 -> com.oakonell.ticstacktoe.ui.b.b.aj:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3$1 -> com.oakonell.ticstacktoe.ui.b.b.an:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3 this$1 -> a
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch val$match -> b
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3$2 -> com.oakonell.ticstacktoe.ui.b.b.ak:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3$2 -> com.oakonell.ticstacktoe.ui.b.b.ao:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$3 this$1 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4 -> com.oakonell.ticstacktoe.ui.b.b.al:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4 -> com.oakonell.ticstacktoe.ui.b.b.ap:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment this$0 -> a
     void run() -> run
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4) -> a
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4$1 -> com.oakonell.ticstacktoe.ui.b.b.am:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4$1 -> com.oakonell.ticstacktoe.ui.b.b.aq:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4 this$1 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4$2 -> com.oakonell.ticstacktoe.ui.b.b.an:
+com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4$2 -> com.oakonell.ticstacktoe.ui.b.b.ar:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment$4 this$1 -> a
     void onClick(android.view.View) -> onClick
 com.oakonell.ticstacktoe.utils.BillingHelper -> com.oakonell.ticstacktoe.d.a:

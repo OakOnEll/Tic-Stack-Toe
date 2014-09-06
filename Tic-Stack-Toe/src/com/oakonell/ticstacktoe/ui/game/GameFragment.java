@@ -1626,15 +1626,22 @@ public class GameFragment extends AbstractGameFragment {
 		return animatorImage;
 	}
 
-	private void postMove(State outcome, boolean playSound) {
-		if (outcome.isOver()) {
-			updateGameStatDisplay();
-			endGame(outcome, playSound);
-		} else {
-			evaluateInGameAchievements(outcome);
-			updateHeader(getView());
-			getGameStrategy().acceptMove();
-		}
+	private void postMove(final State outcome, final boolean playSound) {
+		Runnable postMove = new Runnable() {
+
+			@Override
+			public void run() {
+				if (outcome.isOver()) {
+					updateGameStatDisplay();
+					endGame(outcome, playSound);
+				} else {
+					evaluateInGameAchievements(outcome);
+					updateHeader(getView());
+					getGameStrategy().acceptMove();
+				}
+			}			
+		};
+		getGameStrategy().postMove(postMove);
 	}
 
 	private void endGame(State outcome, boolean playSound) {

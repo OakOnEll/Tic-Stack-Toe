@@ -7081,6 +7081,7 @@ com.oakonell.ticstacktoe.R$layout: int sherlock_spinner_dropdown_item
 com.oakonell.ticstacktoe.R$layout: int sherlock_spinner_item
 com.oakonell.ticstacktoe.R$layout: int simple_game_mode_help_dialog
 com.oakonell.ticstacktoe.R$layout: int turn_play_again_dialog
+com.oakonell.ticstacktoe.R$layout: int turn_send_move_message
 com.oakonell.ticstacktoe.R$layout: int tutorial
 com.oakonell.ticstacktoe.R$menu
 com.oakonell.ticstacktoe.R$menu: int match_game
@@ -7273,6 +7274,7 @@ com.oakonell.ticstacktoe.R$string: int match_error_inactive_match
 com.oakonell.ticstacktoe.R$string: int match_error_locally_modified
 com.oakonell.ticstacktoe.R$string: int match_removed
 com.oakonell.ticstacktoe.R$string: int match_updated
+com.oakonell.ticstacktoe.R$string: int message_hint
 com.oakonell.ticstacktoe.R$string: int move_1_hint
 com.oakonell.ticstacktoe.R$string: int move_1a_text
 com.oakonell.ticstacktoe.R$string: int move_1b_text
@@ -7330,6 +7332,7 @@ com.oakonell.ticstacktoe.R$string: int player_black_lbl
 com.oakonell.ticstacktoe.R$string: int player_stat_label
 com.oakonell.ticstacktoe.R$string: int player_white_lbl
 com.oakonell.ticstacktoe.R$string: int player_won
+com.oakonell.ticstacktoe.R$string: int please_wait
 com.oakonell.ticstacktoe.R$string: int pref__upgrade_to_premium
 com.oakonell.ticstacktoe.R$string: int pref_about
 com.oakonell.ticstacktoe.R$string: int pref_about_key
@@ -7375,6 +7378,7 @@ com.oakonell.ticstacktoe.R$string: int remove_ads
 com.oakonell.ticstacktoe.R$string: int select_opponent
 com.oakonell.ticstacktoe.R$string: int sendMove
 com.oakonell.ticstacktoe.R$string: int sendRealTimeMessage
+com.oakonell.ticstacktoe.R$string: int sending_move
 com.oakonell.ticstacktoe.R$string: int settings
 com.oakonell.ticstacktoe.R$string: int share
 com.oakonell.ticstacktoe.R$string: int shareVia

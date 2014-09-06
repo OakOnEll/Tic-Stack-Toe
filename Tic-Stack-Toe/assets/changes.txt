@@ -1,3 +1,6 @@
+1.2
+====
+Added messaging feature for turn-based games
 1.1
 ====
 Fixed some info displays   

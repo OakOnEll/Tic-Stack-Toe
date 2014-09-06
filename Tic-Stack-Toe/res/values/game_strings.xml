@@ -77,5 +77,13 @@
     <string name="rematch_awaiting_move_from">Rematch requested, awaiting a move from %s</string>
     <string name="reconnecting">Reconnecting...</string>
     <string name="opponent_hasnt_seen_move">%s hasn\'t seen your move.</string>
-
-</resources>
+    <string name="sending_move">Sending Move</string>
+    <string name="please_wait">Please wait.</string>
+    <string name="message_hint">Message</string>
+    <string name="send_move_message">Send Move</string>
+    <string name="opponent_says">%s says</string>
+    <string name="accept">Accept</string>
+    <string name="not_right_now">Not right now.</string>
+    <string name="opponent_invited_to_rematch">%s has invited you to a rematch.</string>
+    <string name="accept_invitation">Accept the invitation?</string>
+    </resources>

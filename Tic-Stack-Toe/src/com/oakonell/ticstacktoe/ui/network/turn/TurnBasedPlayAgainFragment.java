@@ -58,7 +58,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 			public void run() {
 				configure = null;
 
-				positiveButton.setText("Accept");
+				positiveButton.setText(getString(R.string.accept));
 				positiveButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -67,7 +67,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 					}
 				});
 				negativeButton.setVisibility(View.VISIBLE);
-				negativeButton.setText("Not right now.");
+				negativeButton.setText(getString(R.string.not_right_now));
 				negativeButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -75,9 +75,10 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 					}
 				});
 
-				opponentPlayAgainTitle.setText(opponentName
-						+ " has invited you to a rematch.");
-				opponentPlayAgainText.setText("Accept the invitation?");
+				opponentPlayAgainTitle.setText(getString(
+						R.string.opponent_invited_to_rematch, opponentName));
+				opponentPlayAgainText
+						.setText(getString(R.string.accept_invitation));
 				opponentPlayAgainImageView
 						.setImageResource(R.drawable.check_icon_835);
 				waiting.setVisibility(View.GONE);
@@ -94,7 +95,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 			public void run() {
 				configure = null;
 
-				positiveButton.setText("Cancel");
+				positiveButton.setText(getString(R.string.cancel));
 				positiveButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -130,7 +131,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 					}
 				});
 				negativeButton.setVisibility(View.VISIBLE);
-				negativeButton.setText("Not right now.");
+				negativeButton.setText(getString(R.string.not_right_now));
 				negativeButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -168,7 +169,7 @@ public class TurnBasedPlayAgainFragment extends RankedPlayAgain {
 
 				});
 				negativeButton.setVisibility(View.VISIBLE);
-				negativeButton.setText("Not right now.");
+				negativeButton.setText(getString(R.string.not_right_now));
 				negativeButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {

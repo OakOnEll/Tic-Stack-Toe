@@ -3359,6 +3359,7 @@ com.oakonell.ticstacktoe.ui.menu.StartAGameFragment:
     private static final java.lang.String TAG
 com.oakonell.ticstacktoe.ui.network.OnlineGameModeDialog:
     public static final java.lang.String SELECT_PLAYER_INTENT_KEY
+com.oakonell.ticstacktoe.ui.network.ParticipantById
 com.oakonell.ticstacktoe.ui.network.realtime.OnlinePlayAgainFragment:
     45:45:protected void continueCreateView(android.view.ViewGroup,android.os.Bundle)
 com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy:
@@ -3380,7 +3381,8 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy:
     private static final int TOAST_DELAY
     private static final java.lang.String TAG
     private static final int PROTOCOL_VERSION
-    1465:1468:public void onFragmentResume()
+    735:740:public static java.util.Map getParticipantsById(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch)
+    1566:1569:public void onFragmentResume()
 com.oakonell.ticstacktoe.utils.BillingHelper:
     public static final java.lang.String SKU_PREMIUM
     private static final java.lang.String TAG

@@ -432,4 +432,8 @@ public abstract class GameStrategy {
 			GameContext gameContext2, Game game2, State outcome) {
 		// do nothing- subclasses override
 	}
+
+	public void postMove(Runnable postMove) {
+		postMove.run();		
+	}
 }
