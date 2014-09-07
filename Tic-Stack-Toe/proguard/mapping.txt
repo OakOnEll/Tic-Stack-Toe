@@ -15045,6 +15045,8 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int abs__searchview_description_voice -> abs__searchview_description_voice
     int abs__shareactionprovider_share_with -> abs__shareactionprovider_share_with
     int abs__shareactionprovider_share_with_application -> abs__shareactionprovider_share_with_application
+    int accept -> accept
+    int accept_invitation -> accept_invitation
     int account_settings -> account_settings
     int achievement_beat_a_friend_at_junior -> achievement_beat_a_friend_at_junior
     int achievement_beat_a_friend_at_junior_label -> achievement_beat_a_friend_at_junior_label
@@ -15229,6 +15231,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int no -> no
     int no_peek_header -> no_peek_header
     int no_peek_text -> no_peek_text
+    int not_right_now -> not_right_now
     int num_games_lbl -> num_games_lbl
     int num_move_lbl -> num_move_lbl
     int num_picker_add_sign -> num_picker_add_sign
@@ -15242,9 +15245,11 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int opponent -> opponent
     int opponent_does_not_want_to_play_again -> opponent_does_not_want_to_play_again
     int opponent_hasnt_seen_move -> opponent_hasnt_seen_move
+    int opponent_invited_to_rematch -> opponent_invited_to_rematch
     int opponent_is_in_chat -> opponent_is_in_chat
     int opponent_is_thinking -> opponent_is_thinking
     int opponent_left_exit_play_again -> opponent_left_exit_play_again
+    int opponent_says -> opponent_says
     int opponent_thinking -> opponent_thinking
     int opponent_wants_to_play_again -> opponent_wants_to_play_again
     int opponent_won -> opponent_won
@@ -15306,6 +15311,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int select_opponent -> select_opponent
     int sendMove -> sendMove
     int sendRealTimeMessage -> sendRealTimeMessage
+    int send_move_message -> send_move_message
     int sending_move -> sending_move
     int settings -> settings
     int share -> share

@@ -7117,6 +7117,8 @@ com.oakonell.ticstacktoe.R$string: int abs__searchview_description_submit
 com.oakonell.ticstacktoe.R$string: int abs__searchview_description_voice
 com.oakonell.ticstacktoe.R$string: int abs__shareactionprovider_share_with
 com.oakonell.ticstacktoe.R$string: int abs__shareactionprovider_share_with_application
+com.oakonell.ticstacktoe.R$string: int accept
+com.oakonell.ticstacktoe.R$string: int accept_invitation
 com.oakonell.ticstacktoe.R$string: int account_settings
 com.oakonell.ticstacktoe.R$string: int achievement_beat_a_friend_at_junior
 com.oakonell.ticstacktoe.R$string: int achievement_beat_a_friend_at_junior_label
@@ -7301,6 +7303,7 @@ com.oakonell.ticstacktoe.R$string: int new_quick_game
 com.oakonell.ticstacktoe.R$string: int no
 com.oakonell.ticstacktoe.R$string: int no_peek_header
 com.oakonell.ticstacktoe.R$string: int no_peek_text
+com.oakonell.ticstacktoe.R$string: int not_right_now
 com.oakonell.ticstacktoe.R$string: int num_games_lbl
 com.oakonell.ticstacktoe.R$string: int num_move_lbl
 com.oakonell.ticstacktoe.R$string: int num_picker_add_sign
@@ -7314,9 +7317,11 @@ com.oakonell.ticstacktoe.R$string: int online_setting_title
 com.oakonell.ticstacktoe.R$string: int opponent
 com.oakonell.ticstacktoe.R$string: int opponent_does_not_want_to_play_again
 com.oakonell.ticstacktoe.R$string: int opponent_hasnt_seen_move
+com.oakonell.ticstacktoe.R$string: int opponent_invited_to_rematch
 com.oakonell.ticstacktoe.R$string: int opponent_is_in_chat
 com.oakonell.ticstacktoe.R$string: int opponent_is_thinking
 com.oakonell.ticstacktoe.R$string: int opponent_left_exit_play_again
+com.oakonell.ticstacktoe.R$string: int opponent_says
 com.oakonell.ticstacktoe.R$string: int opponent_thinking
 com.oakonell.ticstacktoe.R$string: int opponent_wants_to_play_again
 com.oakonell.ticstacktoe.R$string: int opponent_won
@@ -7378,6 +7383,7 @@ com.oakonell.ticstacktoe.R$string: int remove_ads
 com.oakonell.ticstacktoe.R$string: int select_opponent
 com.oakonell.ticstacktoe.R$string: int sendMove
 com.oakonell.ticstacktoe.R$string: int sendRealTimeMessage
+com.oakonell.ticstacktoe.R$string: int send_move_message
 com.oakonell.ticstacktoe.R$string: int sending_move
 com.oakonell.ticstacktoe.R$string: int settings
 com.oakonell.ticstacktoe.R$string: int share
