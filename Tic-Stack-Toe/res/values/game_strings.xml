@@ -86,4 +86,7 @@
     <string name="not_right_now">Not right now.</string>
     <string name="opponent_invited_to_rematch">%s has invited you to a rematch.</string>
     <string name="accept_invitation">Accept the invitation?</string>
+    <string name="finishing_move">Finishing Move</string>
+    <string name="start_a_new_match">Starting a new match</string>
+    <string name="starting_rematch">Starting rematch</string>
     </resources>

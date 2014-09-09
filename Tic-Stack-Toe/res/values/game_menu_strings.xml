@@ -76,4 +76,5 @@
     <string name="local_completed_match_text">Finished %s</string>
     <string name="local_played_last_text">Played %s</string>
     <string name="expired_game">Expired game with %s</string>
+    <string name="canceled_game">Canceled game with %s</string>
 </resources>

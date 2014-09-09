@@ -4,10 +4,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -107,12 +110,24 @@ public class ChatDialogFragment extends SherlockDialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().setBackgroundDrawable(
+				new ColorDrawable(Color.TRANSPARENT));
+		
 		View view = inflater.inflate(R.layout.chat_dialog, container, false);
-		getDialog().setTitle(
-				getResources().getString(R.string.chat_title, friendName));
+		String title = getResources().getString(R.string.chat_title, friendName);
+		getDialog().setTitle(				title);
+		TextView titleView = (TextView) view.findViewById(R.id.title);
+		titleView.setText(title);
 
 		ListView messagesView = (ListView) view.findViewById(R.id.messages);
 		final TextView messageView = (TextView) view.findViewById(R.id.message);
+
+		View sendGroup = view.findViewById(R.id.message_send_group);
+
+		if (!strategy.supportsSendMessage()) {
+			sendGroup.setVisibility(View.GONE);
+		}
 
 		adapter = new MessagesAdapter(parent, R.id.messages, messages);
 		messagesView.setAdapter(adapter);

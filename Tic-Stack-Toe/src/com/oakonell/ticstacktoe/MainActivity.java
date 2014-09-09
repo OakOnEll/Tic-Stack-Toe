@@ -326,7 +326,9 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 		// if we received an invite via notification, accept it; otherwise, go
 		// to main screen
 		String invitationId = getInvitationId();
-		if (invitationId != null) {
+		if (invitationId != null) {			
+			// consume the invitation
+			mHelper.clearInvitation();
 			getMenuFragment().acceptInviteToRoom(invitationId);
 			return;
 		}

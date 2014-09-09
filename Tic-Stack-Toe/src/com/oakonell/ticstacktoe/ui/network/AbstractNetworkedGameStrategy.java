@@ -200,4 +200,8 @@ public abstract class AbstractNetworkedGameStrategy extends GameStrategy {
 				outcome);
 	}
 
+	public boolean supportsSendMessage() {
+		return true;
+	}
+
 }

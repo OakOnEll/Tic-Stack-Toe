@@ -2,16 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog"
     android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_include"
+        layout="@layout/dialog_title_layout" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
+        android:layout_below="@id/title_include"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="30dp"
         android:orientation="vertical" >
 
         <ListView
@@ -23,12 +28,15 @@
             android:transcriptMode="alwaysScroll" >
         </ListView>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="@color/abs__background_holo_dark" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/line" />
 
         <LinearLayout
+            android:id="@+id/message_send_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -43,6 +51,7 @@
 
             <Button
                 android:id="@+id/send"
+                style="@style/dark_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -51,16 +60,16 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:contentDescription="close chat"
+    <ImageButton
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="-8dp"
-        android:layout_marginTop="-8dp"
-        android:src="@android:drawable/ic_delete" />
+        android:background="@android:color/transparent"
+        android:contentDescription="close chat"
+        android:scaleType="fitCenter"
+        android:src="@drawable/minimize_tutorial_arrow" />
 
 </RelativeLayout>

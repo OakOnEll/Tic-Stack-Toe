@@ -42,7 +42,8 @@ public class ChatMessage {
 	}
 
 	public static ChatMessage fromBytes(Context context,
-			Map<String, Participant> participantsById, ByteBufferDebugger buffer) {
+			Map<String, Participant> participantsById, String localId,
+			ByteBufferDebugger buffer) {
 		boolean isLocal = buffer.getInt("isLocal") != 0;
 		int msgSize = buffer.getInt("message size");
 		byte[] msgBytes = new byte[msgSize];
@@ -71,6 +72,7 @@ public class ChatMessage {
 			throw new RuntimeException("Could not find participant with id '"
 					+ id + "'");
 		}
+		isLocal = id.equals(localId);
 
 		return new ChatMessage(player, message, isLocal, timestamp);
 	}

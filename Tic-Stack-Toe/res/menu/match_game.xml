@@ -6,24 +6,22 @@
         android:icon="@android:drawable/ic_menu_rotate"
         android:orderInCategory="101"
         android:showAsAction="always"
-        android:title="@string/action_refresh"/>
+        android:title="@string/action_refresh"/>
     -->
-    <!--
-     Remove the chat option for now
-     <item
+<!--      Remove the chat option for now? -->
+    <item
         android:id="@+id/action_chat"
         android:actionLayout="@layout/chat_menu_badge"
         android:icon="@android:drawable/ic_menu_call"
-        android:orderInCategory="102"
+        android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_chat"/>
-    -->
     <item
         android:id="@+id/action_help"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_help"
-		android:title="@string/action_help"/>
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_help"/>
     <item
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"

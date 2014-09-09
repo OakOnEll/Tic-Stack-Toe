@@ -11,7 +11,6 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -62,6 +61,7 @@ import com.oakonell.ticstacktoe.rank.RankHelper;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
+import com.oakonell.ticstacktoe.ui.WoodenProgressDialog;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.game.OnlineStrategy;
@@ -86,7 +86,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	private boolean isRanked;
 	private String blackParticipantId;
 
-	TurnBasedPlayAgainFragment playAgainDialog;
+	private TurnBasedPlayAgainFragment playAgainDialog;
+
+	// private long lastAnimationTime;
 
 	public TurnBasedMatchGameStrategy(GameContext context, GameType type,
 			boolean isQuick, boolean isRanked) {
@@ -582,10 +584,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					finishGame(gameState, state);
 				} else {
 					byte[] bytes = gameState.toBytes(getContext(), getHelper());
-					final ProgressDialog progress = ProgressDialog.show(
-							getContext(),
-							getContext().getString(R.string.sending_move),
-							getContext().getString(R.string.please_wait));
+					final WoodenProgressDialog progress = WoodenProgressDialog
+							.show(getGameFragment(),
+									getContext().getString(
+											R.string.sending_move),
+									getContext()
+											.getString(R.string.please_wait));
 
 					Games.TurnBasedMultiplayer
 							.takeTurn(getHelper().getApiClient(),
@@ -706,8 +710,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 							: ParticipantResult.MATCH_RESULT_LOSS,
 					ParticipantResult.PLACING_UNINITIALIZED);
 		}
-		final ProgressDialog progress = ProgressDialog.show(getContext(),
-				"Finishing Move", "Please wait");
+		final WoodenProgressDialog progress = WoodenProgressDialog.show(
+				getGameFragment(),
+				getContext().getString(R.string.finishing_move), getContext()
+						.getString(R.string.please_wait));
 
 		byte[] bytes = gameState.toBytes(getContext(), getHelper());
 		Games.TurnBasedMultiplayer
@@ -824,9 +830,12 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 
 	// If you choose to rematch, then call it and wait for a response.
 	public void rematch() {
-		getGameFragment().showStatusText("Starting rematch");
-		final ProgressDialog progress = ProgressDialog.show(getContext(),
-				"Starting a new match", "Please Wait...");
+		getGameFragment().showStatusText(
+				getContext().getString(R.string.starting_rematch));
+		final WoodenProgressDialog progress = WoodenProgressDialog.show(
+				getGameFragment(),
+				getContext().getString(R.string.start_a_new_match),
+				getContext().getString(R.string.please_wait));
 		Log.i("TurnListener", "rematch");
 		TurnBasedMatch theMatch = mMatch;
 		mMatch = null;
@@ -1095,7 +1104,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				numNewMsgs = buffer.getInt("num new messages");
 				for (int i = 0; i < numMsgs; i++) {
 					ChatMessage msg = ChatMessage.fromBytes(context,
-							getParticipantsById(match), buffer);
+							getParticipantsById(match), me.getParticipantId(),
+							buffer);
 					messages.add(msg);
 				}
 			}
@@ -1188,6 +1198,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		isQuick = state.isQuick;
 		setRankInfo(state.getRankInfo());
 		isRanked = state.getRankInfo() != null;
+		boolean wasSeen = state.wasSeen;
 
 		setGame(state.game);
 		setScore(state.score);
@@ -1247,7 +1258,17 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 				"   showGame - move#" + state.game.getNumberOfMoves());
 
 		// play winning sound, and animate the move received
-		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN;
+		boolean showMove = turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN
+				&& !wasSeen;
+		// if (showMove) {
+		// // prevent the double display of the move, due to updating the
+		// "wasSeen"
+		// if (System.currentTimeMillis() - lastAnimationTime < 5000) {
+		// showMove = false;
+		// } else {
+		// lastAnimationTime = System.currentTimeMillis();
+		// }
+		// }
 		gameFragment.startGame(waitingText, showProgress, showMove);
 
 		// show if someone won
@@ -1623,4 +1644,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		return isQuick ? R.string.an_start_quick_turn_game_action
 				: R.string.an_start_online_turn_game_action;
 	}
+
+	public boolean supportsSendMessage() {
+		return false;
+	}
+
 }

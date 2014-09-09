@@ -86,6 +86,9 @@ public class TurnBasedMatchInfo implements MatchInfo {
 		} else if (match.getStatus() == TurnBasedMatch.MATCH_STATUS_EXPIRED) {
 			canRematch = false;
 			text = context.getString(R.string.expired_game, opponentName);
+		} else if (match.getStatus() == TurnBasedMatch.MATCH_STATUS_CANCELED) {
+			canRematch = false;
+			text = context.getString(R.string.canceled_game, opponentName);
 		} else {
 			canRematch = false;
 			text = opponentName;
