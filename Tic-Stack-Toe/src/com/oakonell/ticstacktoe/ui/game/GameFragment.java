@@ -83,7 +83,6 @@ public class GameFragment extends AbstractGameFragment {
 
 	private View blackHeaderLayout;
 	private View whiteHeaderLayout;
-	private TextView blackWins;
 	private TextView whiteWins;
 
 	private TextView gameNumber;
@@ -116,10 +115,15 @@ public class GameFragment extends AbstractGameFragment {
 	private GameContext gameContext;
 	private TextView gameTypeTextView;
 
+	private TextView blackNameView;
+	private TextView blackRankView;
+	private TextView blackWins;
+	private ImageView blackImageView;
+
 	private abstract static class OnCreateRunnableWithView implements Runnable {
 		View view;
 	}
-	
+
 	public GameFragment() {
 		// for finding references
 	}
@@ -171,7 +175,7 @@ public class GameFragment extends AbstractGameFragment {
 				}
 				gameTypeTextView.setText(GameTypeSpinnerHelper.getTypeName(
 						getActivity(), game.getType()));
-				
+
 				if (undoAndAnimateMove) {
 					game.undo(move);
 
@@ -197,7 +201,8 @@ public class GameFragment extends AbstractGameFragment {
 							});
 						}
 					};
-					// if we are already constructed, we can run resume now- otherwise need to await for it to be called
+					// if we are already constructed, we can run resume now-
+					// otherwise need to await for it to be called
 					if (getView() != null) {
 						inOnResume.run();
 					}
@@ -284,6 +289,9 @@ public class GameFragment extends AbstractGameFragment {
 		setHasOptionsMenu(true);
 
 		storeViewReferences(view);
+		if (Utils.hasHoneycomb() && getGameStrategy().rotateBlackLayout()) {
+			invertBlackHeader();
+		}
 
 		View num_games_container = view.findViewById(R.id.num_games_container);
 		num_games_container.setOnClickListener(new View.OnClickListener() {
@@ -394,6 +402,20 @@ public class GameFragment extends AbstractGameFragment {
 		return frame;
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void invertBlackHeader() {
+		boolean invert = getGameStrategy().rotateBlackLayout();
+		blackNameView.setRotation(invert ? 180 : 0);
+		blackRankView.setRotation(invert ? 180 : 0);
+		blackWins.setRotation(invert ? 180 : 0);
+		blackImageView.setRotation(invert ? 180 : 0);
+		if (invert) { // (blackWins.getGravity() & Gravity.RIGHT) > 0) {
+			blackWins.setGravity(Gravity.LEFT);
+		} else {
+			blackWins.setGravity(Gravity.RIGHT);
+		}
+	}
+
 	public void updatedGameStrategy() {
 		if (getGameStrategy().shouldHideAd()) {
 			gameContext.hideAd();
@@ -428,6 +450,9 @@ public class GameFragment extends AbstractGameFragment {
 
 		squareView = (SquareRelativeLayoutView) view
 				.findViewById(R.id.grid_container);
+
+		blackNameView = (TextView) view.findViewById(R.id.blackName);
+		blackRankView = (TextView) view.findViewById(R.id.black_rank);
 	}
 
 	protected void resizeBoardAndStacks(View view) {
@@ -1359,28 +1384,26 @@ public class GameFragment extends AbstractGameFragment {
 			// safely allow calls when UI not created yet
 			return;
 		}
-		TextView blackName = (TextView) view.findViewById(R.id.blackName);
-		blackName.setText(getGame().getBlackPlayer().getName());
+		blackNameView.setText(getGame().getBlackPlayer().getName());
 		TextView whiteName = (TextView) view.findViewById(R.id.whiteName);
 		whiteName.setText(getGame().getWhitePlayer().getName());
 
-		TextView blackRank = (TextView) view.findViewById(R.id.black_rank);
 		TextView whiteRank = (TextView) view.findViewById(R.id.white_rank);
 		RankInfo rankInfo = getGameStrategy().getRankInfo();
 		if (rankInfo != null) {
-			blackRank.setVisibility(View.VISIBLE);
+			blackRankView.setVisibility(View.VISIBLE);
 			whiteRank.setVisibility(View.VISIBLE);
-			displayRank(blackRank, rankInfo.blackRank());
+			displayRank(blackRankView, rankInfo.blackRank());
 			displayRank(whiteRank, rankInfo.whiteRank());
 		} else {
-			blackRank.setVisibility(View.GONE);
+			blackRankView.setVisibility(View.GONE);
 			whiteRank.setVisibility(View.GONE);
 		}
 
-		ImageView blackImage = (ImageView) view.findViewById(R.id.black_back);
+		blackImageView = (ImageView) view.findViewById(R.id.black_back);
 		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);
 
-		getGame().getBlackPlayer().updatePlayerImage(imgManager, blackImage);
+		getGame().getBlackPlayer().updatePlayerImage(imgManager, blackImageView);
 		getGame().getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
 
 		Player player = getGame().getCurrentPlayer();
@@ -1639,7 +1662,7 @@ public class GameFragment extends AbstractGameFragment {
 					updateHeader(getView());
 					getGameStrategy().acceptMove();
 				}
-			}			
+			}
 		};
 		getGameStrategy().postMove(postMove);
 	}
@@ -1774,7 +1797,8 @@ public class GameFragment extends AbstractGameFragment {
 		Achievements achievements = application.getAchievements();
 		achievements.testAndSetForGameEndAchievements(gameContext, getGame(),
 				outcome);
-		getGameStrategy().evaluateGameEndAchievements(achievements, gameContext, getGame(), outcome);
+		getGameStrategy().evaluateGameEndAchievements(achievements,
+				gameContext, getGame(), outcome);
 	}
 
 	private void evaluateInGameAchievements(State outcome) {

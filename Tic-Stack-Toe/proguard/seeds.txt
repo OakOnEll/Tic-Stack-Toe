@@ -6877,6 +6877,7 @@ com.oakonell.ticstacktoe.R$id: int listMode
 com.oakonell.ticstacktoe.R$id: int main
 com.oakonell.ticstacktoe.R$id: int main_frame
 com.oakonell.ticstacktoe.R$id: int message
+com.oakonell.ticstacktoe.R$id: int message_send_group
 com.oakonell.ticstacktoe.R$id: int messages
 com.oakonell.ticstacktoe.R$id: int min_max_tutorial
 com.oakonell.ticstacktoe.R$id: int moving_view
@@ -6930,6 +6931,7 @@ com.oakonell.ticstacktoe.R$id: int player_x
 com.oakonell.ticstacktoe.R$id: int player_x_name
 com.oakonell.ticstacktoe.R$id: int positive
 com.oakonell.ticstacktoe.R$id: int pref_sound_fx_key
+com.oakonell.ticstacktoe.R$id: int progressBar1
 com.oakonell.ticstacktoe.R$id: int ptr_content
 com.oakonell.ticstacktoe.R$id: int ptr_layout
 com.oakonell.ticstacktoe.R$id: int ptr_progress
@@ -6985,6 +6987,8 @@ com.oakonell.ticstacktoe.R$id: int thinking_progress
 com.oakonell.ticstacktoe.R$id: int thinking_text
 com.oakonell.ticstacktoe.R$id: int timestamp
 com.oakonell.ticstacktoe.R$id: int title
+com.oakonell.ticstacktoe.R$id: int title_divider
+com.oakonell.ticstacktoe.R$id: int title_include
 com.oakonell.ticstacktoe.R$id: int tutorial
 com.oakonell.ticstacktoe.R$id: int tutorial_bottom
 com.oakonell.ticstacktoe.R$id: int tutorial_bottom_text
@@ -7072,6 +7076,7 @@ com.oakonell.ticstacktoe.R$layout: int online_settings_dialog
 com.oakonell.ticstacktoe.R$layout: int play_again_dialog
 com.oakonell.ticstacktoe.R$layout: int popup
 com.oakonell.ticstacktoe.R$layout: int popup_item
+com.oakonell.ticstacktoe.R$layout: int progress
 com.oakonell.ticstacktoe.R$layout: int rank_display
 com.oakonell.ticstacktoe.R$layout: int rank_layout
 com.oakonell.ticstacktoe.R$layout: int rank_update_layout
@@ -7192,6 +7197,7 @@ com.oakonell.ticstacktoe.R$string: int beat_weekly_strict_rank
 com.oakonell.ticstacktoe.R$string: int board
 com.oakonell.ticstacktoe.R$string: int button_send
 com.oakonell.ticstacktoe.R$string: int cancel
+com.oakonell.ticstacktoe.R$string: int canceled_game
 com.oakonell.ticstacktoe.R$string: int cannot_invite_non_tester
 com.oakonell.ticstacktoe.R$string: int chat_actionbar_image_content
 com.oakonell.ticstacktoe.R$string: int chat_title
@@ -7236,6 +7242,7 @@ com.oakonell.ticstacktoe.R$string: int error_black_name
 com.oakonell.ticstacktoe.R$string: int error_white_name
 com.oakonell.ticstacktoe.R$string: int exit_waiting_play_again
 com.oakonell.ticstacktoe.R$string: int expired_game
+com.oakonell.ticstacktoe.R$string: int finishing_move
 com.oakonell.ticstacktoe.R$string: int first_move_header
 com.oakonell.ticstacktoe.R$string: int first_move_text
 com.oakonell.ticstacktoe.R$string: int ga_trackingId
@@ -7400,6 +7407,8 @@ com.oakonell.ticstacktoe.R$string: int stack_header
 com.oakonell.ticstacktoe.R$string: int stack_text
 com.oakonell.ticstacktoe.R$string: int start
 com.oakonell.ticstacktoe.R$string: int startGame
+com.oakonell.ticstacktoe.R$string: int start_a_new_match
+com.oakonell.ticstacktoe.R$string: int starting_rematch
 com.oakonell.ticstacktoe.R$string: int status_multiplayer_error_not_trusted_tester
 com.oakonell.ticstacktoe.R$string: int subtext_invited_to_ranked_match
 com.oakonell.ticstacktoe.R$string: int subtext_invited_to_unranked_match

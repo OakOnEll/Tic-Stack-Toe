@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+    <item
+        android:id="@+id/action_head_to_head"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/arm_wrestle_icon_33306"
+		android:title="@string/action_flip_black_header"/>
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_help"
+		android:title="@string/action_help"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="110"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings"/>
+
+</menu>

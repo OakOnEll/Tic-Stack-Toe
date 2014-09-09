@@ -10,7 +10,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -61,6 +60,7 @@ import com.oakonell.ticstacktoe.rank.RankHelper;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnMyRankUpdated;
 import com.oakonell.ticstacktoe.rank.RankHelper.OnRankReceived;
 import com.oakonell.ticstacktoe.rank.RankHelper.RankInfoUpdated;
+import com.oakonell.ticstacktoe.ui.WoodenAlertDialog;
 import com.oakonell.ticstacktoe.ui.WoodenProgressDialog;
 import com.oakonell.ticstacktoe.ui.game.GameFragment;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
@@ -1293,30 +1293,51 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		if (showNewMessage) {
 			// consume the message
 			showNewMessage = false;
-			AlertDialog.Builder builder = new Builder(getContext());
-			builder.setTitle(getContext().getString(R.string.opponent_says,
-					getOpponentName()));
+
 			ChatMessage message = getChatMessages().get(
 					getChatMessages().size() - 1);
 			if (message.getParticipant().equals(getMeForChat())) {
 				postMove.run();
+				return;
 			}
 
-			builder.setMessage(message.getMessage());
-			builder.setOnCancelListener(new OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					postMove.run();
-				}
-			});
-			builder.setPositiveButton(R.string.ok, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					postMove.run();
-				}
-			});
-			AlertDialog dialog = builder.create();
-			dialog.show();
+			String title = getContext().getString(R.string.opponent_says,
+					getOpponentName());
+			String text = message.getMessage().toString();
+			WoodenAlertDialog dialog = WoodenAlertDialog.show(
+					getGameFragment(), title, text, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							postMove.run();
+						}
+					}, new OnCancelListener() {
+						@Override
+						public void onCancel(DialogInterface dialog) {
+							postMove.run();
+						}
+					});
+
+			// AlertDialog.Builder builder = new Builder(getContext());
+			// builder.setTitle(title);
+			// if (message.getParticipant().equals(getMeForChat())) {
+			// postMove.run();
+			// }
+			//
+			// builder.setMessage(message.getMessage());
+			// builder.setOnCancelListener(new OnCancelListener() {
+			// @Override
+			// public void onCancel(DialogInterface dialog) {
+			// postMove.run();
+			// }
+			// });
+			// builder.setPositiveButton(R.string.ok, new OnClickListener() {
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// postMove.run();
+			// }
+			// });
+			// AlertDialog dialog = builder.create();
+			// dialog.show();
 		} else {
 			postMove.run();
 		}

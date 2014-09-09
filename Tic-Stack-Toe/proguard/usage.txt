@@ -3162,7 +3162,6 @@ com.oakonell.ticstacktoe.googleapi.GameHelper:
     398:402:public com.google.android.gms.games.multiplayer.Invitation getInvitation()
     406:406:public boolean hasInvitation()
     410:410:public boolean hasTurnBasedMatch()
-    414:415:public void clearInvitation()
     418:419:public void clearTurnBasedMatch()
     446:449:public void enableDebugLog(boolean,java.lang.String)
     613:621:public void reconnectClient()
@@ -3381,8 +3380,8 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy:
     private static final int TOAST_DELAY
     private static final java.lang.String TAG
     private static final int PROTOCOL_VERSION
-    736:741:public static java.util.Map getParticipantsById(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch)
-    1577:1580:public void onFragmentResume()
+    742:747:public static java.util.Map getParticipantsById(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch)
+    1598:1601:public void onFragmentResume()
 com.oakonell.ticstacktoe.utils.BillingHelper:
     public static final java.lang.String SKU_PREMIUM
     private static final java.lang.String TAG

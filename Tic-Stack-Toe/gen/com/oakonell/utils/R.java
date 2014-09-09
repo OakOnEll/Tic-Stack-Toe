@@ -268,10 +268,10 @@ public final class R {
 		public static final int abs__textfield_searchview_right_holo_dark = 0x7f02006d;
 		public static final int abs__textfield_searchview_right_holo_light = 0x7f02006e;
 		public static final int abs__toast_frame = 0x7f02006f;
-		public static final int icon = 0x7f0200b2;
+		public static final int icon = 0x7f0200b3;
 	}
 	public static final class id {
-		public static final int about_description = 0x7f0700d4;
+		public static final int about_description = 0x7f0700d5;
 		public static final int abs__action_bar = 0x7f07002d;
 		public static final int abs__action_bar_container = 0x7f07002c;
 		public static final int abs__action_bar_subtitle = 0x7f07001e;
@@ -311,36 +311,36 @@ public final class R {
 		public static final int abs__textButton = 0x7f070020;
 		public static final int abs__title = 0x7f070028;
 		public static final int abs__up = 0x7f070014;
-		public static final int app_name_id = 0x7f0700d1;
-		public static final int decrement = 0x7f0700dd;
+		public static final int app_name_id = 0x7f0700d2;
+		public static final int decrement = 0x7f0700de;
 		public static final int disableHome = 0x7f070012;
 		public static final int edit_query = 0x7f070033;
 		public static final int homeAsUp = 0x7f07000f;
 		public static final int icon = 0x7f0700f5;
-		public static final int icon_image = 0x7f0700d0;
-		public static final int increment = 0x7f0700dc;
-		public static final int label = 0x7f0700ad;
-		public static final int linearLayout1 = 0x7f07004c;
+		public static final int icon_image = 0x7f0700d1;
+		public static final int increment = 0x7f0700dd;
+		public static final int label = 0x7f0700ae;
+		public static final int linearLayout1 = 0x7f07004d;
 		public static final int listMode = 0x7f07000b;
-		public static final int no_button = 0x7f07004e;
+		public static final int no_button = 0x7f07004f;
 		public static final int normal = 0x7f07000a;
-		public static final int rate_bar = 0x7f070051;
-		public static final int rate_no_thanks = 0x7f070054;
-		public static final int rate_redirect_comment = 0x7f070052;
-		public static final int rate_remind_later = 0x7f070053;
-		public static final int rate_text = 0x7f070050;
-		public static final int remember_checkbox = 0x7f07004f;
+		public static final int rate_bar = 0x7f070052;
+		public static final int rate_no_thanks = 0x7f070055;
+		public static final int rate_redirect_comment = 0x7f070053;
+		public static final int rate_remind_later = 0x7f070054;
+		public static final int rate_text = 0x7f070051;
+		public static final int remember_checkbox = 0x7f070050;
 		public static final int showCustom = 0x7f070011;
 		public static final int showHome = 0x7f07000e;
 		public static final int showTitle = 0x7f070010;
 		public static final int tabMode = 0x7f07000c;
-		public static final int text = 0x7f0700db;
-		public static final int textView1 = 0x7f07004b;
-		public static final int urlId = 0x7f0700d3;
+		public static final int text = 0x7f0700dc;
+		public static final int textView1 = 0x7f07004c;
+		public static final int urlId = 0x7f0700d4;
 		public static final int useLogo = 0x7f07000d;
-		public static final int version = 0x7f0700d2;
+		public static final int version = 0x7f0700d3;
 		public static final int wrap_content = 0x7f070009;
-		public static final int yes_button = 0x7f07004d;
+		public static final int yes_button = 0x7f07004e;
 	}
 	public static final class integer {
 		public static final int abs__max_action_buttons = 0x7f0a0002;
@@ -367,13 +367,13 @@ public final class R {
 		public static final int abs__search_dropdown_item_icons_2line = 0x7f030012;
 		public static final int abs__search_view = 0x7f030013;
 		public static final int abs__simple_dropdown_hint = 0x7f030014;
-		public static final int copy_for_facebook_dlg = 0x7f030019;
-		public static final int dialog_app_rater = 0x7f03001b;
-		public static final int generic_about_activity = 0x7f03002a;
-		public static final int number_picker = 0x7f03002e;
-		public static final int share_row = 0x7f030038;
-		public static final int sherlock_spinner_dropdown_item = 0x7f030039;
-		public static final int sherlock_spinner_item = 0x7f03003a;
+		public static final int copy_for_facebook_dlg = 0x7f03001a;
+		public static final int dialog_app_rater = 0x7f03001c;
+		public static final int generic_about_activity = 0x7f03002b;
+		public static final int number_picker = 0x7f03002f;
+		public static final int share_row = 0x7f030039;
+		public static final int sherlock_spinner_dropdown_item = 0x7f03003a;
+		public static final int sherlock_spinner_item = 0x7f03003b;
 	}
 	public static final class string {
 		public static final int about_title = 0x7f0b0045;

@@ -89,4 +89,5 @@
     <string name="finishing_move">Finishing Move</string>
     <string name="start_a_new_match">Starting a new match</string>
     <string name="starting_rematch">Starting rematch</string>
+    <string name="action_flip_black_header">Flip Black Header for Head-to-Head</string>
     </resources>

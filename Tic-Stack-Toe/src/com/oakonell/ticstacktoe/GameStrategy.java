@@ -436,4 +436,8 @@ public abstract class GameStrategy {
 	public void postMove(Runnable postMove) {
 		postMove.run();		
 	}
+
+	public boolean rotateBlackLayout() {
+		return false;
+	}
 }
