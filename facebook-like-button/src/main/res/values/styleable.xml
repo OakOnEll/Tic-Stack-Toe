@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FacebookLikeButton">
+        <attr name="pageUrl" format="string|reference"/>
+        <attr name="pageTitle" format="string|reference"/>
+        <attr name="pageText" format="string|reference"/>
+        <!-- pagePicture is @deprecated, use pagePictureId -->
+        <attr name="pagePicture" format="reference"/>
+        <attr name="pagePictureId" format="reference"/>
+        <attr name="pagePictureUrl" format="string|reference"/>
+        <attr name="appId" format="string|reference"/>
+        <attr name="contentViewId" format="reference"/>
+        <attr name="optTitleOpen" format="string|reference"/>
+        <attr name="optTitleClose" format="string|reference"/>
+        <attr name="optTextOpen" format="string|reference"/>
+        <attr name="optTextClose" format="string|reference"/>
+        <attr name="optPictureAttrs" format="string|reference"/>
+        <attr name="optLayout" format="enum">
+            <enum name="standard" value="0"/>
+            <enum name="box_count" value="1"/>
+            <enum name="button_count" value="2"/>
+            <enum name="button" value="3"/>
+        </attr>
+        <attr name="optAction" format="enum">
+            <enum name="like" value="0"/>
+            <enum name="recommend" value="1"/>
+        </attr>
+        <attr name="optShowFaces" format="boolean|reference"/>
+        <attr name="optShare" format="boolean|reference"/>
+    </declare-styleable>
+    <declare-styleable name="FacebookLikeBox">
+        <attr name="boxFillColor" format="color|reference"/>
+        <attr name="boxStrokeColor" format="color|reference"/>
+        <attr name="boxStrokeWidth" format="dimension|reference"/>
+        <attr name="boxCornersRadius" format="dimension|reference"/>
+        <attr name="calloutMarker" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="top" value="2"/>
+            <enum name="right" value="4"/>
+            <enum name="bottom" value="8"/>
+            <enum name="all" value="15"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="FacebookLikePlugin">
+        <attr name="likeId" format="reference"/>
+        <attr name="boxId" format="reference"/>
+    </declare-styleable>
+</resources>

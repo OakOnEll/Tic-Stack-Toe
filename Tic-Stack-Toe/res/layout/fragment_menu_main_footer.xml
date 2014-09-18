@@ -58,4 +58,24 @@
         plus:annotation="inline"
         plus:size="standard" />
 
+    <!-- FacebookLikePlugin extends LinearLayout -->
+
+    <com.shamanland.facebook.likebutton.FacebookLikePlugin xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.shamanland.facebook.likebutton.FacebookLikeButton
+            style="@style/Widget.FacebookLikeButton"
+            app:pagePicture="@drawable/ic_launcher"
+            app:pageText="Tic-Stack-Toe facebook page"
+            app:pageTitle="Tic-Stack-Toe"
+            app:pageUrl="https://www.facebook.com/pages/Tic-Stack-Toe/602717059838816" />
+
+        <com.shamanland.facebook.likebutton.FacebookLikeBox
+            style="@style/Widget.FacebookLikeBox"
+            app:pageUrl="https://www.facebook.com/pages/Tic-Stack-Toe/602717059838816" 
+            app:calloutMarker="left" />
+    </com.shamanland.facebook.likebutton.FacebookLikePlugin>
+
 </LinearLayout>

@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    
+
     <application
         android:name="TicStackToe"
         android:allowBackup="true"
@@ -55,6 +55,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.oakonell.ticstacktoe.settings.SettingsActivity" />
         </activity>
+        <activity
+            android:name="com.shamanland.facebook.likebutton.FacebookLikeActivity"
+            android:label="@string/com_shamanland_facebook"
+            android:theme="@style/Theme.Facebook.Like" />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
