@@ -30,6 +30,8 @@ public class GameTypeSpinnerHelper {
 		ArrayAdapter<TypeDropDownItem> typeAdapter = new ArrayAdapter<TypeDropDownItem>(
 				activity, android.R.layout.simple_spinner_dropdown_item, types);
 		typeSpinner.setAdapter(typeAdapter);
+		// select the Normal game by default 
+		typeSpinner.setSelection(1);
 	}
 
 	public static void populateDescription(FragmentActivity fragmentActivity,

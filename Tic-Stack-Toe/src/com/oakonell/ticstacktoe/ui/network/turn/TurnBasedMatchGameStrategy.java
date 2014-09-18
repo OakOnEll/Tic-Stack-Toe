@@ -1186,7 +1186,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		setNumNewMessages(0);
 		if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
 			// Need to show the possibly new message
-			if (state.numNewMessages != 0) {
+			if (state.numNewMessages != 0 && !state.wasSeen) {
 				showNewMessage = true;
 			}
 		} else {
@@ -1276,6 +1276,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 		if (state2.isOver()) {
 			Log.i("TurnListener", "  game is over, calling handleGameOver");
 			handleGameOver(status, turnStatus, gameFragment, state);
+			return;
+		}
+		if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
+			gameFragment.hideStatusText();
 			return;
 		}
 		if (!state.wasSeen) {
