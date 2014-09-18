@@ -49,6 +49,7 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.InitiateMatchResult;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchResult;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchesResult;
+import com.google.android.gms.plus.PlusOneButton;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.Sounds;
@@ -115,6 +116,8 @@ public class MenuFragment extends SherlockFragment implements
 	private View removeAds;
 
 	private View rankDisplayView;
+
+	private PlusOneButton mPlusOneButton;
 
 	public MenuFragment() {
 		// for reference finding
@@ -349,6 +352,13 @@ public class MenuFragment extends SherlockFragment implements
 			final View parent) {
 		final View view = inflater.inflate(R.layout.fragment_menu_main_footer,
 				null);
+
+		mPlusOneButton = (PlusOneButton) view
+				.findViewById(R.id.plus_one_button);
+//		mPlusOneButton
+//				.initialize(
+//						"https://play.google.com/store/apps/details?id=com.oakonell.ticstacktoe",
+//						0);
 
 		View viewAchievements = view.findViewById(R.id.view_achievements);
 		viewAchievements.setOnClickListener(new OnClickListener() {
@@ -607,6 +617,11 @@ public class MenuFragment extends SherlockFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		mPlusOneButton
+				.initialize(
+						"https://market.android.com/details?id=com.oakonell.ticstacktoe",
+						0);
 		if (context.getGameHelper().isSignedIn()) {
 			registerMatchListeners();
 			showLogout();

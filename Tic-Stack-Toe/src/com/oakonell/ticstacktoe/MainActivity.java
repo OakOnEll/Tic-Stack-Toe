@@ -66,7 +66,7 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 	}
 
 	public MainActivity() {
-		super(CLIENT_GAMES | CLIENT_APPSTATE);
+		super(CLIENT_GAMES | CLIENT_APPSTATE | CLIENT_PLUS);
 	}
 
 	@Override
