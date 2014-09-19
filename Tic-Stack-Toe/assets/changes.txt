@@ -1,3 +1,8 @@
+1.5
+====
+Fix some bugs
+Default game type to normal
+
 1.4
 ====
 Support Head-To-Head- flipping black player's header
