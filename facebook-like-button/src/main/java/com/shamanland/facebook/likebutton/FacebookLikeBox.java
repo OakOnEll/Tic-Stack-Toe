@@ -195,14 +195,20 @@ public class FacebookLikeBox extends Button {
 		mStroke.setShape(shape);
 	}
 
+	long lastUpdated;
+
 	protected void onUrlChanged(String oldValue, String newValue) {
 		setText(R.string.com_shamanland_facebook_like_box_text_default);
+		lastUpdated = 0;
 
 		if (oldValue != null) {
+			Log.i("FacebookLikeBox", "Removing old message for '" + oldValue
+					+ "'");
 			mHandler.removeMessages(0, oldValue);
 		}
 
 		if (newValue != null) {
+			Log.i("FacebookLikeBox", "Sending request for '" + newValue + "'");
 			Message msg = Message.obtain();
 			if (msg != null) {
 				msg.obj = newValue;
@@ -216,15 +222,26 @@ public class FacebookLikeBox extends Button {
 	 */
 	protected void processUrl(final String url) {
 		try {
+			Log.i("FacebookLikeBox", "Processing '" + url + "'");
 			final Result result = mProcessor.processUrl(url);
-			post(new Runnable() {
+			// if we are on a worker thread, how can we update the textView here?
+//			postProcessUrl(url, result);
+			// but sometimes, the text View doesn't get updated because this post disappears
+			boolean wasPosted = getHandler().post(new Runnable() {
 				@Override
 				public void run() {
+					Log.i("FacebookLikeBox", "posting UI update for  '" + url
+							+ "'");
 					if (isAttachedToWindow()) {
+						lastUpdated = System.currentTimeMillis();
 						postProcessUrl(url, result);
 					}
 				}
 			});
+			if (!wasPosted) {
+				Log.i("FacebookLikeBox", "UI update was not posted? for  '" + url
+						+ "'");				
+			}
 		} catch (Throwable ex) {
 			if (LOGGING) {
 				Log.wtf(LOG_TAG, ex);
@@ -233,12 +250,14 @@ public class FacebookLikeBox extends Button {
 	}
 
 	protected void postProcessUrl(String url, Result result) {
+		Log.i("FacebookLikeBox", "postProcess '" + url + "'");
 		if (url.equals(mUrl)) {
 			onUrlProcessed(result);
 		}
 	}
 
 	protected void onUrlProcessed(Result result) {
+		Log.i("FacebookLikeBox", "updating UI text '" + result.likes + "'");
 		setText(prettyNumber(result.likes));
 	}
 
@@ -253,6 +272,22 @@ public class FacebookLikeBox extends Button {
 			return number / 1000L + "." + (number % 1000L) / 100L + "k";
 		} else {
 			return String.valueOf(number);
+		}
+	}
+
+	public void refresh() {
+		if (mUrl != null) {
+			if (System.currentTimeMillis() - lastUpdated < 2000) {
+				return;
+			}
+
+			Log.i("FacebookLikeBox", "Sending a refresh request for '" + mUrl
+					+ "'");
+			Message msg = Message.obtain();
+			if (msg != null) {
+				msg.obj = mUrl;
+				mHandler.sendMessage(msg);
+			}
 		}
 	}
 }

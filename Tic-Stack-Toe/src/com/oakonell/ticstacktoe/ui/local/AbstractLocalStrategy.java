@@ -168,7 +168,10 @@ public abstract class AbstractLocalStrategy extends GameStrategy {
 		ScoreCard score = getMatchInfo().getScoreCard();
 		setScore(score);
 
-		gameFragment.startGame(true);
+		State state = getGame().getBoard().getState();
+		boolean showMove = !state.isOver();
+
+		gameFragment.startGame(showMove);
 
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();

@@ -70,6 +70,7 @@ import com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo;
 import com.oakonell.ticstacktoe.utils.DevelopmentUtil.Info;
+import com.shamanland.facebook.likebutton.FacebookLikePlugin;
 
 /**
  * The "main menu" entry to the main activity- prompts with "start a game" and
@@ -118,6 +119,8 @@ public class MenuFragment extends SherlockFragment implements
 	private View rankDisplayView;
 
 	private PlusOneButton mPlusOneButton;
+
+	private FacebookLikePlugin facebook_like;
 
 	public MenuFragment() {
 		// for reference finding
@@ -355,10 +358,12 @@ public class MenuFragment extends SherlockFragment implements
 
 		mPlusOneButton = (PlusOneButton) view
 				.findViewById(R.id.plus_one_button);
-//		mPlusOneButton
-//				.initialize(
-//						"https://play.google.com/store/apps/details?id=com.oakonell.ticstacktoe",
-//						0);
+		facebook_like = (FacebookLikePlugin) view
+				.findViewById(R.id.facebook_like);
+		// mPlusOneButton
+		// .initialize(
+		// "https://play.google.com/store/apps/details?id=com.oakonell.ticstacktoe",
+		// 0);
 
 		View viewAchievements = view.findViewById(R.id.view_achievements);
 		viewAchievements.setOnClickListener(new OnClickListener() {
@@ -491,6 +496,7 @@ public class MenuFragment extends SherlockFragment implements
 			// game notification. If that's the case, you should go straight
 			// into
 			// the game.
+			context.getGameHelper().clearTurnBasedMatch();
 			updateMatch(aMatch, true);
 			return;
 		}
@@ -617,11 +623,14 @@ public class MenuFragment extends SherlockFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		mPlusOneButton
 				.initialize(
 						"https://market.android.com/details?id=com.oakonell.ticstacktoe",
 						0);
+
+		facebook_like.refreshLike();
+
 		if (context.getGameHelper().isSignedIn()) {
 			registerMatchListeners();
 			showLogout();

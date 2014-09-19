@@ -11,69 +11,83 @@ import android.widget.LinearLayout;
 import com.shamanland.facebook.likebutton.FacebookLikeButton.OnPageUrlChangeListener;
 
 public class FacebookLikePlugin extends LinearLayout {
-    private int mLikeId;
-    private int mBoxId;
+	private int mLikeId;
+	private int mBoxId;
 
-    public FacebookLikePlugin(Context context) {
-        super(context);
-        init(null);
-    }
+	public FacebookLikePlugin(Context context) {
+		super(context);
+		init(null);
+	}
 
-    public FacebookLikePlugin(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs);
-    }
+	public FacebookLikePlugin(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(attrs);
+	}
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public FacebookLikePlugin(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs);
-    }
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public FacebookLikePlugin(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init(attrs);
+	}
 
-    private void init(AttributeSet attrs) {
-        if (attrs == null) {
-            return;
-        }
+	private void init(AttributeSet attrs) {
+		if (attrs == null) {
+			return;
+		}
 
-        Context c = getContext();
-        if (c == null) {
-            return;
-        }
+		Context c = getContext();
+		if (c == null) {
+			return;
+		}
 
-        TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.FacebookLikePlugin);
-        if (a == null) {
-            return;
-        }
+		TypedArray a = c.obtainStyledAttributes(attrs,
+				R.styleable.FacebookLikePlugin);
+		if (a == null) {
+			return;
+		}
 
-        try {
-            mLikeId = a.getResourceId(R.styleable.FacebookLikePlugin_likeId, R.id.com_shamanland_facebook_like);
-            mBoxId = a.getResourceId(R.styleable.FacebookLikePlugin_boxId, R.id.com_shamanland_facebook_like_box);
-        } finally {
-            a.recycle();
-        }
-    }
+		try {
+			mLikeId = a.getResourceId(R.styleable.FacebookLikePlugin_likeId,
+					R.id.com_shamanland_facebook_like);
+			mBoxId = a.getResourceId(R.styleable.FacebookLikePlugin_boxId,
+					R.id.com_shamanland_facebook_like_box);
+		} finally {
+			a.recycle();
+		}
+	}
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+	@Override
+	protected void onFinishInflate() {
+		super.onFinishInflate();
 
-        final View like = findViewById(mLikeId);
-        final View box = findViewById(mBoxId);
+		final View like = findViewById(mLikeId);
+		final View box = findViewById(mBoxId);
 
-        if (like instanceof FacebookLikeButton && box instanceof FacebookLikeBox) {
-            ((FacebookLikeButton) like).setOnPageUrlChangeListener(new OnPageUrlChangeListener() {
-                @Override
-                public void onPageUrlChanged(String newValue) {
-                    ((FacebookLikeBox) box).setPageUrl(newValue);
-                }
-            });
+		if (like instanceof FacebookLikeButton
+				&& box instanceof FacebookLikeBox) {
+			((FacebookLikeButton) like)
+					.setOnPageUrlChangeListener(new OnPageUrlChangeListener() {
+						@Override
+						public void onPageUrlChanged(String newValue) {
+							((FacebookLikeBox) box).setPageUrl(newValue);
+						}
 
-            box.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    like.performClick();
-                }
-            });
-        }
-    }
+					});
+
+			box.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					like.performClick();
+				}
+			});
+		}
+	}
+
+	public void refreshLike() {
+		final View box = findViewById(mBoxId);
+		if (box instanceof FacebookLikeBox) {
+			FacebookLikeBox likeBox = (FacebookLikeBox) box;
+			likeBox.refresh();
+		}
+	}
 }

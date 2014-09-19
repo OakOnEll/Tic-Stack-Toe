@@ -148,7 +148,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		if (!isRanked) {
 			return;
 		}
-
+	
 		final GameType type = getGame().getType();
 		RankHelper.createRankInfo(getGameContext(), type, true,
 				new RankInfoUpdated() {
