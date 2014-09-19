@@ -484,6 +484,11 @@ public class MainActivity extends BaseGameActivity implements GameContext {
 			getGameFragment().leaveGame();
 			return;
 		}
+		if (getStartFragment() != null && getStartFragment().isVisible()) {
+			getStartFragment().exitStartMenu();
+			getMenuFragment().setActive();
+			return;
+		}
 		super.onBackPressed();
 	}
 

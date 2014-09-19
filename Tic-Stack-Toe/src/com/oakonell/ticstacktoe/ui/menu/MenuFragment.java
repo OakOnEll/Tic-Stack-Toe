@@ -175,6 +175,8 @@ public class MenuFragment extends SherlockFragment implements
 				false);
 		setHasOptionsMenu(true);
 
+		context.getMenuFragment().setActive();
+		
 		// Listen for changes in the back stack
 		getSherlockActivity().getSupportFragmentManager()
 				.addOnBackStackChangedListener(
@@ -215,6 +217,8 @@ public class MenuFragment extends SherlockFragment implements
 		waiting = (ProgressBar) view.findViewById(R.id.waiting);
 		if (isWaiting) {
 			setInactive();
+		} else {
+			setActive();
 		}
 
 		View main = configureMainView(inflater, view);

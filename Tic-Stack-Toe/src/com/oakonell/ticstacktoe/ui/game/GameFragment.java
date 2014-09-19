@@ -289,7 +289,7 @@ public class GameFragment extends AbstractGameFragment {
 		setHasOptionsMenu(true);
 
 		storeViewReferences(view);
-		if (Utils.hasHoneycomb() && getGameStrategy().rotateBlackLayout()) {
+		if (Utils.hasHoneycomb() && getGameStrategy() != null && getGameStrategy().rotateBlackLayout()) {
 			invertBlackHeader();
 		}
 

@@ -254,7 +254,7 @@ public class StartAGameFragment extends SherlockFragment {
 		}
 	}
 
-	private void exitStartMenu() {
+	public void exitStartMenu() {
 		getActivity().getSupportFragmentManager().popBackStack();
 		final ActionBar ab = getSherlockActivity().getSupportActionBar();
 		ab.setTitle(R.string.app_name);
