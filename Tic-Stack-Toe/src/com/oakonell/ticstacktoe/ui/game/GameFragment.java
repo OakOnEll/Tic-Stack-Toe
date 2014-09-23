@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +32,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -61,6 +61,7 @@ import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.State.Win;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView;
 import com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView.OnMeasureDependent;
+import com.oakonell.ticstacktoe.ui.WoodenAlertDialog;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
 import com.oakonell.utils.Utils;
 import com.oakonell.utils.activity.dragndrop.DragConfig;
@@ -1873,42 +1874,21 @@ public class GameFragment extends AbstractGameFragment {
 	}
 
 	private void showInvalidMoveMessage(int messageId) {
-		// TODO show in a nice wood dialog..
-		// how to invert? - title at bottom?
-		// WoodenAlertDialog dialog = WoodenAlertDialog.show(this,
-		// getString(R.string.invalid_move_title), getString(messageId),
-		// new DialogInterface.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(DialogInterface dialog, int which) {
-		//
-		// }
-		// }, new OnCancelListener() {
-		// @Override
-		// public void onCancel(DialogInterface dialog) {
-		// }
-		// });
+		boolean shouldRotate = getGameStrategy() != null
+				&& getGameStrategy().rotateBlackLayout()
+				&& getGame().getCurrentPlayer().isBlack();
+		WoodenAlertDialog.show(this, getString(R.string.invalid_move_title),
+				getString(messageId), new DialogInterface.OnClickListener() {
 
-		Toast toast = Toast.makeText(getActivity(), messageId,
-				Toast.LENGTH_LONG);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		TextView v = (TextView) toast.getView().findViewById(
-				android.R.id.message);
-		if (Utils.hasHoneycomb()) {
-			conditinallyInvertToastText(v);
-		}
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-		toast.show();
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void conditinallyInvertToastText(TextView v) {
-		if (getGameStrategy() != null && getGameStrategy().rotateBlackLayout()
-				&& getGame().getCurrentPlayer().isBlack()) {
-			v.setRotation(180);
-		} else {
-			v.setRotation(0);
-		}
+					}
+				}, new OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+					}
+				}, shouldRotate);
 	}
 
 }
