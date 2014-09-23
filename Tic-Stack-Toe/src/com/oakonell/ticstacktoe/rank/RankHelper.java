@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.appstate.AppStateManager.StateConflictResult;
 import com.google.android.gms.appstate.AppStateManager.StateDeletedResult;
@@ -16,6 +18,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.oakonell.ticstacktoe.GameContext;
 import com.oakonell.ticstacktoe.Leaderboards;
+import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.TicStackToe;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.RankInfo;
@@ -111,6 +114,10 @@ public class RankHelper {
 								}
 							} else {
 								Log.i(TAG, "  Found conflicted rank save data!");
+								Tracker myTracker = EasyTracker.getTracker();
+								String action = "resolve";
+								String label = "";
+								myTracker.sendEvent(context.getSherlockActivity().getString(R.string.an_conlficted_rank_save), action, label, 0L );
 								StateConflictResult conflictResult = result
 										.getConflictResult();
 								byte[] localData = conflictResult

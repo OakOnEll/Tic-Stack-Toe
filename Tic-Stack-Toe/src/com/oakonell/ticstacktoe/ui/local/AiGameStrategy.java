@@ -39,7 +39,8 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 	private final AILevel aiDepth;
 	boolean isRanked;
 	private RankInfo rankInfo;
-
+	private boolean ranksUpdated;
+	
 	public AiGameStrategy(GameContext context, AILevel aiDepth, boolean isRanked) {
 		super(context);
 		this.aiDepth = aiDepth;
@@ -114,7 +115,7 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 		// progress
 		final RankedAIPlayAgainFragment playAgainDialog = new RankedAIPlayAgainFragment();
 
-		if (isRanked) {
+		if (isRanked && !ranksUpdated) {
 			updateRanks(new PostRankUpdate() {
 				@Override
 				public void ranksUpdated(short oldRank, short newRank,
@@ -149,6 +150,8 @@ public class AiGameStrategy extends AbstractLocalStrategy {
 			return;
 		}
 	
+		ranksUpdated = getGame().getBoard().getState().isOver();
+		
 		final GameType type = getGame().getType();
 		RankHelper.createRankInfo(getGameContext(), type, true,
 				new RankInfoUpdated() {

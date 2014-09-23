@@ -1841,7 +1841,6 @@ com.google.android.gms.internal.dx:
     public void unregisterConnectionCallbacks(com.google.android.gms.common.api.GoogleApiClient$ConnectionCallbacks)
     public boolean isConnectionFailedListenerRegistered(com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener)
     public void unregisterConnectionFailedListener(com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener)
-com.google.android.gms.internal.ej
 com.google.android.gms.internal.es$a:
     public com.google.android.gms.internal.es$a cm()
 com.google.android.gms.internal.ev:
@@ -2085,9 +2084,6 @@ com.google.android.gms.internal.hm$c
 com.google.android.gms.internal.hn
 com.google.android.gms.internal.ho$a:
     public ho$a()
-com.google.android.gms.internal.hp
-com.google.android.gms.internal.hp$a
-com.google.android.gms.internal.hp$a$a
 com.google.android.gms.internal.hq
 com.google.android.gms.internal.hq$a
 com.google.android.gms.internal.hq$a$a
@@ -2112,8 +2108,8 @@ com.google.android.gms.internal.hs$c
 com.google.android.gms.internal.hs$d
 com.google.android.gms.internal.hs$e
 com.google.android.gms.internal.hs$f
-com.google.android.gms.internal.ht
-com.google.android.gms.internal.ht$a
+com.google.android.gms.internal.ht:
+    public static android.view.View a(android.content.Context,int,int,java.lang.String,java.lang.String)
 com.google.android.gms.internal.hv
 com.google.android.gms.internal.hx:
     public com.google.android.gms.common.api.PendingResult revokeAccessAndDisconnect(com.google.android.gms.common.api.GoogleApiClient)
@@ -2725,16 +2721,19 @@ com.google.android.gms.plus.PlusClient$OnAccessRevokedListener
 com.google.android.gms.plus.PlusClient$OnMomentsLoadedListener
 com.google.android.gms.plus.PlusClient$OnPeopleLoadedListener
 com.google.android.gms.plus.PlusClient$OrderBy
-com.google.android.gms.plus.PlusOneButton
-com.google.android.gms.plus.PlusOneButton$DefaultOnPlusOneClickListener
-com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener
+com.google.android.gms.plus.PlusOneButton:
+    public static final int SIZE_SMALL
+    public static final int SIZE_MEDIUM
+    public static final int SIZE_TALL
+    public static final int SIZE_STANDARD
+    public static final int ANNOTATION_NONE
+    public static final int ANNOTATION_BUBBLE
+    public static final int ANNOTATION_INLINE
+    public static final int DEFAULT_ACTIVITY_REQUEST_CODE
+    public void initialize(java.lang.String,com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener)
 com.google.android.gms.plus.PlusOneButtonWithPopup
-com.google.android.gms.plus.PlusOneDummyView
-com.google.android.gms.plus.PlusOneDummyView$1
-com.google.android.gms.plus.PlusOneDummyView$a
-com.google.android.gms.plus.PlusOneDummyView$b
-com.google.android.gms.plus.PlusOneDummyView$c
-com.google.android.gms.plus.PlusOneDummyView$d
+com.google.android.gms.plus.PlusOneDummyView:
+    public static final java.lang.String TAG
 com.google.android.gms.plus.PlusShare
 com.google.android.gms.plus.PlusShare$Builder
 com.google.android.gms.plus.model.moments.ItemScope:
@@ -3162,7 +3161,6 @@ com.oakonell.ticstacktoe.googleapi.GameHelper:
     398:402:public com.google.android.gms.games.multiplayer.Invitation getInvitation()
     406:406:public boolean hasInvitation()
     410:410:public boolean hasTurnBasedMatch()
-    418:419:public void clearTurnBasedMatch()
     446:449:public void enableDebugLog(boolean,java.lang.String)
     613:621:public void reconnectClient()
     869:869:static android.app.Dialog makeSimpleDialog(android.app.Activity,java.lang.String,java.lang.String)
@@ -3335,9 +3333,9 @@ com.oakonell.ticstacktoe.ui.ImageHelper:
 com.oakonell.ticstacktoe.ui.game.AbstractGameFragment:
     protected abstract void showGameStats()
 com.oakonell.ticstacktoe.ui.game.GameFragment$10:
-    1124:1124:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
+    1149:1149:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
 com.oakonell.ticstacktoe.ui.game.GameFragment$7:
-    819:819:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
+    844:844:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
 com.oakonell.ticstacktoe.ui.game.SoundManager:
     private static final int NUM_CONCURRENT_STREAMS
     83:87:public void stopSound(int)
@@ -3381,7 +3379,7 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy:
     private static final java.lang.String TAG
     private static final int PROTOCOL_VERSION
     742:747:public static java.util.Map getParticipantsById(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch)
-    1598:1601:public void onFragmentResume()
+    1623:1626:public void onFragmentResume()
 com.oakonell.ticstacktoe.utils.BillingHelper:
     public static final java.lang.String SKU_PREMIUM
     private static final java.lang.String TAG
@@ -3495,6 +3493,38 @@ com.oakonell.utils.share.ShareHelper$2
 com.oakonell.utils.share.ShareHelper$3
 com.oakonell.utils.xml.XMLUtils
 com.oakonell.views.HintedImageView
+com.shamanland.facebook.likebutton.CalloutPath:
+    public static final int MARKER_NONE
+    public static final int MARKER_LEFT
+    public static final int MARKER_TOP
+    public static final int MARKER_RIGHT
+    public static final int MARKER_BOTTOM
+    public static final int MARKER_ALL
+com.shamanland.facebook.likebutton.FacebookLikeActivity:
+    public static final java.lang.String PAGE_URL
+    public static final java.lang.String PAGE_TITLE
+    public static final java.lang.String PAGE_TEXT
+    public static final java.lang.String PAGE_PICTURE
+    public static final java.lang.String PAGE_PICTURE_URL
+    public static final java.lang.String PAGE_PICTURE_ID
+    public static final java.lang.String APP_ID
+    public static final java.lang.String CONTENT_VIEW_ID
+    public static final java.lang.String OPTIONS
+com.shamanland.facebook.likebutton.FacebookLikeOptions:
+    public static final boolean LOGGING
+    37:38:public com.shamanland.facebook.likebutton.FacebookLikeOptions setTitleOpen(java.lang.String)
+    42:43:public com.shamanland.facebook.likebutton.FacebookLikeOptions setTitleClose(java.lang.String)
+    47:48:public com.shamanland.facebook.likebutton.FacebookLikeOptions setTextOpen(java.lang.String)
+    52:53:public com.shamanland.facebook.likebutton.FacebookLikeOptions setTextClose(java.lang.String)
+    57:58:public com.shamanland.facebook.likebutton.FacebookLikeOptions setPictureAttrs(java.lang.String)
+    62:63:public com.shamanland.facebook.likebutton.FacebookLikeOptions setLayout(com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout)
+    67:68:public com.shamanland.facebook.likebutton.FacebookLikeOptions setAction(com.shamanland.facebook.likebutton.FacebookLikeOptions$Action)
+    72:73:public com.shamanland.facebook.likebutton.FacebookLikeOptions setShowFaces(boolean)
+    77:78:public com.shamanland.facebook.likebutton.FacebookLikeOptions setShare(boolean)
+com.shamanland.facebook.likebutton.FacebookLinkStatTask
+com.shamanland.facebook.likebutton.FacebookLinkStatTask$Listener
+com.shamanland.facebook.likebutton.R:
+    9:9:public R()
 fr.castorflex.android.smoothprogressbar.ContentLoadingSmoothProgressBar
 fr.castorflex.android.smoothprogressbar.ContentLoadingSmoothProgressBar$1
 fr.castorflex.android.smoothprogressbar.ContentLoadingSmoothProgressBar$2

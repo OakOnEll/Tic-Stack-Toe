@@ -289,7 +289,8 @@ public class GameFragment extends AbstractGameFragment {
 		setHasOptionsMenu(true);
 
 		storeViewReferences(view);
-		if (Utils.hasHoneycomb() && getGameStrategy() != null && getGameStrategy().rotateBlackLayout()) {
+		if (Utils.hasHoneycomb() && getGameStrategy() != null
+				&& getGameStrategy().rotateBlackLayout()) {
 			invertBlackHeader();
 		}
 
@@ -1209,12 +1210,10 @@ public class GameFragment extends AbstractGameFragment {
 											highlightStrictFirstTouchedPiece(source);
 										}
 										int messageId = e.getErrorResourceId();
-										Toast toast = Toast.makeText(
-												getActivity(), messageId,
-												Toast.LENGTH_SHORT);
-										toast.setGravity(Gravity.CENTER, 0, 0);
-										toast.show();
+
+										showInvalidMoveMessage(messageId);
 									}
+
 								});
 						getGameStrategy().playSound(Sounds.INVALID_MOVE);
 					}
@@ -1403,7 +1402,8 @@ public class GameFragment extends AbstractGameFragment {
 		blackImageView = (ImageView) view.findViewById(R.id.black_back);
 		ImageView whiteImage = (ImageView) view.findViewById(R.id.white_back);
 
-		getGame().getBlackPlayer().updatePlayerImage(imgManager, blackImageView);
+		getGame().getBlackPlayer()
+				.updatePlayerImage(imgManager, blackImageView);
 		getGame().getWhitePlayer().updatePlayerImage(imgManager, whiteImage);
 
 		Player player = getGame().getCurrentPlayer();
@@ -1460,10 +1460,7 @@ public class GameFragment extends AbstractGameFragment {
 		} catch (InvalidMoveException e) {
 			getGameStrategy().playSound(Sounds.INVALID_MOVE);
 			int messageId = e.getErrorResourceId();
-			Toast toast = Toast.makeText(getActivity(), messageId,
-					Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER, 0, 0);
-			toast.show();
+			showInvalidMoveMessage(messageId);
 			return false;
 		}
 		// // TODO diff sounds for diff size piece/color..
@@ -1873,6 +1870,45 @@ public class GameFragment extends AbstractGameFragment {
 
 	public void disableDragging(boolean disable) {
 		disableButtons = disable;
+	}
+
+	private void showInvalidMoveMessage(int messageId) {
+		// TODO show in a nice wood dialog..
+		// how to invert? - title at bottom?
+		// WoodenAlertDialog dialog = WoodenAlertDialog.show(this,
+		// getString(R.string.invalid_move_title), getString(messageId),
+		// new DialogInterface.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(DialogInterface dialog, int which) {
+		//
+		// }
+		// }, new OnCancelListener() {
+		// @Override
+		// public void onCancel(DialogInterface dialog) {
+		// }
+		// });
+
+		Toast toast = Toast.makeText(getActivity(), messageId,
+				Toast.LENGTH_LONG);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		TextView v = (TextView) toast.getView().findViewById(
+				android.R.id.message);
+		if (Utils.hasHoneycomb()) {
+			conditinallyInvertToastText(v);
+		}
+
+		toast.show();
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void conditinallyInvertToastText(TextView v) {
+		if (getGameStrategy() != null && getGameStrategy().rotateBlackLayout()
+				&& getGame().getCurrentPlayer().isBlack()) {
+			v.setRotation(180);
+		} else {
+			v.setRotation(0);
+		}
 	}
 
 }

@@ -10750,7 +10750,9 @@ com.google.android.gms.internal.ei -> com.google.android.gms.internal.ia:
     void b(android.content.res.Resources,int,int) -> b
     void c(android.content.res.Resources,int,int) -> c
     int b(int,int,int) -> a
-com.google.android.gms.internal.ek -> com.google.android.gms.internal.ic:
+com.google.android.gms.internal.ej -> com.google.android.gms.internal.ic:
+    java.lang.String a(java.lang.String,java.lang.String,android.content.Context,android.util.AttributeSet,boolean,boolean,java.lang.String) -> a
+com.google.android.gms.internal.ek -> com.google.android.gms.internal.ie:
     java.util.LinkedHashMap pQ -> a
     int size -> b
     int pR -> c
@@ -10794,7 +10796,7 @@ com.google.android.gms.internal.el -> com.google.android.gms.internal.el:
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
     java.lang.String toString() -> toString
-com.google.android.gms.internal.em -> com.google.android.gms.internal.ie:
+com.google.android.gms.internal.em -> com.google.android.gms.internal.if:
     com.google.android.gms.internal.el p(android.os.Parcel) -> a
     com.google.android.gms.internal.el[] N(int) -> a
     void a(com.google.android.gms.internal.el,android.os.Parcel,int) -> a
@@ -10810,7 +10812,7 @@ com.google.android.gms.internal.en -> com.google.android.gms.internal.en:
     com.google.android.gms.internal.es$b cf() -> c
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.eo -> com.google.android.gms.internal.if:
+com.google.android.gms.internal.eo -> com.google.android.gms.internal.ih:
     com.google.android.gms.internal.en q(android.os.Parcel) -> a
     com.google.android.gms.internal.en[] O(int) -> a
     void a(com.google.android.gms.internal.en,android.os.Parcel,int) -> a
@@ -10839,13 +10841,13 @@ com.google.android.gms.internal.ep$a -> com.google.android.gms.internal.ep$a:
     int qh -> c
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.eq -> com.google.android.gms.internal.ih:
+com.google.android.gms.internal.eq -> com.google.android.gms.internal.ii:
     com.google.android.gms.internal.ep r(android.os.Parcel) -> a
     com.google.android.gms.internal.ep[] P(int) -> a
     void a(com.google.android.gms.internal.ep,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.er -> com.google.android.gms.internal.ii:
+com.google.android.gms.internal.er -> com.google.android.gms.internal.ij:
     com.google.android.gms.internal.ep$a s(android.os.Parcel) -> a
     com.google.android.gms.internal.ep$a[] Q(int) -> a
     void a(com.google.android.gms.internal.ep$a,android.os.Parcel,int) -> a
@@ -10904,17 +10906,17 @@ com.google.android.gms.internal.es$a -> com.google.android.gms.internal.es$a:
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
     java.lang.String toString() -> toString
     com.google.android.gms.internal.es$b c(com.google.android.gms.internal.es$a) -> a
-com.google.android.gms.internal.es$b -> com.google.android.gms.internal.ij:
+com.google.android.gms.internal.es$b -> com.google.android.gms.internal.ik:
     int ch() -> c
     int ci() -> d
     java.lang.Object g(java.lang.Object) -> a
-com.google.android.gms.internal.et -> com.google.android.gms.internal.ik:
+com.google.android.gms.internal.et -> com.google.android.gms.internal.il:
     com.google.android.gms.internal.es$a t(android.os.Parcel) -> a
     com.google.android.gms.internal.es$a[] R(int) -> a
     void a(com.google.android.gms.internal.es$a,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.eu -> com.google.android.gms.internal.il:
+com.google.android.gms.internal.eu -> com.google.android.gms.internal.im:
     com.google.android.gms.internal.ev$b u(android.os.Parcel) -> a
     com.google.android.gms.internal.ev$b[] S(int) -> a
     void a(com.google.android.gms.internal.ev$b,android.os.Parcel,int) -> a
@@ -10951,13 +10953,13 @@ com.google.android.gms.internal.ev$b -> com.google.android.gms.internal.ev$b:
     com.google.android.gms.internal.es$a qx -> c
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.ew -> com.google.android.gms.internal.im:
+com.google.android.gms.internal.ew -> com.google.android.gms.internal.in:
     com.google.android.gms.internal.ev v(android.os.Parcel) -> a
     com.google.android.gms.internal.ev[] T(int) -> a
     void a(com.google.android.gms.internal.ev,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ex -> com.google.android.gms.internal.in:
+com.google.android.gms.internal.ex -> com.google.android.gms.internal.io:
     com.google.android.gms.internal.ev$a w(android.os.Parcel) -> a
     com.google.android.gms.internal.ev$a[] U(int) -> a
     void a(com.google.android.gms.internal.ev$a,android.os.Parcel,int) -> a
@@ -10990,13 +10992,13 @@ com.google.android.gms.internal.ey -> com.google.android.gms.internal.ey:
     void b(java.lang.StringBuilder,com.google.android.gms.internal.es$a,java.util.ArrayList) -> a
     void a(java.lang.StringBuilder,int,java.lang.Object) -> a
     java.util.HashMap c(android.os.Bundle) -> a
-com.google.android.gms.internal.ez -> com.google.android.gms.internal.io:
+com.google.android.gms.internal.ez -> com.google.android.gms.internal.ip:
     com.google.android.gms.internal.ey x(android.os.Parcel) -> a
     com.google.android.gms.internal.ey[] V(int) -> a
     void a(com.google.android.gms.internal.ey,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.f -> com.google.android.gms.internal.ip:
+com.google.android.gms.internal.f -> com.google.android.gms.internal.iq:
     java.lang.reflect.Method dy -> e
     java.lang.reflect.Method dz -> f
     java.lang.reflect.Method dA -> g
@@ -11019,8 +11021,8 @@ com.google.android.gms.internal.f -> com.google.android.gms.internal.ip:
     java.lang.String b(android.content.Context,com.google.android.gms.internal.j) -> b
     java.lang.String b(byte[],java.lang.String) -> b
     void e(android.content.Context) -> e
-com.google.android.gms.internal.f$a -> com.google.android.gms.internal.iq:
-com.google.android.gms.internal.fa -> com.google.android.gms.internal.ir:
+com.google.android.gms.internal.f$a -> com.google.android.gms.internal.ir:
+com.google.android.gms.internal.fa -> com.google.android.gms.internal.is:
     void a(java.lang.StringBuilder,java.lang.Object[]) -> a
     void a(java.lang.StringBuilder,int[]) -> a
     void a(java.lang.StringBuilder,long[]) -> a
@@ -11028,18 +11030,18 @@ com.google.android.gms.internal.fa -> com.google.android.gms.internal.ir:
     void a(java.lang.StringBuilder,double[]) -> a
     void a(java.lang.StringBuilder,boolean[]) -> a
     void a(java.lang.StringBuilder,java.lang.String[]) -> a
-com.google.android.gms.internal.fb -> com.google.android.gms.internal.is:
+com.google.android.gms.internal.fb -> com.google.android.gms.internal.it:
     java.lang.String b(byte[]) -> a
     java.lang.String c(byte[]) -> b
-com.google.android.gms.internal.fd -> com.google.android.gms.internal.it:
+com.google.android.gms.internal.fd -> com.google.android.gms.internal.iu:
     boolean W(int) -> a
-com.google.android.gms.internal.fe -> com.google.android.gms.internal.iu:
+com.google.android.gms.internal.fe -> com.google.android.gms.internal.iv:
     java.util.regex.Pattern qC -> a
     java.util.regex.Pattern qD -> b
     java.lang.String aa(java.lang.String) -> a
-com.google.android.gms.internal.ff -> com.google.android.gms.internal.iv:
+com.google.android.gms.internal.ff -> com.google.android.gms.internal.iw:
     void a(java.lang.StringBuilder,java.util.HashMap) -> a
-com.google.android.gms.internal.fg -> com.google.android.gms.internal.iw:
+com.google.android.gms.internal.fg -> com.google.android.gms.internal.ix:
     boolean cD() -> a
     boolean cE() -> b
     boolean cF() -> c
@@ -11047,7 +11049,7 @@ com.google.android.gms.internal.fg -> com.google.android.gms.internal.iw:
     boolean cH() -> e
     boolean cI() -> f
     boolean X(int) -> a
-com.google.android.gms.internal.fh -> com.google.android.gms.internal.ix:
+com.google.android.gms.internal.fh -> com.google.android.gms.internal.iy:
     com.google.android.gms.drive.metadata.MetadataField rG -> a
     com.google.android.gms.drive.metadata.MetadataField TITLE -> b
     com.google.android.gms.drive.metadata.MetadataField MIME_TYPE -> c
@@ -11056,15 +11058,15 @@ com.google.android.gms.internal.fh -> com.google.android.gms.internal.ix:
     com.google.android.gms.drive.metadata.MetadataField rH -> f
     com.google.android.gms.drive.metadata.MetadataField rI -> g
     com.google.android.gms.drive.metadata.CollectionMetadataField PARENTS -> h
-com.google.android.gms.internal.fh$1 -> com.google.android.gms.internal.iy:
-com.google.android.gms.internal.fi -> com.google.android.gms.internal.iz:
+com.google.android.gms.internal.fh$1 -> com.google.android.gms.internal.iz:
+com.google.android.gms.internal.fi -> com.google.android.gms.internal.ja:
     com.google.android.gms.drive.metadata.OrderedMetadataField rJ -> a
     com.google.android.gms.drive.metadata.OrderedMetadataField rK -> b
     com.google.android.gms.drive.metadata.OrderedMetadataField rL -> c
     com.google.android.gms.drive.metadata.OrderedMetadataField rM -> d
-com.google.android.gms.internal.fj -> com.google.android.gms.internal.ja:
+com.google.android.gms.internal.fj -> com.google.android.gms.internal.jb:
     com.google.android.gms.internal.fj rN -> a
-com.google.android.gms.internal.fk -> com.google.android.gms.internal.jb:
+com.google.android.gms.internal.fk -> com.google.android.gms.internal.jc:
     void d(int,java.lang.String) -> a
     void b(com.google.android.gms.common.data.DataHolder) -> a
     void onAchievementUpdated(int,java.lang.String) -> b
@@ -11118,7 +11120,7 @@ com.google.android.gms.internal.fk -> com.google.android.gms.internal.jb:
     void C(com.google.android.gms.common.data.DataHolder) -> B
     void aE(int) -> d
     void D(com.google.android.gms.common.data.DataHolder) -> C
-com.google.android.gms.internal.fl -> com.google.android.gms.internal.jc:
+com.google.android.gms.internal.fl -> com.google.android.gms.internal.jd:
     java.lang.String tO -> e
     java.lang.String jG -> f
     java.util.Map tP -> g
@@ -11178,42 +11180,42 @@ com.google.android.gms.internal.fl -> com.google.android.gms.internal.jc:
     void a(int,android.os.IBinder,android.os.Bundle) -> a
     android.os.IInterface p(android.os.IBinder) -> b
     com.google.android.gms.games.multiplayer.realtime.Room a(com.google.android.gms.internal.fl,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$a -> com.google.android.gms.internal.jd:
+com.google.android.gms.internal.fl$a -> com.google.android.gms.internal.je:
     java.util.ArrayList tY -> d
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$aa -> com.google.android.gms.internal.je:
+com.google.android.gms.internal.fl$aa -> com.google.android.gms.internal.jf:
     java.lang.String up -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$ab -> com.google.android.gms.internal.jf:
+com.google.android.gms.internal.fl$ab -> com.google.android.gms.internal.jg:
     java.lang.String up -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$ac -> com.google.android.gms.internal.jg:
+com.google.android.gms.internal.fl$ac -> com.google.android.gms.internal.jh:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$ad -> com.google.android.gms.internal.jh:
+com.google.android.gms.internal.fl$ad -> com.google.android.gms.internal.ji:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$ae -> com.google.android.gms.internal.ji:
+com.google.android.gms.internal.fl$ae -> com.google.android.gms.internal.jj:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$af -> com.google.android.gms.internal.jj:
+com.google.android.gms.internal.fl$af -> com.google.android.gms.internal.jk:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$ag -> com.google.android.gms.internal.jk:
+com.google.android.gms.internal.fl$ag -> com.google.android.gms.internal.jl:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$ah -> com.google.android.gms.internal.jl:
+com.google.android.gms.internal.fl$ah -> com.google.android.gms.internal.jm:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,java.util.ArrayList) -> a
-com.google.android.gms.internal.fl$am -> com.google.android.gms.internal.jm:
+com.google.android.gms.internal.fl$am -> com.google.android.gms.internal.jn:
     int mC -> c
     java.lang.String us -> d
     int ut -> e
@@ -11221,20 +11223,20 @@ com.google.android.gms.internal.fl$am -> com.google.android.gms.internal.jm:
     void a(com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer$ReliableMessageSentCallback) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$an -> com.google.android.gms.internal.jn:
+com.google.android.gms.internal.fl$an -> com.google.android.gms.internal.jo:
     com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer$ReliableMessageSentCallback uu -> a
     com.google.android.gms.internal.fl tZ -> b
     void b(int,int,java.lang.String) -> a
-com.google.android.gms.internal.fl$ao -> com.google.android.gms.internal.jo:
+com.google.android.gms.internal.fl$ao -> com.google.android.gms.internal.jp:
     com.google.android.gms.common.api.Status jY -> a
     com.google.android.gms.common.data.DataHolder nE -> d
     com.google.android.gms.internal.fl tZ -> e
     com.google.android.gms.common.api.Status getStatus() -> f
     void release() -> d_
-com.google.android.gms.internal.fl$ap -> com.google.android.gms.internal.jp:
+com.google.android.gms.internal.fl$ap -> com.google.android.gms.internal.jq:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
-com.google.android.gms.internal.fl$aq -> com.google.android.gms.internal.jq:
+com.google.android.gms.internal.fl$aq -> com.google.android.gms.internal.jr:
     com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener uv -> b
     com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener uw -> c
     com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener ux -> d
@@ -11256,73 +11258,73 @@ com.google.android.gms.internal.fl$aq -> com.google.android.gms.internal.jq:
     void onP2PConnected(java.lang.String) -> c
     void onP2PDisconnected(java.lang.String) -> d
     void onRealTimeMessageReceived(com.google.android.gms.games.multiplayer.realtime.RealTimeMessage) -> a
-com.google.android.gms.internal.fl$ar -> com.google.android.gms.internal.jr:
+com.google.android.gms.internal.fl$ar -> com.google.android.gms.internal.js:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,int) -> a
-com.google.android.gms.internal.fl$as -> com.google.android.gms.internal.js:
+com.google.android.gms.internal.fl$as -> com.google.android.gms.internal.jt:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
-com.google.android.gms.internal.fl$at -> com.google.android.gms.internal.jt:
+com.google.android.gms.internal.fl$at -> com.google.android.gms.internal.ju:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,int) -> a
-com.google.android.gms.internal.fl$au -> com.google.android.gms.internal.ju:
+com.google.android.gms.internal.fl$au -> com.google.android.gms.internal.jv:
     com.google.android.gms.common.api.a$c jW -> b
     com.google.android.gms.internal.fl tZ -> a
     void onSignOutComplete() -> a
-com.google.android.gms.internal.fl$av -> com.google.android.gms.internal.jv:
+com.google.android.gms.internal.fl$av -> com.google.android.gms.internal.jw:
     com.google.android.gms.common.api.Status jY -> c
     com.google.android.gms.internal.fl tZ -> a
     void c(com.google.android.gms.common.api.a$c) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$aw -> com.google.android.gms.internal.jw:
+com.google.android.gms.internal.fl$aw -> com.google.android.gms.internal.jx:
     com.google.android.gms.common.api.a$c jW -> b
     com.google.android.gms.internal.fl tZ -> a
     void d(com.google.android.gms.common.data.DataHolder) -> c
-com.google.android.gms.internal.fl$ax -> com.google.android.gms.internal.jx:
+com.google.android.gms.internal.fl$ax -> com.google.android.gms.internal.jy:
     com.google.android.gms.games.leaderboard.ScoreSubmissionData uy -> g
     com.google.android.gms.internal.fl tZ -> f
     void a(com.google.android.gms.common.api.a$c,com.google.android.gms.common.data.DataHolder) -> a
     com.google.android.gms.games.leaderboard.ScoreSubmissionData getScoreData() -> b
     void a(java.lang.Object,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$ay -> com.google.android.gms.internal.jy:
+com.google.android.gms.internal.fl$ay -> com.google.android.gms.internal.jz:
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch un -> f
     com.google.android.gms.internal.fl tZ -> g
     void a(com.google.android.gms.common.api.a$c,com.google.android.gms.common.data.DataHolder) -> a
     void i(com.google.android.gms.common.api.a$c) -> a
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch getMatch() -> a
     void a(java.lang.Object,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$b -> com.google.android.gms.internal.jz:
+com.google.android.gms.internal.fl$b -> com.google.android.gms.internal.ka:
     com.google.android.gms.internal.fl tZ -> d
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,com.google.android.gms.common.data.DataHolder) -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,int) -> a
     void a(java.lang.Object,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$bb -> com.google.android.gms.internal.ka:
+com.google.android.gms.internal.fl$bb -> com.google.android.gms.internal.kb:
     com.google.android.gms.common.api.a$c uB -> b
     com.google.android.gms.internal.fl tZ -> a
     void n(com.google.android.gms.common.data.DataHolder) -> m
-com.google.android.gms.internal.fl$bc -> com.google.android.gms.internal.kb:
+com.google.android.gms.internal.fl$bc -> com.google.android.gms.internal.kc:
     com.google.android.gms.internal.fl tZ -> h
     void i(com.google.android.gms.common.api.a$c) -> a
-com.google.android.gms.internal.fl$bf -> com.google.android.gms.internal.kc:
+com.google.android.gms.internal.fl$bf -> com.google.android.gms.internal.kd:
     com.google.android.gms.common.api.a$c uD -> b
     com.google.android.gms.internal.fl tZ -> a
     void m(com.google.android.gms.common.data.DataHolder) -> l
-com.google.android.gms.internal.fl$bg -> com.google.android.gms.internal.kd:
+com.google.android.gms.internal.fl$bg -> com.google.android.gms.internal.ke:
     com.google.android.gms.internal.fl tZ -> h
     void i(com.google.android.gms.common.api.a$c) -> a
-com.google.android.gms.internal.fl$bh -> com.google.android.gms.internal.ke:
+com.google.android.gms.internal.fl$bh -> com.google.android.gms.internal.kf:
     com.google.android.gms.common.api.a$c uE -> b
     com.google.android.gms.internal.fl tZ -> a
     void o(com.google.android.gms.common.data.DataHolder) -> n
-com.google.android.gms.internal.fl$bi -> com.google.android.gms.internal.kf:
+com.google.android.gms.internal.fl$bi -> com.google.android.gms.internal.kg:
     com.google.android.gms.internal.fl tZ -> h
     void i(com.google.android.gms.common.api.a$c) -> a
-com.google.android.gms.internal.fl$bj -> com.google.android.gms.internal.kg:
+com.google.android.gms.internal.fl$bj -> com.google.android.gms.internal.kh:
     com.google.android.gms.common.api.a$c uF -> b
     com.google.android.gms.internal.fl tZ -> a
     void a(int,android.os.Bundle) -> a
-com.google.android.gms.internal.fl$bk -> com.google.android.gms.internal.kh:
+com.google.android.gms.internal.fl$bk -> com.google.android.gms.internal.ki:
     com.google.android.gms.common.api.Status jY -> c
     com.google.android.gms.games.multiplayer.turnbased.LoadMatchesResponse uG -> d
     com.google.android.gms.internal.fl tZ -> a
@@ -11332,16 +11334,16 @@ com.google.android.gms.internal.fl$bk -> com.google.android.gms.internal.kh:
     com.google.android.gms.games.multiplayer.turnbased.LoadMatchesResponse getMatches() -> b
     void release() -> d_
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$c -> com.google.android.gms.internal.ki:
+com.google.android.gms.internal.fl$c -> com.google.android.gms.internal.kj:
     com.google.android.gms.internal.fl tZ -> e
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.common.data.DataHolder) -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
     void a(java.lang.Object,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$d -> com.google.android.gms.internal.kj:
+com.google.android.gms.internal.fl$d -> com.google.android.gms.internal.kk:
     com.google.android.gms.common.api.a$c jW -> b
     com.google.android.gms.internal.fl tZ -> a
     void onAchievementUpdated(int,java.lang.String) -> b
-com.google.android.gms.internal.fl$e -> com.google.android.gms.internal.kk:
+com.google.android.gms.internal.fl$e -> com.google.android.gms.internal.kl:
     com.google.android.gms.common.api.Status jY -> c
     java.lang.String ua -> d
     com.google.android.gms.internal.fl tZ -> a
@@ -11349,67 +11351,67 @@ com.google.android.gms.internal.fl$e -> com.google.android.gms.internal.kk:
     void aL() -> g
     com.google.android.gms.common.api.Status getStatus() -> f
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$h -> com.google.android.gms.internal.kl:
+com.google.android.gms.internal.fl$h -> com.google.android.gms.internal.km:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
-com.google.android.gms.internal.fl$i -> com.google.android.gms.internal.km:
+com.google.android.gms.internal.fl$i -> com.google.android.gms.internal.kn:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room) -> a
-com.google.android.gms.internal.fl$l -> com.google.android.gms.internal.kn:
+com.google.android.gms.internal.fl$l -> com.google.android.gms.internal.ko:
     com.google.android.gms.games.multiplayer.OnInvitationReceivedListener ud -> b
     com.google.android.gms.internal.fl tZ -> a
     void l(com.google.android.gms.common.data.DataHolder) -> k
     void onInvitationRemoved(java.lang.String) -> a
-com.google.android.gms.internal.fl$m -> com.google.android.gms.internal.ko:
+com.google.android.gms.internal.fl$m -> com.google.android.gms.internal.kp:
     com.google.android.gms.games.multiplayer.Invitation ue -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.OnInvitationReceivedListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$n -> com.google.android.gms.internal.kp:
+com.google.android.gms.internal.fl$n -> com.google.android.gms.internal.kq:
     java.lang.String uf -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.OnInvitationReceivedListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$o -> com.google.android.gms.internal.kq:
+com.google.android.gms.internal.fl$o -> com.google.android.gms.internal.kr:
     com.google.android.gms.common.api.a$c jW -> b
     com.google.android.gms.internal.fl tZ -> a
     void k(com.google.android.gms.common.data.DataHolder) -> j
-com.google.android.gms.internal.fl$p -> com.google.android.gms.internal.kr:
+com.google.android.gms.internal.fl$p -> com.google.android.gms.internal.ks:
     com.google.android.gms.games.multiplayer.InvitationBuffer ug -> g
     com.google.android.gms.internal.fl tZ -> f
     void a(com.google.android.gms.common.api.a$c,com.google.android.gms.common.data.DataHolder) -> a
     com.google.android.gms.games.multiplayer.InvitationBuffer getInvitations() -> b
     void a(java.lang.Object,com.google.android.gms.common.data.DataHolder) -> a
-com.google.android.gms.internal.fl$q -> com.google.android.gms.internal.ks:
+com.google.android.gms.internal.fl$q -> com.google.android.gms.internal.kt:
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,com.google.android.gms.games.multiplayer.realtime.Room,int) -> a
-com.google.android.gms.internal.fl$v -> com.google.android.gms.internal.kt:
+com.google.android.gms.internal.fl$v -> com.google.android.gms.internal.ku:
     int mC -> c
     java.lang.String uk -> d
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$w -> com.google.android.gms.internal.ku:
+com.google.android.gms.internal.fl$w -> com.google.android.gms.internal.kv:
     java.lang.String ul -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$x -> com.google.android.gms.internal.kv:
+com.google.android.gms.internal.fl$x -> com.google.android.gms.internal.kw:
     com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener um -> b
     com.google.android.gms.internal.fl tZ -> a
     void q(com.google.android.gms.common.data.DataHolder) -> p
     void onTurnBasedMatchRemoved(java.lang.String) -> b
-com.google.android.gms.internal.fl$y -> com.google.android.gms.internal.kw:
+com.google.android.gms.internal.fl$y -> com.google.android.gms.internal.kx:
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch un -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener) -> a
     void aL() -> g
     void b(java.lang.Object) -> a
-com.google.android.gms.internal.fl$z -> com.google.android.gms.internal.kx:
+com.google.android.gms.internal.fl$z -> com.google.android.gms.internal.ky:
     com.google.android.gms.games.multiplayer.realtime.RealTimeMessage uo -> c
     com.google.android.gms.internal.fl tZ -> a
     void a(com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener) -> a
@@ -11417,12 +11419,12 @@ com.google.android.gms.internal.fl$z -> com.google.android.gms.internal.kx:
     void b(java.lang.Object) -> a
 com.google.android.gms.internal.fm -> com.google.android.gms.internal.fm:
     boolean c(java.lang.Integer) -> b
-com.google.android.gms.internal.fn -> com.google.android.gms.internal.ky:
+com.google.android.gms.internal.fn -> com.google.android.gms.internal.kz:
     com.google.android.gms.internal.ea uH -> a
     void c(java.lang.String,java.lang.String) -> a
     void d(java.lang.String,java.lang.String) -> b
     void a(java.lang.String,java.lang.String,java.lang.Throwable) -> a
-com.google.android.gms.internal.fo -> com.google.android.gms.internal.kz:
+com.google.android.gms.internal.fo -> com.google.android.gms.internal.la:
     void d(int,java.lang.String) -> a
     void b(com.google.android.gms.common.data.DataHolder) -> a
     void onAchievementUpdated(int,java.lang.String) -> b
@@ -11476,11 +11478,11 @@ com.google.android.gms.internal.fo -> com.google.android.gms.internal.kz:
     void onTurnBasedMatchRemoved(java.lang.String) -> b
     void onInvitationRemoved(java.lang.String) -> a
     void j(com.google.android.gms.common.data.DataHolder) -> i
-com.google.android.gms.internal.fo$a -> com.google.android.gms.internal.la:
+com.google.android.gms.internal.fo$a -> com.google.android.gms.internal.lb:
     com.google.android.gms.internal.fo G(android.os.IBinder) -> a
     android.os.IBinder asBinder() -> asBinder
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.google.android.gms.internal.fo$a$a -> com.google.android.gms.internal.lb:
+com.google.android.gms.internal.fo$a$a -> com.google.android.gms.internal.lc:
     android.os.IBinder dU -> a
     android.os.IBinder asBinder() -> asBinder
     void d(int,java.lang.String) -> a
@@ -11536,7 +11538,7 @@ com.google.android.gms.internal.fo$a$a -> com.google.android.gms.internal.lb:
     void onTurnBasedMatchRemoved(java.lang.String) -> b
     void onInvitationRemoved(java.lang.String) -> a
     void j(com.google.android.gms.common.data.DataHolder) -> i
-com.google.android.gms.internal.fp -> com.google.android.gms.internal.lc:
+com.google.android.gms.internal.fp -> com.google.android.gms.internal.ld:
     void j(long) -> a
     void a(com.google.android.gms.internal.fo) -> a
     java.lang.String getAppId() -> a
@@ -11666,10 +11668,10 @@ com.google.android.gms.internal.fp -> com.google.android.gms.internal.lc:
     void d(com.google.android.gms.internal.fo,java.lang.String,int,boolean,boolean) -> d
     void a(com.google.android.gms.internal.fo,java.lang.String,java.lang.String,int,boolean,boolean) -> a
     android.os.ParcelFileDescriptor al(java.lang.String) -> h
-com.google.android.gms.internal.fp$a -> com.google.android.gms.internal.ld:
+com.google.android.gms.internal.fp$a -> com.google.android.gms.internal.le:
     com.google.android.gms.internal.fp H(android.os.IBinder) -> a
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.google.android.gms.internal.fp$a$a -> com.google.android.gms.internal.le:
+com.google.android.gms.internal.fp$a$a -> com.google.android.gms.internal.lf:
     android.os.IBinder dU -> a
     android.os.IBinder asBinder() -> asBinder
     void j(long) -> a
@@ -11801,7 +11803,7 @@ com.google.android.gms.internal.fp$a$a -> com.google.android.gms.internal.le:
     void d(com.google.android.gms.internal.fo,java.lang.String,int,boolean,boolean) -> d
     void a(com.google.android.gms.internal.fo,java.lang.String,java.lang.String,int,boolean,boolean) -> a
     android.os.ParcelFileDescriptor al(java.lang.String) -> h
-com.google.android.gms.internal.fq -> com.google.android.gms.internal.lf:
+com.google.android.gms.internal.fq -> com.google.android.gms.internal.lg:
     com.google.android.gms.internal.fl te -> a
     com.google.android.gms.internal.fq$a uI -> b
     com.google.android.gms.internal.fq a(com.google.android.gms.internal.fl,int) -> a
@@ -11810,8 +11812,8 @@ com.google.android.gms.internal.fq -> com.google.android.gms.internal.lf:
     void dl() -> a
     android.os.Bundle dm() -> b
     android.os.IBinder dn() -> c
-com.google.android.gms.internal.fq$1 -> com.google.android.gms.internal.lg:
-com.google.android.gms.internal.fq$a -> com.google.android.gms.internal.lh:
+com.google.android.gms.internal.fq$1 -> com.google.android.gms.internal.lh:
+com.google.android.gms.internal.fq$a -> com.google.android.gms.internal.li:
     android.os.IBinder uJ -> a
     int gravity -> b
     int uK -> c
@@ -11820,7 +11822,7 @@ com.google.android.gms.internal.fq$a -> com.google.android.gms.internal.lh:
     int right -> f
     int bottom -> g
     android.os.Bundle do() -> a
-com.google.android.gms.internal.fq$b -> com.google.android.gms.internal.li:
+com.google.android.gms.internal.fq$b -> com.google.android.gms.internal.lj:
     java.lang.ref.WeakReference uL -> c
     boolean tT -> d
     void aF(int) -> a
@@ -11830,53 +11832,53 @@ com.google.android.gms.internal.fq$b -> com.google.android.gms.internal.li:
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
     void onGlobalLayout() -> onGlobalLayout
     void f(android.view.View) -> b
-com.google.android.gms.internal.fs -> com.google.android.gms.internal.lj:
+com.google.android.gms.internal.fs -> com.google.android.gms.internal.lk:
     android.content.Intent getAchievementsIntent(com.google.android.gms.common.api.GoogleApiClient) -> a
     void unlock(com.google.android.gms.common.api.GoogleApiClient,java.lang.String) -> a
-com.google.android.gms.internal.fs$4 -> com.google.android.gms.internal.lk:
+com.google.android.gms.internal.fs$4 -> com.google.android.gms.internal.ll:
     java.lang.String uP -> a
     com.google.android.gms.internal.fs uO -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.fs$b -> com.google.android.gms.internal.ll:
+com.google.android.gms.internal.fs$b -> com.google.android.gms.internal.lm:
     java.lang.String uS -> a
-com.google.android.gms.internal.ft -> com.google.android.gms.internal.lm:
-com.google.android.gms.internal.fu -> com.google.android.gms.internal.ln:
-com.google.android.gms.internal.fv -> com.google.android.gms.internal.lo:
+com.google.android.gms.internal.ft -> com.google.android.gms.internal.ln:
+com.google.android.gms.internal.fu -> com.google.android.gms.internal.lo:
+com.google.android.gms.internal.fv -> com.google.android.gms.internal.lp:
     void registerInvitationListener(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.OnInvitationReceivedListener) -> a
     com.google.android.gms.common.api.PendingResult loadInvitations(com.google.android.gms.common.api.GoogleApiClient) -> a
-com.google.android.gms.internal.fv$1 -> com.google.android.gms.internal.lp:
+com.google.android.gms.internal.fv$1 -> com.google.android.gms.internal.lq:
     com.google.android.gms.internal.fv uW -> a
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.fv$a -> com.google.android.gms.internal.lq:
-com.google.android.gms.internal.fw -> com.google.android.gms.internal.lr:
+com.google.android.gms.internal.fv$a -> com.google.android.gms.internal.lr:
+com.google.android.gms.internal.fw -> com.google.android.gms.internal.ls:
     android.content.Intent getAllLeaderboardsIntent(com.google.android.gms.common.api.GoogleApiClient) -> a
     com.google.android.gms.common.api.PendingResult submitScoreImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,long) -> a
     com.google.android.gms.common.api.PendingResult submitScoreImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,long,java.lang.String) -> a
-com.google.android.gms.internal.fw$7 -> com.google.android.gms.internal.ls:
+com.google.android.gms.internal.fw$7 -> com.google.android.gms.internal.lt:
     java.lang.String uZ -> a
     long vf -> b
     java.lang.String vg -> c
     com.google.android.gms.internal.fw uY -> d
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.fw$d -> com.google.android.gms.internal.lt:
-com.google.android.gms.internal.fx -> com.google.android.gms.internal.lu:
-com.google.android.gms.internal.fy -> com.google.android.gms.internal.lv:
-com.google.android.gms.internal.fz -> com.google.android.gms.internal.lw:
+com.google.android.gms.internal.fw$d -> com.google.android.gms.internal.lu:
+com.google.android.gms.internal.fx -> com.google.android.gms.internal.lv:
+com.google.android.gms.internal.fy -> com.google.android.gms.internal.lw:
+com.google.android.gms.internal.fz -> com.google.android.gms.internal.lx:
     java.lang.String getCurrentPlayerId(com.google.android.gms.common.api.GoogleApiClient) -> a
-com.google.android.gms.internal.g -> com.google.android.gms.internal.lx:
+com.google.android.gms.internal.g -> com.google.android.gms.internal.ly:
     com.google.android.gms.internal.g a(java.lang.String,android.content.Context) -> a
     com.google.android.gms.internal.g$a f(android.content.Context) -> e
     void b(android.content.Context) -> b
-com.google.android.gms.internal.g$a -> com.google.android.gms.internal.ly:
+com.google.android.gms.internal.g$a -> com.google.android.gms.internal.lz:
     java.lang.String dH -> b
     boolean dI -> c
     com.google.android.gms.internal.g dJ -> a
     java.lang.String getId() -> a
     boolean isLimitAdTrackingEnabled() -> b
-com.google.android.gms.internal.ga -> com.google.android.gms.internal.lz:
+com.google.android.gms.internal.ga -> com.google.android.gms.internal.ma:
     android.content.Intent getWaitingRoomIntent(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.realtime.Room,int) -> a
     android.content.Intent getSelectOpponentsIntent(com.google.android.gms.common.api.GoogleApiClient,int,int) -> a
     void create(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.realtime.RoomConfig) -> a
@@ -11884,7 +11886,7 @@ com.google.android.gms.internal.ga -> com.google.android.gms.internal.lz:
     void leave(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener,java.lang.String) -> a
     int sendReliableMessage(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer$ReliableMessageSentCallback,byte[],java.lang.String,java.lang.String) -> a
     void declineInvitation(com.google.android.gms.common.api.GoogleApiClient,java.lang.String) -> a
-com.google.android.gms.internal.gb -> com.google.android.gms.internal.ma:
+com.google.android.gms.internal.gb -> com.google.android.gms.internal.mb:
     void registerMatchUpdateListener(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener) -> a
     com.google.android.gms.common.api.PendingResult createMatch(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig) -> a
     com.google.android.gms.common.api.PendingResult rematch(com.google.android.gms.common.api.GoogleApiClient,java.lang.String) -> a
@@ -11898,32 +11900,32 @@ com.google.android.gms.internal.gb -> com.google.android.gms.internal.ma:
     void dismissMatch(com.google.android.gms.common.api.GoogleApiClient,java.lang.String) -> e
     com.google.android.gms.common.api.PendingResult loadMatchesByStatus(com.google.android.gms.common.api.GoogleApiClient,int[]) -> a
     com.google.android.gms.common.api.PendingResult loadMatch(com.google.android.gms.common.api.GoogleApiClient,java.lang.String) -> f
-com.google.android.gms.internal.gb$1 -> com.google.android.gms.internal.mb:
+com.google.android.gms.internal.gb$1 -> com.google.android.gms.internal.mc:
     com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig vp -> a
     com.google.android.gms.internal.gb vq -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$10 -> com.google.android.gms.internal.mc:
+com.google.android.gms.internal.gb$10 -> com.google.android.gms.internal.md:
     int[] vw -> a
     com.google.android.gms.internal.gb vq -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$2 -> com.google.android.gms.internal.md:
+com.google.android.gms.internal.gb$2 -> com.google.android.gms.internal.me:
     java.lang.String vr -> a
     com.google.android.gms.internal.gb vq -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$3 -> com.google.android.gms.internal.me:
+com.google.android.gms.internal.gb$3 -> com.google.android.gms.internal.mf:
     java.lang.String vr -> a
     com.google.android.gms.internal.gb vq -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$4 -> com.google.android.gms.internal.mf:
+com.google.android.gms.internal.gb$4 -> com.google.android.gms.internal.mg:
     java.lang.String vs -> a
     com.google.android.gms.internal.gb vq -> b
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$5 -> com.google.android.gms.internal.mg:
+com.google.android.gms.internal.gb$5 -> com.google.android.gms.internal.mh:
     java.lang.String vr -> a
     byte[] vt -> b
     java.lang.String vu -> c
@@ -11931,24 +11933,24 @@ com.google.android.gms.internal.gb$5 -> com.google.android.gms.internal.mg:
     com.google.android.gms.internal.gb vq -> e
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$6 -> com.google.android.gms.internal.mh:
+com.google.android.gms.internal.gb$6 -> com.google.android.gms.internal.mi:
     java.lang.String vr -> a
     byte[] vt -> b
     com.google.android.gms.games.multiplayer.ParticipantResult[] vv -> c
     com.google.android.gms.internal.gb vq -> d
     void a(com.google.android.gms.internal.fl) -> a
     void a(com.google.android.gms.common.api.Api$a) -> a
-com.google.android.gms.internal.gb$b -> com.google.android.gms.internal.mi:
-com.google.android.gms.internal.gb$d -> com.google.android.gms.internal.mj:
-com.google.android.gms.internal.gb$e -> com.google.android.gms.internal.mk:
-com.google.android.gms.internal.gb$f -> com.google.android.gms.internal.ml:
-com.google.android.gms.internal.gd -> com.google.android.gms.internal.mm:
+com.google.android.gms.internal.gb$b -> com.google.android.gms.internal.mj:
+com.google.android.gms.internal.gb$d -> com.google.android.gms.internal.mk:
+com.google.android.gms.internal.gb$e -> com.google.android.gms.internal.ml:
+com.google.android.gms.internal.gb$f -> com.google.android.gms.internal.mm:
+com.google.android.gms.internal.gd -> com.google.android.gms.internal.mn:
     boolean isValid(int) -> a
-com.google.android.gms.internal.ge -> com.google.android.gms.internal.mn:
+com.google.android.gms.internal.ge -> com.google.android.gms.internal.mo:
     java.lang.String aG(int) -> a
-com.google.android.gms.internal.gf -> com.google.android.gms.internal.mo:
+com.google.android.gms.internal.gf -> com.google.android.gms.internal.mp:
     java.lang.String aG(int) -> a
-com.google.android.gms.internal.gg -> com.google.android.gms.internal.mp:
+com.google.android.gms.internal.gg -> com.google.android.gms.internal.mq:
 com.google.android.gms.internal.gh -> com.google.android.gms.internal.gh:
     int kg -> a
     boolean xK -> b
@@ -11969,7 +11971,7 @@ com.google.android.gms.internal.gh -> com.google.android.gms.internal.gh:
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
     java.lang.String toString() -> toString
-com.google.android.gms.internal.gi -> com.google.android.gms.internal.mq:
+com.google.android.gms.internal.gi -> com.google.android.gms.internal.mr:
     com.google.android.gms.internal.gh ah(android.os.Parcel) -> a
     com.google.android.gms.internal.gh[] aU(int) -> a
     void a(com.google.android.gms.internal.gh,android.os.Parcel,int) -> a
@@ -12007,14 +12009,14 @@ com.google.android.gms.internal.go -> com.google.android.gms.internal.go:
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.google.android.gms.internal.gp -> com.google.android.gms.internal.mr:
+com.google.android.gms.internal.gp -> com.google.android.gms.internal.ms:
     com.google.android.gms.internal.go ai(android.os.Parcel) -> a
     com.google.android.gms.internal.go[] aX(int) -> a
     void a(com.google.android.gms.internal.go,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.gr -> com.google.android.gms.internal.ms:
-com.google.android.gms.internal.gs -> com.google.android.gms.internal.mt:
+com.google.android.gms.internal.gr -> com.google.android.gms.internal.mt:
+com.google.android.gms.internal.gs -> com.google.android.gms.internal.mu:
 com.google.android.gms.internal.gt -> com.google.android.gms.internal.gt:
     com.google.android.gms.internal.gu CREATOR -> CREATOR
     int kg -> a
@@ -12033,7 +12035,7 @@ com.google.android.gms.internal.gt -> com.google.android.gms.internal.gt:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.gu -> com.google.android.gms.internal.mu:
+com.google.android.gms.internal.gu -> com.google.android.gms.internal.mv:
     com.google.android.gms.internal.gt aj(android.os.Parcel) -> a
     com.google.android.gms.internal.gt[] aY(int) -> a
     void a(com.google.android.gms.internal.gt,android.os.Parcel,int) -> a
@@ -12051,7 +12053,7 @@ com.google.android.gms.internal.gv -> com.google.android.gms.internal.gv:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.gw -> com.google.android.gms.internal.mv:
+com.google.android.gms.internal.gw -> com.google.android.gms.internal.mw:
     com.google.android.gms.internal.gv ak(android.os.Parcel) -> a
     com.google.android.gms.internal.gv[] aZ(int) -> a
     void a(com.google.android.gms.internal.gv,android.os.Parcel,int) -> a
@@ -12192,13 +12194,13 @@ com.google.android.gms.internal.gx -> com.google.android.gms.internal.gx:
     java.lang.String toString() -> toString
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.gy -> com.google.android.gms.internal.mw:
+com.google.android.gms.internal.gy -> com.google.android.gms.internal.mx:
     com.google.android.gms.internal.gx al(android.os.Parcel) -> a
     com.google.android.gms.internal.gx[] ba(int) -> a
     void a(com.google.android.gms.internal.gx,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.h -> com.google.android.gms.internal.mx:
+com.google.android.gms.internal.h -> com.google.android.gms.internal.my:
     java.lang.String dK -> a
     java.lang.String dL -> b
     java.lang.String[] dM -> c
@@ -12210,7 +12212,7 @@ com.google.android.gms.internal.h -> com.google.android.gms.internal.mx:
     android.net.Uri a(android.net.Uri,android.content.Context) -> a
     android.net.Uri a(android.net.Uri,java.lang.String,java.lang.String) -> a
     android.net.Uri a(android.net.Uri,android.content.Context,java.lang.String,boolean) -> a
-com.google.android.gms.internal.ha -> com.google.android.gms.internal.my:
+com.google.android.gms.internal.ha -> com.google.android.gms.internal.mz:
     com.google.android.gms.internal.hd$a am(android.os.Parcel) -> a
     com.google.android.gms.internal.hd$a[] bb(int) -> a
     void a(com.google.android.gms.internal.hd$a,android.os.Parcel,int) -> a
@@ -12231,7 +12233,7 @@ com.google.android.gms.internal.hb -> com.google.android.gms.internal.hb:
     float[] dV() -> c
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.hc -> com.google.android.gms.internal.mz:
+com.google.android.gms.internal.hc -> com.google.android.gms.internal.na:
     com.google.android.gms.internal.hb an(android.os.Parcel) -> a
     com.google.android.gms.internal.hb[] bc(int) -> a
     void a(com.google.android.gms.internal.hb,android.os.Parcel,int) -> a
@@ -12292,7 +12294,7 @@ com.google.android.gms.internal.hd$a -> com.google.android.gms.internal.hd$a:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.hd$a$a -> com.google.android.gms.internal.na:
+com.google.android.gms.internal.hd$a$a -> com.google.android.gms.internal.nb:
     java.lang.String Bc -> a
     java.lang.String mTag -> b
     java.lang.String Bd -> c
@@ -12300,7 +12302,7 @@ com.google.android.gms.internal.hd$a$a -> com.google.android.gms.internal.na:
     com.google.android.gms.internal.hd$a$a as(java.lang.String) -> a
     com.google.android.gms.internal.hd$a$a bd(int) -> a
     com.google.android.gms.internal.hd$a ek() -> a
-com.google.android.gms.internal.he -> com.google.android.gms.internal.nb:
+com.google.android.gms.internal.he -> com.google.android.gms.internal.nc:
     com.google.android.gms.internal.hd ao(android.os.Parcel) -> a
     com.google.android.gms.internal.hd[] be(int) -> a
     void a(com.google.android.gms.internal.hd,android.os.Parcel,int) -> a
@@ -12319,13 +12321,13 @@ com.google.android.gms.internal.hf -> com.google.android.gms.internal.hf:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.hg -> com.google.android.gms.internal.nc:
+com.google.android.gms.internal.hg -> com.google.android.gms.internal.nd:
     com.google.android.gms.internal.hf ap(android.os.Parcel) -> a
     com.google.android.gms.internal.hf[] bf(int) -> a
     void a(com.google.android.gms.internal.hf,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.hh -> com.google.android.gms.internal.nd:
+com.google.android.gms.internal.hh -> com.google.android.gms.internal.ne:
     int Bj -> a
     int Bk -> b
     java.lang.String Bl -> c
@@ -12342,13 +12344,13 @@ com.google.android.gms.internal.hi -> com.google.android.gms.internal.hi:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.hj -> com.google.android.gms.internal.ne:
+com.google.android.gms.internal.hj -> com.google.android.gms.internal.nf:
     com.google.android.gms.internal.hi aq(android.os.Parcel) -> a
     com.google.android.gms.internal.hi[] bg(int) -> a
     void a(com.google.android.gms.internal.hi,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ho -> com.google.android.gms.internal.nf:
+com.google.android.gms.internal.ho -> com.google.android.gms.internal.ng:
     void a(int,android.os.Bundle,android.os.Bundle) -> a
     void a(int,android.os.Bundle,android.os.ParcelFileDescriptor) -> a
     void ax(java.lang.String) -> a
@@ -12358,11 +12360,11 @@ com.google.android.gms.internal.ho -> com.google.android.gms.internal.nf:
     void b(int,android.os.Bundle) -> a
     void ay(java.lang.String) -> b
     void a(int,com.google.android.gms.internal.ig) -> a
-com.google.android.gms.internal.ho$a -> com.google.android.gms.internal.ng:
+com.google.android.gms.internal.ho$a -> com.google.android.gms.internal.nh:
     com.google.android.gms.internal.ho au(android.os.IBinder) -> a
     android.os.IBinder asBinder() -> asBinder
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.google.android.gms.internal.ho$a$a -> com.google.android.gms.internal.nh:
+com.google.android.gms.internal.ho$a$a -> com.google.android.gms.internal.ni:
     android.os.IBinder dU -> a
     android.os.IBinder asBinder() -> asBinder
     void a(int,android.os.Bundle,android.os.Bundle) -> a
@@ -12374,7 +12376,18 @@ com.google.android.gms.internal.ho$a$a -> com.google.android.gms.internal.nh:
     void b(int,android.os.Bundle) -> a
     void ay(java.lang.String) -> b
     void a(int,com.google.android.gms.internal.ig) -> a
-com.google.android.gms.internal.hr -> com.google.android.gms.internal.ni:
+com.google.android.gms.internal.hp -> com.google.android.gms.internal.nj:
+    com.google.android.gms.dynamic.b a(com.google.android.gms.dynamic.b,int,int,java.lang.String,int) -> a
+    com.google.android.gms.dynamic.b a(com.google.android.gms.dynamic.b,int,int,java.lang.String,java.lang.String) -> a
+com.google.android.gms.internal.hp$a -> com.google.android.gms.internal.nk:
+    com.google.android.gms.internal.hp av(android.os.IBinder) -> a
+    boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+com.google.android.gms.internal.hp$a$a -> com.google.android.gms.internal.nl:
+    android.os.IBinder dU -> a
+    android.os.IBinder asBinder() -> asBinder
+    com.google.android.gms.dynamic.b a(com.google.android.gms.dynamic.b,int,int,java.lang.String,int) -> a
+    com.google.android.gms.dynamic.b a(com.google.android.gms.dynamic.b,int,int,java.lang.String,java.lang.String) -> a
+com.google.android.gms.internal.hr -> com.google.android.gms.internal.nm:
     void a(com.google.android.gms.internal.ho,java.lang.String) -> a
     void a(com.google.android.gms.internal.ho,java.lang.String,java.lang.String) -> a
     void b(com.google.android.gms.internal.ho,java.lang.String) -> b
@@ -12394,10 +12407,10 @@ com.google.android.gms.internal.hr -> com.google.android.gms.internal.ni:
     boolean eP() -> d
     java.lang.String eQ() -> e
     void e(com.google.android.gms.internal.ho,java.lang.String) -> e
-com.google.android.gms.internal.hr$a -> com.google.android.gms.internal.nj:
+com.google.android.gms.internal.hr$a -> com.google.android.gms.internal.nn:
     com.google.android.gms.internal.hr ax(android.os.IBinder) -> a
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.google.android.gms.internal.hr$a$a -> com.google.android.gms.internal.nk:
+com.google.android.gms.internal.hr$a$a -> com.google.android.gms.internal.no:
     android.os.IBinder dU -> a
     android.os.IBinder asBinder() -> asBinder
     void a(com.google.android.gms.internal.ho,java.lang.String) -> a
@@ -12419,7 +12432,7 @@ com.google.android.gms.internal.hr$a$a -> com.google.android.gms.internal.nk:
     boolean eP() -> d
     java.lang.String eQ() -> e
     void e(com.google.android.gms.internal.ho,java.lang.String) -> e
-com.google.android.gms.internal.hs -> com.google.android.gms.internal.nl:
+com.google.android.gms.internal.hs -> com.google.android.gms.internal.np:
     com.google.android.gms.plus.model.people.Person DK -> e
     com.google.android.gms.internal.hu DL -> f
     void clearDefaultAccount() -> f
@@ -12429,6 +12442,12 @@ com.google.android.gms.internal.hs -> com.google.android.gms.internal.nl:
     void a(com.google.android.gms.internal.ec,com.google.android.gms.internal.dw$e) -> a
     void a(int,android.os.IBinder,android.os.Bundle) -> a
     android.os.IInterface p(android.os.IBinder) -> b
+com.google.android.gms.internal.ht -> com.google.android.gms.internal.nq:
+    android.content.Context Ci -> a
+    com.google.android.gms.internal.hp DQ -> b
+    com.google.android.gms.internal.hp x(android.content.Context) -> a
+    android.view.View a(android.content.Context,int,int,java.lang.String,int) -> a
+com.google.android.gms.internal.ht$a -> com.google.android.gms.internal.nr:
 com.google.android.gms.internal.hu -> com.google.android.gms.internal.hu:
     com.google.android.gms.internal.hw CREATOR -> CREATOR
     int kg -> a
@@ -12454,22 +12473,22 @@ com.google.android.gms.internal.hu -> com.google.android.gms.internal.hu:
     boolean equals(java.lang.Object) -> equals
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.hw -> com.google.android.gms.internal.nm:
+com.google.android.gms.internal.hw -> com.google.android.gms.internal.ns:
     com.google.android.gms.internal.hu ar(android.os.Parcel) -> a
     com.google.android.gms.internal.hu[] bj(int) -> a
     void a(com.google.android.gms.internal.hu,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.hx -> com.google.android.gms.internal.nn:
+com.google.android.gms.internal.hx -> com.google.android.gms.internal.nt:
     com.google.android.gms.common.api.Api$b Ea -> a
     void clearDefaultAccount(com.google.android.gms.common.api.GoogleApiClient) -> a
     com.google.android.gms.internal.hs a(com.google.android.gms.common.api.GoogleApiClient,com.google.android.gms.common.api.Api$b) -> a
-com.google.android.gms.internal.hy -> com.google.android.gms.internal.no:
+com.google.android.gms.internal.hy -> com.google.android.gms.internal.nu:
     com.google.android.gms.common.api.Api$b Ea -> a
-com.google.android.gms.internal.hz -> com.google.android.gms.internal.np:
+com.google.android.gms.internal.hz -> com.google.android.gms.internal.nv:
     com.google.android.gms.common.api.Api$b Ea -> a
-com.google.android.gms.internal.i -> com.google.android.gms.internal.nq:
-com.google.android.gms.internal.ia -> com.google.android.gms.internal.nr:
+com.google.android.gms.internal.i -> com.google.android.gms.internal.nw:
+com.google.android.gms.internal.ia -> com.google.android.gms.internal.nx:
     com.google.android.gms.common.api.Api$b Ea -> a
 com.google.android.gms.internal.ib -> com.google.android.gms.internal.ib:
     com.google.android.gms.internal.ic CREATOR -> CREATOR
@@ -12597,7 +12616,7 @@ com.google.android.gms.internal.ib -> com.google.android.gms.internal.ib:
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
     java.lang.Object freeze() -> h
-com.google.android.gms.internal.ic -> com.google.android.gms.internal.ns:
+com.google.android.gms.internal.ic -> com.google.android.gms.internal.ny:
     com.google.android.gms.internal.ib as(android.os.Parcel) -> a
     com.google.android.gms.internal.ib[] bk(int) -> a
     void a(com.google.android.gms.internal.ib,android.os.Parcel,int) -> a
@@ -12631,7 +12650,7 @@ com.google.android.gms.internal.id -> com.google.android.gms.internal.id:
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
     java.lang.Object freeze() -> h
-com.google.android.gms.internal.ie -> com.google.android.gms.internal.nt:
+com.google.android.gms.internal.ie -> com.google.android.gms.internal.nz:
     com.google.android.gms.internal.id at(android.os.Parcel) -> a
     com.google.android.gms.internal.id[] bl(int) -> a
     void a(com.google.android.gms.internal.id,android.os.Parcel,int) -> a
@@ -12930,72 +12949,72 @@ com.google.android.gms.internal.ig$h -> com.google.android.gms.internal.ig$h:
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
     java.lang.Object freeze() -> h
-com.google.android.gms.internal.ih -> com.google.android.gms.internal.nu:
+com.google.android.gms.internal.ih -> com.google.android.gms.internal.oa:
     com.google.android.gms.internal.ig au(android.os.Parcel) -> a
     com.google.android.gms.internal.ig[] bm(int) -> a
     void a(com.google.android.gms.internal.ig,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ii -> com.google.android.gms.internal.nv:
+com.google.android.gms.internal.ii -> com.google.android.gms.internal.ob:
     com.google.android.gms.internal.ig$a av(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$a[] bn(int) -> a
     void a(com.google.android.gms.internal.ig$a,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ij -> com.google.android.gms.internal.nw:
+com.google.android.gms.internal.ij -> com.google.android.gms.internal.oc:
     com.google.android.gms.internal.ig$b aw(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$b[] bo(int) -> a
     void a(com.google.android.gms.internal.ig$b,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ik -> com.google.android.gms.internal.nx:
+com.google.android.gms.internal.ik -> com.google.android.gms.internal.od:
     com.google.android.gms.internal.ig$b$a ax(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$b$a[] bp(int) -> a
     void a(com.google.android.gms.internal.ig$b$a,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.il -> com.google.android.gms.internal.ny:
+com.google.android.gms.internal.il -> com.google.android.gms.internal.oe:
     com.google.android.gms.internal.ig$b$b ay(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$b$b[] bq(int) -> a
     void a(com.google.android.gms.internal.ig$b$b,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.im -> com.google.android.gms.internal.nz:
+com.google.android.gms.internal.im -> com.google.android.gms.internal.of:
     com.google.android.gms.internal.ig$c az(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$c[] br(int) -> a
     void a(com.google.android.gms.internal.ig$c,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.in -> com.google.android.gms.internal.oa:
+com.google.android.gms.internal.in -> com.google.android.gms.internal.og:
     com.google.android.gms.internal.ig$d aA(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$d[] bs(int) -> a
     void a(com.google.android.gms.internal.ig$d,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.io -> com.google.android.gms.internal.ob:
+com.google.android.gms.internal.io -> com.google.android.gms.internal.oh:
     com.google.android.gms.internal.ig$f aB(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$f[] bt(int) -> a
     void a(com.google.android.gms.internal.ig$f,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.ip -> com.google.android.gms.internal.oc:
+com.google.android.gms.internal.ip -> com.google.android.gms.internal.oi:
     com.google.android.gms.internal.ig$g aC(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$g[] bu(int) -> a
     void a(com.google.android.gms.internal.ig$g,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.iq -> com.google.android.gms.internal.od:
+com.google.android.gms.internal.iq -> com.google.android.gms.internal.oj:
     com.google.android.gms.internal.ig$h aD(android.os.Parcel) -> a
     com.google.android.gms.internal.ig$h[] bv(int) -> a
     void a(com.google.android.gms.internal.ig$h,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.iv -> com.google.android.gms.internal.oe:
+com.google.android.gms.internal.iv -> com.google.android.gms.internal.ok:
     byte[] Hm -> a
     int Hn -> b
     int Ho -> c
     void h(byte[]) -> a
-com.google.android.gms.internal.ix -> com.google.android.gms.internal.of:
+com.google.android.gms.internal.ix -> com.google.android.gms.internal.ol:
     byte[] buffer -> a
     int Hw -> b
     int position -> c
@@ -13028,25 +13047,25 @@ com.google.android.gms.internal.ix -> com.google.android.gms.internal.of:
     void r(long) -> d
     int s(long) -> e
     long t(long) -> f
-com.google.android.gms.internal.ix$a -> com.google.android.gms.internal.og:
-com.google.android.gms.internal.iz -> com.google.android.gms.internal.oh:
+com.google.android.gms.internal.ix$a -> com.google.android.gms.internal.om:
+com.google.android.gms.internal.iz -> com.google.android.gms.internal.on:
     int rw -> f
     int cP() -> a
     void a(com.google.android.gms.internal.ix) -> a
     byte[] a(com.google.android.gms.internal.iz) -> a
     void a(com.google.android.gms.internal.iz,byte[],int,int) -> a
     java.lang.String toString() -> toString
-com.google.android.gms.internal.j -> com.google.android.gms.internal.oi:
+com.google.android.gms.internal.j -> com.google.android.gms.internal.oo:
     java.lang.String a(byte[],boolean) -> a
     byte[] a(java.lang.String,boolean) -> a
-com.google.android.gms.internal.ja -> com.google.android.gms.internal.oj:
+com.google.android.gms.internal.ja -> com.google.android.gms.internal.op:
     java.lang.String b(com.google.android.gms.internal.iz) -> a
     void a(java.lang.String,java.lang.Object,java.lang.StringBuffer,java.lang.StringBuffer) -> a
     java.lang.String aE(java.lang.String) -> a
     java.lang.String aF(java.lang.String) -> b
     java.lang.String aa(java.lang.String) -> c
     void a(byte[],java.lang.StringBuffer) -> a
-com.google.android.gms.internal.jb -> com.google.android.gms.internal.ok:
+com.google.android.gms.internal.jb -> com.google.android.gms.internal.oq:
     int Hx -> a
     int Hy -> b
     int Hz -> c
@@ -13060,20 +13079,20 @@ com.google.android.gms.internal.jb -> com.google.android.gms.internal.ok:
     byte[][] HH -> k
     byte[] HI -> l
     int g(int,int) -> a
-com.google.android.gms.internal.k -> com.google.android.gms.internal.ol:
+com.google.android.gms.internal.k -> com.google.android.gms.internal.or:
     void reset() -> a
     void b(int,long) -> a
     void b(int,java.lang.String) -> a
     byte[] h() -> b
-com.google.android.gms.internal.l -> com.google.android.gms.internal.om:
+com.google.android.gms.internal.l -> com.google.android.gms.internal.os:
     com.google.android.gms.internal.j dw -> a
     java.security.SecureRandom dP -> b
     void a(byte[]) -> a
     byte[] d(java.lang.String) -> a
     byte[] c(byte[],java.lang.String) -> a
-com.google.android.gms.internal.l$a -> com.google.android.gms.internal.on:
+com.google.android.gms.internal.l$a -> com.google.android.gms.internal.ot:
     com.google.android.gms.internal.l dQ -> a
-com.google.android.gms.internal.m -> com.google.android.gms.internal.oo:
+com.google.android.gms.internal.m -> com.google.android.gms.internal.ou:
     com.google.android.gms.internal.ix dR -> a
     byte[] dS -> b
     int dT -> c
@@ -13081,7 +13100,7 @@ com.google.android.gms.internal.m -> com.google.android.gms.internal.oo:
     void b(int,long) -> a
     void b(int,java.lang.String) -> a
     byte[] h() -> b
-com.google.android.gms.internal.n -> com.google.android.gms.internal.op:
+com.google.android.gms.internal.n -> com.google.android.gms.internal.ov:
     java.lang.String getKey() -> a
     java.lang.String i() -> b
     java.lang.String j() -> c
@@ -13096,24 +13115,24 @@ com.google.android.gms.internal.n -> com.google.android.gms.internal.op:
     java.lang.String s() -> l
     java.lang.String t() -> m
     java.lang.String u() -> n
-com.google.android.gms.internal.p -> com.google.android.gms.internal.oq:
+com.google.android.gms.internal.p -> com.google.android.gms.internal.ow:
     java.lang.String getId() -> a
     boolean a(boolean) -> a
     java.lang.String e(java.lang.String) -> a
     void b(java.lang.String,boolean) -> a
-com.google.android.gms.internal.p$a -> com.google.android.gms.internal.or:
+com.google.android.gms.internal.p$a -> com.google.android.gms.internal.ox:
     com.google.android.gms.internal.p b(android.os.IBinder) -> a
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.google.android.gms.internal.p$a$a -> com.google.android.gms.internal.os:
+com.google.android.gms.internal.p$a$a -> com.google.android.gms.internal.oy:
     android.os.IBinder dU -> a
     android.os.IBinder asBinder() -> asBinder
     java.lang.String getId() -> a
     boolean a(boolean) -> a
     java.lang.String e(java.lang.String) -> a
     void b(java.lang.String,boolean) -> a
-com.google.android.gms.internal.q -> com.google.android.gms.internal.ot:
+com.google.android.gms.internal.q -> com.google.android.gms.internal.oz:
     void w() -> r
-com.google.android.gms.internal.r -> com.google.android.gms.internal.ou:
+com.google.android.gms.internal.r -> com.google.android.gms.internal.pa:
     com.google.android.gms.internal.bb ed -> a
     com.google.android.gms.internal.r$a ee -> b
     com.google.android.gms.internal.s ef -> c
@@ -13154,7 +13173,7 @@ com.google.android.gms.internal.r -> com.google.android.gms.internal.ou:
     void b(boolean) -> a
     void O() -> y
     boolean b(com.google.android.gms.internal.cj) -> b
-com.google.android.gms.internal.r$a -> com.google.android.gms.internal.ov:
+com.google.android.gms.internal.r$a -> com.google.android.gms.internal.pb:
     android.widget.ViewSwitcher eg -> a
     java.lang.String adUnitId -> b
     android.content.Context eh -> c
@@ -13165,7 +13184,7 @@ com.google.android.gms.internal.r$a -> com.google.android.gms.internal.ov:
     com.google.android.gms.internal.x em -> h
     com.google.android.gms.internal.cj en -> i
     com.google.android.gms.internal.ae eo -> j
-com.google.android.gms.internal.s -> com.google.android.gms.internal.ow:
+com.google.android.gms.internal.s -> com.google.android.gms.internal.pc:
     java.lang.Runnable ep -> a
     com.google.android.gms.internal.v eq -> b
     boolean er -> c
@@ -13174,19 +13193,19 @@ com.google.android.gms.internal.s -> com.google.android.gms.internal.ow:
     void a(com.google.android.gms.internal.v,long) -> a
     boolean a(com.google.android.gms.internal.s,boolean) -> a
     com.google.android.gms.internal.v a(com.google.android.gms.internal.s) -> a
-com.google.android.gms.internal.s$1 -> com.google.android.gms.internal.ox:
+com.google.android.gms.internal.s$1 -> com.google.android.gms.internal.pd:
     java.lang.ref.WeakReference es -> c
     com.google.android.gms.internal.r et -> a
     com.google.android.gms.internal.s eu -> b
     void run() -> run
-com.google.android.gms.internal.t -> com.google.android.gms.internal.oy:
+com.google.android.gms.internal.t -> com.google.android.gms.internal.pe:
     com.google.android.gms.ads.AdListener ev -> a
     void onAdClosed() -> a
     void onAdFailedToLoad(int) -> a
     void onAdLeftApplication() -> b
     void onAdLoaded() -> c
     void onAdOpened() -> d
-com.google.android.gms.internal.u -> com.google.android.gms.internal.oz:
+com.google.android.gms.internal.u -> com.google.android.gms.internal.pf:
     com.google.android.gms.internal.u ew -> a
     com.google.android.gms.internal.ac a(android.content.Context,com.google.android.gms.internal.x,java.lang.String,com.google.android.gms.internal.ba) -> a
     com.google.android.gms.internal.ac b(android.content.Context,com.google.android.gms.internal.x,java.lang.String,com.google.android.gms.internal.ba) -> b
@@ -13207,7 +13226,7 @@ com.google.android.gms.internal.v -> com.google.android.gms.internal.v:
     android.location.Location eE -> k
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.w -> com.google.android.gms.internal.pa:
+com.google.android.gms.internal.w -> com.google.android.gms.internal.pg:
     com.google.android.gms.internal.v a(android.os.Parcel) -> a
     com.google.android.gms.internal.v[] b(int) -> a
     void a(com.google.android.gms.internal.v,android.os.Parcel,int) -> a
@@ -13229,13 +13248,13 @@ com.google.android.gms.internal.x -> com.google.android.gms.internal.x:
     int describeContents() -> describeContents
     com.google.android.gms.ads.AdSize P() -> a
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
-com.google.android.gms.internal.y -> com.google.android.gms.internal.pb:
+com.google.android.gms.internal.y -> com.google.android.gms.internal.ph:
     com.google.android.gms.internal.x b(android.os.Parcel) -> a
     com.google.android.gms.internal.x[] c(int) -> a
     void a(com.google.android.gms.internal.x,android.os.Parcel,int) -> a
     java.lang.Object[] newArray(int) -> newArray
     java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-com.google.android.gms.internal.z -> com.google.android.gms.internal.pc:
+com.google.android.gms.internal.z -> com.google.android.gms.internal.pi:
     com.google.android.gms.ads.doubleclick.AppEventListener eI -> a
     void onAppEvent(java.lang.String,java.lang.String) -> a
 com.google.android.gms.location.ActivityRecognitionResult -> com.google.android.gms.location.ActivityRecognitionResult:
@@ -13685,11 +13704,11 @@ com.google.android.gms.maps.model.j -> com.google.android.gms.maps.model.x:
     void a(com.google.android.gms.maps.model.TileOverlayOptions,android.os.Parcel,int) -> a
 com.google.android.gms.maps.model.k -> com.google.android.gms.maps.model.y:
     void a(com.google.android.gms.maps.model.VisibleRegion,android.os.Parcel,int) -> a
-com.google.android.gms.plus.Account -> com.google.android.gms.c.a:
+com.google.android.gms.plus.Account -> com.google.android.gms.plus.a:
     void clearDefaultAccount(com.google.android.gms.common.api.GoogleApiClient) -> a
-com.google.android.gms.plus.Moments -> com.google.android.gms.c.b:
-com.google.android.gms.plus.People -> com.google.android.gms.c.c:
-com.google.android.gms.plus.Plus -> com.google.android.gms.c.d:
+com.google.android.gms.plus.Moments -> com.google.android.gms.plus.b:
+com.google.android.gms.plus.People -> com.google.android.gms.plus.c:
+com.google.android.gms.plus.Plus -> com.google.android.gms.plus.d:
     com.google.android.gms.common.api.Api$b jO -> a
     com.google.android.gms.common.api.Api API -> b
     com.google.android.gms.common.api.Scope SCOPE_PLUS_LOGIN -> c
@@ -13698,26 +13717,70 @@ com.google.android.gms.plus.Plus -> com.google.android.gms.c.d:
     com.google.android.gms.plus.People PeopleApi -> f
     com.google.android.gms.plus.Account AccountApi -> g
     com.google.android.gms.plus.a Dr -> h
-com.google.android.gms.plus.Plus$1 -> com.google.android.gms.c.e:
+com.google.android.gms.plus.Plus$1 -> com.google.android.gms.plus.e:
     com.google.android.gms.internal.hs g(android.content.Context,com.google.android.gms.internal.dt,com.google.android.gms.common.api.GoogleApiClient$ApiOptions,com.google.android.gms.common.api.GoogleApiClient$ConnectionCallbacks,com.google.android.gms.common.api.GoogleApiClient$OnConnectionFailedListener) -> a
     int getPriority() -> a
     com.google.android.gms.common.api.Api$a b(android.content.Context,com.google.android.gms.internal.dt,com.google.android.gms.common.api.GoogleApiClient$ApiOptions,com.google.android.gms.common.api.GoogleApiClient$ConnectionCallbacks,com.google.android.gms.common.api.GoogleApiClient$OnConnectionFailedListener) -> b
-com.google.android.gms.plus.Plus$PlusOptions -> com.google.android.gms.c.f:
+com.google.android.gms.plus.Plus$PlusOptions -> com.google.android.gms.plus.f:
     java.lang.String Ds -> a
     java.util.Set Dt -> b
-com.google.android.gms.plus.a -> com.google.android.gms.c.g:
-com.google.android.gms.plus.model.moments.ItemScope -> com.google.android.gms.c.a.a.a:
-com.google.android.gms.plus.model.moments.Moment -> com.google.android.gms.c.a.a.b:
-com.google.android.gms.plus.model.people.Person -> com.google.android.gms.c.a.b.a:
-com.google.android.gms.plus.model.people.Person$AgeRange -> com.google.android.gms.c.a.b.b:
-com.google.android.gms.plus.model.people.Person$Cover -> com.google.android.gms.c.a.b.c:
-com.google.android.gms.plus.model.people.Person$Cover$CoverInfo -> com.google.android.gms.c.a.b.d:
-com.google.android.gms.plus.model.people.Person$Cover$CoverPhoto -> com.google.android.gms.c.a.b.e:
-com.google.android.gms.plus.model.people.Person$Image -> com.google.android.gms.c.a.b.f:
-com.google.android.gms.plus.model.people.Person$Name -> com.google.android.gms.c.a.b.g:
-com.google.android.gms.plus.model.people.Person$Organizations -> com.google.android.gms.c.a.b.h:
-com.google.android.gms.plus.model.people.Person$PlacesLived -> com.google.android.gms.c.a.b.i:
-com.google.android.gms.plus.model.people.Person$Urls -> com.google.android.gms.c.a.b.j:
+com.google.android.gms.plus.PlusOneButton -> com.google.android.gms.plus.PlusOneButton:
+    android.view.View DB -> a
+    int mSize -> b
+    int DC -> c
+    java.lang.String iH -> d
+    int DD -> e
+    com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener DE -> f
+    int getSize(android.content.Context,android.util.AttributeSet) -> a
+    int getAnnotation(android.content.Context,android.util.AttributeSet) -> b
+    void p(android.content.Context) -> a
+    void initialize(java.lang.String,int) -> a
+    void setOnPlusOneClickListener(com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener) -> setOnPlusOneClickListener
+    void setAnnotation(int) -> setAnnotation
+    void setSize(int) -> setSize
+    void onMeasure(int,int) -> onMeasure
+    void onLayout(boolean,int,int,int,int) -> onLayout
+    android.view.View a(com.google.android.gms.plus.PlusOneButton) -> a
+    int b(com.google.android.gms.plus.PlusOneButton) -> b
+com.google.android.gms.plus.PlusOneButton$DefaultOnPlusOneClickListener -> com.google.android.gms.plus.g:
+    com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener DF -> b
+    com.google.android.gms.plus.PlusOneButton DG -> a
+    void onClick(android.view.View) -> onClick
+    void onPlusOneClick(android.content.Intent) -> a
+com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener -> com.google.android.gms.plus.h:
+    void onPlusOneClick(android.content.Intent) -> a
+com.google.android.gms.plus.PlusOneDummyView -> com.google.android.gms.plus.i:
+    com.google.android.gms.plus.PlusOneDummyView$d eN() -> a
+    android.graphics.Point bi(int) -> a
+com.google.android.gms.plus.PlusOneDummyView$1 -> com.google.android.gms.plus.j:
+com.google.android.gms.plus.PlusOneDummyView$a -> com.google.android.gms.plus.k:
+    android.content.Context mContext -> a
+    android.graphics.drawable.Drawable getDrawable(int) -> a
+    boolean isValid() -> a
+com.google.android.gms.plus.PlusOneDummyView$b -> com.google.android.gms.plus.l:
+    android.content.Context mContext -> a
+    android.graphics.drawable.Drawable getDrawable(int) -> a
+    boolean isValid() -> a
+com.google.android.gms.plus.PlusOneDummyView$c -> com.google.android.gms.plus.m:
+    android.content.Context mContext -> a
+    android.graphics.drawable.Drawable getDrawable(int) -> a
+    boolean isValid() -> a
+com.google.android.gms.plus.PlusOneDummyView$d -> com.google.android.gms.plus.n:
+    android.graphics.drawable.Drawable getDrawable(int) -> a
+    boolean isValid() -> a
+com.google.android.gms.plus.a -> com.google.android.gms.plus.o:
+com.google.android.gms.plus.model.moments.ItemScope -> com.google.android.gms.plus.a.a.a:
+com.google.android.gms.plus.model.moments.Moment -> com.google.android.gms.plus.a.a.b:
+com.google.android.gms.plus.model.people.Person -> com.google.android.gms.plus.a.b.a:
+com.google.android.gms.plus.model.people.Person$AgeRange -> com.google.android.gms.plus.a.b.b:
+com.google.android.gms.plus.model.people.Person$Cover -> com.google.android.gms.plus.a.b.c:
+com.google.android.gms.plus.model.people.Person$Cover$CoverInfo -> com.google.android.gms.plus.a.b.d:
+com.google.android.gms.plus.model.people.Person$Cover$CoverPhoto -> com.google.android.gms.plus.a.b.e:
+com.google.android.gms.plus.model.people.Person$Image -> com.google.android.gms.plus.a.b.f:
+com.google.android.gms.plus.model.people.Person$Name -> com.google.android.gms.plus.a.b.g:
+com.google.android.gms.plus.model.people.Person$Organizations -> com.google.android.gms.plus.a.b.h:
+com.google.android.gms.plus.model.people.Person$PlacesLived -> com.google.android.gms.plus.a.b.i:
+com.google.android.gms.plus.model.people.Person$Urls -> com.google.android.gms.plus.a.b.j:
 com.google.android.gms.wallet.Address -> com.google.android.gms.wallet.Address:
     android.os.Parcelable$Creator CREATOR -> CREATOR
     int kg -> l
@@ -14089,11 +14152,12 @@ com.oakonell.ticstacktoe.GameStrategy -> com.oakonell.ticstacktoe.u:
     void sendAnalyticStartGameEvent(com.oakonell.ticstacktoe.model.GameType) -> a
     int getAnalyticGameActionResId() -> u
     void invalidateMenu() -> v
-    void honeyCombInvalidateMenu() -> y
+    void honeyCombInvalidateMenu() -> z
     void handleMenu() -> w
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.Achievements,com.oakonell.ticstacktoe.GameContext,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.State) -> a
     void postMove(java.lang.Runnable) -> a
-    int[] $SWITCH_TABLE$com$oakonell$ticstacktoe$model$GameMode() -> x
+    boolean rotateBlackLayout() -> x
+    int[] $SWITCH_TABLE$com$oakonell$ticstacktoe$model$GameMode() -> y
 com.oakonell.ticstacktoe.GameStrategy$1 -> com.oakonell.ticstacktoe.v:
     com.oakonell.ticstacktoe.GameStrategy$OnGameStrategyLoad val$onLoad -> a
     com.oakonell.ticstacktoe.GameContext val$context -> b
@@ -14280,15 +14344,23 @@ com.oakonell.ticstacktoe.R$attr -> com.oakonell.ticstacktoe.R$attr:
     int adSize -> adSize
     int adSizes -> adSizes
     int adUnitId -> adUnitId
+    int appId -> appId
     int background -> background
     int backgroundSplit -> backgroundSplit
     int backgroundStacked -> backgroundStacked
+    int boxCornersRadius -> boxCornersRadius
+    int boxFillColor -> boxFillColor
+    int boxId -> boxId
+    int boxStrokeColor -> boxStrokeColor
+    int boxStrokeWidth -> boxStrokeWidth
     int buttonStyleSmall -> buttonStyleSmall
+    int calloutMarker -> calloutMarker
     int cameraBearing -> cameraBearing
     int cameraTargetLat -> cameraTargetLat
     int cameraTargetLng -> cameraTargetLng
     int cameraTilt -> cameraTilt
     int cameraZoom -> cameraZoom
+    int contentViewId -> contentViewId
     int customNavigationLayout -> customNavigationLayout
     int displayOptions -> displayOptions
     int divider -> divider
@@ -14311,6 +14383,7 @@ com.oakonell.ticstacktoe.R$attr -> com.oakonell.ticstacktoe.R$attr:
     int itemIconDisabledAlpha -> itemIconDisabledAlpha
     int itemPadding -> itemPadding
     int itemTextAppearance -> itemTextAppearance
+    int likeId -> likeId
     int listPopupWindowStyle -> listPopupWindowStyle
     int listPreferredItemHeightSmall -> listPreferredItemHeightSmall
     int listPreferredItemPaddingLeft -> listPreferredItemPaddingLeft
@@ -14318,6 +14391,21 @@ com.oakonell.ticstacktoe.R$attr -> com.oakonell.ticstacktoe.R$attr:
     int logo -> logo
     int mapType -> mapType
     int navigationMode -> navigationMode
+    int optAction -> optAction
+    int optLayout -> optLayout
+    int optPictureAttrs -> optPictureAttrs
+    int optShare -> optShare
+    int optShowFaces -> optShowFaces
+    int optTextClose -> optTextClose
+    int optTextOpen -> optTextOpen
+    int optTitleClose -> optTitleClose
+    int optTitleOpen -> optTitleOpen
+    int pagePicture -> pagePicture
+    int pagePictureId -> pagePictureId
+    int pagePictureUrl -> pagePictureUrl
+    int pageText -> pageText
+    int pageTitle -> pageTitle
+    int pageUrl -> pageUrl
     int popupMenuStyle -> popupMenuStyle
     int preserveIconSpacing -> preserveIconSpacing
     int progressBarPadding -> progressBarPadding
@@ -14412,6 +14500,17 @@ com.oakonell.ticstacktoe.R$color -> com.oakonell.ticstacktoe.R$color:
     int abs__primary_text_disable_only_holo_light -> abs__primary_text_disable_only_holo_light
     int abs__primary_text_holo_dark -> abs__primary_text_holo_dark
     int abs__primary_text_holo_light -> abs__primary_text_holo_light
+    int com_shamanland_facebook_button_blue_focused_end -> com_shamanland_facebook_button_blue_focused_end
+    int com_shamanland_facebook_button_blue_focused_start -> com_shamanland_facebook_button_blue_focused_start
+    int com_shamanland_facebook_button_blue_focused_stroke -> com_shamanland_facebook_button_blue_focused_stroke
+    int com_shamanland_facebook_button_blue_normal_end -> com_shamanland_facebook_button_blue_normal_end
+    int com_shamanland_facebook_button_blue_normal_start -> com_shamanland_facebook_button_blue_normal_start
+    int com_shamanland_facebook_button_blue_pressed_end -> com_shamanland_facebook_button_blue_pressed_end
+    int com_shamanland_facebook_button_blue_pressed_start -> com_shamanland_facebook_button_blue_pressed_start
+    int com_shamanland_facebook_button_blue_pressed_stroke -> com_shamanland_facebook_button_blue_pressed_stroke
+    int com_shamanland_facebook_like_box_background_color -> com_shamanland_facebook_like_box_background_color
+    int com_shamanland_facebook_like_box_text_color -> com_shamanland_facebook_like_box_text_color
+    int com_shamanland_facebook_like_text_color -> com_shamanland_facebook_like_text_color
     int common_action_bar_splitter -> common_action_bar_splitter
     int common_signin_btn_dark_text_default -> common_signin_btn_dark_text_default
     int common_signin_btn_dark_text_disabled -> common_signin_btn_dark_text_disabled
@@ -14445,6 +14544,20 @@ com.oakonell.ticstacktoe.R$dimen -> com.oakonell.ticstacktoe.R$dimen:
     int abs__search_view_text_min_width -> abs__search_view_text_min_width
     int activity_horizontal_margin -> activity_horizontal_margin
     int activity_vertical_margin -> activity_vertical_margin
+    int com_shamanland_facebook_like_activity_progress_size -> com_shamanland_facebook_like_activity_progress_size
+    int com_shamanland_facebook_like_box_padding_bottom -> com_shamanland_facebook_like_box_padding_bottom
+    int com_shamanland_facebook_like_box_padding_left -> com_shamanland_facebook_like_box_padding_left
+    int com_shamanland_facebook_like_box_padding_right -> com_shamanland_facebook_like_box_padding_right
+    int com_shamanland_facebook_like_box_padding_top -> com_shamanland_facebook_like_box_padding_top
+    int com_shamanland_facebook_like_box_stroke_width -> com_shamanland_facebook_like_box_stroke_width
+    int com_shamanland_facebook_like_compound_drawable_padding -> com_shamanland_facebook_like_compound_drawable_padding
+    int com_shamanland_facebook_like_corners_radius -> com_shamanland_facebook_like_corners_radius
+    int com_shamanland_facebook_like_height -> com_shamanland_facebook_like_height
+    int com_shamanland_facebook_like_padding_bottom -> com_shamanland_facebook_like_padding_bottom
+    int com_shamanland_facebook_like_padding_left -> com_shamanland_facebook_like_padding_left
+    int com_shamanland_facebook_like_padding_right -> com_shamanland_facebook_like_padding_right
+    int com_shamanland_facebook_like_padding_top -> com_shamanland_facebook_like_padding_top
+    int com_shamanland_facebook_like_text_size -> com_shamanland_facebook_like_text_size
     int menu_button_height -> menu_button_height
     int menu_button_width -> menu_button_width
     int player_name_size -> player_name_size
@@ -14571,6 +14684,7 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int action_bar_button -> action_bar_button
     int action_bar_inset -> action_bar_inset
     int action_bar_sherlock_mascot -> action_bar_sherlock_mascot
+    int arm_wrestle_icon_33306 -> arm_wrestle_icon_33306
     int arrow_down -> arrow_down
     int arrow_down_dis -> arrow_down_dis
     int arrow_up -> arrow_up
@@ -14587,6 +14701,8 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int cancel_icon_18932 -> cancel_icon_18932
     int check_icon_835 -> check_icon_835
     int checked -> checked
+    int com_shamanland_facebook_button_blue -> com_shamanland_facebook_button_blue
+    int com_shamanland_facebook_inverse_icon -> com_shamanland_facebook_inverse_icon
     int common_signin_btn_icon_dark -> common_signin_btn_icon_dark
     int common_signin_btn_icon_disabled_dark -> common_signin_btn_icon_disabled_dark
     int common_signin_btn_icon_disabled_focus_dark -> common_signin_btn_icon_disabled_focus_dark
@@ -14724,6 +14840,7 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int abs__title -> abs__title
     int abs__up -> abs__up
     int action_chat -> action_chat
+    int action_head_to_head -> action_head_to_head
     int action_help -> action_help
     int action_settings -> action_settings
     int actionbar_notifcation_imageview -> actionbar_notifcation_imageview
@@ -14733,6 +14850,7 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int ad_frame -> ad_frame
     int ai_level -> ai_level
     int ai_name -> ai_name
+    int all -> all
     int app_name_id -> app_name_id
     int blackName -> blackName
     int blackPieceLayout -> blackPieceLayout
@@ -14743,6 +14861,10 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int black_piece_stack3 -> black_piece_stack3
     int black_rank -> black_rank
     int board_rows -> board_rows
+    int bottom -> bottom
+    int box_count -> box_count
+    int button -> button
+    int button_count -> button_count
     int button_r1c1 -> button_r1c1
     int button_r1c2 -> button_r1c2
     int button_r1c3 -> button_r1c3
@@ -14775,12 +14897,18 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int button_row5 -> button_row5
     int cancel -> cancel
     int close -> close
+    int com_shamanland_facebook_like -> com_shamanland_facebook_like
+    int com_shamanland_facebook_like_box -> com_shamanland_facebook_like_box
+    int com_shamanland_facebook_like_container -> com_shamanland_facebook_like_container
+    int com_shamanland_facebook_like_recommend -> com_shamanland_facebook_like_recommend
+    int com_shamanland_facebook_like_share -> com_shamanland_facebook_like_share
     int decrement -> decrement
     int dialog_next -> dialog_next
     int dialog_skip -> dialog_skip
     int disableHome -> disableHome
     int drag_layer -> drag_layer
     int edit_query -> edit_query
+    int facebook_like -> facebook_like
     int game_header -> game_header
     int game_number -> game_number
     int game_root -> game_root
@@ -14799,6 +14927,8 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int junior_rank -> junior_rank
     int label -> label
     int last_updated -> last_updated
+    int left -> left
+    int like -> like
     int linearLayout1 -> linearLayout1
     int list -> list
     int listMode -> listMode
@@ -14857,6 +14987,7 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int player_pic -> player_pic
     int player_x -> player_x
     int player_x_name -> player_x_name
+    int plus_one_button -> plus_one_button
     int positive -> positive
     int pref_sound_fx_key -> pref_sound_fx_key
     int progressBar1 -> progressBar1
@@ -14874,8 +15005,10 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int rate_remind_later -> rate_remind_later
     int rate_text -> rate_text
     int realtime -> realtime
+    int recommend -> recommend
     int remember_checkbox -> remember_checkbox
     int remove_ads -> remove_ads
+    int right -> right
     int satellite -> satellite
     int send -> send
     int showCustom -> showCustom
@@ -14891,6 +15024,7 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int spb_interpolator_acceleratedecelerate -> spb_interpolator_acceleratedecelerate
     int spb_interpolator_decelerate -> spb_interpolator_decelerate
     int spb_interpolator_linear -> spb_interpolator_linear
+    int standard -> standard
     int start -> start
     int strict_rank -> strict_rank
     int subtitle -> subtitle
@@ -14917,6 +15051,7 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int title -> title
     int title_divider -> title_divider
     int title_include -> title_include
+    int top -> top
     int tutorial -> tutorial
     int tutorial_bottom -> tutorial_bottom
     int tutorial_bottom_text -> tutorial_bottom_text
@@ -14975,8 +15110,10 @@ com.oakonell.ticstacktoe.R$layout -> com.oakonell.ticstacktoe.R$layout:
     int abs__search_view -> abs__search_view
     int abs__simple_dropdown_hint -> abs__simple_dropdown_hint
     int ad_layout -> ad_layout
+    int alert -> alert
     int chat_dialog -> chat_dialog
     int chat_menu_badge -> chat_menu_badge
+    int com_shamanland_facebook_like_activity_progress -> com_shamanland_facebook_like_activity_progress
     int complex_game_mode_help_dialog -> complex_game_mode_help_dialog
     int copy_for_facebook_dlg -> copy_for_facebook_dlg
     int default_header -> default_header
@@ -15021,6 +15158,7 @@ com.oakonell.ticstacktoe.R$menu -> com.oakonell.ticstacktoe.R$menu:
     int menu -> menu
     int menu_game -> menu_game
     int network_game -> network_game
+    int pass_n_play_menu -> pass_n_play_menu
 com.oakonell.ticstacktoe.R$plurals -> com.oakonell.ticstacktoe.R$plurals:
     int num_draws_with_label -> num_draws_with_label
     int num_wins_with_label -> num_wins_with_label
@@ -15082,6 +15220,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int achievements -> achievements
     int achievements_not_available -> achievements_not_available
     int action_chat -> action_chat
+    int action_flip_black_header -> action_flip_black_header
     int action_help -> action_help
     int action_refresh -> action_refresh
     int action_settings -> action_settings
@@ -15135,6 +15274,12 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int choose_online_opponent -> choose_online_opponent
     int choose_quick_game_mode_title -> choose_quick_game_mode_title
     int client_reconnect_required -> client_reconnect_required
+    int com_shamanland_facebook -> com_shamanland_facebook
+    int com_shamanland_facebook_like_activity_error -> com_shamanland_facebook_like_activity_error
+    int com_shamanland_facebook_like_box_text_default -> com_shamanland_facebook_like_box_text_default
+    int com_shamanland_like -> com_shamanland_like
+    int com_shamanland_recommend -> com_shamanland_recommend
+    int com_shamanland_share -> com_shamanland_share
     int common_google_play_services_enable_button -> common_google_play_services_enable_button
     int common_google_play_services_enable_text -> common_google_play_services_enable_text
     int common_google_play_services_enable_title -> common_google_play_services_enable_title
@@ -15407,6 +15552,7 @@ com.oakonell.ticstacktoe.R$style -> com.oakonell.ticstacktoe.R$style:
     int TextAppearance_Sherlock_Widget_PopupMenu_Large -> TextAppearance_Sherlock_Widget_PopupMenu_Large
     int TextAppearance_Sherlock_Widget_PopupMenu_Small -> TextAppearance_Sherlock_Widget_PopupMenu_Small
     int TextAppearance_Sherlock_Widget_TextView_SpinnerItem -> TextAppearance_Sherlock_Widget_TextView_SpinnerItem
+    int Theme_Facebook_Like -> Theme_Facebook_Like
     int Theme_MyTheme -> Theme_MyTheme
     int Theme_Sherlock -> Theme_Sherlock
     int Theme_Sherlock_Light -> Theme_Sherlock_Light
@@ -15415,6 +15561,9 @@ com.oakonell.ticstacktoe.R$style -> com.oakonell.ticstacktoe.R$style:
     int Theme_Sherlock_NoActionBar -> Theme_Sherlock_NoActionBar
     int Theme_SmoothProgressBarDefaults -> Theme_SmoothProgressBarDefaults
     int Widget -> Widget
+    int Widget_FacebookLikeBox -> Widget_FacebookLikeBox
+    int Widget_FacebookLikeButton -> Widget_FacebookLikeButton
+    int Widget_FacebookLikeButtonBase -> Widget_FacebookLikeButtonBase
     int Widget_MyTheme_ActionBar -> Widget_MyTheme_ActionBar
     int Widget_MyTheme_ActionButton -> Widget_MyTheme_ActionButton
     int Widget_MyTheme_CompoundButton_CheckBox -> Widget_MyTheme_CompoundButton_CheckBox
@@ -15485,6 +15634,33 @@ com.oakonell.ticstacktoe.R$styleable -> com.oakonell.ticstacktoe.R$styleable:
     int AdsAttrs_adSize -> AdsAttrs_adSize
     int AdsAttrs_adSizes -> AdsAttrs_adSizes
     int AdsAttrs_adUnitId -> AdsAttrs_adUnitId
+    int[] FacebookLikeBox -> FacebookLikeBox
+    int FacebookLikeBox_boxCornersRadius -> FacebookLikeBox_boxCornersRadius
+    int FacebookLikeBox_boxFillColor -> FacebookLikeBox_boxFillColor
+    int FacebookLikeBox_boxStrokeColor -> FacebookLikeBox_boxStrokeColor
+    int FacebookLikeBox_boxStrokeWidth -> FacebookLikeBox_boxStrokeWidth
+    int FacebookLikeBox_calloutMarker -> FacebookLikeBox_calloutMarker
+    int[] FacebookLikeButton -> FacebookLikeButton
+    int FacebookLikeButton_appId -> FacebookLikeButton_appId
+    int FacebookLikeButton_contentViewId -> FacebookLikeButton_contentViewId
+    int FacebookLikeButton_optAction -> FacebookLikeButton_optAction
+    int FacebookLikeButton_optLayout -> FacebookLikeButton_optLayout
+    int FacebookLikeButton_optPictureAttrs -> FacebookLikeButton_optPictureAttrs
+    int FacebookLikeButton_optShare -> FacebookLikeButton_optShare
+    int FacebookLikeButton_optShowFaces -> FacebookLikeButton_optShowFaces
+    int FacebookLikeButton_optTextClose -> FacebookLikeButton_optTextClose
+    int FacebookLikeButton_optTextOpen -> FacebookLikeButton_optTextOpen
+    int FacebookLikeButton_optTitleClose -> FacebookLikeButton_optTitleClose
+    int FacebookLikeButton_optTitleOpen -> FacebookLikeButton_optTitleOpen
+    int FacebookLikeButton_pagePicture -> FacebookLikeButton_pagePicture
+    int FacebookLikeButton_pagePictureId -> FacebookLikeButton_pagePictureId
+    int FacebookLikeButton_pagePictureUrl -> FacebookLikeButton_pagePictureUrl
+    int FacebookLikeButton_pageText -> FacebookLikeButton_pageText
+    int FacebookLikeButton_pageTitle -> FacebookLikeButton_pageTitle
+    int FacebookLikeButton_pageUrl -> FacebookLikeButton_pageUrl
+    int[] FacebookLikePlugin -> FacebookLikePlugin
+    int FacebookLikePlugin_boxId -> FacebookLikePlugin_boxId
+    int FacebookLikePlugin_likeId -> FacebookLikePlugin_likeId
     int[] MapAttrs -> MapAttrs
     int MapAttrs_cameraBearing -> MapAttrs_cameraBearing
     int MapAttrs_cameraTargetLat -> MapAttrs_cameraTargetLat
@@ -15753,24 +15929,25 @@ com.oakonell.ticstacktoe.googleapi.GameHelper -> com.oakonell.ticstacktoe.a.b:
     void onStop() -> d
     java.lang.String getInvitationId() -> e
     void clearInvitation() -> f
-    com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch getTurnBasedMatch() -> g
+    void clearTurnBasedMatch() -> g
+    com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch getTurnBasedMatch() -> h
     void enableDebugLog(boolean) -> a
-    void signOut() -> h
+    void signOut() -> i
     void onActivityResult(int,int,android.content.Intent) -> a
     void notifyListener(boolean) -> b
-    void beginUserInitiatedSignIn() -> i
-    void connect() -> j
+    void beginUserInitiatedSignIn() -> j
+    void connect() -> k
     void onConnected(android.os.Bundle) -> a
-    void succeedSignIn() -> k
-    int getSignInCancellations() -> l
-    int incrementSignInCancellations() -> m
-    void resetSignInCancellations() -> n
+    void succeedSignIn() -> l
+    int getSignInCancellations() -> m
+    int incrementSignInCancellations() -> n
+    void resetSignInCancellations() -> o
     void onConnectionFailed(com.google.android.gms.common.ConnectionResult) -> a
-    void resolveConnectionResult() -> o
-    void disconnect() -> p
+    void resolveConnectionResult() -> p
+    void disconnect() -> q
     void giveUp(com.oakonell.ticstacktoe.googleapi.GameHelper$SignInFailureReason) -> a
     void onConnectionSuspended(int) -> a
-    void showFailureDialog() -> q
+    void showFailureDialog() -> r
     void showFailureDialog(android.app.Activity,int,int) -> a
     android.app.Dialog makeSimpleDialog(android.app.Activity,java.lang.String) -> a
     android.app.Dialog makeSimpleDialog(java.lang.String) -> b
@@ -16484,7 +16661,19 @@ com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView -> com.oakonell.ticstacktoe
     void setOnMeasureDependent(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent) -> setOnMeasureDependent
 com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.d:
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.WoodenProgressDialog -> com.oakonell.ticstacktoe.ui.e:
+com.oakonell.ticstacktoe.ui.WoodenAlertDialog -> com.oakonell.ticstacktoe.ui.e:
+    java.lang.String title -> c
+    java.lang.String message -> d
+    android.content.DialogInterface$OnClickListener onClickListener -> a
+    android.content.DialogInterface$OnCancelListener onCancelListener -> b
+    void initialize(java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener) -> a
+    android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
+    void setTitle(android.view.View,java.lang.String) -> a
+    com.oakonell.ticstacktoe.ui.WoodenAlertDialog show(android.support.v4.app.Fragment,java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener) -> a
+com.oakonell.ticstacktoe.ui.WoodenAlertDialog$1 -> com.oakonell.ticstacktoe.ui.f:
+    com.oakonell.ticstacktoe.ui.WoodenAlertDialog this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.oakonell.ticstacktoe.ui.WoodenProgressDialog -> com.oakonell.ticstacktoe.ui.g:
     java.lang.String title -> a
     java.lang.String message -> b
     void initialize(java.lang.String,java.lang.String) -> a
@@ -16526,23 +16715,26 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     com.google.android.gms.common.images.ImageManager imgManager -> c
     android.view.View blackHeaderLayout -> d
     android.view.View whiteHeaderLayout -> e
-    android.widget.TextView blackWins -> f
-    android.widget.TextView whiteWins -> g
-    android.widget.TextView gameNumber -> h
-    android.widget.TextView numMoves -> i
-    com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView squareView -> j
-    java.util.List buttons -> k
-    com.oakonell.ticstacktoe.ui.game.WinOverlayView winOverlayView -> l
-    com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo resizeInfo -> m
-    boolean disableButtons -> n
-    boolean hadInvaldMove -> o
-    java.lang.Runnable inOnResume -> p
-    com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView inOnCreate -> q
-    com.oakonell.ticstacktoe.GameContext gameContext -> r
-    android.widget.TextView gameTypeTextView -> s
+    android.widget.TextView whiteWins -> f
+    android.widget.TextView gameNumber -> g
+    android.widget.TextView numMoves -> h
+    com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView squareView -> i
+    java.util.List buttons -> j
+    com.oakonell.ticstacktoe.ui.game.WinOverlayView winOverlayView -> k
+    com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo resizeInfo -> l
+    boolean disableButtons -> m
+    boolean hadInvaldMove -> n
+    java.lang.Runnable inOnResume -> o
+    com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView inOnCreate -> p
+    com.oakonell.ticstacktoe.GameContext gameContext -> q
+    android.widget.TextView gameTypeTextView -> r
+    android.widget.TextView blackNameView -> s
+    android.widget.TextView blackRankView -> t
+    android.widget.TextView blackWins -> u
+    android.widget.ImageView blackImageView -> v
     com.oakonell.ticstacktoe.ui.game.GameFragment createFragment() -> c
     void onAttach(android.app.Activity) -> onAttach
-    com.oakonell.ticstacktoe.GameStrategy getGameStrategy() -> k
+    com.oakonell.ticstacktoe.GameStrategy getGameStrategy() -> l
     void onResume() -> onResume
     void startGame(boolean) -> a
     void startGame(java.lang.String,boolean,boolean) -> a
@@ -16551,11 +16743,12 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     void onPrepareOptionsMenu(com.actionbarsherlock.view.Menu) -> onPrepareOptionsMenu
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
-    void updatedGameStrategy() -> d
+    void invertBlackHeader() -> d
+    void updatedGameStrategy() -> e
     void storeViewReferences(android.view.View) -> c
     void resizeBoardAndStacks(android.view.View) -> b
     void resizeProfile(android.view.View,int) -> a
-    void configureDisplayHomeUp() -> l
+    void configureDisplayHomeUp() -> m
     void resizePlayerStacks(android.view.View,int) -> b
     void resize(android.view.View,int,int) -> a
     void configureBoardButtons(android.view.View) -> d
@@ -16563,15 +16756,15 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView getPlayerStackView(com.oakonell.ticstacktoe.model.Player,int) -> b
     void updatePlayerStack(com.oakonell.ticstacktoe.model.Board$PieceStack,com.oakonell.ticstacktoe.ui.game.PieceStackImageView) -> a
     void configurePlayerStack(com.oakonell.ticstacktoe.ui.game.PieceStackImageView,int,com.oakonell.ticstacktoe.model.Player) -> a
-    com.oakonell.utils.activity.dragndrop.DragConfig createDragConfiguration() -> m
+    com.oakonell.utils.activity.dragndrop.DragConfig createDragConfiguration() -> n
     void animateInvalidMoveReturn(com.oakonell.utils.activity.dragndrop.DragView,int,android.widget.ImageView,java.lang.Runnable) -> a
     void configureBoardButton(com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView,com.oakonell.ticstacktoe.model.Cell) -> a
     void updateBoardPiece(com.oakonell.ticstacktoe.model.Cell) -> a
-    void showGameStats() -> e
-    void refreshHeader() -> f
+    void showGameStats() -> f
+    void refreshHeader() -> g
     void updateHeader(android.view.View) -> e
     void displayRank(android.widget.TextView,short) -> a
-    void updateGameStatDisplay() -> n
+    void updateGameStatDisplay() -> o
     void highlightPlayerTurn(android.view.View,android.view.View) -> a
     boolean makeAndDisplayMove(com.oakonell.ticstacktoe.model.AbstractMove) -> a
     void animateMove(com.oakonell.ticstacktoe.model.AbstractMove,com.oakonell.ticstacktoe.model.State) -> a
@@ -16579,16 +16772,16 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     android.widget.ImageView createMovingView(android.view.View,int) -> d
     void postMove(com.oakonell.ticstacktoe.model.State,boolean) -> a
     void endGame(com.oakonell.ticstacktoe.model.State,boolean) -> b
-    void acceptHumanMove() -> g
+    void acceptHumanMove() -> h
     com.oakonell.utils.activity.dragndrop.ImageDropTarget findButtonFor(com.oakonell.ticstacktoe.model.Cell) -> b
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.model.State) -> a
     void evaluateInGameAchievements(com.oakonell.ticstacktoe.model.State) -> b
     void evaluateLeaderboards(com.oakonell.ticstacktoe.model.State) -> c
     void highlightStrictFirstTouchedPiece(com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView) -> a
     void unhighlightStrictFirstTouchedPiece(com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView) -> b
-    com.oakonell.ticstacktoe.model.Game getGame() -> h
-    com.oakonell.ticstacktoe.model.ScoreCard getScore() -> i
-    void leaveGame() -> j
+    com.oakonell.ticstacktoe.model.Game getGame() -> i
+    com.oakonell.ticstacktoe.model.ScoreCard getScore() -> j
+    void leaveGame() -> k
     void disableDragging(boolean) -> b
     com.oakonell.ticstacktoe.GameStrategy access$0(com.oakonell.ticstacktoe.ui.game.GameFragment) -> a
     android.widget.TextView access$1(com.oakonell.ticstacktoe.ui.game.GameFragment) -> b
@@ -16882,26 +17075,26 @@ com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy -> com.oakonell.ticstack
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo matchInfo -> a
     void leaveRoom() -> b
     void onActivityPause(com.oakonell.ticstacktoe.MainActivity) -> b
-    void saveToDB() -> y
+    void saveToDB() -> z
     void showAlert(java.lang.String) -> a
     void sendHumanMove() -> c
-    void updateGame() -> z
-    void gameFinished() -> A
+    void updateGame() -> A
+    void gameFinished() -> B
     void backFromWaitingRoom() -> d
     boolean warnToLeave() -> e
-    void leaveGame() -> B
+    void leaveGame() -> C
     void promptToPlayAgain(java.lang.String,java.lang.String) -> a
-    void playAgain() -> C
+    void playAgain() -> D
     void onActivityResume(com.oakonell.ticstacktoe.MainActivity) -> c
     void onSignInSuccess(com.oakonell.ticstacktoe.MainActivity) -> a
     void onSignInFailed(com.actionbarsherlock.app.SherlockFragmentActivity) -> a
-    void showFromMenu() -> D
-    com.oakonell.ticstacktoe.ui.local.LocalMatchInfo getMatchInfo() -> E
+    void showFromMenu() -> E
+    com.oakonell.ticstacktoe.ui.local.LocalMatchInfo getMatchInfo() -> F
     void setMatchInfo(com.oakonell.ticstacktoe.ui.local.LocalMatchInfo) -> a
     void startNewGame(boolean,java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.GameType,com.oakonell.ticstacktoe.model.ScoreCard) -> a
     void startGame(com.oakonell.ticstacktoe.model.GameMode,com.oakonell.ticstacktoe.model.GameType,boolean,java.lang.String,com.oakonell.ticstacktoe.model.Player,java.lang.String,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player) -> a
-    void insertMatch() -> F
-    void showAndStartGame() -> G
+    void insertMatch() -> G
+    void showAndStartGame() -> H
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> a
     com.oakonell.ticstacktoe.model.Player createWhitePlayer(java.lang.String) -> b
     java.lang.String getMatchId() -> r
@@ -16923,17 +17116,17 @@ com.oakonell.ticstacktoe.ui.local.AiGameStrategy -> com.oakonell.ticstacktoe.ui.
     com.oakonell.ticstacktoe.model.RankInfo rankInfo -> c
     com.oakonell.ticstacktoe.ui.local.AiMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> b
     int getAnalyticGameActionResId() -> u
-    com.oakonell.ticstacktoe.model.solver.AILevel getAILevel() -> H
+    com.oakonell.ticstacktoe.model.solver.AILevel getAILevel() -> I
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> t
     void setRankInfo(com.oakonell.ticstacktoe.model.RankInfo) -> a
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
     com.oakonell.ticstacktoe.model.Player createWhitePlayer(java.lang.String) -> b
     void acceptNonHumanPlayerMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> b
     void promptToPlayAgain(java.lang.String,java.lang.String) -> a
-    void showFromMenu() -> D
+    void showFromMenu() -> E
     void startGame(com.oakonell.ticstacktoe.model.GameMode,com.oakonell.ticstacktoe.model.GameType,boolean,java.lang.String,com.oakonell.ticstacktoe.model.Player,java.lang.String,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player) -> a
     void updateRanks(com.oakonell.ticstacktoe.ui.local.AiGameStrategy$PostRankUpdate) -> a
-    void gameFinished() -> A
+    void gameFinished() -> B
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.Achievements,com.oakonell.ticstacktoe.GameContext,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.State) -> a
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> a
     com.oakonell.ticstacktoe.model.State access$1(com.oakonell.ticstacktoe.ui.local.AiGameStrategy,com.oakonell.ticstacktoe.model.AbstractMove) -> a
@@ -17189,12 +17382,16 @@ com.oakonell.ticstacktoe.ui.local.NewLocalGameDialog$LocalGameModeListener -> co
     void chosenMode(com.oakonell.ticstacktoe.model.GameType,java.lang.String,java.lang.String) -> a
     void cancel() -> a
 com.oakonell.ticstacktoe.ui.local.PassNPlayGameStrategy -> com.oakonell.ticstacktoe.ui.local.ak:
+    boolean rotateBlackLayout -> a
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> a
     int getAnalyticGameActionResId() -> u
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
     com.oakonell.ticstacktoe.model.Player createWhitePlayer(java.lang.String) -> b
     void acceptNonHumanPlayerMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> b
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> t
+    boolean rotateBlackLayout() -> x
+    void onCreateOptionsMenu(android.support.v4.app.Fragment,com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
+    boolean onOptionsItemSelected(android.support.v4.app.Fragment,com.actionbarsherlock.view.MenuItem) -> a
 com.oakonell.ticstacktoe.ui.local.PassNPlayMatchInfo -> com.oakonell.ticstacktoe.ui.local.al:
     void accept(com.oakonell.ticstacktoe.ui.local.LocalMatchInfo$LocalMatchVisitor) -> a
     android.net.Uri getIconImageUri() -> b
@@ -17238,29 +17435,29 @@ com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy -> com.oakonell.
     java.util.List postNotes -> a
     android.view.View dialogSkip -> o
     int getAnalyticGameActionResId() -> u
-    android.util.SparseArray getTutorialPagesByMoveNum() -> H
-    void startGame() -> I
+    android.util.SparseArray getTutorialPagesByMoveNum() -> I
+    void startGame() -> J
     void viewCreated(com.oakonell.ticstacktoe.ui.game.GameFragment,android.view.LayoutInflater,android.view.ViewGroup,android.widget.FrameLayout) -> a
     com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> b
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> t
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
-    android.net.Uri getTutorialImageUri() -> J
+    android.net.Uri getTutorialImageUri() -> K
     com.oakonell.ticstacktoe.model.Player staticCreateWhitePlayer(java.lang.String) -> c
     com.oakonell.ticstacktoe.model.Player createWhitePlayer(java.lang.String) -> b
     void attemptHumanMove(com.oakonell.ticstacktoe.model.AbstractMove,com.oakonell.ticstacktoe.GameStrategy$OnHumanMove) -> a
     void acceptNonHumanPlayerMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> b
     void acceptAIMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> c
-    void processTutorial() -> K
+    void processTutorial() -> L
     void acceptHumanMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> a
     void promptToPlayAgain(java.lang.String,java.lang.String) -> a
-    void processPostNotes() -> L
-    java.util.List getPostNotes() -> M
-    void gameFinished() -> A
+    void processPostNotes() -> M
+    java.util.List getPostNotes() -> N
+    void gameFinished() -> B
     boolean shouldHideAd() -> q
-    void skipTutorial() -> N
-    void markTutorialFinished() -> O
-    void saveToDB() -> y
-    void insertMatch() -> F
+    void skipTutorial() -> O
+    void markTutorialFinished() -> P
+    void saveToDB() -> z
+    void insertMatch() -> G
     void writeDetailsToBundle(android.os.Bundle) -> b
     boolean warnToLeave() -> e
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> a
@@ -17444,6 +17641,8 @@ com.oakonell.ticstacktoe.ui.menu.MenuFragment -> com.oakonell.ticstacktoe.ui.a.n
     com.commonsware.cwac.merge.MergeAdapter menuAdapter -> u
     android.view.View removeAds -> v
     android.view.View rankDisplayView -> w
+    com.google.android.gms.plus.PlusOneButton mPlusOneButton -> x
+    com.shamanland.facebook.likebutton.FacebookLikePlugin facebook_like -> y
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
     void onAttach(android.app.Activity) -> onAttach
     com.oakonell.ticstacktoe.ui.menu.MenuFragment createMenuFragment() -> a
@@ -17581,11 +17780,11 @@ com.oakonell.ticstacktoe.ui.menu.StartAGameFragment -> com.oakonell.ticstacktoe.
     void onAttach(android.app.Activity) -> onAttach
     android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
     boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem) -> onOptionsItemSelected
-    void configureDisplayHomeUp() -> e
+    void configureDisplayHomeUp() -> f
     void setActive() -> b
     void setInactive() -> c
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
-    void exitStartMenu() -> f
+    void exitStartMenu() -> d
     void selectAIGame() -> g
     void startTutorial() -> h
     void selectLocalGame() -> i
@@ -17599,7 +17798,7 @@ com.oakonell.ticstacktoe.ui.menu.StartAGameFragment -> com.oakonell.ticstacktoe.
     void startLocalTwoPlayerGame(com.oakonell.ticstacktoe.model.GameType,java.lang.String,java.lang.String) -> a
     void startAIGame(com.oakonell.ticstacktoe.model.GameType,java.lang.String,com.oakonell.ticstacktoe.model.solver.AILevel,boolean) -> a
     void startLocalGame(com.oakonell.ticstacktoe.ui.local.AbstractLocalStrategy,com.oakonell.ticstacktoe.model.GameType,java.lang.String,java.lang.String) -> a
-    void onSignInSucceeded() -> d
+    void onSignInSucceeded() -> e
     void showAlert(java.lang.String) -> a
     void access$0(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment) -> a
     void access$1(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment) -> b
@@ -17611,10 +17810,9 @@ com.oakonell.ticstacktoe.ui.menu.StartAGameFragment -> com.oakonell.ticstacktoe.
     void access$7(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment) -> g
     void access$8(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,com.oakonell.ticstacktoe.model.GameType,java.lang.String,com.oakonell.ticstacktoe.model.solver.AILevel,boolean) -> a
     void access$9(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,com.oakonell.ticstacktoe.model.GameType,java.lang.String,java.lang.String) -> a
-    void access$10(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment) -> h
-    void access$11(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,com.oakonell.ticstacktoe.model.GameType) -> a
-    void access$12(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,java.lang.Boolean) -> a
-    void access$13(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,java.lang.Boolean) -> b
+    void access$10(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,com.oakonell.ticstacktoe.model.GameType) -> a
+    void access$11(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,java.lang.Boolean) -> a
+    void access$12(com.oakonell.ticstacktoe.ui.menu.StartAGameFragment,java.lang.Boolean) -> b
 com.oakonell.ticstacktoe.ui.menu.StartAGameFragment$1 -> com.oakonell.ticstacktoe.ui.a.ah:
     com.oakonell.ticstacktoe.ui.menu.StartAGameFragment this$0 -> a
     void onBackStackChanged() -> onBackStackChanged
@@ -17678,27 +17876,27 @@ com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy -> com.oakonel
     boolean opponentInChat -> f
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> t
     void setRankInfo(com.oakonell.ticstacktoe.model.RankInfo) -> a
-    boolean iAmBlackPlayer() -> y
+    boolean iAmBlackPlayer() -> z
     boolean onOptionsItemSelected(android.support.v4.app.Fragment,com.actionbarsherlock.view.MenuItem) -> a
-    void openChatDialog() -> H
+    void openChatDialog() -> I
     void onCreateOptionsMenu(android.support.v4.app.Fragment,com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     void inflateMenu(com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     void onPrepareOptionsMenu(android.support.v4.app.Fragment,com.actionbarsherlock.view.Menu) -> a
     void handleMenu() -> w
-    java.util.List getChatMessages() -> z
-    int getNumNewMessages() -> A
+    java.util.List getChatMessages() -> A
+    int getNumNewMessages() -> B
     void setNumNewMessages(int) -> a
     void messageRecieved(com.google.android.gms.games.multiplayer.Participant,java.lang.String) -> a
-    void chatClosed() -> B
-    void opponentInChat() -> C
-    void opponentClosedChat() -> D
+    void chatClosed() -> C
+    void opponentInChat() -> D
+    void opponentClosedChat() -> E
     void sendInChat(boolean) -> a
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> F
     void sendMessage(java.lang.String) -> c
-    java.lang.String getOpponentName() -> F
+    java.lang.String getOpponentName() -> G
     void acceptNonHumanPlayerMove(com.oakonell.ticstacktoe.model.PlayerStrategy) -> b
     void evaluateGameEndAchievements(com.oakonell.ticstacktoe.Achievements,com.oakonell.ticstacktoe.GameContext,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.State) -> a
-    boolean supportsSendMessage() -> G
+    boolean supportsSendMessage() -> H
     void access$0(com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy) -> a
 com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy$1 -> com.oakonell.ticstacktoe.ui.b.b:
     com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy this$0 -> a
@@ -17861,35 +18059,35 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy -> com.oakonel
     void showAlert(java.lang.String) -> e
     void showWaitingRoom(com.google.android.gms.games.multiplayer.realtime.Room) -> f
     void leaveRoom() -> b
-    java.lang.String getOpponentName() -> F
-    com.google.android.gms.games.multiplayer.Participant getOpponentParticipant() -> S
-    java.lang.String getOpponentId() -> H
-    java.lang.String getRoomId() -> I
+    java.lang.String getOpponentName() -> G
+    com.google.android.gms.games.multiplayer.Participant getOpponentParticipant() -> T
+    java.lang.String getOpponentId() -> I
+    java.lang.String getRoomId() -> J
     void backFromWaitingRoom() -> d
-    void sendProtocolVersion() -> T
+    void sendProtocolVersion() -> U
     void checkWhoIsFirstAndAttemptToStart(boolean) -> c
     void sendHumanMove() -> c
-    void restartGame() -> J
+    void restartGame() -> K
     void receivePlayAgain(boolean) -> d
-    com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy$PlayAgainState getOpponentPlayAgainState() -> K
+    com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy$PlayAgainState getOpponentPlayAgainState() -> L
     void sendPlayAgain(java.lang.Runnable,java.lang.Runnable) -> a
     void sendNotPlayAgain(java.lang.Runnable,java.lang.Runnable) -> b
     void sendPlayAgain(boolean,java.lang.Runnable,java.lang.Runnable) -> a
     void sendMessage(java.lang.String) -> c
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> F
     void sendInChat(boolean) -> a
     boolean warnToLeave() -> e
     void promptToPlayAgain(java.lang.String,java.lang.String) -> a
-    void conditionallyUpdateRanks() -> U
+    void conditionallyUpdateRanks() -> V
     void updatePlayAgainOpponentRank(short) -> b
     void updateRanks(com.oakonell.ticstacktoe.ui.local.AiGameStrategy$PostRankUpdate) -> a
     void sendPlayAgainRank(short) -> c
-    void opponentWillPlayAgain() -> L
-    void opponentWillNotPlayAgain() -> M
-    void playAgainClosed() -> N
-    void opponentLeft() -> O
-    void leaveGame() -> P
-    void playAgain() -> Q
+    void opponentWillPlayAgain() -> M
+    void opponentWillNotPlayAgain() -> N
+    void playAgainClosed() -> O
+    void opponentLeft() -> P
+    void leaveGame() -> Q
+    void playAgain() -> R
     void sendRank(short) -> d
     void onSignInSuccess(com.oakonell.ticstacktoe.MainActivity) -> a
     void onActivityResume(com.oakonell.ticstacktoe.MainActivity) -> c
@@ -17899,8 +18097,8 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy -> com.oakonel
     void onlineMoveReceived(com.oakonell.ticstacktoe.utils.ByteBufferDebugger) -> a
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
     java.lang.String getMatchId() -> r
-    boolean isRanked() -> R
-    boolean iAmBlackPlayer() -> y
+    boolean isRanked() -> S
+    boolean iAmBlackPlayer() -> z
     void access$0(com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy,short) -> a
     void access$1(com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy,com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.model.RankInfo) -> a
     boolean access$2(com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy) -> a
@@ -18020,23 +18218,23 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     boolean showNewMessage -> k
     java.lang.String rematchId -> b
     boolean alreadyLoadingRematch -> l
-    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo getRankInfo() -> H
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo getRankInfo() -> I
     void setRankInfo(com.oakonell.ticstacktoe.model.RankInfo) -> a
     void inflateMenu(com.actionbarsherlock.view.Menu,com.actionbarsherlock.view.MenuInflater) -> a
     boolean onOptionsItemSelected(android.support.v4.app.Fragment,com.actionbarsherlock.view.MenuItem) -> a
-    void registerThisAsMatchListener() -> N
+    void registerThisAsMatchListener() -> O
     void onSignInFailed(com.actionbarsherlock.app.SherlockFragmentActivity) -> a
     void onSignInSuccess(com.oakonell.ticstacktoe.MainActivity) -> a
-    void refreshMatch() -> O
+    void refreshMatch() -> P
     void onTurnBasedMatchInitiated(int,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
     void showOrStartMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> c
-    void showFromMenu() -> I
+    void showFromMenu() -> J
     void startMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> d
     void startGame(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.Player,com.oakonell.ticstacktoe.model.ScoreCard,com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$TurnRankInfo) -> a
     void onTurnBasedMatchUpdated(int,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> b
     void acceptInvite(java.lang.String) -> d
     void onInvitationReceived(com.google.android.gms.games.multiplayer.Invitation) -> a
-    void playAgainClosed() -> J
+    void playAgainClosed() -> K
     void openPlayAgain(com.oakonell.ticstacktoe.ui.game.GameFragment,java.lang.String) -> a
     void onInvitationRemoved(java.lang.String) -> a
     void onTurnBasedMatchReceived(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> a
@@ -18048,15 +18246,15 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     void leaveRoom() -> b
     void updateRankInfo(java.lang.Runnable) -> b
     void sendHumanMove() -> c
-    void takeTurn() -> K
+    void takeTurn() -> L
     void finishGame(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> b
     void finishGame2(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$GameState,com.oakonell.ticstacktoe.model.State) -> a
-    boolean iAmBlackPlayer() -> y
-    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> E
-    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper getOpponentParticipant() -> L
-    java.lang.String getOpponentName() -> F
+    boolean iAmBlackPlayer() -> z
+    com.google.android.gms.games.multiplayer.Participant getMeForChat() -> F
+    com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$OpponentWrapper getOpponentParticipant() -> M
+    java.lang.String getOpponentName() -> G
     void backFromWaitingRoom() -> d
-    void rematch() -> M
+    void rematch() -> N
     void updateMatch(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch) -> b
     void showGame() -> s
     void postMove(java.lang.Runnable) -> a
@@ -18074,7 +18272,7 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy -> com.oakon
     com.oakonell.ticstacktoe.model.GameMode getGameMode() -> a
     java.lang.String getMatchId() -> r
     int getAnalyticGameActionResId() -> u
-    boolean supportsSendMessage() -> G
+    boolean supportsSendMessage() -> H
     com.oakonell.ticstacktoe.model.RankInfo getRankInfo() -> t
     boolean access$1(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy,com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch,int) -> a
     com.oakonell.ticstacktoe.ui.game.GameFragment access$2(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> a
@@ -18119,11 +18317,11 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$12$1 -> com.
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$13 -> com.oakonell.ticstacktoe.ui.b.b.k:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     java.lang.Runnable val$postMove -> b
-    void onCancel(android.content.DialogInterface) -> onCancel
+    void onClick(android.content.DialogInterface,int) -> onClick
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$14 -> com.oakonell.ticstacktoe.ui.b.b.l:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     java.lang.Runnable val$postMove -> b
-    void onClick(android.content.DialogInterface,int) -> onClick
+    void onCancel(android.content.DialogInterface) -> onCancel
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy$15 -> com.oakonell.ticstacktoe.ui.b.b.m:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy this$0 -> a
     void onResult(com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer$UpdateMatchResult) -> a
@@ -19273,6 +19471,298 @@ com.oakonell.utils.preference.PrefsActivity$PreferenceConfigurer -> com.oakonell
     void configure() -> a
 com.oakonell.utils.preference.PrefsActivity$PreferenceFinder -> com.oakonell.utils.a.k:
     android.preference.Preference findPreference(java.lang.String) -> a
+com.shamanland.facebook.likebutton.CalloutPath -> com.shamanland.facebook.likebutton.a:
+    android.graphics.RectF oval -> a
+    void build(int,float,float,float,float) -> a
+    int factor(int,int) -> a
+com.shamanland.facebook.likebutton.FacebookLikeActivity -> com.shamanland.facebook.likebutton.FacebookLikeActivity:
+    java.lang.String LOG_TAG -> a
+    android.view.View$OnTouchListener SKIP_TOUCH -> b
+    android.view.ViewGroup mContainer -> c
+    java.util.LinkedList mWindows -> d
+    android.webkit.WebChromeClient mWebChromeClient -> e
+    android.webkit.WebViewClient mWebViewClient -> f
+    android.content.Context getContext() -> a
+    void onCreate(android.os.Bundle) -> onCreate
+    void onPostCreate(android.os.Bundle) -> onPostCreate
+    void onBackPressed() -> onBackPressed
+    void onDestroy() -> onDestroy
+    java.lang.String generateContent() -> d
+    void appendImg(com.shamanland.facebook.likebutton.FacebookLikeOptions,java.lang.StringBuilder) -> a
+    void appendUrl(java.lang.String,java.lang.String,com.shamanland.facebook.likebutton.FacebookLikeOptions,java.lang.StringBuilder) -> a
+    android.view.View createRoot() -> e
+    android.webkit.WebView createWindow() -> b
+    android.view.View createProgressBar(android.webkit.WebView) -> a
+    boolean removeWindow(android.webkit.WebView) -> b
+    java.lang.String escapeHtml(java.lang.String) -> a
+    java.lang.String bitmapToBase64(android.graphics.Bitmap,int,int[]) -> a
+    void detachFromParent(android.view.View) -> detachFromParent
+    int getPictureSize() -> c
+com.shamanland.facebook.likebutton.FacebookLikeActivity$1 -> com.shamanland.facebook.likebutton.b:
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+com.shamanland.facebook.likebutton.FacebookLikeActivity$2 -> com.shamanland.facebook.likebutton.c:
+    com.shamanland.facebook.likebutton.FacebookLikeActivity this$0 -> a
+    boolean onCreateWindow(android.webkit.WebView,boolean,boolean,android.os.Message) -> onCreateWindow
+    void onCloseWindow(android.webkit.WebView) -> onCloseWindow
+com.shamanland.facebook.likebutton.FacebookLikeActivity$3 -> com.shamanland.facebook.likebutton.d:
+    com.shamanland.facebook.likebutton.FacebookLikeActivity this$0 -> a
+    boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String) -> shouldOverrideUrlLoading
+    void onPageStarted(android.webkit.WebView,java.lang.String,android.graphics.Bitmap) -> onPageStarted
+    void onPageFinished(android.webkit.WebView,java.lang.String) -> onPageFinished
+    android.view.View getProgressView(android.webkit.WebView) -> a
+com.shamanland.facebook.likebutton.FacebookLikeBox -> com.shamanland.facebook.likebutton.FacebookLikeBox:
+    java.lang.String LOG_TAG -> b
+    android.os.Looper BACKGROUND -> c
+    android.os.Handler mHandler -> d
+    com.shamanland.facebook.likebutton.FacebookLinkStatProcessor mProcessor -> e
+    java.lang.String mUrl -> f
+    boolean mAttachedToWindow -> g
+    com.shamanland.facebook.likebutton.CalloutPath mPath -> h
+    android.graphics.drawable.ShapeDrawable mFill -> i
+    android.graphics.drawable.ShapeDrawable mStroke -> j
+    float mCornerRadius -> k
+    int mCalloutMarker -> l
+    long lastUpdated -> a
+    void setProcessor(com.shamanland.facebook.likebutton.FacebookLinkStatProcessor) -> setProcessor
+    void setPageUrl(java.lang.String) -> setPageUrl
+    boolean isAttachedToWindow() -> isAttachedToWindow
+    void init(android.util.AttributeSet) -> a
+    void initBackground() -> b
+    void onAttachedToWindow() -> onAttachedToWindow
+    void onDetachedFromWindow() -> onDetachedFromWindow
+    void onSizeChanged(int,int,int,int) -> onSizeChanged
+    void onUrlChanged(java.lang.String,java.lang.String) -> a
+    void processUrl(java.lang.String) -> a
+    void postProcessUrl(java.lang.String,com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result) -> a
+    void onUrlProcessed(com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result) -> a
+    java.lang.String prettyNumber(long) -> a
+    void refresh() -> a
+com.shamanland.facebook.likebutton.FacebookLikeBox$1 -> com.shamanland.facebook.likebutton.e:
+    com.shamanland.facebook.likebutton.FacebookLikeBox this$0 -> a
+    boolean handleMessage(android.os.Message) -> handleMessage
+com.shamanland.facebook.likebutton.FacebookLikeBox$2 -> com.shamanland.facebook.likebutton.f:
+    com.shamanland.facebook.likebutton.FacebookLikeBox this$0 -> a
+    java.lang.String val$url -> b
+    com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result val$result -> c
+    void run() -> run
+com.shamanland.facebook.likebutton.FacebookLikeButton -> com.shamanland.facebook.likebutton.FacebookLikeButton:
+    java.lang.String mPageUrl -> a
+    java.lang.String mPageTitle -> b
+    java.lang.String mPageText -> c
+    android.graphics.Bitmap mPagePicture -> d
+    java.lang.String mPagePictureUrl -> e
+    int mPagePictureId -> f
+    java.lang.String mAppId -> g
+    int mContentViewId -> h
+    com.shamanland.facebook.likebutton.FacebookLikeOptions mOptions -> i
+    com.shamanland.facebook.likebutton.FacebookLikeButton$OnPageUrlChangeListener mOnPageUrlChangeListener -> j
+    java.lang.String getPageUrl() -> getPageUrl
+    void setPageUrl(java.lang.String) -> setPageUrl
+    java.lang.String getPageTitle() -> getPageTitle
+    void setPageTitle(java.lang.String) -> setPageTitle
+    java.lang.String getPageText() -> getPageText
+    void setPageText(java.lang.String) -> setPageText
+    android.graphics.Bitmap getPagePicture() -> getPagePicture
+    void setPagePicture(android.graphics.Bitmap) -> setPagePicture
+    java.lang.String getPagePictureUrl() -> getPagePictureUrl
+    void setPagePictureUrl(java.lang.String) -> setPagePictureUrl
+    int getPagePictureId() -> getPagePictureId
+    void setPagePictureId(int) -> setPagePictureId
+    java.lang.String getAppId() -> getAppId
+    void setAppId(java.lang.String) -> setAppId
+    int getContentViewId() -> getContentViewId
+    void setContentViewId(int) -> setContentViewId
+    com.shamanland.facebook.likebutton.FacebookLikeOptions getOptions() -> getOptions
+    void setOptions(com.shamanland.facebook.likebutton.FacebookLikeOptions) -> setOptions
+    void setOnPageUrlChangeListener(com.shamanland.facebook.likebutton.FacebookLikeButton$OnPageUrlChangeListener) -> setOnPageUrlChangeListener
+    void initAttrs(android.util.AttributeSet) -> a
+    java.lang.String getString(android.content.res.TypedArray,int,java.lang.String) -> a
+    void init(android.util.AttributeSet) -> b
+    void performLike() -> a
+com.shamanland.facebook.likebutton.FacebookLikeButton$1 -> com.shamanland.facebook.likebutton.g:
+    com.shamanland.facebook.likebutton.FacebookLikeButton this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.shamanland.facebook.likebutton.FacebookLikeButton$OnPageUrlChangeListener -> com.shamanland.facebook.likebutton.h:
+    void onPageUrlChanged(java.lang.String) -> a
+com.shamanland.facebook.likebutton.FacebookLikeOptions -> com.shamanland.facebook.likebutton.FacebookLikeOptions:
+    java.lang.String titleOpen -> a
+    java.lang.String titleClose -> b
+    java.lang.String textOpen -> c
+    java.lang.String textClose -> d
+    java.lang.String pictureAttrs -> e
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout layout -> f
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action action -> g
+    boolean showFaces -> h
+    boolean share -> i
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    java.lang.String getLayoutString() -> a
+    java.lang.String getActionString() -> b
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+com.shamanland.facebook.likebutton.FacebookLikeOptions$1 -> com.shamanland.facebook.likebutton.i:
+    com.shamanland.facebook.likebutton.FacebookLikeOptions createFromParcel(android.os.Parcel) -> a
+    com.shamanland.facebook.likebutton.FacebookLikeOptions[] newArray(int) -> a
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+    java.lang.Object[] newArray(int) -> newArray
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Action -> com.shamanland.facebook.likebutton.j:
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action LIKE -> a
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action RECOMMEND -> b
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action[] ENUM$VALUES -> c
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action[] values() -> values
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Action valueOf(java.lang.String) -> valueOf
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout -> com.shamanland.facebook.likebutton.k:
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout STANDARD -> a
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout BOX_COUNT -> b
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout BUTTON_COUNT -> c
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout BUTTON -> d
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout[] ENUM$VALUES -> e
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout[] values() -> values
+    com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout valueOf(java.lang.String) -> valueOf
+com.shamanland.facebook.likebutton.FacebookLikePlugin -> com.shamanland.facebook.likebutton.FacebookLikePlugin:
+    int mLikeId -> a
+    int mBoxId -> b
+    void init(android.util.AttributeSet) -> a
+    void onFinishInflate() -> onFinishInflate
+    void refreshLike() -> a
+com.shamanland.facebook.likebutton.FacebookLikePlugin$1 -> com.shamanland.facebook.likebutton.l:
+    com.shamanland.facebook.likebutton.FacebookLikePlugin this$0 -> a
+    android.view.View val$box -> b
+    void onPageUrlChanged(java.lang.String) -> a
+com.shamanland.facebook.likebutton.FacebookLikePlugin$2 -> com.shamanland.facebook.likebutton.m:
+    com.shamanland.facebook.likebutton.FacebookLikePlugin this$0 -> a
+    android.view.View val$like -> b
+    void onClick(android.view.View) -> onClick
+com.shamanland.facebook.likebutton.FacebookLinkStatProcessor -> com.shamanland.facebook.likebutton.n:
+    java.lang.String LOG_TAG -> a
+    java.lang.String getRequestUrl(java.lang.String) -> a
+    com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result getResult(java.lang.String,org.json.JSONObject) -> a
+    long getLikes(org.json.JSONObject) -> c
+    long getShares(org.json.JSONObject) -> a
+    long getComments(org.json.JSONObject) -> b
+    com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result processUrl(java.lang.String) -> b
+com.shamanland.facebook.likebutton.FacebookLinkStatProcessor$Result -> com.shamanland.facebook.likebutton.o:
+    java.lang.String url -> a
+    long shares -> b
+    long comments -> c
+    long likes -> d
+com.shamanland.facebook.likebutton.R -> com.shamanland.facebook.likebutton.R:
+com.shamanland.facebook.likebutton.R$attr -> com.shamanland.facebook.likebutton.R$attr:
+    int appId -> appId
+    int boxCornersRadius -> boxCornersRadius
+    int boxFillColor -> boxFillColor
+    int boxId -> boxId
+    int boxStrokeColor -> boxStrokeColor
+    int boxStrokeWidth -> boxStrokeWidth
+    int calloutMarker -> calloutMarker
+    int contentViewId -> contentViewId
+    int likeId -> likeId
+    int optAction -> optAction
+    int optLayout -> optLayout
+    int optPictureAttrs -> optPictureAttrs
+    int optShare -> optShare
+    int optShowFaces -> optShowFaces
+    int optTextClose -> optTextClose
+    int optTextOpen -> optTextOpen
+    int optTitleClose -> optTitleClose
+    int optTitleOpen -> optTitleOpen
+    int pagePicture -> pagePicture
+    int pagePictureId -> pagePictureId
+    int pagePictureUrl -> pagePictureUrl
+    int pageText -> pageText
+    int pageTitle -> pageTitle
+    int pageUrl -> pageUrl
+com.shamanland.facebook.likebutton.R$color -> com.shamanland.facebook.likebutton.R$color:
+    int com_shamanland_facebook_button_blue_focused_end -> com_shamanland_facebook_button_blue_focused_end
+    int com_shamanland_facebook_button_blue_focused_start -> com_shamanland_facebook_button_blue_focused_start
+    int com_shamanland_facebook_button_blue_focused_stroke -> com_shamanland_facebook_button_blue_focused_stroke
+    int com_shamanland_facebook_button_blue_normal_end -> com_shamanland_facebook_button_blue_normal_end
+    int com_shamanland_facebook_button_blue_normal_start -> com_shamanland_facebook_button_blue_normal_start
+    int com_shamanland_facebook_button_blue_pressed_end -> com_shamanland_facebook_button_blue_pressed_end
+    int com_shamanland_facebook_button_blue_pressed_start -> com_shamanland_facebook_button_blue_pressed_start
+    int com_shamanland_facebook_button_blue_pressed_stroke -> com_shamanland_facebook_button_blue_pressed_stroke
+    int com_shamanland_facebook_like_box_background_color -> com_shamanland_facebook_like_box_background_color
+    int com_shamanland_facebook_like_box_text_color -> com_shamanland_facebook_like_box_text_color
+    int com_shamanland_facebook_like_text_color -> com_shamanland_facebook_like_text_color
+com.shamanland.facebook.likebutton.R$dimen -> com.shamanland.facebook.likebutton.R$dimen:
+    int com_shamanland_facebook_like_activity_progress_size -> com_shamanland_facebook_like_activity_progress_size
+    int com_shamanland_facebook_like_box_padding_bottom -> com_shamanland_facebook_like_box_padding_bottom
+    int com_shamanland_facebook_like_box_padding_left -> com_shamanland_facebook_like_box_padding_left
+    int com_shamanland_facebook_like_box_padding_right -> com_shamanland_facebook_like_box_padding_right
+    int com_shamanland_facebook_like_box_padding_top -> com_shamanland_facebook_like_box_padding_top
+    int com_shamanland_facebook_like_box_stroke_width -> com_shamanland_facebook_like_box_stroke_width
+    int com_shamanland_facebook_like_compound_drawable_padding -> com_shamanland_facebook_like_compound_drawable_padding
+    int com_shamanland_facebook_like_corners_radius -> com_shamanland_facebook_like_corners_radius
+    int com_shamanland_facebook_like_height -> com_shamanland_facebook_like_height
+    int com_shamanland_facebook_like_padding_bottom -> com_shamanland_facebook_like_padding_bottom
+    int com_shamanland_facebook_like_padding_left -> com_shamanland_facebook_like_padding_left
+    int com_shamanland_facebook_like_padding_right -> com_shamanland_facebook_like_padding_right
+    int com_shamanland_facebook_like_padding_top -> com_shamanland_facebook_like_padding_top
+    int com_shamanland_facebook_like_text_size -> com_shamanland_facebook_like_text_size
+com.shamanland.facebook.likebutton.R$drawable -> com.shamanland.facebook.likebutton.R$drawable:
+    int com_shamanland_facebook_button_blue -> com_shamanland_facebook_button_blue
+    int com_shamanland_facebook_inverse_icon -> com_shamanland_facebook_inverse_icon
+com.shamanland.facebook.likebutton.R$id -> com.shamanland.facebook.likebutton.R$id:
+    int all -> all
+    int bottom -> bottom
+    int box_count -> box_count
+    int button -> button
+    int button_count -> button_count
+    int com_shamanland_facebook_like -> com_shamanland_facebook_like
+    int com_shamanland_facebook_like_box -> com_shamanland_facebook_like_box
+    int com_shamanland_facebook_like_container -> com_shamanland_facebook_like_container
+    int com_shamanland_facebook_like_recommend -> com_shamanland_facebook_like_recommend
+    int com_shamanland_facebook_like_share -> com_shamanland_facebook_like_share
+    int left -> left
+    int like -> like
+    int none -> none
+    int recommend -> recommend
+    int right -> right
+    int standard -> standard
+    int top -> top
+com.shamanland.facebook.likebutton.R$layout -> com.shamanland.facebook.likebutton.R$layout:
+    int com_shamanland_facebook_like_activity_progress -> com_shamanland_facebook_like_activity_progress
+com.shamanland.facebook.likebutton.R$string -> com.shamanland.facebook.likebutton.R$string:
+    int com_shamanland_facebook -> com_shamanland_facebook
+    int com_shamanland_facebook_like_activity_error -> com_shamanland_facebook_like_activity_error
+    int com_shamanland_facebook_like_box_text_default -> com_shamanland_facebook_like_box_text_default
+    int com_shamanland_like -> com_shamanland_like
+    int com_shamanland_recommend -> com_shamanland_recommend
+    int com_shamanland_share -> com_shamanland_share
+com.shamanland.facebook.likebutton.R$style -> com.shamanland.facebook.likebutton.R$style:
+    int Theme_Facebook_Like -> Theme_Facebook_Like
+    int Widget_FacebookLikeBox -> Widget_FacebookLikeBox
+    int Widget_FacebookLikeButton -> Widget_FacebookLikeButton
+    int Widget_FacebookLikeButtonBase -> Widget_FacebookLikeButtonBase
+com.shamanland.facebook.likebutton.R$styleable -> com.shamanland.facebook.likebutton.R$styleable:
+    int[] FacebookLikeBox -> FacebookLikeBox
+    int FacebookLikeBox_boxCornersRadius -> FacebookLikeBox_boxCornersRadius
+    int FacebookLikeBox_boxFillColor -> FacebookLikeBox_boxFillColor
+    int FacebookLikeBox_boxStrokeColor -> FacebookLikeBox_boxStrokeColor
+    int FacebookLikeBox_boxStrokeWidth -> FacebookLikeBox_boxStrokeWidth
+    int FacebookLikeBox_calloutMarker -> FacebookLikeBox_calloutMarker
+    int[] FacebookLikeButton -> FacebookLikeButton
+    int FacebookLikeButton_appId -> FacebookLikeButton_appId
+    int FacebookLikeButton_contentViewId -> FacebookLikeButton_contentViewId
+    int FacebookLikeButton_optAction -> FacebookLikeButton_optAction
+    int FacebookLikeButton_optLayout -> FacebookLikeButton_optLayout
+    int FacebookLikeButton_optPictureAttrs -> FacebookLikeButton_optPictureAttrs
+    int FacebookLikeButton_optShare -> FacebookLikeButton_optShare
+    int FacebookLikeButton_optShowFaces -> FacebookLikeButton_optShowFaces
+    int FacebookLikeButton_optTextClose -> FacebookLikeButton_optTextClose
+    int FacebookLikeButton_optTextOpen -> FacebookLikeButton_optTextOpen
+    int FacebookLikeButton_optTitleClose -> FacebookLikeButton_optTitleClose
+    int FacebookLikeButton_optTitleOpen -> FacebookLikeButton_optTitleOpen
+    int FacebookLikeButton_pagePicture -> FacebookLikeButton_pagePicture
+    int FacebookLikeButton_pagePictureId -> FacebookLikeButton_pagePictureId
+    int FacebookLikeButton_pagePictureUrl -> FacebookLikeButton_pagePictureUrl
+    int FacebookLikeButton_pageText -> FacebookLikeButton_pageText
+    int FacebookLikeButton_pageTitle -> FacebookLikeButton_pageTitle
+    int FacebookLikeButton_pageUrl -> FacebookLikeButton_pageUrl
+    int[] FacebookLikePlugin -> FacebookLikePlugin
+    int FacebookLikePlugin_boxId -> FacebookLikePlugin_boxId
+    int FacebookLikePlugin_likeId -> FacebookLikePlugin_likeId
 fr.castorflex.android.smoothprogressbar.R -> fr.castorflex.android.smoothprogressbar.R:
 fr.castorflex.android.smoothprogressbar.R$attr -> fr.castorflex.android.smoothprogressbar.R$attr:
     int spbStyle -> spbStyle

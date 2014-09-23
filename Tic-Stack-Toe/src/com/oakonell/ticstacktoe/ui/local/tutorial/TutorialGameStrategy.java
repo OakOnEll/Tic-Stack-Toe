@@ -479,7 +479,7 @@ public class TutorialGameStrategy extends AbstractLocalStrategy {
 					|| move.getPlayedPiece() != Piece.BLACK3) {
 				onHumanMove
 						.onInvalid(new InvalidMoveException(
-								">Place a new piece from your stacks into the middle right tile.",
+								"Place a new piece from your stacks into the middle right tile.",
 								R.string.move_4_hint));
 				return;
 			}

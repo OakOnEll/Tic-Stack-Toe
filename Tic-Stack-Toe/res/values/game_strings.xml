@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="invalid_move_need_empty">Play in an empty square.</string>
-    <string name="invalid_move_need_nonempty">Place bomb on an existing marker.</string>
-    <string name="invalid_move_space_has_bigger_piece">Place that piece in an empty space or over a smaller piece already on the board.</string>
+    <string name="invalid_move_title">Invalid Move</string>
+    <string name="invalid_move_space_has_bigger_piece">Place that piece\n* in an empty space, or\n* over a smaller piece already on the board.</string>
     <string name="invalid_move_source_is_empty">There is no piece at the source to move.</string>
-    <string name="invalid_stack_move_in_strict">A piece from the stacj must be moved to either (1) an empty space, or (2) a space to gobble an opponent’s piece that is part of three in a row (for the opponent).</string>
+    <string name="invalid_stack_move_in_strict">A piece from the stack must be moved to either\n* an empty space, or\n* gobble an opponent\'s piece that is part of an opponent\'s three in a row.</string>
     <string name="you">You</string>
     <string name="you_won">You WON!</string>
     <string name="you_lost">You LOST!</string>

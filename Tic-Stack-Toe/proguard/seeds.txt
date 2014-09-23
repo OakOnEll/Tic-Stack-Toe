@@ -6275,6 +6275,9 @@ com.google.android.gms.maps.model.TileOverlayOptions
 com.google.android.gms.maps.model.TileOverlayOptions: com.google.android.gms.maps.model.TileOverlayOptionsCreator CREATOR
 com.google.android.gms.maps.model.VisibleRegion
 com.google.android.gms.maps.model.VisibleRegion: com.google.android.gms.maps.model.VisibleRegionCreator CREATOR
+com.google.android.gms.plus.PlusOneButton
+com.google.android.gms.plus.PlusOneButton: PlusOneButton(android.content.Context)
+com.google.android.gms.plus.PlusOneButton: PlusOneButton(android.content.Context,android.util.AttributeSet)
 com.google.android.gms.plus.PlusOneButton: void setOnPlusOneClickListener(com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener)
 com.google.android.gms.plus.PlusOneButton: void setAnnotation(int)
 com.google.android.gms.plus.PlusOneButton: void setSize(int)
@@ -6352,15 +6355,23 @@ com.oakonell.ticstacktoe.R$attr: int activityChooserViewStyle
 com.oakonell.ticstacktoe.R$attr: int adSize
 com.oakonell.ticstacktoe.R$attr: int adSizes
 com.oakonell.ticstacktoe.R$attr: int adUnitId
+com.oakonell.ticstacktoe.R$attr: int appId
 com.oakonell.ticstacktoe.R$attr: int background
 com.oakonell.ticstacktoe.R$attr: int backgroundSplit
 com.oakonell.ticstacktoe.R$attr: int backgroundStacked
+com.oakonell.ticstacktoe.R$attr: int boxCornersRadius
+com.oakonell.ticstacktoe.R$attr: int boxFillColor
+com.oakonell.ticstacktoe.R$attr: int boxId
+com.oakonell.ticstacktoe.R$attr: int boxStrokeColor
+com.oakonell.ticstacktoe.R$attr: int boxStrokeWidth
 com.oakonell.ticstacktoe.R$attr: int buttonStyleSmall
+com.oakonell.ticstacktoe.R$attr: int calloutMarker
 com.oakonell.ticstacktoe.R$attr: int cameraBearing
 com.oakonell.ticstacktoe.R$attr: int cameraTargetLat
 com.oakonell.ticstacktoe.R$attr: int cameraTargetLng
 com.oakonell.ticstacktoe.R$attr: int cameraTilt
 com.oakonell.ticstacktoe.R$attr: int cameraZoom
+com.oakonell.ticstacktoe.R$attr: int contentViewId
 com.oakonell.ticstacktoe.R$attr: int customNavigationLayout
 com.oakonell.ticstacktoe.R$attr: int displayOptions
 com.oakonell.ticstacktoe.R$attr: int divider
@@ -6383,6 +6394,7 @@ com.oakonell.ticstacktoe.R$attr: int itemBackground
 com.oakonell.ticstacktoe.R$attr: int itemIconDisabledAlpha
 com.oakonell.ticstacktoe.R$attr: int itemPadding
 com.oakonell.ticstacktoe.R$attr: int itemTextAppearance
+com.oakonell.ticstacktoe.R$attr: int likeId
 com.oakonell.ticstacktoe.R$attr: int listPopupWindowStyle
 com.oakonell.ticstacktoe.R$attr: int listPreferredItemHeightSmall
 com.oakonell.ticstacktoe.R$attr: int listPreferredItemPaddingLeft
@@ -6390,6 +6402,21 @@ com.oakonell.ticstacktoe.R$attr: int listPreferredItemPaddingRight
 com.oakonell.ticstacktoe.R$attr: int logo
 com.oakonell.ticstacktoe.R$attr: int mapType
 com.oakonell.ticstacktoe.R$attr: int navigationMode
+com.oakonell.ticstacktoe.R$attr: int optAction
+com.oakonell.ticstacktoe.R$attr: int optLayout
+com.oakonell.ticstacktoe.R$attr: int optPictureAttrs
+com.oakonell.ticstacktoe.R$attr: int optShare
+com.oakonell.ticstacktoe.R$attr: int optShowFaces
+com.oakonell.ticstacktoe.R$attr: int optTextClose
+com.oakonell.ticstacktoe.R$attr: int optTextOpen
+com.oakonell.ticstacktoe.R$attr: int optTitleClose
+com.oakonell.ticstacktoe.R$attr: int optTitleOpen
+com.oakonell.ticstacktoe.R$attr: int pagePicture
+com.oakonell.ticstacktoe.R$attr: int pagePictureId
+com.oakonell.ticstacktoe.R$attr: int pagePictureUrl
+com.oakonell.ticstacktoe.R$attr: int pageText
+com.oakonell.ticstacktoe.R$attr: int pageTitle
+com.oakonell.ticstacktoe.R$attr: int pageUrl
 com.oakonell.ticstacktoe.R$attr: int popupMenuStyle
 com.oakonell.ticstacktoe.R$attr: int preserveIconSpacing
 com.oakonell.ticstacktoe.R$attr: int progressBarPadding
@@ -6484,6 +6511,17 @@ com.oakonell.ticstacktoe.R$color: int abs__primary_text_disable_only_holo_dark
 com.oakonell.ticstacktoe.R$color: int abs__primary_text_disable_only_holo_light
 com.oakonell.ticstacktoe.R$color: int abs__primary_text_holo_dark
 com.oakonell.ticstacktoe.R$color: int abs__primary_text_holo_light
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_focused_end
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_focused_start
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_focused_stroke
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_normal_end
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_normal_start
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_pressed_end
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_pressed_start
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_button_blue_pressed_stroke
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_like_box_background_color
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_like_box_text_color
+com.oakonell.ticstacktoe.R$color: int com_shamanland_facebook_like_text_color
 com.oakonell.ticstacktoe.R$color: int common_action_bar_splitter
 com.oakonell.ticstacktoe.R$color: int common_signin_btn_dark_text_default
 com.oakonell.ticstacktoe.R$color: int common_signin_btn_dark_text_disabled
@@ -6517,6 +6555,20 @@ com.oakonell.ticstacktoe.R$dimen: int abs__search_view_preferred_width
 com.oakonell.ticstacktoe.R$dimen: int abs__search_view_text_min_width
 com.oakonell.ticstacktoe.R$dimen: int activity_horizontal_margin
 com.oakonell.ticstacktoe.R$dimen: int activity_vertical_margin
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_activity_progress_size
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_box_padding_bottom
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_box_padding_left
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_box_padding_right
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_box_padding_top
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_box_stroke_width
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_compound_drawable_padding
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_corners_radius
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_height
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_bottom
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_left
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_right
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_top
+com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_text_size
 com.oakonell.ticstacktoe.R$dimen: int menu_button_height
 com.oakonell.ticstacktoe.R$dimen: int menu_button_width
 com.oakonell.ticstacktoe.R$dimen: int player_name_size
@@ -6643,6 +6695,7 @@ com.oakonell.ticstacktoe.R$drawable: int action_bar
 com.oakonell.ticstacktoe.R$drawable: int action_bar_button
 com.oakonell.ticstacktoe.R$drawable: int action_bar_inset
 com.oakonell.ticstacktoe.R$drawable: int action_bar_sherlock_mascot
+com.oakonell.ticstacktoe.R$drawable: int arm_wrestle_icon_33306
 com.oakonell.ticstacktoe.R$drawable: int arrow_down
 com.oakonell.ticstacktoe.R$drawable: int arrow_down_dis
 com.oakonell.ticstacktoe.R$drawable: int arrow_up
@@ -6659,6 +6712,8 @@ com.oakonell.ticstacktoe.R$drawable: int button_pressed
 com.oakonell.ticstacktoe.R$drawable: int cancel_icon_18932
 com.oakonell.ticstacktoe.R$drawable: int check_icon_835
 com.oakonell.ticstacktoe.R$drawable: int checked
+com.oakonell.ticstacktoe.R$drawable: int com_shamanland_facebook_button_blue
+com.oakonell.ticstacktoe.R$drawable: int com_shamanland_facebook_inverse_icon
 com.oakonell.ticstacktoe.R$drawable: int common_signin_btn_icon_dark
 com.oakonell.ticstacktoe.R$drawable: int common_signin_btn_icon_disabled_dark
 com.oakonell.ticstacktoe.R$drawable: int common_signin_btn_icon_disabled_focus_dark
@@ -6796,6 +6851,7 @@ com.oakonell.ticstacktoe.R$id: int abs__textButton
 com.oakonell.ticstacktoe.R$id: int abs__title
 com.oakonell.ticstacktoe.R$id: int abs__up
 com.oakonell.ticstacktoe.R$id: int action_chat
+com.oakonell.ticstacktoe.R$id: int action_head_to_head
 com.oakonell.ticstacktoe.R$id: int action_help
 com.oakonell.ticstacktoe.R$id: int action_settings
 com.oakonell.ticstacktoe.R$id: int actionbar_notifcation_imageview
@@ -6805,6 +6861,7 @@ com.oakonell.ticstacktoe.R$id: int adView
 com.oakonell.ticstacktoe.R$id: int ad_frame
 com.oakonell.ticstacktoe.R$id: int ai_level
 com.oakonell.ticstacktoe.R$id: int ai_name
+com.oakonell.ticstacktoe.R$id: int all
 com.oakonell.ticstacktoe.R$id: int app_name_id
 com.oakonell.ticstacktoe.R$id: int blackName
 com.oakonell.ticstacktoe.R$id: int blackPieceLayout
@@ -6815,6 +6872,10 @@ com.oakonell.ticstacktoe.R$id: int black_piece_stack2
 com.oakonell.ticstacktoe.R$id: int black_piece_stack3
 com.oakonell.ticstacktoe.R$id: int black_rank
 com.oakonell.ticstacktoe.R$id: int board_rows
+com.oakonell.ticstacktoe.R$id: int bottom
+com.oakonell.ticstacktoe.R$id: int box_count
+com.oakonell.ticstacktoe.R$id: int button
+com.oakonell.ticstacktoe.R$id: int button_count
 com.oakonell.ticstacktoe.R$id: int button_r1c1
 com.oakonell.ticstacktoe.R$id: int button_r1c2
 com.oakonell.ticstacktoe.R$id: int button_r1c3
@@ -6847,12 +6908,18 @@ com.oakonell.ticstacktoe.R$id: int button_row4
 com.oakonell.ticstacktoe.R$id: int button_row5
 com.oakonell.ticstacktoe.R$id: int cancel
 com.oakonell.ticstacktoe.R$id: int close
+com.oakonell.ticstacktoe.R$id: int com_shamanland_facebook_like
+com.oakonell.ticstacktoe.R$id: int com_shamanland_facebook_like_box
+com.oakonell.ticstacktoe.R$id: int com_shamanland_facebook_like_container
+com.oakonell.ticstacktoe.R$id: int com_shamanland_facebook_like_recommend
+com.oakonell.ticstacktoe.R$id: int com_shamanland_facebook_like_share
 com.oakonell.ticstacktoe.R$id: int decrement
 com.oakonell.ticstacktoe.R$id: int dialog_next
 com.oakonell.ticstacktoe.R$id: int dialog_skip
 com.oakonell.ticstacktoe.R$id: int disableHome
 com.oakonell.ticstacktoe.R$id: int drag_layer
 com.oakonell.ticstacktoe.R$id: int edit_query
+com.oakonell.ticstacktoe.R$id: int facebook_like
 com.oakonell.ticstacktoe.R$id: int game_header
 com.oakonell.ticstacktoe.R$id: int game_number
 com.oakonell.ticstacktoe.R$id: int game_root
@@ -6871,6 +6938,8 @@ com.oakonell.ticstacktoe.R$id: int item_menu
 com.oakonell.ticstacktoe.R$id: int junior_rank
 com.oakonell.ticstacktoe.R$id: int label
 com.oakonell.ticstacktoe.R$id: int last_updated
+com.oakonell.ticstacktoe.R$id: int left
+com.oakonell.ticstacktoe.R$id: int like
 com.oakonell.ticstacktoe.R$id: int linearLayout1
 com.oakonell.ticstacktoe.R$id: int list
 com.oakonell.ticstacktoe.R$id: int listMode
@@ -6929,6 +6998,7 @@ com.oakonell.ticstacktoe.R$id: int player_o_name
 com.oakonell.ticstacktoe.R$id: int player_pic
 com.oakonell.ticstacktoe.R$id: int player_x
 com.oakonell.ticstacktoe.R$id: int player_x_name
+com.oakonell.ticstacktoe.R$id: int plus_one_button
 com.oakonell.ticstacktoe.R$id: int positive
 com.oakonell.ticstacktoe.R$id: int pref_sound_fx_key
 com.oakonell.ticstacktoe.R$id: int progressBar1
@@ -6946,8 +7016,10 @@ com.oakonell.ticstacktoe.R$id: int rate_redirect_comment
 com.oakonell.ticstacktoe.R$id: int rate_remind_later
 com.oakonell.ticstacktoe.R$id: int rate_text
 com.oakonell.ticstacktoe.R$id: int realtime
+com.oakonell.ticstacktoe.R$id: int recommend
 com.oakonell.ticstacktoe.R$id: int remember_checkbox
 com.oakonell.ticstacktoe.R$id: int remove_ads
+com.oakonell.ticstacktoe.R$id: int right
 com.oakonell.ticstacktoe.R$id: int satellite
 com.oakonell.ticstacktoe.R$id: int send
 com.oakonell.ticstacktoe.R$id: int showCustom
@@ -6963,6 +7035,7 @@ com.oakonell.ticstacktoe.R$id: int spb_interpolator_accelerate
 com.oakonell.ticstacktoe.R$id: int spb_interpolator_acceleratedecelerate
 com.oakonell.ticstacktoe.R$id: int spb_interpolator_decelerate
 com.oakonell.ticstacktoe.R$id: int spb_interpolator_linear
+com.oakonell.ticstacktoe.R$id: int standard
 com.oakonell.ticstacktoe.R$id: int start
 com.oakonell.ticstacktoe.R$id: int strict_rank
 com.oakonell.ticstacktoe.R$id: int subtitle
@@ -6989,6 +7062,7 @@ com.oakonell.ticstacktoe.R$id: int timestamp
 com.oakonell.ticstacktoe.R$id: int title
 com.oakonell.ticstacktoe.R$id: int title_divider
 com.oakonell.ticstacktoe.R$id: int title_include
+com.oakonell.ticstacktoe.R$id: int top
 com.oakonell.ticstacktoe.R$id: int tutorial
 com.oakonell.ticstacktoe.R$id: int tutorial_bottom
 com.oakonell.ticstacktoe.R$id: int tutorial_bottom_text
@@ -7047,8 +7121,10 @@ com.oakonell.ticstacktoe.R$layout: int abs__search_dropdown_item_icons_2line
 com.oakonell.ticstacktoe.R$layout: int abs__search_view
 com.oakonell.ticstacktoe.R$layout: int abs__simple_dropdown_hint
 com.oakonell.ticstacktoe.R$layout: int ad_layout
+com.oakonell.ticstacktoe.R$layout: int alert
 com.oakonell.ticstacktoe.R$layout: int chat_dialog
 com.oakonell.ticstacktoe.R$layout: int chat_menu_badge
+com.oakonell.ticstacktoe.R$layout: int com_shamanland_facebook_like_activity_progress
 com.oakonell.ticstacktoe.R$layout: int complex_game_mode_help_dialog
 com.oakonell.ticstacktoe.R$layout: int copy_for_facebook_dlg
 com.oakonell.ticstacktoe.R$layout: int default_header
@@ -7093,6 +7169,7 @@ com.oakonell.ticstacktoe.R$menu: int match_game
 com.oakonell.ticstacktoe.R$menu: int menu
 com.oakonell.ticstacktoe.R$menu: int menu_game
 com.oakonell.ticstacktoe.R$menu: int network_game
+com.oakonell.ticstacktoe.R$menu: int pass_n_play_menu
 com.oakonell.ticstacktoe.R$plurals
 com.oakonell.ticstacktoe.R$plurals: int num_draws_with_label
 com.oakonell.ticstacktoe.R$plurals: int num_wins_with_label
@@ -7154,6 +7231,7 @@ com.oakonell.ticstacktoe.R$string: int achievement_finished_the_tutorial_label
 com.oakonell.ticstacktoe.R$string: int achievements
 com.oakonell.ticstacktoe.R$string: int achievements_not_available
 com.oakonell.ticstacktoe.R$string: int action_chat
+com.oakonell.ticstacktoe.R$string: int action_flip_black_header
 com.oakonell.ticstacktoe.R$string: int action_help
 com.oakonell.ticstacktoe.R$string: int action_refresh
 com.oakonell.ticstacktoe.R$string: int action_settings
@@ -7207,6 +7285,12 @@ com.oakonell.ticstacktoe.R$string: int choose_online_game_mode_title
 com.oakonell.ticstacktoe.R$string: int choose_online_opponent
 com.oakonell.ticstacktoe.R$string: int choose_quick_game_mode_title
 com.oakonell.ticstacktoe.R$string: int client_reconnect_required
+com.oakonell.ticstacktoe.R$string: int com_shamanland_facebook
+com.oakonell.ticstacktoe.R$string: int com_shamanland_facebook_like_activity_error
+com.oakonell.ticstacktoe.R$string: int com_shamanland_facebook_like_box_text_default
+com.oakonell.ticstacktoe.R$string: int com_shamanland_like
+com.oakonell.ticstacktoe.R$string: int com_shamanland_recommend
+com.oakonell.ticstacktoe.R$string: int com_shamanland_share
 com.oakonell.ticstacktoe.R$string: int common_google_play_services_enable_button
 com.oakonell.ticstacktoe.R$string: int common_google_play_services_enable_text
 com.oakonell.ticstacktoe.R$string: int common_google_play_services_enable_title
@@ -7479,6 +7563,7 @@ com.oakonell.ticstacktoe.R$style: int TextAppearance_Sherlock_Widget_PopupMenu
 com.oakonell.ticstacktoe.R$style: int TextAppearance_Sherlock_Widget_PopupMenu_Large
 com.oakonell.ticstacktoe.R$style: int TextAppearance_Sherlock_Widget_PopupMenu_Small
 com.oakonell.ticstacktoe.R$style: int TextAppearance_Sherlock_Widget_TextView_SpinnerItem
+com.oakonell.ticstacktoe.R$style: int Theme_Facebook_Like
 com.oakonell.ticstacktoe.R$style: int Theme_MyTheme
 com.oakonell.ticstacktoe.R$style: int Theme_Sherlock
 com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_Light
@@ -7487,6 +7572,9 @@ com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_Light_NoActionBar
 com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_NoActionBar
 com.oakonell.ticstacktoe.R$style: int Theme_SmoothProgressBarDefaults
 com.oakonell.ticstacktoe.R$style: int Widget
+com.oakonell.ticstacktoe.R$style: int Widget_FacebookLikeBox
+com.oakonell.ticstacktoe.R$style: int Widget_FacebookLikeButton
+com.oakonell.ticstacktoe.R$style: int Widget_FacebookLikeButtonBase
 com.oakonell.ticstacktoe.R$style: int Widget_MyTheme_ActionBar
 com.oakonell.ticstacktoe.R$style: int Widget_MyTheme_ActionButton
 com.oakonell.ticstacktoe.R$style: int Widget_MyTheme_CompoundButton_CheckBox
@@ -7557,6 +7645,33 @@ com.oakonell.ticstacktoe.R$styleable: int[] AdsAttrs
 com.oakonell.ticstacktoe.R$styleable: int AdsAttrs_adSize
 com.oakonell.ticstacktoe.R$styleable: int AdsAttrs_adSizes
 com.oakonell.ticstacktoe.R$styleable: int AdsAttrs_adUnitId
+com.oakonell.ticstacktoe.R$styleable: int[] FacebookLikeBox
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeBox_boxCornersRadius
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeBox_boxFillColor
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeBox_boxStrokeColor
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeBox_boxStrokeWidth
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeBox_calloutMarker
+com.oakonell.ticstacktoe.R$styleable: int[] FacebookLikeButton
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_appId
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_contentViewId
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optAction
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optLayout
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optPictureAttrs
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optShare
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optShowFaces
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optTextClose
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optTextOpen
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optTitleClose
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_optTitleOpen
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pagePicture
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pagePictureId
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pagePictureUrl
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pageText
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pageTitle
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikeButton_pageUrl
+com.oakonell.ticstacktoe.R$styleable: int[] FacebookLikePlugin
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikePlugin_boxId
+com.oakonell.ticstacktoe.R$styleable: int FacebookLikePlugin_likeId
 com.oakonell.ticstacktoe.R$styleable: int[] MapAttrs
 com.oakonell.ticstacktoe.R$styleable: int MapAttrs_cameraBearing
 com.oakonell.ticstacktoe.R$styleable: int MapAttrs_cameraTargetLat
@@ -8471,6 +8586,163 @@ com.oakonell.utils.preference.PrefsActivity: PrefsActivity()
 com.oakonell.utils.query.Communications$State: com.oakonell.utils.query.Communications$State[] values()
 com.oakonell.utils.query.Communications$State: com.oakonell.utils.query.Communications$State valueOf(java.lang.String)
 com.oakonell.views.HintedImageView: void setOnLongClickListener(android.view.View$OnLongClickListener)
+com.shamanland.facebook.likebutton.FacebookLikeActivity
+com.shamanland.facebook.likebutton.FacebookLikeActivity: FacebookLikeActivity()
+com.shamanland.facebook.likebutton.FacebookLikeActivity: void detachFromParent(android.view.View)
+com.shamanland.facebook.likebutton.FacebookLikeBox
+com.shamanland.facebook.likebutton.FacebookLikeBox: void setProcessor(com.shamanland.facebook.likebutton.FacebookLinkStatProcessor)
+com.shamanland.facebook.likebutton.FacebookLikeBox: void setPageUrl(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeBox: FacebookLikeBox(android.content.Context)
+com.shamanland.facebook.likebutton.FacebookLikeBox: FacebookLikeBox(android.content.Context,android.util.AttributeSet)
+com.shamanland.facebook.likebutton.FacebookLikeBox: FacebookLikeBox(android.content.Context,android.util.AttributeSet,int)
+com.shamanland.facebook.likebutton.FacebookLikeButton
+com.shamanland.facebook.likebutton.FacebookLikeButton: java.lang.String getPageUrl()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPageUrl(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeButton: java.lang.String getPageTitle()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPageTitle(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeButton: java.lang.String getPageText()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPageText(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeButton: android.graphics.Bitmap getPagePicture()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPagePicture(android.graphics.Bitmap)
+com.shamanland.facebook.likebutton.FacebookLikeButton: java.lang.String getPagePictureUrl()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPagePictureUrl(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeButton: int getPagePictureId()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setPagePictureId(int)
+com.shamanland.facebook.likebutton.FacebookLikeButton: java.lang.String getAppId()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setAppId(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeButton: int getContentViewId()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setContentViewId(int)
+com.shamanland.facebook.likebutton.FacebookLikeButton: com.shamanland.facebook.likebutton.FacebookLikeOptions getOptions()
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setOptions(com.shamanland.facebook.likebutton.FacebookLikeOptions)
+com.shamanland.facebook.likebutton.FacebookLikeButton: void setOnPageUrlChangeListener(com.shamanland.facebook.likebutton.FacebookLikeButton$OnPageUrlChangeListener)
+com.shamanland.facebook.likebutton.FacebookLikeButton: FacebookLikeButton(android.content.Context)
+com.shamanland.facebook.likebutton.FacebookLikeButton: FacebookLikeButton(android.content.Context,android.util.AttributeSet)
+com.shamanland.facebook.likebutton.FacebookLikeButton: FacebookLikeButton(android.content.Context,android.util.AttributeSet,int)
+com.shamanland.facebook.likebutton.FacebookLikeOptions
+com.shamanland.facebook.likebutton.FacebookLikeOptions: android.os.Parcelable$Creator CREATOR
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Action: com.shamanland.facebook.likebutton.FacebookLikeOptions$Action[] values()
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Action: com.shamanland.facebook.likebutton.FacebookLikeOptions$Action valueOf(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout: com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout[] values()
+com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout: com.shamanland.facebook.likebutton.FacebookLikeOptions$Layout valueOf(java.lang.String)
+com.shamanland.facebook.likebutton.FacebookLikePlugin
+com.shamanland.facebook.likebutton.FacebookLikePlugin: FacebookLikePlugin(android.content.Context)
+com.shamanland.facebook.likebutton.FacebookLikePlugin: FacebookLikePlugin(android.content.Context,android.util.AttributeSet)
+com.shamanland.facebook.likebutton.FacebookLikePlugin: FacebookLikePlugin(android.content.Context,android.util.AttributeSet,int)
+com.shamanland.facebook.likebutton.R$attr
+com.shamanland.facebook.likebutton.R$attr: int appId
+com.shamanland.facebook.likebutton.R$attr: int boxCornersRadius
+com.shamanland.facebook.likebutton.R$attr: int boxFillColor
+com.shamanland.facebook.likebutton.R$attr: int boxId
+com.shamanland.facebook.likebutton.R$attr: int boxStrokeColor
+com.shamanland.facebook.likebutton.R$attr: int boxStrokeWidth
+com.shamanland.facebook.likebutton.R$attr: int calloutMarker
+com.shamanland.facebook.likebutton.R$attr: int contentViewId
+com.shamanland.facebook.likebutton.R$attr: int likeId
+com.shamanland.facebook.likebutton.R$attr: int optAction
+com.shamanland.facebook.likebutton.R$attr: int optLayout
+com.shamanland.facebook.likebutton.R$attr: int optPictureAttrs
+com.shamanland.facebook.likebutton.R$attr: int optShare
+com.shamanland.facebook.likebutton.R$attr: int optShowFaces
+com.shamanland.facebook.likebutton.R$attr: int optTextClose
+com.shamanland.facebook.likebutton.R$attr: int optTextOpen
+com.shamanland.facebook.likebutton.R$attr: int optTitleClose
+com.shamanland.facebook.likebutton.R$attr: int optTitleOpen
+com.shamanland.facebook.likebutton.R$attr: int pagePicture
+com.shamanland.facebook.likebutton.R$attr: int pagePictureId
+com.shamanland.facebook.likebutton.R$attr: int pagePictureUrl
+com.shamanland.facebook.likebutton.R$attr: int pageText
+com.shamanland.facebook.likebutton.R$attr: int pageTitle
+com.shamanland.facebook.likebutton.R$attr: int pageUrl
+com.shamanland.facebook.likebutton.R$color
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_focused_end
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_focused_start
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_focused_stroke
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_normal_end
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_normal_start
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_pressed_end
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_pressed_start
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_button_blue_pressed_stroke
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_like_box_background_color
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_like_box_text_color
+com.shamanland.facebook.likebutton.R$color: int com_shamanland_facebook_like_text_color
+com.shamanland.facebook.likebutton.R$dimen
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_activity_progress_size
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_box_padding_bottom
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_box_padding_left
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_box_padding_right
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_box_padding_top
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_box_stroke_width
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_compound_drawable_padding
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_corners_radius
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_height
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_padding_bottom
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_padding_left
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_padding_right
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_padding_top
+com.shamanland.facebook.likebutton.R$dimen: int com_shamanland_facebook_like_text_size
+com.shamanland.facebook.likebutton.R$drawable
+com.shamanland.facebook.likebutton.R$drawable: int com_shamanland_facebook_button_blue
+com.shamanland.facebook.likebutton.R$drawable: int com_shamanland_facebook_inverse_icon
+com.shamanland.facebook.likebutton.R$id
+com.shamanland.facebook.likebutton.R$id: int all
+com.shamanland.facebook.likebutton.R$id: int bottom
+com.shamanland.facebook.likebutton.R$id: int box_count
+com.shamanland.facebook.likebutton.R$id: int button
+com.shamanland.facebook.likebutton.R$id: int button_count
+com.shamanland.facebook.likebutton.R$id: int com_shamanland_facebook_like
+com.shamanland.facebook.likebutton.R$id: int com_shamanland_facebook_like_box
+com.shamanland.facebook.likebutton.R$id: int com_shamanland_facebook_like_container
+com.shamanland.facebook.likebutton.R$id: int com_shamanland_facebook_like_recommend
+com.shamanland.facebook.likebutton.R$id: int com_shamanland_facebook_like_share
+com.shamanland.facebook.likebutton.R$id: int left
+com.shamanland.facebook.likebutton.R$id: int like
+com.shamanland.facebook.likebutton.R$id: int none
+com.shamanland.facebook.likebutton.R$id: int recommend
+com.shamanland.facebook.likebutton.R$id: int right
+com.shamanland.facebook.likebutton.R$id: int standard
+com.shamanland.facebook.likebutton.R$id: int top
+com.shamanland.facebook.likebutton.R$layout
+com.shamanland.facebook.likebutton.R$layout: int com_shamanland_facebook_like_activity_progress
+com.shamanland.facebook.likebutton.R$string
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_facebook
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_facebook_like_activity_error
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_facebook_like_box_text_default
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_like
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_recommend
+com.shamanland.facebook.likebutton.R$string: int com_shamanland_share
+com.shamanland.facebook.likebutton.R$style
+com.shamanland.facebook.likebutton.R$style: int Theme_Facebook_Like
+com.shamanland.facebook.likebutton.R$style: int Widget_FacebookLikeBox
+com.shamanland.facebook.likebutton.R$style: int Widget_FacebookLikeButton
+com.shamanland.facebook.likebutton.R$style: int Widget_FacebookLikeButtonBase
+com.shamanland.facebook.likebutton.R$styleable
+com.shamanland.facebook.likebutton.R$styleable: int[] FacebookLikeBox
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeBox_boxCornersRadius
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeBox_boxFillColor
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeBox_boxStrokeColor
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeBox_boxStrokeWidth
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeBox_calloutMarker
+com.shamanland.facebook.likebutton.R$styleable: int[] FacebookLikeButton
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_appId
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_contentViewId
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optAction
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optLayout
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optPictureAttrs
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optShare
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optShowFaces
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optTextClose
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optTextOpen
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optTitleClose
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_optTitleOpen
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pagePicture
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pagePictureId
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pagePictureUrl
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pageText
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pageTitle
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikeButton_pageUrl
+com.shamanland.facebook.likebutton.R$styleable: int[] FacebookLikePlugin
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikePlugin_boxId
+com.shamanland.facebook.likebutton.R$styleable: int FacebookLikePlugin_likeId
 fr.castorflex.android.smoothprogressbar.R$attr
 fr.castorflex.android.smoothprogressbar.R$attr: int spbStyle
 fr.castorflex.android.smoothprogressbar.R$attr: int spb_color
