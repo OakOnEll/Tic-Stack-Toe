@@ -1,3 +1,8 @@
+1.6
+====
+Fix a bug on ranks update
+Show invalid move in a dialog
+
 1.5
 ====
 Fix some bugs
