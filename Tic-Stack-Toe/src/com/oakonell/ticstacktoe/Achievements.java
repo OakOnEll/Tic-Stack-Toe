@@ -8,22 +8,291 @@ import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.achievement.Achievements.UpdateAchievementResult;
+import com.oakonell.ticstacktoe.model.AbstractMove;
+import com.oakonell.ticstacktoe.model.Board;
+import com.oakonell.ticstacktoe.model.Board.PieceStack;
 import com.oakonell.ticstacktoe.model.Game;
 import com.oakonell.ticstacktoe.model.GameMode;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.State;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
+import com.oakonell.ticstacktoe.model.solver.AIMoveHelper;
+import com.oakonell.ticstacktoe.model.solver.RandomAI;
 import com.oakonell.ticstacktoe.ui.local.AiGameStrategy;
 import com.oakonell.ticstacktoe.ui.network.AbstractNetworkedGameStrategy;
 
 public class Achievements {
-	private final String TAG = Achievements.class.getName();
+	private static final String TAG = Achievements.class.getName();
 
 	private List<Achievement> endGameAchievements = new ArrayList<Achievements.Achievement>();
 	private List<Achievement> beatAiAchievements = new ArrayList<Achievements.Achievement>();
 	private List<Achievement> beatFriendAchievements = new ArrayList<Achievements.Achievement>();
 	private List<Achievement> inGameAchievements = new ArrayList<Achievements.Achievement>();
+
+	private static class PlayedNumGames extends IncrementalAchievement {
+		PlayedNumGames(int achievementId, int label_id, String name) {
+			super(achievementId, label_id, name);
+		}
+
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			// count any game types as a play
+			increment(gameHelper);
+		}
+	}
+
+	private static class ThanksAchievement extends BooleanAchievement {
+		ThanksAchievement() {
+			super(R.string.achievement_thanks,
+					R.string.achievement_thanks_label, "Thanks!");
+		}
+
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			// This does not apply to pass 'n play, because you could "cheat" to
+			// get it
+			if (game.getMode() == GameMode.PASS_N_PLAY) {
+				return;
+			}
+			// don't count AI matches against the random AI! 
+			if (game.getMode() == GameMode.AI
+					&& (game.getWhitePlayer().getStrategy() instanceof RandomAI)) {
+				return;
+			}
+
+			// If the human/current player won, it w
+			if (!outcome.getWinner().getStrategy().isHuman()) {
+				return;
+			}
+
+			// If the winner was not the last player to move... it was an
+			// uncovered win
+			if (outcome.getWinner().isBlack() != outcome.getLastMove()
+					.getPlayer().isBlack()) {
+				unlock(gameHelper);
+			}
+		}
+	}
+
+	private static class TheGiftAchievement extends BooleanAchievement {
+		TheGiftAchievement() {
+			super(R.string.achievement_the_gift,
+					R.string.achievement_the_gift_label, "The Gift");
+		}
+
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			// This does not apply to pass 'n play, because you could "cheat" to
+			// get it
+			if (game.getMode() == GameMode.PASS_N_PLAY) {
+				return;
+			}
+			// don't count AI matches against the random AI! 
+			if (game.getMode() == GameMode.AI
+					&& (game.getWhitePlayer().getStrategy() instanceof RandomAI)) {
+				return;
+			}
+
+			if (outcome.getWinner().getStrategy().isHuman()) {
+				return;
+			}
+			// If the winner was not the last player to move... it was an
+			// uncovered win
+			if (outcome.getWinner().isBlack() != outcome.getLastMove()
+					.getPlayer().isBlack()) {
+				unlock(gameHelper);
+			}
+		}
+	}
+
+	private static class TwoBirdsAchievement extends BooleanAchievement {
+		TwoBirdsAchievement() {
+			super(R.string.achievement_two_birds_with_one_stone,
+					R.string.achievement_two_birds_with_one_stone_label,
+					"Two Birds with One Stone");
+		}
+
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			// This does not apply to pass 'n play, because you could "cheat" to
+			// get it
+			if (game.getMode() == GameMode.PASS_N_PLAY) {
+				return;
+			}
+			// don't count AI matches against the random AI!
+			if (game.getMode() == GameMode.AI
+					&& (game.getWhitePlayer().getStrategy() instanceof RandomAI)) {
+				return;
+			}
+
+			if (!outcome.getWinner().getStrategy().isHuman()) {
+				return;
+			}
+
+			if (outcome.getWins().size() > 1) {
+				unlock(gameHelper);
+			}
+		}
+
+	}
+
+	// TODO how to determine if a fork is present?
+	// private static class ForkedAchievement extends BooleanAchievement {
+	// protected ForkedAchievement() {
+	// super(R.string.achievement_forked_win,
+	// R.string.achievement_forked_win_label, "Forked Win");
+	// }
+	//
+	// public void testAndSet(GameContext gameHelper, Game game, State outcome)
+	// {
+	// // TODO
+	// Log.i("Achievements", "entering forked win test");
+	//
+	// // This does not apply to pass 'n play, because you could "cheat" to
+	// // get it
+	// if (game.getMode() == GameMode.PASS_N_PLAY) {
+	// return;
+	// }
+	// // don't count AI matches against the random AI!
+	// if (game.getMode() == GameMode.AI
+	// && (game.getWhitePlayer().getStrategy() instanceof RandomAI)) {
+	// return;
+	// }
+	//
+	// // Since we got here, the game is not over.
+	// // If we undo the last move and find a winning move for that player
+	// // then they missed a win, and get this achievement
+	// AbstractMove lastMove = outcome.getLastMove();
+	// if (lastMove == null)
+	// return;
+	// Player player = lastMove.getPlayer();
+	// if (!player.getStrategy().isHuman()) {
+	// return;
+	// }
+	//
+	// // create a copy of the game board and pieces
+	// GameType type = game.getType();
+	// Board copy = game.getBoard().copy();
+	// List<PieceStack> blackPlayerPieces = new ArrayList<Board.PieceStack>();
+	// List<PieceStack> whitePlayerPieces = new ArrayList<Board.PieceStack>();
+	// for (PieceStack each : game.getBlackPlayerPieces()) {
+	// blackPlayerPieces.add(each.copy());
+	// }
+	// for (PieceStack each : game.getWhitePlayerPieces()) {
+	// whitePlayerPieces.add(each.copy());
+	// }
+	//
+	// boolean shouldUnlock = false;
+	//
+	//
+	//
+	// // // undo from the copy
+	// // lastMove.undo(copy, outcome, blackPlayerPieces,
+	// // whitePlayerPieces);
+	// //
+	// // // get the player that made the move
+	// // List<AbstractMove> validMoves = AIMoveHelper.getValidMoves(type,
+	// // blackPlayerPieces, whitePlayerPieces, copy, player);
+	// // // Attempt all the valid moves- if it results in a win for him,
+	// // then
+	// // // the player missed a winning move
+	// // for (AbstractMove each : validMoves) {
+	// // State result = each.applyTo(type, copy, blackPlayerPieces,
+	// // whitePlayerPieces);
+	// // try {
+	// // if (result.isOver() && result.getWinner().equals(player)) {
+	// // shouldUnlock = true;
+	// // break;
+	// // }
+	// // } finally {
+	// // each.undo(copy, outcome, blackPlayerPieces,
+	// // whitePlayerPieces);
+	// // }
+	// // }
+	// if (shouldUnlock) {
+	// unlock(gameHelper);
+	// }
+	// }
+	// }
+
+	private static class MissedOpportunityAchievement extends
+			BooleanAchievement {
+
+		MissedOpportunityAchievement() {
+			super(R.string.achievement_missed_opportunity,
+					R.string.achievement_missed_opportunity_label,
+					"Missed Opportunity");
+		}
+
+		@Override
+		public void testAndSet(GameContext gameHelper, Game game, State outcome) {
+			// This does not apply to pass 'n play, because you could "cheat" to
+			// get it
+			if (game.getMode() == GameMode.PASS_N_PLAY) {
+				return;
+			}
+			// don't count AI matches against the random AI!
+			if (game.getMode() == GameMode.AI
+					&& (game.getWhitePlayer().getStrategy() instanceof RandomAI)) {
+				return;
+			}
+
+			// Since we got here, the game is not over.
+			// If we undo the last move and find a winning move for that player
+			// then they missed a win, and get this achievement
+			AbstractMove lastMove = outcome.getLastMove();
+			if (lastMove == null)
+				return;
+			Player player = lastMove.getPlayer();
+			if (!player.getStrategy().isHuman()) {
+				return;
+			}
+
+			// create a copy of the game board and pieces
+			GameType type = game.getType();
+			Board copy = game.getBoard().copy();
+			List<PieceStack> blackPlayerPieces = new ArrayList<Board.PieceStack>();
+			List<PieceStack> whitePlayerPieces = new ArrayList<Board.PieceStack>();
+			for (PieceStack each : game.getBlackPlayerPieces()) {
+				blackPlayerPieces.add(each.copy());
+			}
+			for (PieceStack each : game.getWhitePlayerPieces()) {
+				whitePlayerPieces.add(each.copy());
+			}
+			// undo from the copy
+			lastMove.undo(copy, outcome, blackPlayerPieces, whitePlayerPieces);
+
+			// get the player that made the move
+			boolean shouldUnlock = false;
+			List<AbstractMove> validMoves = AIMoveHelper.getValidMoves(type,
+					blackPlayerPieces, whitePlayerPieces, copy, player);
+			// Attempt all the valid moves- if it results in a win for him, then
+			// the player missed a winning move
+			for (AbstractMove each : validMoves) {
+				State result = each.applyTo(type, copy, blackPlayerPieces,
+						whitePlayerPieces);
+				try {
+					if (result.isOver() && result.getWinner().equals(player)) {
+						shouldUnlock = true;
+						break;
+					}
+				} finally {
+					each.undo(copy, outcome, blackPlayerPieces,
+							whitePlayerPieces);
+				}
+			}
+			if (shouldUnlock) {
+				unlock(gameHelper);
+			}
+		}
+
+	}
 
 	private static abstract class BeatAiAchievement extends BooleanAchievement {
 		private AILevel level;
@@ -225,6 +494,20 @@ public class Achievements {
 		beatFriendAchievements.add(beatFriendJunior);
 		beatFriendAchievements.add(beatFriendNormal);
 		beatFriendAchievements.add(beatFriendStrict);
+
+		endGameAchievements.add(new TwoBirdsAchievement());
+		endGameAchievements.add(new PlayedNumGames(
+				R.string.achievement_play_ten_matches,
+				R.string.achievement_play_ten_matches_label,
+				"Getting your feet wet"));
+		endGameAchievements.add(new PlayedNumGames(
+				R.string.achievement_play_100_matches,
+				R.string.achievement_play_100_matches_label, "Dedicated"));
+		endGameAchievements.add(new ThanksAchievement());
+		endGameAchievements.add(new TheGiftAchievement());
+
+		// inGameAchievements.add(new ForkedAchievement());
+		inGameAchievements.add(new MissedOpportunityAchievement());
 	}
 
 	private interface Achievement {
@@ -267,12 +550,32 @@ public class Achievements {
 			}
 		}
 
-		public void unlock(GameContext helper) {
+		public void unlock(final GameContext helper) {
 			boolean isSignedIn = helper.getGameHelper().isSignedIn();
 			if (isSignedIn) {
-				Games.Achievements.unlock(
-						helper.getGameHelper().getApiClient(), helper
-								.getContext().getString(achievementId));
+				PendingResult<UpdateAchievementResult> result = Games.Achievements
+						.unlockImmediate(helper.getGameHelper().getApiClient(),
+								helper.getContext().getString(achievementId));
+				result.setResultCallback(new ResultCallback<UpdateAchievementResult>() {
+					@Override
+					public void onResult(
+							UpdateAchievementResult achievementResult) {
+						if (!achievementResult.getStatus().isSuccess())
+							return;
+						if (achievementResult.getStatus().getStatusCode() == GamesStatusCodes.STATUS_ACHIEVEMENT_UNLOCKED) {
+							Tracker myTracker = EasyTracker.getTracker();
+							Log.i(TAG, "Unlocked achievement " + getName());
+							myTracker.sendEvent(
+									helper.getContext().getString(
+											R.string.an_achievement_unlocked),
+									getName(), "", 0L);
+
+						}
+					}
+				});
+				// Games.Achievements.unlock(
+				// helper.getGameHelper().getApiClient(), helper
+				// .getContext().getString(achievementId));
 			}
 			if (!helper.getGameHelper().isSignedIn() || BuildConfig.DEBUG) {
 				if (!value || BuildConfig.DEBUG) {
@@ -292,10 +595,12 @@ public class Achievements {
 	private static abstract class IncrementalAchievement implements Achievement {
 		private int count = 0;
 		private final int achievementId;
+		private final int stringId;
 		private final String name;
 
-		IncrementalAchievement(int achievementId, String name) {
+		IncrementalAchievement(int achievementId, int stringId, String name) {
 			this.achievementId = achievementId;
+			this.stringId = stringId;
 			this.name = name;
 		}
 

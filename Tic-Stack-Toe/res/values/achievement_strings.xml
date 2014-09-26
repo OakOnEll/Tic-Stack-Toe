@@ -15,5 +15,12 @@
     <string name="achievement_beat_a_friend_at_junior_label">Beat a friend at Junior Tic-Stack-Toe</string>
     <string name="achievement_beat_a_friend_at_normal_label">Beat a friend at Normal Tic-Stack-Toe</string>
     <string name="achievement_beat_a_friend_at_strict_label">Beat a friend at Strict Tic-Stack-Toe</string>
+    <string name="achievement_missed_opportunity_label">Missed Opportunity</string>
+    <string name="achievement_forked_win_label">Forked</string>
+    <string name="achievement_two_birds_with_one_stone_label">Two Birds with One Stone</string>
+    <string name="achievement_play_ten_matches_label">Getting your feet wet</string>
+    <string name="achievement_play_100_matches_label">Dedicated</string>
+    <string name="achievement_the_gift_label">The Gift</string>
+    <string name="achievement_thanks_label">Thanks!</string>
 
 </resources>

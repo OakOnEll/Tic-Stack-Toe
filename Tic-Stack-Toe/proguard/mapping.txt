@@ -14799,6 +14799,8 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int wooden_button -> wooden_button
     int wooden_check -> wooden_check
 com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
+    int LinearLayout1 -> LinearLayout1
+    int RelativeLayout1 -> RelativeLayout1
     int about_description -> about_description
     int abs__action_bar -> abs__action_bar
     int abs__action_bar_container -> abs__action_bar_container
@@ -15230,6 +15232,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int ai_level -> ai_level
     int ai_medium -> ai_medium
     int ai_random -> ai_random
+    int an_conlficted_rank_save -> an_conlficted_rank_save
     int an_start_ai_game_action -> an_start_ai_game_action
     int an_start_game_cat -> an_start_game_cat
     int an_start_online_game_action -> an_start_online_game_action
@@ -15328,10 +15331,9 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int gamehelper_unknown_error -> gamehelper_unknown_error
     int httpError -> httpError
     int internal_error -> internal_error
-    int invalid_move_need_empty -> invalid_move_need_empty
-    int invalid_move_need_nonempty -> invalid_move_need_nonempty
     int invalid_move_source_is_empty -> invalid_move_source_is_empty
     int invalid_move_space_has_bigger_piece -> invalid_move_space_has_bigger_piece
+    int invalid_move_title -> invalid_move_title
     int invalid_stack_move_in_strict -> invalid_stack_move_in_strict
     int invite_removed -> invite_removed
     int invited_to_realtime_match -> invited_to_realtime_match
@@ -16666,10 +16668,14 @@ com.oakonell.ticstacktoe.ui.WoodenAlertDialog -> com.oakonell.ticstacktoe.ui.e:
     java.lang.String message -> d
     android.content.DialogInterface$OnClickListener onClickListener -> a
     android.content.DialogInterface$OnCancelListener onCancelListener -> b
-    void initialize(java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener) -> a
+    boolean shouldRotate -> e
+    void initialize(java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener,boolean) -> a
     android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
+    void rotateView(android.view.View) -> a
+    boolean canRotate() -> a
     void setTitle(android.view.View,java.lang.String) -> a
     com.oakonell.ticstacktoe.ui.WoodenAlertDialog show(android.support.v4.app.Fragment,java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener) -> a
+    com.oakonell.ticstacktoe.ui.WoodenAlertDialog show(android.support.v4.app.Fragment,java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener,boolean) -> a
 com.oakonell.ticstacktoe.ui.WoodenAlertDialog$1 -> com.oakonell.ticstacktoe.ui.f:
     com.oakonell.ticstacktoe.ui.WoodenAlertDialog this$0 -> a
     void onClick(android.view.View) -> onClick
@@ -16783,6 +16789,7 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     com.oakonell.ticstacktoe.model.ScoreCard getScore() -> j
     void leaveGame() -> k
     void disableDragging(boolean) -> b
+    void showInvalidMoveMessage(int) -> a
     com.oakonell.ticstacktoe.GameStrategy access$0(com.oakonell.ticstacktoe.ui.game.GameFragment) -> a
     android.widget.TextView access$1(com.oakonell.ticstacktoe.ui.game.GameFragment) -> b
     void access$2(com.oakonell.ticstacktoe.ui.game.GameFragment,android.view.View) -> a
@@ -16805,10 +16812,11 @@ com.oakonell.ticstacktoe.ui.game.GameFragment -> com.oakonell.ticstacktoe.ui.gam
     void access$19(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView) -> a
     void access$20(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.ui.game.BoardPieceStackImageView) -> b
     com.oakonell.utils.activity.dragndrop.ImageDropTarget access$21(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Cell) -> a
-    void access$22(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Player,int) -> a
-    void access$23(com.oakonell.ticstacktoe.ui.game.GameFragment) -> k
-    void access$24(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State,boolean) -> b
-    void access$25(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State) -> a
+    void access$22(com.oakonell.ticstacktoe.ui.game.GameFragment,int) -> a
+    void access$23(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.Player,int) -> a
+    void access$24(com.oakonell.ticstacktoe.ui.game.GameFragment) -> k
+    void access$25(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State,boolean) -> b
+    void access$26(com.oakonell.ticstacktoe.ui.game.GameFragment,com.oakonell.ticstacktoe.model.State) -> a
 com.oakonell.ticstacktoe.ui.game.GameFragment$1 -> com.oakonell.ticstacktoe.ui.game.d:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     java.lang.String val$waitingText -> c
@@ -16907,27 +16915,33 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$17 -> com.oakonell.ticstacktoe.ui.
     com.oakonell.ticstacktoe.model.State val$outcome -> b
     boolean val$playSound -> c
     void run() -> run
-com.oakonell.ticstacktoe.ui.game.GameFragment$2 -> com.oakonell.ticstacktoe.ui.game.s:
+com.oakonell.ticstacktoe.ui.game.GameFragment$18 -> com.oakonell.ticstacktoe.ui.game.s:
+    com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.oakonell.ticstacktoe.ui.game.GameFragment$19 -> com.oakonell.ticstacktoe.ui.game.t:
+    com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
+    void onCancel(android.content.DialogInterface) -> onCancel
+com.oakonell.ticstacktoe.ui.game.GameFragment$2 -> com.oakonell.ticstacktoe.ui.game.u:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onBackStackChanged() -> onBackStackChanged
-com.oakonell.ticstacktoe.ui.game.GameFragment$3 -> com.oakonell.ticstacktoe.ui.game.t:
+com.oakonell.ticstacktoe.ui.game.GameFragment$3 -> com.oakonell.ticstacktoe.ui.game.v:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$4 -> com.oakonell.ticstacktoe.ui.game.u:
+com.oakonell.ticstacktoe.ui.game.GameFragment$4 -> com.oakonell.ticstacktoe.ui.game.w:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$4$1 -> com.oakonell.ticstacktoe.ui.game.v:
+com.oakonell.ticstacktoe.ui.game.GameFragment$4$1 -> com.oakonell.ticstacktoe.ui.game.x:
     com.oakonell.ticstacktoe.ui.game.GameFragment$4 this$1 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.oakonell.ticstacktoe.ui.game.GameFragment$5 -> com.oakonell.ticstacktoe.ui.game.w:
+com.oakonell.ticstacktoe.ui.game.GameFragment$5 -> com.oakonell.ticstacktoe.ui.game.y:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.view.View val$view -> b
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.game.PieceStackImageView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$6 -> com.oakonell.ticstacktoe.ui.game.x:
+com.oakonell.ticstacktoe.ui.game.GameFragment$6 -> com.oakonell.ticstacktoe.ui.game.z:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.view.View val$view -> b
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.game.y:
+com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.game.aa:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView val$stackView -> c
@@ -16937,11 +16951,11 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$7 -> com.oakonell.ticstacktoe.ui.g
     void update() -> b
     void access$0(com.oakonell.ticstacktoe.ui.game.GameFragment$7) -> a
     com.oakonell.ticstacktoe.ui.game.GameFragment access$1(com.oakonell.ticstacktoe.ui.game.GameFragment$7) -> b
-com.oakonell.ticstacktoe.ui.game.GameFragment$7$1 -> com.oakonell.ticstacktoe.ui.game.z:
+com.oakonell.ticstacktoe.ui.game.GameFragment$7$1 -> com.oakonell.ticstacktoe.ui.game.ab:
     com.oakonell.ticstacktoe.ui.game.GameFragment$7 this$1 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     void run() -> run
-com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.game.aa:
+com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.game.ac:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.utils.activity.dragndrop.DragSource val$dragSource -> c
@@ -16949,7 +16963,7 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$8 -> com.oakonell.ticstacktoe.ui.g
     int val$stackNum -> e
     boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
     com.oakonell.ticstacktoe.ui.game.GameFragment access$0(com.oakonell.ticstacktoe.ui.game.GameFragment$8) -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui.game.ab:
+com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui.game.ad:
     com.oakonell.ticstacktoe.ui.game.GameFragment$8 this$1 -> a
     com.oakonell.ticstacktoe.model.Board$PieceStack val$pieceStack -> b
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView val$stackView -> c
@@ -16960,27 +16974,27 @@ com.oakonell.ticstacktoe.ui.game.GameFragment$8$1 -> com.oakonell.ticstacktoe.ui
     int getMovedImageResourceId() -> b
     android.widget.ImageView getSourceView() -> c
     void update() -> d
-com.oakonell.ticstacktoe.ui.game.GameFragment$9 -> com.oakonell.ticstacktoe.ui.game.ac:
+com.oakonell.ticstacktoe.ui.game.GameFragment$9 -> com.oakonell.ticstacktoe.ui.game.ae:
     com.oakonell.ticstacktoe.ui.game.GameFragment this$0 -> a
     android.widget.ImageView val$movingView -> b
     java.lang.Runnable val$runnable -> c
     void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
     void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
     void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
-com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView -> com.oakonell.ticstacktoe.ui.game.ad:
+com.oakonell.ticstacktoe.ui.game.GameFragment$OnCreateRunnableWithView -> com.oakonell.ticstacktoe.ui.game.af:
     android.view.View view -> b
-com.oakonell.ticstacktoe.ui.game.GameFragment$OnDropMove -> com.oakonell.ticstacktoe.ui.game.ae:
+com.oakonell.ticstacktoe.ui.game.GameFragment$OnDropMove -> com.oakonell.ticstacktoe.ui.game.ag:
     com.oakonell.ticstacktoe.model.AbstractMove createMove(com.oakonell.ticstacktoe.model.Cell) -> a
     void update() -> d
     android.widget.ImageView getSourceView() -> c
     int getMovedImageResourceId() -> b
     boolean originatedFrom(com.oakonell.ticstacktoe.model.Cell) -> b
     void postMove() -> a
-com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo -> com.oakonell.ticstacktoe.ui.game.af:
+com.oakonell.ticstacktoe.ui.game.GameFragment$SquareBoardResizeInfo -> com.oakonell.ticstacktoe.ui.game.ah:
     int boardHeight -> a
     int boardSize -> b
     int pieceStackHeight -> c
-com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstacktoe.ui.game.ag:
+com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstacktoe.ui.game.ai:
     com.oakonell.ticstacktoe.ui.game.GameFragment parent -> a
     com.oakonell.ticstacktoe.model.ScoreCard score -> b
     com.oakonell.ticstacktoe.model.Game game -> c
@@ -16990,23 +17004,23 @@ com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment -> com.oakonell.ticstack
     android.app.Dialog onCreateDialog(android.os.Bundle) -> onCreateDialog
     void onCancel(android.content.DialogInterface) -> onCancel
     com.oakonell.ticstacktoe.ui.game.GameFragment access$0(com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment) -> a
-com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment$1 -> com.oakonell.ticstacktoe.ui.game.ah:
+com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment$1 -> com.oakonell.ticstacktoe.ui.game.aj:
     com.oakonell.ticstacktoe.ui.game.GameStatDialogFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.game.HumanStrategy -> com.oakonell.ticstacktoe.ui.game.ai:
+com.oakonell.ticstacktoe.ui.game.HumanStrategy -> com.oakonell.ticstacktoe.ui.game.ak:
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean) -> a
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean,android.net.Uri) -> a
     android.net.Uri getImage(boolean) -> a
     boolean isHuman() -> a
-com.oakonell.ticstacktoe.ui.game.OnlineStrategy -> com.oakonell.ticstacktoe.ui.game.aj:
+com.oakonell.ticstacktoe.ui.game.OnlineStrategy -> com.oakonell.ticstacktoe.ui.game.al:
     com.oakonell.ticstacktoe.model.Player createPlayer(java.lang.String,boolean,android.net.Uri) -> a
 com.oakonell.ticstacktoe.ui.game.PieceStackImageView -> com.oakonell.ticstacktoe.ui.game.PieceStackImageView:
     com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent listener -> a
     void onMeasure(int,int) -> onMeasure
     void setOnMeasureDependent(com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent) -> setOnMeasureDependent
-com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.game.ak:
+com.oakonell.ticstacktoe.ui.game.PieceStackImageView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.game.am:
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.game.PieceStackImageView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.game.al:
+com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.game.an:
     boolean isRanked -> a
     java.lang.String whiteName -> b
     java.lang.String blackName -> c
@@ -17023,7 +17037,7 @@ com.oakonell.ticstacktoe.ui.game.RankedPlayAgain -> com.oakonell.ticstacktoe.ui.
     int getMainLayoutResId() -> b
     void onCreateRankView(android.view.View) -> a
     void updateRanks(short,short,short,short) -> a
-com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.game.am:
+com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.game.ao:
     android.media.SoundPool mSoundPool -> a
     java.util.Map mSoundPoolMap -> b
     android.media.AudioManager mAudioManager -> c
@@ -17035,7 +17049,7 @@ com.oakonell.ticstacktoe.ui.game.SoundManager -> com.oakonell.ticstacktoe.ui.gam
     int playSound(java.lang.Object,boolean) -> a
     void release() -> a
     void access$0(com.oakonell.ticstacktoe.ui.game.SoundManager,boolean) -> a
-com.oakonell.ticstacktoe.ui.game.SoundManager$1 -> com.oakonell.ticstacktoe.ui.game.an:
+com.oakonell.ticstacktoe.ui.game.SoundManager$1 -> com.oakonell.ticstacktoe.ui.game.ap:
     com.oakonell.ticstacktoe.ui.game.SoundManager this$0 -> a
     java.lang.String val$soundFxPrefKey -> b
     void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
@@ -17051,7 +17065,7 @@ com.oakonell.ticstacktoe.ui.game.WinOverlayView -> com.oakonell.ticstacktoe.ui.g
     void onDraw(android.graphics.Canvas) -> onDraw
     void setBoardSize(int) -> setBoardSize
     int[] $SWITCH_TABLE$com$oakonell$ticstacktoe$ui$game$WinOverlayView$WinStyle() -> b
-com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle -> com.oakonell.ticstacktoe.ui.game.ao:
+com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle -> com.oakonell.ticstacktoe.ui.game.aq:
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW1 -> a
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW2 -> b
     com.oakonell.ticstacktoe.ui.game.WinOverlayView$WinStyle ROW3 -> c
@@ -17114,6 +17128,7 @@ com.oakonell.ticstacktoe.ui.local.AiGameStrategy -> com.oakonell.ticstacktoe.ui.
     com.oakonell.ticstacktoe.model.solver.AILevel aiDepth -> b
     boolean isRanked -> a
     com.oakonell.ticstacktoe.model.RankInfo rankInfo -> c
+    boolean ranksUpdated -> d
     com.oakonell.ticstacktoe.ui.local.AiMatchInfo createNewMatchInfo(java.lang.String,java.lang.String,com.oakonell.ticstacktoe.model.Game,com.oakonell.ticstacktoe.model.ScoreCard) -> b
     int getAnalyticGameActionResId() -> u
     com.oakonell.ticstacktoe.model.solver.AILevel getAILevel() -> I

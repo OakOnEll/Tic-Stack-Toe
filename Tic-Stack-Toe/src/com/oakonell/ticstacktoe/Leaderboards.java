@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
@@ -71,6 +73,8 @@ public class Leaderboards {
 	private void submitRank(final GameContext gameHelper, String id,
 			final short rank, final int all_time_res, final int weekly_res,
 			final int daily_res) {
+		final Tracker myTracker = EasyTracker.getTracker();
+
 		Games.Leaderboards.submitScoreImmediate(
 				gameHelper.getGameHelper().getApiClient(), id, rank)
 				.setResultCallback(new ResultCallback<SubmitScoreResult>() {
@@ -82,6 +86,10 @@ public class Leaderboards {
 										LeaderboardVariant.TIME_SPAN_ALL_TIME);
 						Context context = gameHelper.getContext();
 						if (allTimeResult != null && allTimeResult.newBest) {
+							myTracker.sendEvent(
+									gameHelper.getContext().getString(
+											R.string.an_leaderboard_beat),
+									"all_time_best", allTimeResult.formattedScore, 0L);
 							Toast.makeText(
 									context,
 									context.getResources().getString(
@@ -95,6 +103,10 @@ public class Leaderboards {
 								.getScoreResult(
 										LeaderboardVariant.TIME_SPAN_WEEKLY);
 						if (weeklyResult != null && weeklyResult.newBest) {
+							myTracker.sendEvent(
+									gameHelper.getContext().getString(
+											R.string.an_leaderboard_beat),
+									"weekly_best", weeklyResult.formattedScore, 0L);
 							Toast.makeText(
 									context,
 									context.getResources().getString(
@@ -108,10 +120,14 @@ public class Leaderboards {
 								.getScoreResult(
 										LeaderboardVariant.TIME_SPAN_DAILY);
 						if (dailyResult != null && dailyResult.newBest) {
+							myTracker.sendEvent(
+									gameHelper.getContext().getString(
+											R.string.an_leaderboard_beat),
+									"daily_best", dailyResult.formattedScore, 0L);
 							Toast.makeText(
 									context,
 									context.getResources().getString(daily_res,
-											allTimeResult.formattedScore),
+											dailyResult.formattedScore),
 									Toast.LENGTH_SHORT).show();
 						}
 					}

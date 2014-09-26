@@ -24,4 +24,7 @@
     <string name="an_start_ranked_online_turn_game_action">ranked_turn_game</string>
     
     <string name="an_conlficted_rank_save">rank_conflict</string>
+    <string name="an_achievement_unlocked">achievement_unlocked</string>
+    <string name="an_leaderboard_beat">leaderboard_beat</string>
+    
 </resources>

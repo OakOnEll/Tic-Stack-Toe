@@ -3315,7 +3315,7 @@ com.oakonell.ticstacktoe.rank.AIRankHelper:
     private static final java.lang.String UPDATE_URL_STRING
 com.oakonell.ticstacktoe.rank.RankHelper:
     private static final int RANK_APP_STATE_KEY
-    46:55:public static void deleteRankStorage(com.google.android.gms.common.api.GoogleApiClient,com.oakonell.ticstacktoe.rank.RankHelper$OnRankDeleted)
+    49:58:public static void deleteRankStorage(com.google.android.gms.common.api.GoogleApiClient,com.oakonell.ticstacktoe.rank.RankHelper$OnRankDeleted)
 com.oakonell.ticstacktoe.rank.RankHelper$1
 com.oakonell.ticstacktoe.rank.RankHelper$OnRankDeleted
 com.oakonell.ticstacktoe.settings.DevelopPrefConfigurer
@@ -3333,9 +3333,9 @@ com.oakonell.ticstacktoe.ui.ImageHelper:
 com.oakonell.ticstacktoe.ui.game.AbstractGameFragment:
     protected abstract void showGameStats()
 com.oakonell.ticstacktoe.ui.game.GameFragment$10:
-    1149:1149:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
+    1151:1151:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
 com.oakonell.ticstacktoe.ui.game.GameFragment$7:
-    844:844:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
+    846:846:public void setDragController(com.oakonell.utils.activity.dragndrop.DragController)
 com.oakonell.ticstacktoe.ui.game.SoundManager:
     private static final int NUM_CONCURRENT_STREAMS
     83:87:public void stopSound(int)

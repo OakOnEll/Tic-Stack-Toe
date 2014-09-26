@@ -6810,6 +6810,8 @@ com.oakonell.ticstacktoe.R$drawable: int wood_grid_4x4
 com.oakonell.ticstacktoe.R$drawable: int wooden_button
 com.oakonell.ticstacktoe.R$drawable: int wooden_check
 com.oakonell.ticstacktoe.R$id
+com.oakonell.ticstacktoe.R$id: int LinearLayout1
+com.oakonell.ticstacktoe.R$id: int RelativeLayout1
 com.oakonell.ticstacktoe.R$id: int about_description
 com.oakonell.ticstacktoe.R$id: int abs__action_bar
 com.oakonell.ticstacktoe.R$id: int abs__action_bar_container
@@ -7241,6 +7243,7 @@ com.oakonell.ticstacktoe.R$string: int ai_hard
 com.oakonell.ticstacktoe.R$string: int ai_level
 com.oakonell.ticstacktoe.R$string: int ai_medium
 com.oakonell.ticstacktoe.R$string: int ai_random
+com.oakonell.ticstacktoe.R$string: int an_conlficted_rank_save
 com.oakonell.ticstacktoe.R$string: int an_start_ai_game_action
 com.oakonell.ticstacktoe.R$string: int an_start_game_cat
 com.oakonell.ticstacktoe.R$string: int an_start_online_game_action
@@ -7339,10 +7342,9 @@ com.oakonell.ticstacktoe.R$string: int gamehelper_sign_in_failed
 com.oakonell.ticstacktoe.R$string: int gamehelper_unknown_error
 com.oakonell.ticstacktoe.R$string: int httpError
 com.oakonell.ticstacktoe.R$string: int internal_error
-com.oakonell.ticstacktoe.R$string: int invalid_move_need_empty
-com.oakonell.ticstacktoe.R$string: int invalid_move_need_nonempty
 com.oakonell.ticstacktoe.R$string: int invalid_move_source_is_empty
 com.oakonell.ticstacktoe.R$string: int invalid_move_space_has_bigger_piece
+com.oakonell.ticstacktoe.R$string: int invalid_move_title
 com.oakonell.ticstacktoe.R$string: int invalid_stack_move_in_strict
 com.oakonell.ticstacktoe.R$string: int invite_removed
 com.oakonell.ticstacktoe.R$string: int invited_to_realtime_match

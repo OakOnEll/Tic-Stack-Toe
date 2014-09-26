@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string translatable="false" name="achievement_finished_the_tutorial">CgkIl7iokM4HEAIQEw</string>
-    <string translatable="false" name="achievement_beat_the_easy_junior_bot">CgkIl7iokM4HEAIQBQ</string>
-    <string translatable="false" name="achievement_beat_the_medium_junior_bot">CgkIl7iokM4HEAIQBg</string>
-    <string translatable="false" name="achievement_beta_the_hard_junior_bot">CgkIl7iokM4HEAIQBw</string>
-    <string translatable="false" name="achievement_beat_the_easy_normal_bot">CgkIl7iokM4HEAIQCA</string>
-    <string translatable="false" name="achievement_beat_the_medium_normal_bot">CgkIl7iokM4HEAIQCQ</string>
-    <string translatable="false" name="achievement_beat_the_hard_normal_bot">CgkIl7iokM4HEAIQCg</string>
-    <string translatable="false" name="achievement_beat_the_easy_strict_bot">CgkIl7iokM4HEAIQCw</string>
-    <string translatable="false" name="achievement_beat_the_medium_strict_bot">CgkIl7iokM4HEAIQDA</string>
-    <string translatable="false" name="achievement_beat_the_hard_strict_bot">CgkIl7iokM4HEAIQDQ</string>
-    <string translatable="false" name="achievement_beat_a_friend_at_junior">CgkIl7iokM4HEAIQDg</string>
-    <string translatable="false" name="achievement_beat_a_friend_at_normal">CgkIl7iokM4HEAIQDw</string>
-    <string translatable="false" name="achievement_beat_a_friend_at_strict">CgkIl7iokM4HEAIQEA</string>
+    <string name="achievement_finished_the_tutorial" translatable="false">CgkIl7iokM4HEAIQEw</string>
+    <string name="achievement_beat_the_easy_junior_bot" translatable="false">CgkIl7iokM4HEAIQBQ</string>
+    <string name="achievement_beat_the_medium_junior_bot" translatable="false">CgkIl7iokM4HEAIQBg</string>
+    <string name="achievement_beta_the_hard_junior_bot" translatable="false">CgkIl7iokM4HEAIQBw</string>
+    <string name="achievement_beat_the_easy_normal_bot" translatable="false">CgkIl7iokM4HEAIQCA</string>
+    <string name="achievement_beat_the_medium_normal_bot" translatable="false">CgkIl7iokM4HEAIQCQ</string>
+    <string name="achievement_beat_the_hard_normal_bot" translatable="false">CgkIl7iokM4HEAIQCg</string>
+    <string name="achievement_beat_the_easy_strict_bot" translatable="false">CgkIl7iokM4HEAIQCw</string>
+    <string name="achievement_beat_the_medium_strict_bot" translatable="false">CgkIl7iokM4HEAIQDA</string>
+    <string name="achievement_beat_the_hard_strict_bot" translatable="false">CgkIl7iokM4HEAIQDQ</string>
+    <string name="achievement_beat_a_friend_at_junior" translatable="false">CgkIl7iokM4HEAIQDg</string>
+    <string name="achievement_beat_a_friend_at_normal" translatable="false">CgkIl7iokM4HEAIQDw</string>
+    <string name="achievement_beat_a_friend_at_strict" translatable="false">CgkIl7iokM4HEAIQEA</string>
+    <string name="achievement_missed_opportunity" translatable="false">CgkIl7iokM4HEAIQFA</string>
+    <string name="achievement_forked_win" translatable="false">CgkIl7iokM4HEAIQFQ</string>
+    <string name="achievement_two_birds_with_one_stone" translatable="false">CgkIl7iokM4HEAIQFg</string>
+    <string name="achievement_play_ten_matches" translatable="false">CgkIl7iokM4HEAIQFw</string>
+    <string name="achievement_play_100_matches" translatable="false">CgkIl7iokM4HEAIQGA</string>
+    <string name="achievement_the_gift" translatable="false">CgkIl7iokM4HEAIQGQ</string>
+    <string name="achievement_thanks" translatable="false">CgkIl7iokM4HEAIQGg</string>
     <!--
   <string name="achievement_surprise">CgkIl7iokM4HEAIQEQ</string>
-  <string name="achievement_thanks">CgkIl7iokM4HEAIQEg</string>
+  <string name="achievement_thanks">CgkIl7iokM4HEAIQEg</string>
     -->
 
 </resources>
