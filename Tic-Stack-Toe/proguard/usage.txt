@@ -1152,7 +1152,6 @@ com.google.android.gms.common.api.PendingResult:
 com.google.android.gms.common.api.Status:
     public void startResolutionForResult(android.app.Activity,int)
     public boolean hasResolution()
-    public boolean isSuccess()
     public boolean isInterrupted()
     public android.app.PendingIntent getResolution()
     public com.google.android.gms.common.ConnectionResult bu()
@@ -1533,8 +1532,6 @@ com.google.android.gms.games.achievement.Achievements:
     public abstract com.google.android.gms.common.api.PendingResult load(com.google.android.gms.common.api.GoogleApiClient,boolean)
     public abstract void reveal(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
     public abstract com.google.android.gms.common.api.PendingResult revealImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
-    public abstract com.google.android.gms.common.api.PendingResult unlockImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
-    public abstract void increment(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public abstract com.google.android.gms.common.api.PendingResult incrementImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public abstract void setSteps(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public abstract com.google.android.gms.common.api.PendingResult setStepsImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
@@ -1880,7 +1877,6 @@ com.google.android.gms.internal.fl:
     public void a(com.google.android.gms.common.api.a$c,com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer,int,int)
     public void b(com.google.android.gms.common.api.a$c,boolean)
     public void b(com.google.android.gms.common.api.a$c,java.lang.String)
-    public void a(com.google.android.gms.common.api.a$c,java.lang.String,int)
     public void b(com.google.android.gms.common.api.a$c,java.lang.String,int)
     public android.content.Intent getMatchInboxIntent()
     public android.content.Intent getInvitationInboxIntent()
@@ -1925,16 +1921,12 @@ com.google.android.gms.internal.fs:
     public com.google.android.gms.common.api.PendingResult load(com.google.android.gms.common.api.GoogleApiClient,boolean)
     public void reveal(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
     public com.google.android.gms.common.api.PendingResult revealImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
-    public com.google.android.gms.common.api.PendingResult unlockImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String)
-    public void increment(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public com.google.android.gms.common.api.PendingResult incrementImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public void setSteps(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
     public com.google.android.gms.common.api.PendingResult setStepsImmediate(com.google.android.gms.common.api.GoogleApiClient,java.lang.String,int)
 com.google.android.gms.internal.fs$1
 com.google.android.gms.internal.fs$2
 com.google.android.gms.internal.fs$3
-com.google.android.gms.internal.fs$5
-com.google.android.gms.internal.fs$6
 com.google.android.gms.internal.fs$7
 com.google.android.gms.internal.fs$8
 com.google.android.gms.internal.fs$9
@@ -3100,7 +3092,6 @@ com.google.android.gms.wallet.Wallet$WalletOptions$Builder
 com.google.android.gms.wallet.Wallet$a
 com.google.android.gms.wallet.WalletClient
 com.google.android.gms.wallet.WalletConstants
-com.oakonell.ticstacktoe.Achievements$IncrementalAchievement
 com.oakonell.ticstacktoe.BuildConfig
 com.oakonell.ticstacktoe.GameContext:
     public static final int RC_UNUSED
@@ -3116,7 +3107,7 @@ com.oakonell.ticstacktoe.GameStrategy:
     108:108:public int playSound(com.oakonell.ticstacktoe.Sounds,boolean)
     112:113:public void stopSound(int)
 com.oakonell.ticstacktoe.Leaderboards:
-    19:23:public java.util.List getLeaderboardIds(android.content.Context)
+    21:25:public java.util.List getLeaderboardIds(android.content.Context)
 com.oakonell.ticstacktoe.MainActivity:
     private static final java.lang.String TAG
     static final int PURCHASE_PREMIUM_REQUEST
