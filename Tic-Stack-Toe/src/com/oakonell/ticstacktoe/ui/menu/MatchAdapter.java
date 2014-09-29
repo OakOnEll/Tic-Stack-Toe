@@ -110,7 +110,8 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 	}
 
 	public interface ItemExecute {
-		void execute(MenuFragment fragment, List<MatchInfo> objects);
+		void execute(MenuFragment fragment, List<MatchInfo> objects,
+				MatchAdapter adapter);
 	}
 
 	public static class MatchMenuItem {
@@ -138,7 +139,7 @@ public class MatchAdapter extends ArrayAdapter<MatchInfo> {
 			public void onSelected(int which) {
 				// // The 'which' argument contains the index
 				// // position of the selected item
-				menus.get(which).execute.execute(fragment, objects);
+				menus.get(which).execute.execute(fragment, objects, MatchAdapter.this);
 				notifyDataSetChanged();
 			}
 		});

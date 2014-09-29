@@ -21,9 +21,11 @@ import com.oakonell.ticstacktoe.model.ScoreCard;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler;
 import com.oakonell.ticstacktoe.model.db.DatabaseHandler.OnLocalMatchDeleteListener;
 import com.oakonell.ticstacktoe.model.solver.AILevel;
+import com.oakonell.ticstacktoe.ui.DismissHelper;
 import com.oakonell.ticstacktoe.ui.game.HumanStrategy;
 import com.oakonell.ticstacktoe.ui.local.tutorial.TutorialMatchInfo;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
+import com.oakonell.ticstacktoe.ui.menu.MatchAdapter;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -153,12 +155,13 @@ public abstract class LocalMatchInfo implements MatchInfo {
 				context.getString(R.string.dismiss), new ItemExecute() {
 					@Override
 					public void execute(final MenuFragment fragment,
-							List<MatchInfo> matches) {
-						dismiss(fragment, matches);
+							List<MatchInfo> matches, MatchAdapter adapter) {
+						DismissHelper.dismiss(fragment, LocalMatchInfo.this,
+								matches, adapter);
 					}
 				});
 		result.add(dismiss);
-		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
+		MatchInfo.MatchUtils.addDismissThisAndOlder(context, result, this);
 
 		// if (canRematch) {
 		// MatchMenuItem rematch = new MatchMenuItem();
@@ -344,7 +347,7 @@ public abstract class LocalMatchInfo implements MatchInfo {
 	}
 
 	@Override
-	public void dismiss(final MenuFragment fragment, List<MatchInfo> matches) {
+	public void dismiss(final MenuFragment fragment) {
 		DatabaseHandler dbHandler = fragment.getDbHandler();
 
 		// TODO show progress, or present an undo..
@@ -359,8 +362,6 @@ public abstract class LocalMatchInfo implements MatchInfo {
 						fragment.showAlert("Error deleting match");
 					}
 				});
-
-		matches.remove(LocalMatchInfo.this);
 	}
 
 	public boolean isRanked() {

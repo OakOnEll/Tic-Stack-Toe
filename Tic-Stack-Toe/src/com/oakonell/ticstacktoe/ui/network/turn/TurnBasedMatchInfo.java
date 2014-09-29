@@ -19,7 +19,9 @@ import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
 import com.oakonell.ticstacktoe.model.Player;
 import com.oakonell.ticstacktoe.model.State;
+import com.oakonell.ticstacktoe.ui.DismissHelper;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
+import com.oakonell.ticstacktoe.ui.menu.MatchAdapter;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -123,7 +125,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 					context.getString(R.string.rematch), new ItemExecute() {
 						@Override
 						public void execute(final MenuFragment fragment,
-								List<MatchInfo> matches) {
+								List<MatchInfo> matches, MatchAdapter adapter) {
 							fragment.setInactive();
 							Games.TurnBasedMultiplayer
 									.rematch(helper.getApiClient(), matchId)
@@ -156,12 +158,13 @@ public class TurnBasedMatchInfo implements MatchInfo {
 				context.getString(R.string.dismiss), new ItemExecute() {
 					@Override
 					public void execute(MenuFragment fragment,
-							List<MatchInfo> matches) {
-						dismiss(fragment, matches);
+							List<MatchInfo> matches, MatchAdapter adapter) {
+						DismissHelper.dismiss(fragment,
+								TurnBasedMatchInfo.this, matches, adapter);
 					}
 				});
 		result.add(dismiss);
-		MatchInfo.MatchUtils.addDismissThisAndOlder(result, this);
+		MatchInfo.MatchUtils.addDismissThisAndOlder(context, result, this);
 
 		return result;
 	}
@@ -202,9 +205,8 @@ public class TurnBasedMatchInfo implements MatchInfo {
 	}
 
 	@Override
-	public void dismiss(MenuFragment fragment, List<MatchInfo> matches) {
+	public void dismiss(MenuFragment fragment) {
 		Games.TurnBasedMultiplayer.dismissMatch(helper.getApiClient(), matchId);
-		matches.remove(this);
 	}
 
 }

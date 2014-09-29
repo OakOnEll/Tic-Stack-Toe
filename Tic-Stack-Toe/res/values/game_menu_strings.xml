@@ -65,7 +65,14 @@
     <string name="ranked_game_subtext">Ranked %s</string>
     <string name="played_ago">Played %s</string>
     <string name="dismiss">Dismiss</string>
+    <string name="dismiss_this_and_older">Dismiss this and older</string>
+    <string name="dismissed_match">Dismissed match: %s.</string>
+    <string name="match_restored">Match restored!</string>
+    <string name="dismissed_completed_matches">Dismissed %s completed matches.</string>
+    <string name="matches_restored">Matches restored!</string>
     <string name="decline">Decline</string>
+    <string name="declined_invite">Declined invite from %s.</string>
+    <string name="invite_restored">Invite restored!</string>
     <string name="invited_to_turn_match">Invited by %s</string>
     <string name="invited_to_realtime_match">Real-time Invited by %s</string>
     <string name="subtext_invited_to_ranked_match">Invited to Ranked %s</string>

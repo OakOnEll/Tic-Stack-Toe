@@ -13,7 +13,9 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.oakonell.ticstacktoe.R;
 import com.oakonell.ticstacktoe.googleapi.GameHelper;
 import com.oakonell.ticstacktoe.model.GameType;
+import com.oakonell.ticstacktoe.ui.DismissHelper;
 import com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper;
+import com.oakonell.ticstacktoe.ui.menu.MatchAdapter;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.ItemExecute;
 import com.oakonell.ticstacktoe.ui.menu.MatchAdapter.MatchMenuItem;
 import com.oakonell.ticstacktoe.ui.menu.MatchInfo;
@@ -64,19 +66,25 @@ public class InviteMatchInfo implements MatchInfo {
 				context.getString(R.string.decline), new ItemExecute() {
 					@Override
 					public void execute(MenuFragment fragment,
-							List<MatchInfo> matches) {
-						if (isTurnBased) {
-							Games.TurnBasedMultiplayer.declineInvitation(
-									helper.getApiClient(), inviteId);
-						} else {
-							Games.RealTimeMultiplayer.declineInvitation(
-									helper.getApiClient(), inviteId);
-						}
-						matches.remove(InviteMatchInfo.this);
+							List<MatchInfo> matches, MatchAdapter adapter) {
+						DismissHelper.decline(fragment, InviteMatchInfo.this,
+								matches, adapter);
 					}
+
 				});
 		result.add(dismiss);
 		return result;
+	}
+
+	public void decline(MenuFragment fragment, List<MatchInfo> matches) {
+		if (isTurnBased) {
+			Games.TurnBasedMultiplayer.declineInvitation(helper.getApiClient(),
+					inviteId);
+		} else {
+			Games.RealTimeMultiplayer.declineInvitation(helper.getApiClient(),
+					inviteId);
+		}
+		matches.remove(InviteMatchInfo.this);
 	}
 
 	@Override
@@ -118,7 +126,8 @@ public class InviteMatchInfo implements MatchInfo {
 			return context.getString(R.string.invited_to_turn_match,
 					getOpponentName());
 		}
-		return context.getString(R.string.invited_to_realtime_match, getOpponentName());
+		return context.getString(R.string.invited_to_realtime_match,
+				getOpponentName());
 
 	}
 
@@ -133,7 +142,7 @@ public class InviteMatchInfo implements MatchInfo {
 	}
 
 	@Override
-	public void dismiss(MenuFragment fragment, List<MatchInfo> matches) {
+	public void dismiss(MenuFragment fragment) {
 		// doesn't support dismiss... instead it is a decline?
 	}
 
