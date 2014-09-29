@@ -34,73 +34,73 @@ public final class R {
 		public static final int pageUrl = 0x7f010000;
 	}
 	public static final class color {
-		public static final int com_shamanland_facebook_button_blue_focused_end = 0x7f070003;
-		public static final int com_shamanland_facebook_button_blue_focused_start = 0x7f070002;
-		public static final int com_shamanland_facebook_button_blue_focused_stroke = 0x7f070004;
-		public static final int com_shamanland_facebook_button_blue_normal_end = 0x7f070001;
-		public static final int com_shamanland_facebook_button_blue_normal_start = 0x7f070000;
-		public static final int com_shamanland_facebook_button_blue_pressed_end = 0x7f070006;
-		public static final int com_shamanland_facebook_button_blue_pressed_start = 0x7f070005;
-		public static final int com_shamanland_facebook_button_blue_pressed_stroke = 0x7f070007;
-		public static final int com_shamanland_facebook_like_box_background_color = 0x7f070009;
-		public static final int com_shamanland_facebook_like_box_text_color = 0x7f070008;
-		public static final int com_shamanland_facebook_like_text_color = 0x7f07000a;
+		public static final int com_shamanland_facebook_button_blue_focused_end = 0x7f0a0003;
+		public static final int com_shamanland_facebook_button_blue_focused_start = 0x7f0a0002;
+		public static final int com_shamanland_facebook_button_blue_focused_stroke = 0x7f0a0004;
+		public static final int com_shamanland_facebook_button_blue_normal_end = 0x7f0a0001;
+		public static final int com_shamanland_facebook_button_blue_normal_start = 0x7f0a0000;
+		public static final int com_shamanland_facebook_button_blue_pressed_end = 0x7f0a0006;
+		public static final int com_shamanland_facebook_button_blue_pressed_start = 0x7f0a0005;
+		public static final int com_shamanland_facebook_button_blue_pressed_stroke = 0x7f0a0007;
+		public static final int com_shamanland_facebook_like_box_background_color = 0x7f0a0009;
+		public static final int com_shamanland_facebook_like_box_text_color = 0x7f0a0008;
+		public static final int com_shamanland_facebook_like_text_color = 0x7f0a000a;
 	}
 	public static final class dimen {
-		public static final int com_shamanland_facebook_like_activity_progress_size = 0x7f080008;
-		public static final int com_shamanland_facebook_like_box_padding_bottom = 0x7f08000d;
-		public static final int com_shamanland_facebook_like_box_padding_left = 0x7f08000a;
-		public static final int com_shamanland_facebook_like_box_padding_right = 0x7f08000c;
-		public static final int com_shamanland_facebook_like_box_padding_top = 0x7f08000b;
-		public static final int com_shamanland_facebook_like_box_stroke_width = 0x7f080009;
-		public static final int com_shamanland_facebook_like_compound_drawable_padding = 0x7f080005;
-		public static final int com_shamanland_facebook_like_corners_radius = 0x7f080007;
-		public static final int com_shamanland_facebook_like_height = 0x7f080000;
-		public static final int com_shamanland_facebook_like_padding_bottom = 0x7f080004;
-		public static final int com_shamanland_facebook_like_padding_left = 0x7f080001;
-		public static final int com_shamanland_facebook_like_padding_right = 0x7f080003;
-		public static final int com_shamanland_facebook_like_padding_top = 0x7f080002;
-		public static final int com_shamanland_facebook_like_text_size = 0x7f080006;
+		public static final int com_shamanland_facebook_like_activity_progress_size = 0x7f07000b;
+		public static final int com_shamanland_facebook_like_box_padding_bottom = 0x7f070010;
+		public static final int com_shamanland_facebook_like_box_padding_left = 0x7f07000d;
+		public static final int com_shamanland_facebook_like_box_padding_right = 0x7f07000f;
+		public static final int com_shamanland_facebook_like_box_padding_top = 0x7f07000e;
+		public static final int com_shamanland_facebook_like_box_stroke_width = 0x7f07000c;
+		public static final int com_shamanland_facebook_like_compound_drawable_padding = 0x7f070008;
+		public static final int com_shamanland_facebook_like_corners_radius = 0x7f07000a;
+		public static final int com_shamanland_facebook_like_height = 0x7f070003;
+		public static final int com_shamanland_facebook_like_padding_bottom = 0x7f070007;
+		public static final int com_shamanland_facebook_like_padding_left = 0x7f070004;
+		public static final int com_shamanland_facebook_like_padding_right = 0x7f070006;
+		public static final int com_shamanland_facebook_like_padding_top = 0x7f070005;
+		public static final int com_shamanland_facebook_like_text_size = 0x7f070009;
 	}
 	public static final class drawable {
 		public static final int com_shamanland_facebook_button_blue = 0x7f020086;
 		public static final int com_shamanland_facebook_inverse_icon = 0x7f020087;
 	}
 	public static final class id {
-		public static final int all = 0x7f090010;
-		public static final int bottom = 0x7f09000f;
-		public static final int box_count = 0x7f090006;
-		public static final int button = 0x7f090008;
-		public static final int button_count = 0x7f090007;
-		public static final int com_shamanland_facebook_like = 0x7f090000;
-		public static final int com_shamanland_facebook_like_box = 0x7f090003;
-		public static final int com_shamanland_facebook_like_container = 0x7f090004;
-		public static final int com_shamanland_facebook_like_recommend = 0x7f090002;
-		public static final int com_shamanland_facebook_like_share = 0x7f090001;
-		public static final int left = 0x7f09000c;
-		public static final int like = 0x7f090009;
-		public static final int none = 0x7f09000b;
-		public static final int recommend = 0x7f09000a;
-		public static final int right = 0x7f09000e;
-		public static final int standard = 0x7f090005;
-		public static final int top = 0x7f09000d;
+		public static final int all = 0x7f0b0010;
+		public static final int bottom = 0x7f0b000f;
+		public static final int box_count = 0x7f0b0006;
+		public static final int button = 0x7f0b0008;
+		public static final int button_count = 0x7f0b0007;
+		public static final int com_shamanland_facebook_like = 0x7f0b0000;
+		public static final int com_shamanland_facebook_like_box = 0x7f0b0003;
+		public static final int com_shamanland_facebook_like_container = 0x7f0b0004;
+		public static final int com_shamanland_facebook_like_recommend = 0x7f0b0002;
+		public static final int com_shamanland_facebook_like_share = 0x7f0b0001;
+		public static final int left = 0x7f0b000c;
+		public static final int like = 0x7f0b0009;
+		public static final int none = 0x7f0b000b;
+		public static final int recommend = 0x7f0b000a;
+		public static final int right = 0x7f0b000e;
+		public static final int standard = 0x7f0b0005;
+		public static final int top = 0x7f0b000d;
 	}
 	public static final class layout {
 		public static final int com_shamanland_facebook_like_activity_progress = 0x7f030019;
 	}
 	public static final class string {
-		public static final int com_shamanland_facebook = 0x7f0a0000;
-		public static final int com_shamanland_facebook_like_activity_error = 0x7f0a0005;
-		public static final int com_shamanland_facebook_like_box_text_default = 0x7f0a0004;
-		public static final int com_shamanland_like = 0x7f0a0001;
-		public static final int com_shamanland_recommend = 0x7f0a0003;
-		public static final int com_shamanland_share = 0x7f0a0002;
+		public static final int com_shamanland_facebook = 0x7f080002;
+		public static final int com_shamanland_facebook_like_activity_error = 0x7f080007;
+		public static final int com_shamanland_facebook_like_box_text_default = 0x7f080006;
+		public static final int com_shamanland_like = 0x7f080003;
+		public static final int com_shamanland_recommend = 0x7f080005;
+		public static final int com_shamanland_share = 0x7f080004;
 	}
 	public static final class style {
-		public static final int Theme_Facebook_Like = 0x7f0b0003;
-		public static final int Widget_FacebookLikeBox = 0x7f0b0002;
-		public static final int Widget_FacebookLikeButton = 0x7f0b0001;
-		public static final int Widget_FacebookLikeButtonBase = 0x7f0b0000;
+		public static final int Theme_Facebook_Like = 0x7f090012;
+		public static final int Widget_FacebookLikeBox = 0x7f090011;
+		public static final int Widget_FacebookLikeButton = 0x7f090010;
+		public static final int Widget_FacebookLikeButtonBase = 0x7f09000f;
 	}
 	public static final class styleable {
 		public static final int[] FacebookLikeBox = { 0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014, 0x7f010015 };
