@@ -1,3 +1,7 @@
+1.9
+====
+Added Undo for match dismiss/decline
+
 1.8
 ====
 Added some new achievements
