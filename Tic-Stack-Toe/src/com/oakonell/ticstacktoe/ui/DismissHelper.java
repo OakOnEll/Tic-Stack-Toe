@@ -41,8 +41,8 @@ public class DismissHelper {
 				Toast.makeText(fragment.getActivity(),
 						fragment.getString(R.string.match_restored),
 						Toast.LENGTH_SHORT).show();
-				adapter.notifyDataSetChanged();
 				matches.add(index, matchInfo);
+				adapter.notifyDataSetChanged();
 			}
 		});
 		undoBar.duration(DISMISS_BAR_DURATION);
@@ -105,7 +105,6 @@ public class DismissHelper {
 						.entrySet()) {
 					matches.add(entry.getValue(), entry.getKey());
 				}
-				adapter.notifyDataSetChanged();
 				if (matchesToDismiss.size() > 1) {
 					Toast.makeText(fragment.getActivity(),
 							fragment.getString(R.string.matches_restored),
@@ -115,7 +114,7 @@ public class DismissHelper {
 							fragment.getString(R.string.match_restored),
 							Toast.LENGTH_SHORT).show();
 				}
-
+				adapter.notifyDataSetChanged();
 			}
 		});
 		undoBar.duration(DISMISS_BAR_DURATION);
