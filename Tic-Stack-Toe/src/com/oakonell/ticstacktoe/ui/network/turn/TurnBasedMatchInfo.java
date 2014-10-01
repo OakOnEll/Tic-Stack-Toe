@@ -9,7 +9,7 @@ import android.net.Uri;
 
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
@@ -138,7 +138,7 @@ public class TurnBasedMatchInfo implements MatchInfo {
 													int status = result
 															.getStatus()
 															.getStatusCode();
-													if (status != GamesClient.STATUS_OK) {
+													if (status != GamesStatusCodes.STATUS_OK) {
 														showAlert("Error starting rematch");
 														fragment.refreshMatches();
 														fragment.setActive();

@@ -595,6 +595,33 @@ com.android.vending.billing.IInAppBillingService$Stub:
     58:58:public android.os.IBinder asBinder()
 com.android.vending.billing.IInAppBillingService$Stub$Proxy:
     186:186:public java.lang.String getInterfaceDescriptor()
+com.cocosw.undobar.R:
+    9:9:public R()
+com.cocosw.undobar.UndoBarController:
+    private static final java.lang.String NAV_BAR_HEIGHT_RES_NAME
+    private static final java.lang.String NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME
+    private static final java.lang.String SHOW_NAV_BAR_RES_NAME
+    237:237:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence,com.cocosw.undobar.UndoBarController$UndoListener,android.os.Parcelable,boolean,com.cocosw.undobar.UndoBarStyle)
+    279:279:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,int,com.cocosw.undobar.UndoBarController$UndoListener,android.os.Parcelable,boolean)
+    287:287:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence,com.cocosw.undobar.UndoBarController$UndoListener,android.os.Parcelable)
+    295:295:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence,com.cocosw.undobar.UndoBarController$UndoListener,com.cocosw.undobar.UndoBarStyle)
+    302:302:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence,com.cocosw.undobar.UndoBarController$UndoListener)
+    309:309:public static com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence)
+    322:330:public static void clear(android.app.Activity)
+    339:343:public static void setAnimation(android.view.animation.Animation,android.view.animation.Animation)
+    533:540:private void changeBitmapColor(android.graphics.Bitmap,int)
+com.cocosw.undobar.UndoBarController$AdvancedUndoListener:
+    public abstract void onClear()
+com.cocosw.undobar.UndoBarController$UndoBar:
+    582:583:public com.cocosw.undobar.UndoBarController$UndoBar style(com.cocosw.undobar.UndoBarStyle)
+    604:605:public com.cocosw.undobar.UndoBarController$UndoBar message(int)
+    639:640:public com.cocosw.undobar.UndoBarController$UndoBar token(android.os.Parcelable)
+    652:653:public com.cocosw.undobar.UndoBarController$UndoBar translucent(boolean)
+    682:682:public com.cocosw.undobar.UndoBarController show()
+    686:687:public void clear()
+com.cocosw.undobar.UndoBarStyle:
+    public static final int DEFAULT_DURATION
+    52:54:public UndoBarStyle(int,int,int,long)
 com.commonsware.cwac.merge.MergeAdapter:
     97:98:public void addViews(java.util.List)
     148:158:public android.widget.ListAdapter getAdapter(int)
@@ -3319,6 +3346,9 @@ com.oakonell.ticstacktoe.settings.PremiumConfigurer:
 com.oakonell.ticstacktoe.settings.SettingsActivity:
     private static final java.lang.String TAG
     static final int RC_REQUEST
+com.oakonell.ticstacktoe.ui.DismissHelper:
+    private static final int DISMISS_BAR_DURATION
+    21:21:public DismissHelper()
 com.oakonell.ticstacktoe.ui.ImageHelper:
     8:8:public ImageHelper()
 com.oakonell.ticstacktoe.ui.game.AbstractGameFragment:
@@ -3340,7 +3370,7 @@ com.oakonell.ticstacktoe.ui.local.tutorial.TutorialGameStrategy:
 com.oakonell.ticstacktoe.ui.menu.GameTypeSpinnerHelper:
     19:19:public GameTypeSpinnerHelper()
 com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils:
-    35:35:public MatchInfo$MatchUtils()
+    36:36:public MatchInfo$MatchUtils()
 com.oakonell.ticstacktoe.ui.menu.MenuFragment:
     public static final java.lang.String SAW_TUTORIAL
 com.oakonell.ticstacktoe.ui.menu.StartAGameFragment:
@@ -3364,7 +3394,7 @@ com.oakonell.ticstacktoe.ui.network.realtime.RealtimeGameStrategy:
     private static final byte MSG_PLAY_AGAIN_RANK
     766:766:public boolean isInitiatedTheGame()
 com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo:
-    58:58:public java.lang.String getInviteId()
+    60:60:public java.lang.String getInviteId()
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy:
     private static final int TOAST_DELAY
     private static final java.lang.String TAG

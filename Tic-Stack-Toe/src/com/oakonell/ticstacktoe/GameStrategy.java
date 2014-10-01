@@ -21,7 +21,7 @@ import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer.LoadMatchResult;
@@ -338,7 +338,7 @@ public abstract class GameStrategy {
 							public void onResult(LoadMatchResult result) {
 								Status status = result.getStatus();
 								TurnBasedMatch match = result.getMatch();
-								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+								if (status.getStatusCode() != GamesStatusCodes.STATUS_OK) {
 									onLoad.onFailure("Error(" + status
 											+ ") loading turn-based game");
 									return;
@@ -434,7 +434,7 @@ public abstract class GameStrategy {
 	}
 
 	public void postMove(Runnable postMove) {
-		postMove.run();		
+		postMove.run();
 	}
 
 	public boolean rotateBlackLayout() {

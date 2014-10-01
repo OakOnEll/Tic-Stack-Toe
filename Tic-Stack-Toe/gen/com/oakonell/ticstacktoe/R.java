@@ -262,6 +262,76 @@ in (inches), mm (millimeters).
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int buttonStyleSmall=0x7f010046;
+        /**  Appearance of the buy button. Must be one of "classic", "grayscale" and "monochrome" 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>classic</code></td><td>1</td><td></td></tr>
+<tr><td><code>grayscale</code></td><td>2</td><td></td></tr>
+<tr><td><code>monochrome</code></td><td>3</td><td></td></tr>
+</table>
+         */
+        public static final int buyButtonAppearance=0x7f0100a7;
+        /**  Height of the buy button. This includes an 8dp padding (4dp on each side) used for
+             pressed and focused states of the button. The value can be a specific height, e.g.
+             "48dp", or special values "match_parent" and "wrap_content". 
+         <p>May be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>match_parent</code></td><td>-1</td><td></td></tr>
+<tr><td><code>wrap_content</code></td><td>-2</td><td></td></tr>
+</table>
+         */
+        public static final int buyButtonHeight=0x7f0100a4;
+        /**  Text on the buy button. Must be one of "buy_with_google", "buy_now" and "book_now" 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>buy_with_google</code></td><td>1</td><td></td></tr>
+<tr><td><code>buy_now</code></td><td>2</td><td></td></tr>
+<tr><td><code>book_now</code></td><td>3</td><td></td></tr>
+</table>
+         */
+        public static final int buyButtonText=0x7f0100a6;
+        /**  Width of the buy button. This includes an 8dp padding (4dp on each side) used for
+             pressed and focused states of the button. The value can be a specific width, e.g.
+             "300dp", or special values "match_parent" and "wrap_content". 
+         <p>May be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>match_parent</code></td><td>-1</td><td></td></tr>
+<tr><td><code>wrap_content</code></td><td>-2</td><td></td></tr>
+</table>
+         */
+        public static final int buyButtonWidth=0x7f0100a5;
         /** <p>Must be one of the following constant values.</p>
 <table>
 <colgroup align="left" />
@@ -369,6 +439,19 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int dropdownListPreferredItemHeight=0x7f01006b;
+        /**  Google Wallet environment to use 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>production</code></td><td>1</td><td></td></tr>
+<tr><td><code>sandbox</code></td><td>0</td><td></td></tr>
+<tr><td><code>strict_sandbox</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int environment=0x7f0100a1;
         /**  The drawable to show in the button for expanding the activities overflow popup.
              <strong>Note:</strong> Clients would like to set this drawable
              as a clue about the action the chosen activity will perform. For
@@ -386,7 +469,24 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int formattedSummary=0x7f0100a0;
+        public static final int formattedSummary=0x7f0100af;
+        /**  Fragment mode 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>buyButton</code></td><td>1</td><td></td></tr>
+<tr><td><code>selectionDetails</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int fragmentMode=0x7f0100a3;
+        /**  A style resource specifing attributes to customize the look and feel of WalletFragment 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int fragmentStyle=0x7f0100a2;
         /**  Default background for the menu header. 
          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -540,6 +640,57 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 </table>
          */
         public static final int mapType=0x7f010092;
+        /**  Masked wallet details background 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int maskedWalletDetailsBackground=0x7f0100aa;
+        /**  "Change" button background in masked wallet details view 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int maskedWalletDetailsButtonBackground=0x7f0100ac;
+        /**  TextAppearance for the "Change" button in masked wallet details view 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int maskedWalletDetailsButtonTextAppearance=0x7f0100ab;
+        /**  TextAppearance for headers describing masked wallet details 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int maskedWalletDetailsHeaderTextAppearance=0x7f0100a9;
+        /**  Type of the wallet logo image in masked wallet details view 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>classic</code></td><td>1</td><td></td></tr>
+<tr><td><code>monochrome</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int maskedWalletDetailsLogoImageType=0x7f0100ae;
+        /**  Color of the Google Wallet logo text in masked wallet details view 
+         <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int maskedWalletDetailsLogoTextColor=0x7f0100ad;
+        /**  TextAppearance for masked wallet details 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int maskedWalletDetailsTextAppearance=0x7f0100a8;
         /**  The type of navigation to use. 
          <p>Must be one of the following constant values.</p>
 <table>
@@ -989,6 +1140,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
          */
         public static final int textColorSearchUrl=0x7f01005b;
+        /**  Theme to be used for the Wallet selector 
+         <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>holo_dark</code></td><td>0</td><td></td></tr>
+<tr><td><code>holo_light</code></td><td>1</td><td></td></tr>
+</table>
+         */
+        public static final int theme=0x7f0100a0;
         /**  Specifies title text used for navigationMode="normal" 
          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
@@ -1180,10 +1343,10 @@ containing a value of this type.
         public static final int abs__bright_foreground_disabled_holo_light=0x7f0a0012;
         public static final int abs__bright_foreground_holo_dark=0x7f0a000f;
         public static final int abs__bright_foreground_holo_light=0x7f0a0010;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f0a001e;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f0a001f;
-        public static final int abs__primary_text_holo_dark=0x7f0a0020;
-        public static final int abs__primary_text_holo_light=0x7f0a0021;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f0a002b;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f0a002c;
+        public static final int abs__primary_text_holo_dark=0x7f0a002d;
+        public static final int abs__primary_text_holo_light=0x7f0a002e;
         public static final int com_shamanland_facebook_button_blue_focused_end=0x7f0a0003;
         public static final int com_shamanland_facebook_button_blue_focused_start=0x7f0a0002;
         public static final int com_shamanland_facebook_button_blue_focused_stroke=0x7f0a0004;
@@ -1207,12 +1370,32 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f0a0019;
         public static final int common_signin_btn_light_text_focused=0x7f0a001a;
         public static final int common_signin_btn_light_text_pressed=0x7f0a0018;
-        public static final int common_signin_btn_text_dark=0x7f0a0022;
-        public static final int common_signin_btn_text_light=0x7f0a0023;
+        public static final int common_signin_btn_text_dark=0x7f0a002f;
+        public static final int common_signin_btn_text_light=0x7f0a0030;
         public static final int default_progress_bar_color=0x7f0a000c;
-        public static final int holo_blue_light=0x7f0a001d;
+        public static final int holo_blue_light=0x7f0a002a;
         public static final int spb_default_color=0x7f0a000b;
-        public static final int undobar_material_button_text_color=0x7f0a0024;
+        public static final int undobar_material_button_text_color=0x7f0a0031;
+        public static final int wallet_bright_foreground_disabled_holo_light=0x7f0a0022;
+        /** 
+         Wallet colors to support consistent Wallet fragment holo dark UI in client application
+         regardless of the theme and device type
+    
+         */
+        public static final int wallet_bright_foreground_holo_dark=0x7f0a001d;
+        public static final int wallet_bright_foreground_holo_light=0x7f0a0023;
+        public static final int wallet_dim_foreground_disabled_holo_dark=0x7f0a001f;
+        public static final int wallet_dim_foreground_holo_dark=0x7f0a001e;
+        public static final int wallet_dim_foreground_inverse_disabled_holo_dark=0x7f0a0021;
+        public static final int wallet_dim_foreground_inverse_holo_dark=0x7f0a0020;
+        public static final int wallet_highlighted_text_holo_dark=0x7f0a0027;
+        public static final int wallet_highlighted_text_holo_light=0x7f0a0026;
+        public static final int wallet_hint_foreground_holo_dark=0x7f0a0025;
+        public static final int wallet_hint_foreground_holo_light=0x7f0a0024;
+        public static final int wallet_holo_blue_light=0x7f0a0028;
+        public static final int wallet_link_text_light=0x7f0a0029;
+        public static final int wallet_primary_text_holo_light=0x7f0a0032;
+        public static final int wallet_secondary_text_holo_dark=0x7f0a0033;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1555,342 +1738,358 @@ containing a value of this type.
         public static final int pass_n_play_icon_27531=0x7f0200c9;
         public static final int popup_background=0x7f0200ca;
         public static final int popup_item_selector=0x7f0200cb;
-        public static final int quick_game_icon_18148=0x7f0200cc;
-        public static final int rank_background=0x7f0200cd;
-        public static final int robot_icon_699=0x7f0200ce;
-        public static final int silhouette_icon_4520=0x7f0200cf;
-        public static final int sm_clapping_icon_68042=0x7f0200d0;
-        public static final int sm_facepalm_icon_18486=0x7f0200d1;
-        public static final int sm_feet_wet_icon_6281=0x7f0200d2;
-        public static final int sm_fork_icon_73583=0x7f0200d3;
-        public static final int sm_gift_icon_19558=0x7f0200d4;
-        public static final int sm_two_birds_icon_54942=0x7f0200d5;
-        public static final int spinner=0x7f0200d6;
-        public static final int swap_icon_17858=0x7f0200d7;
-        public static final int tab=0x7f0200d8;
-        public static final int text_input=0x7f0200d9;
-        public static final int text_input_on_wood=0x7f0200da;
-        public static final int toast_frame_holo=0x7f0200db;
-        public static final int toast_frame_holo_button=0x7f0200dc;
-        public static final int toast_frame_holo_button_pressed=0x7f0200dd;
-        public static final int tut_0_board=0x7f0200de;
-        public static final int tut_0_move=0x7f0200df;
-        public static final int tut_0_point_stacks=0x7f0200e0;
-        public static final int tut_2_move=0x7f0200e1;
-        public static final int tut_4_move=0x7f0200e2;
-        public static final int tut_6_move=0x7f0200e3;
-        public static final int tut_8_move=0x7f0200e4;
-        public static final int tutor_icon_11937=0x7f0200e5;
-        public static final int tutorial_1_point_stacks=0x7f0200e6;
-        public static final int tutorial_slide_up=0x7f0200e7;
-        public static final int unchecked=0x7f0200e8;
-        public static final int undobar=0x7f0200e9;
-        public static final int undobar_background=0x7f0200ea;
-        public static final int undobar_button=0x7f0200eb;
-        public static final int undobar_button_focused=0x7f0200ec;
-        public static final int undobar_button_pressed=0x7f0200ed;
-        public static final int undobar_divider=0x7f0200ee;
-        public static final int undobar_material_button=0x7f0200ef;
-        public static final int white_piece1=0x7f0200f0;
-        public static final int white_piece2=0x7f0200f1;
-        public static final int white_piece3=0x7f0200f2;
-        public static final int white_piece4=0x7f0200f3;
-        public static final int white_silhouette_icon_4520=0x7f0200f4;
-        public static final int wood_grid_3x3=0x7f0200f5;
-        public static final int wood_grid_4x4=0x7f0200f6;
-        public static final int wooden_button=0x7f0200f7;
-        public static final int wooden_check=0x7f0200f8;
+        public static final int powered_by_google_dark=0x7f0200cc;
+        public static final int powered_by_google_light=0x7f0200cd;
+        public static final int quick_game_icon_18148=0x7f0200ce;
+        public static final int rank_background=0x7f0200cf;
+        public static final int robot_icon_699=0x7f0200d0;
+        public static final int silhouette_icon_4520=0x7f0200d1;
+        public static final int sm_clapping_icon_68042=0x7f0200d2;
+        public static final int sm_facepalm_icon_18486=0x7f0200d3;
+        public static final int sm_feet_wet_icon_6281=0x7f0200d4;
+        public static final int sm_fork_icon_73583=0x7f0200d5;
+        public static final int sm_gift_icon_19558=0x7f0200d6;
+        public static final int sm_two_birds_icon_54942=0x7f0200d7;
+        public static final int spinner=0x7f0200d8;
+        public static final int swap_icon_17858=0x7f0200d9;
+        public static final int tab=0x7f0200da;
+        public static final int text_input=0x7f0200db;
+        public static final int text_input_on_wood=0x7f0200dc;
+        public static final int toast_frame_holo=0x7f0200dd;
+        public static final int toast_frame_holo_button=0x7f0200de;
+        public static final int toast_frame_holo_button_pressed=0x7f0200df;
+        public static final int tut_0_board=0x7f0200e0;
+        public static final int tut_0_move=0x7f0200e1;
+        public static final int tut_0_point_stacks=0x7f0200e2;
+        public static final int tut_2_move=0x7f0200e3;
+        public static final int tut_4_move=0x7f0200e4;
+        public static final int tut_6_move=0x7f0200e5;
+        public static final int tut_8_move=0x7f0200e6;
+        public static final int tutor_icon_11937=0x7f0200e7;
+        public static final int tutorial_1_point_stacks=0x7f0200e8;
+        public static final int tutorial_slide_up=0x7f0200e9;
+        public static final int unchecked=0x7f0200ea;
+        public static final int undobar=0x7f0200eb;
+        public static final int undobar_background=0x7f0200ec;
+        public static final int undobar_button=0x7f0200ed;
+        public static final int undobar_button_focused=0x7f0200ee;
+        public static final int undobar_button_pressed=0x7f0200ef;
+        public static final int undobar_divider=0x7f0200f0;
+        public static final int undobar_material_button=0x7f0200f1;
+        public static final int white_piece1=0x7f0200f2;
+        public static final int white_piece2=0x7f0200f3;
+        public static final int white_piece3=0x7f0200f4;
+        public static final int white_piece4=0x7f0200f5;
+        public static final int white_silhouette_icon_4520=0x7f0200f6;
+        public static final int wood_grid_3x3=0x7f0200f7;
+        public static final int wood_grid_4x4=0x7f0200f8;
+        public static final int wooden_button=0x7f0200f9;
+        public static final int wooden_check=0x7f0200fa;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f0b0052;
-        public static final int RelativeLayout1=0x7f0b0050;
-        public static final int _undobar=0x7f0b0119;
-        public static final int about_description=0x7f0b00e9;
-        public static final int abs__action_bar=0x7f0b003d;
-        public static final int abs__action_bar_container=0x7f0b003c;
-        public static final int abs__action_bar_subtitle=0x7f0b002e;
-        public static final int abs__action_bar_title=0x7f0b002d;
-        public static final int abs__action_context_bar=0x7f0b003e;
+        public static final int LinearLayout1=0x7f0b0060;
+        public static final int RelativeLayout1=0x7f0b005e;
+        public static final int _undobar=0x7f0b0127;
+        public static final int about_description=0x7f0b00f7;
+        public static final int abs__action_bar=0x7f0b004b;
+        public static final int abs__action_bar_container=0x7f0b004a;
+        public static final int abs__action_bar_subtitle=0x7f0b003c;
+        public static final int abs__action_bar_title=0x7f0b003b;
+        public static final int abs__action_context_bar=0x7f0b004c;
         public static final int abs__action_menu_divider=0x7f0b0026;
         public static final int abs__action_menu_presenter=0x7f0b0027;
-        public static final int abs__action_mode_bar=0x7f0b0042;
-        public static final int abs__action_mode_bar_stub=0x7f0b0041;
-        public static final int abs__action_mode_close_button=0x7f0b0031;
-        public static final int abs__activity_chooser_view_content=0x7f0b0032;
-        public static final int abs__checkbox=0x7f0b0039;
-        public static final int abs__content=0x7f0b003f;
-        public static final int abs__default_activity_button=0x7f0b0035;
-        public static final int abs__expand_activities_button=0x7f0b0033;
+        public static final int abs__action_mode_bar=0x7f0b0050;
+        public static final int abs__action_mode_bar_stub=0x7f0b004f;
+        public static final int abs__action_mode_close_button=0x7f0b003f;
+        public static final int abs__activity_chooser_view_content=0x7f0b0040;
+        public static final int abs__checkbox=0x7f0b0047;
+        public static final int abs__content=0x7f0b004d;
+        public static final int abs__default_activity_button=0x7f0b0043;
+        public static final int abs__expand_activities_button=0x7f0b0041;
         public static final int abs__home=0x7f0b0024;
-        public static final int abs__icon=0x7f0b0037;
-        public static final int abs__image=0x7f0b0034;
-        public static final int abs__imageButton=0x7f0b002f;
-        public static final int abs__list_item=0x7f0b0036;
+        public static final int abs__icon=0x7f0b0045;
+        public static final int abs__image=0x7f0b0042;
+        public static final int abs__imageButton=0x7f0b003d;
+        public static final int abs__list_item=0x7f0b0044;
         public static final int abs__progress_circular=0x7f0b0028;
         public static final int abs__progress_horizontal=0x7f0b0029;
-        public static final int abs__radio=0x7f0b003a;
-        public static final int abs__search_badge=0x7f0b0045;
-        public static final int abs__search_bar=0x7f0b0044;
-        public static final int abs__search_button=0x7f0b0046;
-        public static final int abs__search_close_btn=0x7f0b004b;
-        public static final int abs__search_edit_frame=0x7f0b0047;
-        public static final int abs__search_go_btn=0x7f0b004d;
-        public static final int abs__search_mag_icon=0x7f0b0048;
-        public static final int abs__search_plate=0x7f0b0049;
-        public static final int abs__search_src_text=0x7f0b004a;
-        public static final int abs__search_voice_btn=0x7f0b004e;
-        public static final int abs__shortcut=0x7f0b003b;
-        public static final int abs__split_action_bar=0x7f0b0040;
-        public static final int abs__submit_area=0x7f0b004c;
-        public static final int abs__textButton=0x7f0b0030;
-        public static final int abs__title=0x7f0b0038;
+        public static final int abs__radio=0x7f0b0048;
+        public static final int abs__search_badge=0x7f0b0053;
+        public static final int abs__search_bar=0x7f0b0052;
+        public static final int abs__search_button=0x7f0b0054;
+        public static final int abs__search_close_btn=0x7f0b0059;
+        public static final int abs__search_edit_frame=0x7f0b0055;
+        public static final int abs__search_go_btn=0x7f0b005b;
+        public static final int abs__search_mag_icon=0x7f0b0056;
+        public static final int abs__search_plate=0x7f0b0057;
+        public static final int abs__search_src_text=0x7f0b0058;
+        public static final int abs__search_voice_btn=0x7f0b005c;
+        public static final int abs__shortcut=0x7f0b0049;
+        public static final int abs__split_action_bar=0x7f0b004e;
+        public static final int abs__submit_area=0x7f0b005a;
+        public static final int abs__textButton=0x7f0b003e;
+        public static final int abs__title=0x7f0b0046;
         public static final int abs__up=0x7f0b0025;
-        public static final int action_chat=0x7f0b011d;
-        public static final int action_head_to_head=0x7f0b0120;
-        public static final int action_help=0x7f0b011e;
-        public static final int action_settings=0x7f0b011f;
-        public static final int actionbar_notifcation_imageview=0x7f0b0059;
-        public static final int actionbar_notifcation_progress=0x7f0b005b;
-        public static final int actionbar_notifcation_textview=0x7f0b005a;
-        public static final int adView=0x7f0b004f;
-        public static final int ad_frame=0x7f0b00eb;
-        public static final int ai_level=0x7f0b0069;
-        public static final int ai_name=0x7f0b0105;
+        public static final int action_chat=0x7f0b012b;
+        public static final int action_head_to_head=0x7f0b012e;
+        public static final int action_help=0x7f0b012c;
+        public static final int action_settings=0x7f0b012d;
+        public static final int actionbar_notifcation_imageview=0x7f0b0067;
+        public static final int actionbar_notifcation_progress=0x7f0b0069;
+        public static final int actionbar_notifcation_textview=0x7f0b0068;
+        public static final int adView=0x7f0b005d;
+        public static final int ad_frame=0x7f0b00f9;
+        public static final int ai_level=0x7f0b0077;
+        public static final int ai_name=0x7f0b0113;
         public static final int all=0x7f0b0010;
-        public static final int app_name_id=0x7f0b00e6;
-        public static final int blackName=0x7f0b007d;
-        public static final int blackPieceLayout=0x7f0b0081;
-        public static final int black_back=0x7f0b0080;
-        public static final int black_name_layout=0x7f0b007c;
-        public static final int black_piece_stack1=0x7f0b0082;
-        public static final int black_piece_stack2=0x7f0b0083;
-        public static final int black_piece_stack3=0x7f0b0084;
-        public static final int black_rank=0x7f0b007e;
-        public static final int board_rows=0x7f0b008c;
+        public static final int app_name_id=0x7f0b00f4;
+        public static final int blackName=0x7f0b008b;
+        public static final int blackPieceLayout=0x7f0b008f;
+        public static final int black_back=0x7f0b008e;
+        public static final int black_name_layout=0x7f0b008a;
+        public static final int black_piece_stack1=0x7f0b0090;
+        public static final int black_piece_stack2=0x7f0b0091;
+        public static final int black_piece_stack3=0x7f0b0092;
+        public static final int black_rank=0x7f0b008c;
+        public static final int board_rows=0x7f0b009a;
+        public static final int book_now=0x7f0b0037;
         public static final int bottom=0x7f0b000f;
         public static final int box_count=0x7f0b0006;
         public static final int button=0x7f0b0008;
         public static final int button_count=0x7f0b0007;
-        public static final int button_r1c1=0x7f0b008e;
-        public static final int button_r1c2=0x7f0b008f;
-        public static final int button_r1c3=0x7f0b0090;
-        public static final int button_r1c4=0x7f0b0091;
-        public static final int button_r1c5=0x7f0b0092;
-        public static final int button_r2c1=0x7f0b0094;
-        public static final int button_r2c2=0x7f0b0095;
-        public static final int button_r2c3=0x7f0b0096;
-        public static final int button_r2c4=0x7f0b0097;
-        public static final int button_r2c5=0x7f0b0098;
-        public static final int button_r3c1=0x7f0b009a;
-        public static final int button_r3c2=0x7f0b009b;
-        public static final int button_r3c3=0x7f0b009c;
-        public static final int button_r3c4=0x7f0b009d;
-        public static final int button_r3c5=0x7f0b009e;
-        public static final int button_r4c1=0x7f0b00a0;
-        public static final int button_r4c2=0x7f0b00a1;
-        public static final int button_r4c3=0x7f0b00a2;
-        public static final int button_r4c4=0x7f0b00a3;
-        public static final int button_r4c5=0x7f0b00a4;
-        public static final int button_r5c1=0x7f0b00a6;
-        public static final int button_r5c2=0x7f0b00a7;
-        public static final int button_r5c3=0x7f0b00a8;
-        public static final int button_r5c4=0x7f0b00a9;
-        public static final int button_r5c5=0x7f0b00aa;
-        public static final int button_row1=0x7f0b008d;
-        public static final int button_row2=0x7f0b0093;
-        public static final int button_row3=0x7f0b0099;
-        public static final int button_row4=0x7f0b009f;
-        public static final int button_row5=0x7f0b00a5;
-        public static final int cancel=0x7f0b0108;
-        public static final int close=0x7f0b0058;
+        public static final int button_r1c1=0x7f0b009c;
+        public static final int button_r1c2=0x7f0b009d;
+        public static final int button_r1c3=0x7f0b009e;
+        public static final int button_r1c4=0x7f0b009f;
+        public static final int button_r1c5=0x7f0b00a0;
+        public static final int button_r2c1=0x7f0b00a2;
+        public static final int button_r2c2=0x7f0b00a3;
+        public static final int button_r2c3=0x7f0b00a4;
+        public static final int button_r2c4=0x7f0b00a5;
+        public static final int button_r2c5=0x7f0b00a6;
+        public static final int button_r3c1=0x7f0b00a8;
+        public static final int button_r3c2=0x7f0b00a9;
+        public static final int button_r3c3=0x7f0b00aa;
+        public static final int button_r3c4=0x7f0b00ab;
+        public static final int button_r3c5=0x7f0b00ac;
+        public static final int button_r4c1=0x7f0b00ae;
+        public static final int button_r4c2=0x7f0b00af;
+        public static final int button_r4c3=0x7f0b00b0;
+        public static final int button_r4c4=0x7f0b00b1;
+        public static final int button_r4c5=0x7f0b00b2;
+        public static final int button_r5c1=0x7f0b00b4;
+        public static final int button_r5c2=0x7f0b00b5;
+        public static final int button_r5c3=0x7f0b00b6;
+        public static final int button_r5c4=0x7f0b00b7;
+        public static final int button_r5c5=0x7f0b00b8;
+        public static final int button_row1=0x7f0b009b;
+        public static final int button_row2=0x7f0b00a1;
+        public static final int button_row3=0x7f0b00a7;
+        public static final int button_row4=0x7f0b00ad;
+        public static final int button_row5=0x7f0b00b3;
+        public static final int buyButton=0x7f0b0032;
+        public static final int buy_now=0x7f0b0036;
+        public static final int buy_with_google=0x7f0b0035;
+        public static final int cancel=0x7f0b0116;
+        public static final int classic=0x7f0b0038;
+        public static final int close=0x7f0b0066;
         public static final int com_shamanland_facebook_like=0x7f0b0000;
         public static final int com_shamanland_facebook_like_box=0x7f0b0003;
         public static final int com_shamanland_facebook_like_container=0x7f0b0004;
         public static final int com_shamanland_facebook_like_recommend=0x7f0b0002;
         public static final int com_shamanland_facebook_like_share=0x7f0b0001;
-        public static final int decrement=0x7f0b00f2;
-        public static final int dialog_next=0x7f0b0111;
-        public static final int dialog_skip=0x7f0b0110;
+        public static final int decrement=0x7f0b0100;
+        public static final int dialog_next=0x7f0b011f;
+        public static final int dialog_skip=0x7f0b011e;
         public static final int disableHome=0x7f0b0023;
-        public static final int drag_layer=0x7f0b007a;
-        public static final int edit_query=0x7f0b0043;
-        public static final int facebook_like=0x7f0b00c9;
-        public static final int game_header=0x7f0b0085;
-        public static final int game_number=0x7f0b0087;
-        public static final int game_root=0x7f0b0078;
-        public static final int game_type=0x7f0b006b;
-        public static final int game_type_descr=0x7f0b006d;
-        public static final int grid_container=0x7f0b008b;
+        public static final int drag_layer=0x7f0b0088;
+        public static final int edit_query=0x7f0b0051;
+        public static final int facebook_like=0x7f0b00d7;
+        public static final int game_header=0x7f0b0093;
+        public static final int game_number=0x7f0b0095;
+        public static final int game_root=0x7f0b0086;
+        public static final int game_type=0x7f0b0079;
+        public static final int game_type_descr=0x7f0b007b;
+        public static final int grayscale=0x7f0b0039;
+        public static final int grid_container=0x7f0b0099;
+        public static final int holo_dark=0x7f0b002d;
+        public static final int holo_light=0x7f0b002e;
         public static final int homeAsUp=0x7f0b0020;
-        public static final int how_to_play_text=0x7f0b005c;
+        public static final int how_to_play_text=0x7f0b006a;
         public static final int hybrid=0x7f0b002c;
-        public static final int icon=0x7f0b0109;
-        public static final int icon_image=0x7f0b00e5;
-        public static final int image=0x7f0b010a;
-        public static final int increment=0x7f0b00f1;
+        public static final int icon=0x7f0b0117;
+        public static final int icon_image=0x7f0b00f3;
+        public static final int image=0x7f0b0118;
+        public static final int increment=0x7f0b00ff;
         public static final int inside=0x7f0b0015;
-        public static final int item_menu=0x7f0b00ef;
-        public static final int junior_rank=0x7f0b00fb;
-        public static final int label=0x7f0b00c0;
-        public static final int last_updated=0x7f0b00ee;
+        public static final int item_menu=0x7f0b00fd;
+        public static final int junior_rank=0x7f0b0109;
+        public static final int label=0x7f0b00ce;
+        public static final int last_updated=0x7f0b00fc;
         public static final int left=0x7f0b000c;
         public static final int like=0x7f0b0009;
-        public static final int linearLayout1=0x7f0b005f;
-        public static final int list=0x7f0b00be;
+        public static final int linearLayout1=0x7f0b006d;
+        public static final int list=0x7f0b00cc;
         public static final int listMode=0x7f0b001c;
-        public static final int main=0x7f0b007b;
-        public static final int main_frame=0x7f0b00ea;
-        public static final int message=0x7f0b0053;
-        public static final int message_send_group=0x7f0b0056;
-        public static final int messages=0x7f0b0055;
-        public static final int min_max_tutorial=0x7f0b0114;
-        public static final int moving_view=0x7f0b0079;
-        public static final int negative=0x7f0b010c;
-        public static final int new_ai_rank=0x7f0b0107;
-        public static final int new_game=0x7f0b00c1;
-        public static final int new_game_live=0x7f0b00d1;
-        public static final int new_game_live_text=0x7f0b00d2;
-        public static final int new_game_same_device=0x7f0b00ca;
-        public static final int new_game_same_device_text=0x7f0b00cb;
-        public static final int new_game_text=0x7f0b00c2;
-        public static final int new_game_vs_ai=0x7f0b00cc;
-        public static final int new_game_vs_ai_text=0x7f0b00cd;
-        public static final int new_quick_play=0x7f0b00cf;
-        public static final int new_quick_play_text=0x7f0b00d0;
-        public static final int new_rank=0x7f0b0104;
-        public static final int next=0x7f0b0118;
-        public static final int no_button=0x7f0b0061;
+        public static final int main=0x7f0b0089;
+        public static final int main_frame=0x7f0b00f8;
+        public static final int match_parent=0x7f0b0034;
+        public static final int message=0x7f0b0061;
+        public static final int message_send_group=0x7f0b0064;
+        public static final int messages=0x7f0b0063;
+        public static final int min_max_tutorial=0x7f0b0122;
+        public static final int monochrome=0x7f0b003a;
+        public static final int moving_view=0x7f0b0087;
+        public static final int negative=0x7f0b011a;
+        public static final int new_ai_rank=0x7f0b0115;
+        public static final int new_game=0x7f0b00cf;
+        public static final int new_game_live=0x7f0b00df;
+        public static final int new_game_live_text=0x7f0b00e0;
+        public static final int new_game_same_device=0x7f0b00d8;
+        public static final int new_game_same_device_text=0x7f0b00d9;
+        public static final int new_game_text=0x7f0b00d0;
+        public static final int new_game_vs_ai=0x7f0b00da;
+        public static final int new_game_vs_ai_text=0x7f0b00db;
+        public static final int new_quick_play=0x7f0b00dd;
+        public static final int new_quick_play_text=0x7f0b00de;
+        public static final int new_rank=0x7f0b0112;
+        public static final int next=0x7f0b0126;
+        public static final int no_button=0x7f0b006f;
         public static final int none=0x7f0b000b;
         public static final int normal=0x7f0b001b;
-        public static final int normal_rank=0x7f0b00fc;
-        public static final int not_play_again=0x7f0b00f9;
-        public static final int num_black_wins=0x7f0b007f;
-        public static final int num_draws=0x7f0b00e4;
-        public static final int num_games_container=0x7f0b0086;
-        public static final int num_moves=0x7f0b008a;
-        public static final int num_moves_container=0x7f0b0088;
-        public static final int num_moves_lbl=0x7f0b0089;
-        public static final int num_white_wins=0x7f0b00b7;
-        public static final int o_losses=0x7f0b00e2;
-        public static final int o_name=0x7f0b00e0;
-        public static final int o_wins=0x7f0b00e1;
-        public static final int ok=0x7f0b0054;
-        public static final int ok_button=0x7f0b005d;
-        public static final int opponent_name=0x7f0b0068;
-        public static final int opponent_wants_to_play_again=0x7f0b00f6;
-        public static final int opponent_wants_to_play_again_progress=0x7f0b00f5;
-        public static final int opponent_wants_to_play_again_text=0x7f0b00f7;
-        public static final int opponnet_image=0x7f0b00ec;
-        public static final int original_ai_rank=0x7f0b0106;
-        public static final int original_rank=0x7f0b0103;
+        public static final int normal_rank=0x7f0b010a;
+        public static final int not_play_again=0x7f0b0107;
+        public static final int num_black_wins=0x7f0b008d;
+        public static final int num_draws=0x7f0b00f2;
+        public static final int num_games_container=0x7f0b0094;
+        public static final int num_moves=0x7f0b0098;
+        public static final int num_moves_container=0x7f0b0096;
+        public static final int num_moves_lbl=0x7f0b0097;
+        public static final int num_white_wins=0x7f0b00c5;
+        public static final int o_losses=0x7f0b00f0;
+        public static final int o_name=0x7f0b00ee;
+        public static final int o_wins=0x7f0b00ef;
+        public static final int ok=0x7f0b0062;
+        public static final int ok_button=0x7f0b006b;
+        public static final int opponent_name=0x7f0b0076;
+        public static final int opponent_wants_to_play_again=0x7f0b0104;
+        public static final int opponent_wants_to_play_again_progress=0x7f0b0103;
+        public static final int opponent_wants_to_play_again_text=0x7f0b0105;
+        public static final int opponnet_image=0x7f0b00fa;
+        public static final int original_ai_rank=0x7f0b0114;
+        public static final int original_rank=0x7f0b0111;
         public static final int outside=0x7f0b0016;
-        public static final int play_again=0x7f0b00f8;
-        public static final int play_again_text=0x7f0b00f4;
-        public static final int play_icon=0x7f0b00ce;
-        public static final int player_name=0x7f0b0102;
-        public static final int player_o=0x7f0b00df;
-        public static final int player_o_name=0x7f0b0073;
-        public static final int player_pic=0x7f0b00d5;
-        public static final int player_x=0x7f0b00d9;
-        public static final int player_x_name=0x7f0b0071;
-        public static final int plus_one_button=0x7f0b00c8;
-        public static final int positive=0x7f0b010b;
-        public static final int pref_sound_fx_key=0x7f0b00f3;
-        public static final int progressBar1=0x7f0b00fa;
+        public static final int play_again=0x7f0b0106;
+        public static final int play_again_text=0x7f0b0102;
+        public static final int play_icon=0x7f0b00dc;
+        public static final int player_name=0x7f0b0110;
+        public static final int player_o=0x7f0b00ed;
+        public static final int player_o_name=0x7f0b0081;
+        public static final int player_pic=0x7f0b00e3;
+        public static final int player_x=0x7f0b00e7;
+        public static final int player_x_name=0x7f0b007f;
+        public static final int plus_one_button=0x7f0b00d6;
+        public static final int positive=0x7f0b0119;
+        public static final int pref_sound_fx_key=0x7f0b0101;
+        public static final int production=0x7f0b002f;
+        public static final int progressBar1=0x7f0b0108;
         public static final int ptr_content=0x7f0b0017;
-        public static final int ptr_layout=0x7f0b00bd;
+        public static final int ptr_layout=0x7f0b00cb;
         public static final int ptr_progress=0x7f0b0019;
         public static final int ptr_text=0x7f0b0018;
-        public static final int rank=0x7f0b00ff;
-        public static final int rank_label=0x7f0b00fe;
-        public static final int rank_layout=0x7f0b0100;
-        public static final int ranked_game=0x7f0b006f;
-        public static final int rate_bar=0x7f0b0064;
-        public static final int rate_no_thanks=0x7f0b0067;
-        public static final int rate_redirect_comment=0x7f0b0065;
-        public static final int rate_remind_later=0x7f0b0066;
-        public static final int rate_text=0x7f0b0063;
-        public static final int realtime=0x7f0b0074;
+        public static final int rank=0x7f0b010d;
+        public static final int rank_label=0x7f0b010c;
+        public static final int rank_layout=0x7f0b010e;
+        public static final int ranked_game=0x7f0b007d;
+        public static final int rate_bar=0x7f0b0072;
+        public static final int rate_no_thanks=0x7f0b0075;
+        public static final int rate_redirect_comment=0x7f0b0073;
+        public static final int rate_remind_later=0x7f0b0074;
+        public static final int rate_text=0x7f0b0071;
+        public static final int realtime=0x7f0b0082;
         public static final int recommend=0x7f0b000a;
-        public static final int remember_checkbox=0x7f0b0062;
-        public static final int remove_ads=0x7f0b00c7;
+        public static final int remember_checkbox=0x7f0b0070;
+        public static final int remove_ads=0x7f0b00d5;
         public static final int right=0x7f0b000e;
+        public static final int sandbox=0x7f0b0030;
         public static final int satellite=0x7f0b002a;
-        public static final int send=0x7f0b0057;
+        public static final int selectionDetails=0x7f0b0033;
+        public static final int send=0x7f0b0065;
         public static final int showCustom=0x7f0b0022;
         public static final int showHome=0x7f0b001f;
         public static final int showTitle=0x7f0b0021;
-        public static final int sign_in_bar=0x7f0b00bb;
-        public static final int sign_in_button=0x7f0b00bc;
-        public static final int sign_out_bar=0x7f0b00b8;
-        public static final int sign_out_button=0x7f0b00ba;
-        public static final int signed_in_as_text=0x7f0b00b9;
-        public static final int skip=0x7f0b0117;
+        public static final int sign_in_bar=0x7f0b00c9;
+        public static final int sign_in_button=0x7f0b00ca;
+        public static final int sign_out_bar=0x7f0b00c6;
+        public static final int sign_out_button=0x7f0b00c8;
+        public static final int signed_in_as_text=0x7f0b00c7;
+        public static final int skip=0x7f0b0125;
         public static final int spb_interpolator_accelerate=0x7f0b0011;
         public static final int spb_interpolator_acceleratedecelerate=0x7f0b0013;
         public static final int spb_interpolator_decelerate=0x7f0b0014;
         public static final int spb_interpolator_linear=0x7f0b0012;
         public static final int standard=0x7f0b0005;
-        public static final int start=0x7f0b0070;
-        public static final int strict_rank=0x7f0b00fd;
-        public static final int subtitle=0x7f0b00ed;
-        public static final int switch_players=0x7f0b0072;
+        public static final int start=0x7f0b007e;
+        public static final int strict_rank=0x7f0b010b;
+        public static final int strict_sandbox=0x7f0b0031;
+        public static final int subtitle=0x7f0b00fb;
+        public static final int switch_players=0x7f0b0080;
         public static final int tabMode=0x7f0b001d;
-        public static final int tableRow0=0x7f0b0101;
-        public static final int tableRow1=0x7f0b00d6;
-        public static final int tableRow2=0x7f0b00d8;
-        public static final int tableRow3=0x7f0b00de;
-        public static final int tableRow4=0x7f0b00d7;
-        public static final int tableRow5=0x7f0b00dd;
-        public static final int tableRow6=0x7f0b00e3;
+        public static final int tableRow0=0x7f0b010f;
+        public static final int tableRow1=0x7f0b00e4;
+        public static final int tableRow2=0x7f0b00e6;
+        public static final int tableRow3=0x7f0b00ec;
+        public static final int tableRow4=0x7f0b00e5;
+        public static final int tableRow5=0x7f0b00eb;
+        public static final int tableRow6=0x7f0b00f1;
         public static final int terrain=0x7f0b002b;
-        public static final int text=0x7f0b00f0;
-        public static final int textView1=0x7f0b005e;
-        public static final int textView2=0x7f0b006a;
-        public static final int textView3=0x7f0b006c;
-        public static final int textView4=0x7f0b006e;
-        public static final int textView5=0x7f0b0075;
-        public static final int thinking=0x7f0b00ac;
-        public static final int thinking_progress=0x7f0b00ad;
-        public static final int thinking_text=0x7f0b00ae;
-        public static final int timestamp=0x7f0b00d4;
-        public static final int title=0x7f0b0076;
-        public static final int title_divider=0x7f0b0077;
-        public static final int title_include=0x7f0b0051;
+        public static final int text=0x7f0b00fe;
+        public static final int textView1=0x7f0b006c;
+        public static final int textView2=0x7f0b0078;
+        public static final int textView3=0x7f0b007a;
+        public static final int textView4=0x7f0b007c;
+        public static final int textView5=0x7f0b0083;
+        public static final int thinking=0x7f0b00ba;
+        public static final int thinking_progress=0x7f0b00bb;
+        public static final int thinking_text=0x7f0b00bc;
+        public static final int timestamp=0x7f0b00e2;
+        public static final int title=0x7f0b0084;
+        public static final int title_divider=0x7f0b0085;
+        public static final int title_include=0x7f0b005f;
         public static final int top=0x7f0b000d;
-        public static final int tutorial=0x7f0b00d3;
-        public static final int tutorial_bottom=0x7f0b0115;
-        public static final int tutorial_bottom_text=0x7f0b0116;
-        public static final int tutorial_bottom_title=0x7f0b0113;
-        public static final int tutorial_dialog=0x7f0b010d;
-        public static final int tutorial_dialog_text=0x7f0b010f;
-        public static final int tutorial_dialog_title=0x7f0b010e;
-        public static final int tutorial_slideup=0x7f0b0112;
-        public static final int undobar_button=0x7f0b011c;
-        public static final int undobar_divider=0x7f0b011b;
-        public static final int undobar_message=0x7f0b011a;
-        public static final int urlId=0x7f0b00e8;
+        public static final int tutorial=0x7f0b00e1;
+        public static final int tutorial_bottom=0x7f0b0123;
+        public static final int tutorial_bottom_text=0x7f0b0124;
+        public static final int tutorial_bottom_title=0x7f0b0121;
+        public static final int tutorial_dialog=0x7f0b011b;
+        public static final int tutorial_dialog_text=0x7f0b011d;
+        public static final int tutorial_dialog_title=0x7f0b011c;
+        public static final int tutorial_slideup=0x7f0b0120;
+        public static final int undobar_button=0x7f0b012a;
+        public static final int undobar_divider=0x7f0b0129;
+        public static final int undobar_message=0x7f0b0128;
+        public static final int urlId=0x7f0b00f6;
         public static final int useLogo=0x7f0b001e;
-        public static final int version=0x7f0b00e7;
-        public static final int view_achievements=0x7f0b00c3;
-        public static final int view_achievements_text=0x7f0b00c4;
-        public static final int view_leaderboards=0x7f0b00c5;
-        public static final int view_leaderboards_text=0x7f0b00c6;
-        public static final int waiting=0x7f0b00bf;
-        public static final int whiteName=0x7f0b00b5;
-        public static final int whitePieceLayout=0x7f0b00b1;
-        public static final int white_back=0x7f0b00b0;
-        public static final int white_name_layout=0x7f0b00af;
-        public static final int white_piece_stack1=0x7f0b00b2;
-        public static final int white_piece_stack2=0x7f0b00b3;
-        public static final int white_piece_stack3=0x7f0b00b4;
-        public static final int white_rank=0x7f0b00b6;
-        public static final int win_overlay=0x7f0b00ab;
+        public static final int version=0x7f0b00f5;
+        public static final int view_achievements=0x7f0b00d1;
+        public static final int view_achievements_text=0x7f0b00d2;
+        public static final int view_leaderboards=0x7f0b00d3;
+        public static final int view_leaderboards_text=0x7f0b00d4;
+        public static final int waiting=0x7f0b00cd;
+        public static final int whiteName=0x7f0b00c3;
+        public static final int whitePieceLayout=0x7f0b00bf;
+        public static final int white_back=0x7f0b00be;
+        public static final int white_name_layout=0x7f0b00bd;
+        public static final int white_piece_stack1=0x7f0b00c0;
+        public static final int white_piece_stack2=0x7f0b00c1;
+        public static final int white_piece_stack3=0x7f0b00c2;
+        public static final int white_rank=0x7f0b00c4;
+        public static final int win_overlay=0x7f0b00b9;
         public static final int wrap_content=0x7f0b001a;
-        public static final int x_losses=0x7f0b00dc;
-        public static final int x_name=0x7f0b00da;
-        public static final int x_wins=0x7f0b00db;
-        public static final int yes_button=0x7f0b0060;
+        public static final int x_losses=0x7f0b00ea;
+        public static final int x_name=0x7f0b00e8;
+        public static final int x_wins=0x7f0b00e9;
+        public static final int yes_button=0x7f0b006e;
     }
     public static final class integer {
         public static final int abs__max_action_buttons=0x7f0c0002;
@@ -1990,7 +2189,7 @@ containing a value of this type.
         public static final int take_off=0x7f060009;
     }
     public static final class string {
-        public static final int about_title=0x7f08004d;
+        public static final int about_title=0x7f080053;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abs__action_bar_home_description=0x7f08000c;
@@ -2030,130 +2229,113 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f080013;
-        public static final int accept=0x7f080121;
-        public static final int accept_invitation=0x7f080124;
-        public static final int account_settings=0x7f0800a1;
-        public static final int achievement_beat_a_friend_at_junior=0x7f08005b;
-        public static final int achievement_beat_a_friend_at_junior_label=0x7f080070;
-        public static final int achievement_beat_a_friend_at_normal=0x7f08005c;
-        public static final int achievement_beat_a_friend_at_normal_label=0x7f080071;
-        public static final int achievement_beat_a_friend_at_strict=0x7f08005d;
-        public static final int achievement_beat_a_friend_at_strict_label=0x7f080072;
-        public static final int achievement_beat_the_easy_junior_bot=0x7f080052;
-        public static final int achievement_beat_the_easy_junior_bot_label=0x7f080067;
-        public static final int achievement_beat_the_easy_normal_bot=0x7f080055;
-        public static final int achievement_beat_the_easy_normal_bot_label=0x7f08006a;
-        public static final int achievement_beat_the_easy_strict_bot=0x7f080058;
-        public static final int achievement_beat_the_easy_strict_bot_label=0x7f08006d;
-        public static final int achievement_beat_the_hard_normal_bot=0x7f080057;
-        public static final int achievement_beat_the_hard_normal_bot_label=0x7f08006c;
-        public static final int achievement_beat_the_hard_strict_bot=0x7f08005a;
-        public static final int achievement_beat_the_hard_strict_bot_label=0x7f08006f;
-        public static final int achievement_beat_the_medium_junior_bot=0x7f080053;
-        public static final int achievement_beat_the_medium_junior_bot_label=0x7f080068;
-        public static final int achievement_beat_the_medium_normal_bot=0x7f080056;
-        public static final int achievement_beat_the_medium_normal_bot_label=0x7f08006b;
-        public static final int achievement_beat_the_medium_strict_bot=0x7f080059;
-        public static final int achievement_beat_the_medium_strict_bot_label=0x7f08006e;
-        public static final int achievement_beta_the_hard_junior_bot=0x7f080054;
-        public static final int achievement_beta_the_hard_junior_bot_label=0x7f080069;
-        public static final int achievement_finished_the_tutorial=0x7f080051;
-        public static final int achievement_finished_the_tutorial_label=0x7f080066;
-        public static final int achievement_forked_win=0x7f08005f;
-        public static final int achievement_forked_win_label=0x7f080074;
-        public static final int achievement_missed_opportunity=0x7f08005e;
-        public static final int achievement_missed_opportunity_label=0x7f080073;
-        public static final int achievement_play_100_matches=0x7f080062;
-        public static final int achievement_play_100_matches_label=0x7f080077;
-        public static final int achievement_play_ten_matches=0x7f080061;
-        public static final int achievement_play_ten_matches_label=0x7f080076;
-        public static final int achievement_thanks=0x7f080064;
-        public static final int achievement_thanks_label=0x7f080079;
-        public static final int achievement_the_gift=0x7f080063;
-        public static final int achievement_the_gift_label=0x7f080078;
-        public static final int achievement_two_birds_with_one_stone=0x7f080060;
-        public static final int achievement_two_birds_with_one_stone_label=0x7f080075;
-        public static final int achievements=0x7f080093;
-        public static final int achievements_not_available=0x7f080095;
-        public static final int action_chat=0x7f0800e7;
-        public static final int action_flip_black_header=0x7f080128;
-        public static final int action_help=0x7f08009a;
-        public static final int action_refresh=0x7f0800e8;
-        public static final int action_settings=0x7f080099;
-        public static final int admob_id=0x7f08012e;
-        public static final int ai_easy=0x7f0800a5;
-        public static final int ai_hard=0x7f0800a7;
-        public static final int ai_level=0x7f0800a3;
-        public static final int ai_medium=0x7f0800a6;
-        public static final int ai_random=0x7f0800a4;
-        public static final int an_achievement_unlocked=0x7f080088;
-        public static final int an_conlficted_rank_save=0x7f080087;
-        public static final int an_leaderboard_beat=0x7f080089;
-        public static final int an_start_ai_game_action=0x7f08007d;
-        public static final int an_start_game_cat=0x7f08007a;
-        public static final int an_start_online_game_action=0x7f08007f;
-        public static final int an_start_online_turn_game_action=0x7f080081;
-        public static final int an_start_pass_n_play_game_action=0x7f08007c;
-        public static final int an_start_quick_game_action=0x7f08007e;
-        public static final int an_start_quick_turn_game_action=0x7f080080;
-        public static final int an_start_ranked_ai_game_action=0x7f080082;
-        public static final int an_start_ranked_online_game_action=0x7f080084;
-        public static final int an_start_ranked_online_turn_game_action=0x7f080086;
-        public static final int an_start_ranked_quick_game_action=0x7f080083;
-        public static final int an_start_ranked_quick_turn_game_action=0x7f080085;
-        public static final int an_start_tutorial_game_action=0x7f08007b;
-        public static final int anonymous=0x7f0800c4;
+        public static final int accept=0x7f080127;
+        public static final int accept_invitation=0x7f08012a;
+        public static final int account_settings=0x7f0800a7;
+        public static final int achievement_beat_a_friend_at_junior=0x7f080061;
+        public static final int achievement_beat_a_friend_at_junior_label=0x7f080076;
+        public static final int achievement_beat_a_friend_at_normal=0x7f080062;
+        public static final int achievement_beat_a_friend_at_normal_label=0x7f080077;
+        public static final int achievement_beat_a_friend_at_strict=0x7f080063;
+        public static final int achievement_beat_a_friend_at_strict_label=0x7f080078;
+        public static final int achievement_beat_the_easy_junior_bot=0x7f080058;
+        public static final int achievement_beat_the_easy_junior_bot_label=0x7f08006d;
+        public static final int achievement_beat_the_easy_normal_bot=0x7f08005b;
+        public static final int achievement_beat_the_easy_normal_bot_label=0x7f080070;
+        public static final int achievement_beat_the_easy_strict_bot=0x7f08005e;
+        public static final int achievement_beat_the_easy_strict_bot_label=0x7f080073;
+        public static final int achievement_beat_the_hard_normal_bot=0x7f08005d;
+        public static final int achievement_beat_the_hard_normal_bot_label=0x7f080072;
+        public static final int achievement_beat_the_hard_strict_bot=0x7f080060;
+        public static final int achievement_beat_the_hard_strict_bot_label=0x7f080075;
+        public static final int achievement_beat_the_medium_junior_bot=0x7f080059;
+        public static final int achievement_beat_the_medium_junior_bot_label=0x7f08006e;
+        public static final int achievement_beat_the_medium_normal_bot=0x7f08005c;
+        public static final int achievement_beat_the_medium_normal_bot_label=0x7f080071;
+        public static final int achievement_beat_the_medium_strict_bot=0x7f08005f;
+        public static final int achievement_beat_the_medium_strict_bot_label=0x7f080074;
+        public static final int achievement_beta_the_hard_junior_bot=0x7f08005a;
+        public static final int achievement_beta_the_hard_junior_bot_label=0x7f08006f;
+        public static final int achievement_finished_the_tutorial=0x7f080057;
+        public static final int achievement_finished_the_tutorial_label=0x7f08006c;
+        public static final int achievement_forked_win=0x7f080065;
+        public static final int achievement_forked_win_label=0x7f08007a;
+        public static final int achievement_missed_opportunity=0x7f080064;
+        public static final int achievement_missed_opportunity_label=0x7f080079;
+        public static final int achievement_play_100_matches=0x7f080068;
+        public static final int achievement_play_100_matches_label=0x7f08007d;
+        public static final int achievement_play_ten_matches=0x7f080067;
+        public static final int achievement_play_ten_matches_label=0x7f08007c;
+        public static final int achievement_thanks=0x7f08006a;
+        public static final int achievement_thanks_label=0x7f08007f;
+        public static final int achievement_the_gift=0x7f080069;
+        public static final int achievement_the_gift_label=0x7f08007e;
+        public static final int achievement_two_birds_with_one_stone=0x7f080066;
+        public static final int achievement_two_birds_with_one_stone_label=0x7f08007b;
+        public static final int achievements=0x7f080099;
+        public static final int achievements_not_available=0x7f08009b;
+        public static final int action_chat=0x7f0800ed;
+        public static final int action_flip_black_header=0x7f08012e;
+        public static final int action_help=0x7f0800a0;
+        public static final int action_refresh=0x7f0800ee;
+        public static final int action_settings=0x7f08009f;
+        public static final int admob_id=0x7f080134;
+        public static final int ai_easy=0x7f0800ab;
+        public static final int ai_hard=0x7f0800ad;
+        public static final int ai_level=0x7f0800a9;
+        public static final int ai_medium=0x7f0800ac;
+        public static final int ai_random=0x7f0800aa;
+        public static final int an_achievement_unlocked=0x7f08008e;
+        public static final int an_conlficted_rank_save=0x7f08008d;
+        public static final int an_leaderboard_beat=0x7f08008f;
+        public static final int an_start_ai_game_action=0x7f080083;
+        public static final int an_start_game_cat=0x7f080080;
+        public static final int an_start_online_game_action=0x7f080085;
+        public static final int an_start_online_turn_game_action=0x7f080087;
+        public static final int an_start_pass_n_play_game_action=0x7f080082;
+        public static final int an_start_quick_game_action=0x7f080084;
+        public static final int an_start_quick_turn_game_action=0x7f080086;
+        public static final int an_start_ranked_ai_game_action=0x7f080088;
+        public static final int an_start_ranked_online_game_action=0x7f08008a;
+        public static final int an_start_ranked_online_turn_game_action=0x7f08008c;
+        public static final int an_start_ranked_quick_game_action=0x7f080089;
+        public static final int an_start_ranked_quick_turn_game_action=0x7f08008b;
+        public static final int an_start_tutorial_game_action=0x7f080081;
+        public static final int anonymous=0x7f0800ca;
         /**  <string name="app_id" translatable="false">316906139838</string> 
          */
-        public static final int app_id=0x7f08012f;
-        public static final int app_name=0x7f08013c;
-        /**   Title for notification shown when GooglePlayServices needs to be
-        enabled for a application to work. [CHAR LIMIT=70] 
-         */
-        public static final int auth_client_needs_enabling_title=0x7f08002e;
-        /**   Title for notification shown when GooglePlayServices needs to be
-        installed for a application to work. [CHAR LIMIT=70] 
-         */
-        public static final int auth_client_needs_installation_title=0x7f08002f;
-        /**   Title for notification shown when GooglePlayServices needs to be
-        udpated for a application to work. [CHAR LIMIT=70] 
-         */
-        public static final int auth_client_needs_update_title=0x7f080030;
-        /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=42] 
-         */
-        public static final int auth_client_play_services_err_notification_msg=0x7f080031;
-        /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
-         */
-        public static final int auth_client_requested_by_msg=0x7f080032;
-        /**   Title for notification shown when a bad version of GooglePlayServices
-        has been installed and needs correction for an application to work.
-        [CHAR LIMIT=70] 
-         */
-        public static final int auth_client_using_bad_version_title=0x7f08002d;
-        public static final int beat_all_time_junior_rank=0x7f080133;
-        public static final int beat_all_time_normal_rank=0x7f080136;
-        public static final int beat_all_time_strict_rank=0x7f080139;
-        public static final int beat_daily_junior_rank=0x7f080135;
-        public static final int beat_daily_normal_rank=0x7f080138;
-        public static final int beat_daily_strict_rank=0x7f08013b;
-        public static final int beat_weekly_junior_rank=0x7f080134;
-        public static final int beat_weekly_normal_rank=0x7f080137;
-        public static final int beat_weekly_strict_rank=0x7f08013a;
+        public static final int app_id=0x7f080135;
+        public static final int app_name=0x7f080142;
+        public static final int auth_client_needs_enabling_title=0x7f08001a;
+        public static final int auth_client_needs_installation_title=0x7f08001b;
+        public static final int auth_client_needs_update_title=0x7f08001c;
+        public static final int auth_client_play_services_err_notification_msg=0x7f08001d;
+        public static final int auth_client_requested_by_msg=0x7f08001e;
+        public static final int auth_client_using_bad_version_title=0x7f080019;
+        public static final int beat_all_time_junior_rank=0x7f080139;
+        public static final int beat_all_time_normal_rank=0x7f08013c;
+        public static final int beat_all_time_strict_rank=0x7f08013f;
+        public static final int beat_daily_junior_rank=0x7f08013b;
+        public static final int beat_daily_normal_rank=0x7f08013e;
+        public static final int beat_daily_strict_rank=0x7f080141;
+        public static final int beat_weekly_junior_rank=0x7f08013a;
+        public static final int beat_weekly_normal_rank=0x7f08013d;
+        public static final int beat_weekly_strict_rank=0x7f080140;
         /**   
          */
-        public static final int board=0x7f080152;
-        public static final int button_send=0x7f0800e6;
-        public static final int cancel=0x7f08013e;
-        public static final int canceled_game=0x7f0800dc;
-        public static final int cannot_invite_non_tester=0x7f08010c;
-        public static final int chat_actionbar_image_content=0x7f0800fb;
-        public static final int chat_title=0x7f0800f7;
-        public static final int choose_ai_mode_title=0x7f0800a2;
-        public static final int choose_local_game_mode_title=0x7f0800a8;
-        public static final int choose_online_game_mode_title=0x7f0800ad;
-        public static final int choose_online_opponent=0x7f0800ae;
-        public static final int choose_quick_game_mode_title=0x7f0800ac;
-        public static final int client_reconnect_required=0x7f080147;
+        public static final int board=0x7f080158;
+        public static final int button_send=0x7f0800ec;
+        public static final int cancel=0x7f080144;
+        public static final int canceled_game=0x7f0800e2;
+        public static final int cannot_invite_non_tester=0x7f080112;
+        public static final int chat_actionbar_image_content=0x7f080101;
+        public static final int chat_title=0x7f0800fd;
+        public static final int choose_ai_mode_title=0x7f0800a8;
+        public static final int choose_local_game_mode_title=0x7f0800ae;
+        public static final int choose_online_game_mode_title=0x7f0800b3;
+        public static final int choose_online_opponent=0x7f0800b4;
+        public static final int choose_quick_game_mode_title=0x7f0800b2;
+        public static final int client_reconnect_required=0x7f08014d;
         public static final int com_shamanland_facebook=0x7f080002;
         public static final int com_shamanland_facebook_like_activity_error=0x7f080007;
         public static final int com_shamanland_facebook_like_box_text_default=0x7f080006;
@@ -2164,324 +2346,346 @@ containing a value of this type.
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_button=0x7f08001f;
+        public static final int common_google_play_services_enable_button=0x7f08002a;
         /**  Message in confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_enable_text=0x7f08001e;
+        public static final int common_google_play_services_enable_text=0x7f080029;
         /**  Title of confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_title=0x7f08001d;
+        public static final int common_google_play_services_enable_title=0x7f080028;
+        /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
+         */
+        public static final int common_google_play_services_error_notification_requested_by_msg=0x7f080023;
         /**  Button in confirmation dialog for installing Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_button=0x7f08001c;
+        public static final int common_google_play_services_install_button=0x7f080027;
         /**  (For phones) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_phone=0x7f08001a;
+        public static final int common_google_play_services_install_text_phone=0x7f080025;
         /**  (For tablets) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_tablet=0x7f08001b;
+        public static final int common_google_play_services_install_text_tablet=0x7f080026;
         /**  Title of confirmation dialog informing user that they need to install
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_title=0x7f080019;
+        public static final int common_google_play_services_install_title=0x7f080024;
         /**  Message in confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_invalid_account_text=0x7f080025;
+        public static final int common_google_play_services_invalid_account_text=0x7f080030;
         /**  Title of confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_invalid_account_title=0x7f080024;
+        public static final int common_google_play_services_invalid_account_title=0x7f08002f;
+        /**   Title for notification shown when GooglePlayServices needs to be enabled for an
+        application to work. [CHAR LIMIT=70] 
+         */
+        public static final int common_google_play_services_needs_enabling_title=0x7f080022;
         /**  Message in confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_network_error_text=0x7f080023;
+        public static final int common_google_play_services_network_error_text=0x7f08002e;
         /**  Title of confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_network_error_title=0x7f080022;
+        public static final int common_google_play_services_network_error_title=0x7f08002d;
+        /**   Title for notification shown when GooglePlayServices needs to be installed
+        for an application to work. [CHAR LIMIT=70] 
+         */
+        public static final int common_google_play_services_notification_needs_installation_title=0x7f080020;
+        /**   Title for notification shown when GooglePlayServices needs to be updated for an
+        application to work. [CHAR LIMIT=70] 
+         */
+        public static final int common_google_play_services_notification_needs_update_title=0x7f080021;
+        /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=42] 
+         */
+        public static final int common_google_play_services_notification_ticker=0x7f08001f;
         /**  Message in confirmation dialog informing user there is an unknown issue in Google Play
         services [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unknown_issue=0x7f080026;
+        public static final int common_google_play_services_unknown_issue=0x7f080031;
         /**  Message in confirmation dialog informing user that date on the device is not correct,
     causing certificate checks to fail. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unsupported_date_text=0x7f080029;
+        public static final int common_google_play_services_unsupported_date_text=0x7f080034;
         /**  Message in confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unsupported_text=0x7f080028;
+        public static final int common_google_play_services_unsupported_text=0x7f080033;
         /**  Title of confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_unsupported_title=0x7f080027;
+        public static final int common_google_play_services_unsupported_title=0x7f080032;
         /**  Button in confirmation dialog for updating Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_button=0x7f08002a;
+        public static final int common_google_play_services_update_button=0x7f080035;
         /**  Message in confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_update_text=0x7f080021;
+        public static final int common_google_play_services_update_text=0x7f08002c;
         /**  Title of confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_title=0x7f080020;
+        public static final int common_google_play_services_update_title=0x7f08002b;
         /**  Sign-in button text [CHAR LIMIT=15] 
          */
-        public static final int common_signin_button_text=0x7f08002b;
+        public static final int common_signin_button_text=0x7f080036;
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
-        public static final int common_signin_button_text_long=0x7f08002c;
-        public static final int communication_error=0x7f08010b;
+        public static final int common_signin_button_text_long=0x7f080037;
+        public static final int communication_error=0x7f080111;
         /**  Post pages 
  Post page 1 
          */
-        public static final int congratulations_header=0x7f080160;
-        public static final int congratulations_text=0x7f080161;
-        public static final int connectionProblem=0x7f08003c;
-        public static final int continueLbl=0x7f0800c0;
-        public static final int copied_to_clipboard=0x7f080040;
-        public static final int copySubjectToClipboardAsWorkAroundForFacebookAppBug=0x7f08003f;
-        public static final int decline=0x7f0800cf;
-        public static final int declined_invite=0x7f0800d0;
-        public static final int dismiss=0x7f0800c9;
-        public static final int dismiss_this_and_older=0x7f0800ca;
-        public static final int dismissed_completed_matches=0x7f0800cd;
-        public static final int dismissed_match=0x7f0800cb;
-        public static final int draw=0x7f0800ea;
-        public static final int draws_stat_label=0x7f080102;
-        public static final int error_black_name=0x7f0800a9;
-        public static final int error_white_name=0x7f0800aa;
-        public static final int exit_waiting_play_again=0x7f0800ec;
-        public static final int expired_game=0x7f0800db;
-        public static final int finishing_move=0x7f080125;
+        public static final int congratulations_header=0x7f080166;
+        public static final int congratulations_text=0x7f080167;
+        public static final int connectionProblem=0x7f080042;
+        public static final int continueLbl=0x7f0800c6;
+        public static final int copied_to_clipboard=0x7f080046;
+        public static final int copySubjectToClipboardAsWorkAroundForFacebookAppBug=0x7f080045;
+        public static final int decline=0x7f0800d5;
+        public static final int declined_invite=0x7f0800d6;
+        public static final int dismiss=0x7f0800cf;
+        public static final int dismiss_this_and_older=0x7f0800d0;
+        public static final int dismissed_completed_matches=0x7f0800d3;
+        public static final int dismissed_match=0x7f0800d1;
+        public static final int draw=0x7f0800f0;
+        public static final int draws_stat_label=0x7f080108;
+        public static final int error_black_name=0x7f0800af;
+        public static final int error_white_name=0x7f0800b0;
+        public static final int exit_waiting_play_again=0x7f0800f2;
+        public static final int expired_game=0x7f0800e1;
+        public static final int finishing_move=0x7f08012b;
         /**   
          */
-        public static final int first_move_header=0x7f080153;
-        public static final int first_move_text=0x7f080154;
-        public static final int ga_trackingId=0x7f08012d;
-        public static final int game_stats_title=0x7f0800fe;
-        public static final int game_type=0x7f0800b0;
-        public static final int game_type_short_descr=0x7f0800b8;
-        public static final int gamehelper_app_misconfigured=0x7f08012a;
-        public static final int gamehelper_license_failed=0x7f08012b;
-        public static final int gamehelper_sign_in_failed=0x7f080129;
-        public static final int gamehelper_unknown_error=0x7f08012c;
-        public static final int httpError=0x7f08003b;
-        public static final int internal_error=0x7f080149;
-        public static final int invalid_move_source_is_empty=0x7f0800df;
-        public static final int invalid_move_space_has_bigger_piece=0x7f0800de;
-        public static final int invalid_move_title=0x7f0800dd;
-        public static final int invalid_stack_move_in_strict=0x7f0800e0;
-        public static final int invite_removed=0x7f080114;
-        public static final int invite_restored=0x7f0800d1;
-        public static final int invited_to_realtime_match=0x7f0800d3;
-        public static final int invited_to_turn_match=0x7f0800d2;
-        public static final int label_player_black_name=0x7f08009e;
-        public static final int label_player_white_name=0x7f08009f;
-        public static final int leaderboard_junior_rank=0x7f080130;
-        public static final int leaderboard_normal_rank=0x7f080131;
-        public static final int leaderboard_strict_rank=0x7f080132;
-        public static final int leaderboards=0x7f080094;
-        public static final int leaderboards_not_available=0x7f080096;
-        public static final int leave_game_message=0x7f0800f5;
-        public static final int leave_game_title=0x7f0800f4;
-        public static final int local_completed_match_text=0x7f0800d9;
-        public static final int local_played_last_text=0x7f0800da;
-        public static final int local_player_name=0x7f0800f6;
-        public static final int local_ranked_match_subtext=0x7f0800d7;
-        public static final int local_unranked_match_subtext=0x7f0800d8;
-        public static final int losses_stat_label=0x7f080101;
-        public static final int match_error_already_rematched=0x7f080146;
-        public static final int match_error_inactive_match=0x7f08014b;
-        public static final int match_error_locally_modified=0x7f08014c;
-        public static final int match_removed=0x7f080117;
-        public static final int match_restored=0x7f0800cc;
-        public static final int match_updated=0x7f080116;
-        public static final int matches_restored=0x7f0800ce;
-        public static final int message_hint=0x7f08011e;
+        public static final int first_move_header=0x7f080159;
+        public static final int first_move_text=0x7f08015a;
+        public static final int ga_trackingId=0x7f080133;
+        public static final int game_stats_title=0x7f080104;
+        public static final int game_type=0x7f0800b6;
+        public static final int game_type_short_descr=0x7f0800be;
+        public static final int gamehelper_app_misconfigured=0x7f080130;
+        public static final int gamehelper_license_failed=0x7f080131;
+        public static final int gamehelper_sign_in_failed=0x7f08012f;
+        public static final int gamehelper_unknown_error=0x7f080132;
+        public static final int httpError=0x7f080041;
+        public static final int internal_error=0x7f08014f;
+        public static final int invalid_move_source_is_empty=0x7f0800e5;
+        public static final int invalid_move_space_has_bigger_piece=0x7f0800e4;
+        public static final int invalid_move_title=0x7f0800e3;
+        public static final int invalid_stack_move_in_strict=0x7f0800e6;
+        public static final int invite_removed=0x7f08011a;
+        public static final int invite_restored=0x7f0800d7;
+        public static final int invited_to_realtime_match=0x7f0800d9;
+        public static final int invited_to_turn_match=0x7f0800d8;
+        public static final int label_player_black_name=0x7f0800a4;
+        public static final int label_player_white_name=0x7f0800a5;
+        public static final int leaderboard_junior_rank=0x7f080136;
+        public static final int leaderboard_normal_rank=0x7f080137;
+        public static final int leaderboard_strict_rank=0x7f080138;
+        public static final int leaderboards=0x7f08009a;
+        public static final int leaderboards_not_available=0x7f08009c;
+        public static final int leave_game_message=0x7f0800fb;
+        public static final int leave_game_title=0x7f0800fa;
+        public static final int local_completed_match_text=0x7f0800df;
+        public static final int local_played_last_text=0x7f0800e0;
+        public static final int local_player_name=0x7f0800fc;
+        public static final int local_ranked_match_subtext=0x7f0800dd;
+        public static final int local_unranked_match_subtext=0x7f0800de;
+        public static final int losses_stat_label=0x7f080107;
+        public static final int match_error_already_rematched=0x7f08014c;
+        public static final int match_error_inactive_match=0x7f080151;
+        public static final int match_error_locally_modified=0x7f080152;
+        public static final int match_removed=0x7f08011d;
+        public static final int match_restored=0x7f0800d2;
+        public static final int match_updated=0x7f08011c;
+        public static final int matches_restored=0x7f0800d4;
+        public static final int message_hint=0x7f080124;
         /**  invalid move hints 
          */
-        public static final int move_1_hint=0x7f080166;
+        public static final int move_1_hint=0x7f08016c;
         /**  Second set of pages 
          */
-        public static final int move_1a_text=0x7f080155;
-        public static final int move_1b_text=0x7f080156;
-        public static final int move_1c_text=0x7f080157;
-        public static final int move_2_hint=0x7f080167;
+        public static final int move_1a_text=0x7f08015b;
+        public static final int move_1b_text=0x7f08015c;
+        public static final int move_1c_text=0x7f08015d;
+        public static final int move_2_hint=0x7f08016d;
         /**  Third set of pages 
          */
-        public static final int move_2a_text=0x7f080158;
-        public static final int move_2b_text=0x7f080159;
-        public static final int move_3_hint=0x7f080168;
+        public static final int move_2a_text=0x7f08015e;
+        public static final int move_2b_text=0x7f08015f;
+        public static final int move_3_hint=0x7f08016e;
         /**   
          */
-        public static final int move_3_text=0x7f08015c;
+        public static final int move_3_text=0x7f080162;
         /**  Fourth set 
          */
-        public static final int move_4=0x7f08015d;
-        public static final int move_4_hint=0x7f080169;
+        public static final int move_4=0x7f080163;
+        public static final int move_4_hint=0x7f08016f;
         /**  Fifth set 
          */
-        public static final int move_5_header=0x7f08015e;
-        public static final int move_5_hint=0x7f08016a;
-        public static final int move_5_text=0x7f08015f;
-        public static final int multiple_invites=0x7f080112;
-        public static final int multiple_invites_status=0x7f080113;
-        public static final int multiple_invites_title=0x7f080111;
-        public static final int network_error_operation_failed=0x7f080148;
-        public static final int newRank=0x7f08010f;
-        public static final int new_game_live=0x7f080092;
-        public static final int new_game_same_device=0x7f08008f;
-        public static final int new_game_vs_ai=0x7f080090;
-        public static final int new_quick_game=0x7f080091;
-        public static final int no=0x7f080042;
+        public static final int move_5_header=0x7f080164;
+        public static final int move_5_hint=0x7f080170;
+        public static final int move_5_text=0x7f080165;
+        public static final int multiple_invites=0x7f080118;
+        public static final int multiple_invites_status=0x7f080119;
+        public static final int multiple_invites_title=0x7f080117;
+        public static final int network_error_operation_failed=0x7f08014e;
+        public static final int newRank=0x7f080115;
+        public static final int new_game_live=0x7f080098;
+        public static final int new_game_same_device=0x7f080095;
+        public static final int new_game_vs_ai=0x7f080096;
+        public static final int new_quick_game=0x7f080097;
+        public static final int no=0x7f080048;
         /**   
          */
-        public static final int no_peek_header=0x7f08015a;
-        public static final int no_peek_text=0x7f08015b;
-        public static final int not_right_now=0x7f080122;
-        public static final int num_games_lbl=0x7f0800fd;
-        public static final int num_move_lbl=0x7f0800fc;
-        public static final int num_picker_add_sign=0x7f08004f;
-        public static final int num_picker_minus_sign=0x7f080050;
-        public static final int offline_achievement_label=0x7f080065;
-        public static final int ok=0x7f08013d;
-        public static final int onJoinedRoom=0x7f080106;
-        public static final int onRoomConnected=0x7f080107;
-        public static final int onRoomCreated=0x7f080108;
-        public static final int online_setting_title=0x7f0800f9;
-        public static final int opponent=0x7f0800e4;
-        public static final int opponent_does_not_want_to_play_again=0x7f0800f0;
-        public static final int opponent_hasnt_seen_move=0x7f08011b;
-        public static final int opponent_invited_to_rematch=0x7f080123;
-        public static final int opponent_is_in_chat=0x7f0800f2;
-        public static final int opponent_is_thinking=0x7f0800f1;
-        public static final int opponent_left_exit_play_again=0x7f0800ed;
-        public static final int opponent_says=0x7f080120;
-        public static final int opponent_thinking=0x7f0800e5;
-        public static final int opponent_wants_to_play_again=0x7f0800ef;
-        public static final int opponent_won=0x7f0800c6;
-        public static final int originalRank=0x7f08010e;
-        public static final int peer_left_the_game=0x7f0800f3;
-        public static final int playAgain=0x7f080110;
-        public static final int play_again=0x7f0800eb;
-        public static final int play_again_waiting=0x7f0800f8;
+        public static final int no_peek_header=0x7f080160;
+        public static final int no_peek_text=0x7f080161;
+        public static final int not_right_now=0x7f080128;
+        public static final int num_games_lbl=0x7f080103;
+        public static final int num_move_lbl=0x7f080102;
+        public static final int num_picker_add_sign=0x7f080055;
+        public static final int num_picker_minus_sign=0x7f080056;
+        public static final int offline_achievement_label=0x7f08006b;
+        public static final int ok=0x7f080143;
+        public static final int onJoinedRoom=0x7f08010c;
+        public static final int onRoomConnected=0x7f08010d;
+        public static final int onRoomCreated=0x7f08010e;
+        public static final int online_setting_title=0x7f0800ff;
+        public static final int opponent=0x7f0800ea;
+        public static final int opponent_does_not_want_to_play_again=0x7f0800f6;
+        public static final int opponent_hasnt_seen_move=0x7f080121;
+        public static final int opponent_invited_to_rematch=0x7f080129;
+        public static final int opponent_is_in_chat=0x7f0800f8;
+        public static final int opponent_is_thinking=0x7f0800f7;
+        public static final int opponent_left_exit_play_again=0x7f0800f3;
+        public static final int opponent_says=0x7f080126;
+        public static final int opponent_thinking=0x7f0800eb;
+        public static final int opponent_wants_to_play_again=0x7f0800f5;
+        public static final int opponent_won=0x7f0800cc;
+        public static final int originalRank=0x7f080114;
+        public static final int peer_left_the_game=0x7f0800f9;
+        public static final int playAgain=0x7f080116;
+        public static final int play_again=0x7f0800f1;
+        public static final int play_again_waiting=0x7f0800fe;
         /**  Post page 2 
          */
-        public static final int play_modes_header=0x7f080162;
-        public static final int play_modes_text=0x7f080163;
-        public static final int played_ago=0x7f0800c8;
-        public static final int player_black_lbl=0x7f080103;
-        public static final int player_stat_label=0x7f0800ff;
-        public static final int player_white_lbl=0x7f080104;
-        public static final int player_won=0x7f0800e9;
-        public static final int please_wait=0x7f08011d;
-        public static final int pref__upgrade_to_premium=0x7f080143;
-        public static final int pref_about=0x7f080038;
-        public static final int pref_about_key=0x7f080034;
-        public static final int pref_changes=0x7f080039;
-        public static final int pref_changes_key=0x7f080035;
-        public static final int pref_confirm_reset_preferences=0x7f08003a;
-        public static final int pref_copy_for_face_book=0x7f080044;
-        public static final int pref_copy_for_face_book_key=0x7f080036;
-        public static final int pref_is_premium=0x7f080144;
-        public static final int pref_premium_key=0x7f080142;
-        public static final int pref_rate_app=0x7f08004c;
-        public static final int pref_rate_app_key=0x7f08004b;
+        public static final int play_modes_header=0x7f080168;
+        public static final int play_modes_text=0x7f080169;
+        public static final int played_ago=0x7f0800ce;
+        public static final int player_black_lbl=0x7f080109;
+        public static final int player_stat_label=0x7f080105;
+        public static final int player_white_lbl=0x7f08010a;
+        public static final int player_won=0x7f0800ef;
+        public static final int please_wait=0x7f080123;
+        public static final int pref__upgrade_to_premium=0x7f080149;
+        public static final int pref_about=0x7f08003e;
+        public static final int pref_about_key=0x7f08003a;
+        public static final int pref_changes=0x7f08003f;
+        public static final int pref_changes_key=0x7f08003b;
+        public static final int pref_confirm_reset_preferences=0x7f080040;
+        public static final int pref_copy_for_face_book=0x7f08004a;
+        public static final int pref_copy_for_face_book_key=0x7f08003c;
+        public static final int pref_is_premium=0x7f08014a;
+        public static final int pref_premium_key=0x7f080148;
+        public static final int pref_rate_app=0x7f080052;
+        public static final int pref_rate_app_key=0x7f080051;
         /**  translate 
          */
-        public static final int pref_reset_preferences=0x7f080037;
+        public static final int pref_reset_preferences=0x7f08003d;
         /**  do not translate 
          */
-        public static final int pref_reset_preferences_key=0x7f080033;
-        public static final int pref_sound_fx=0x7f080141;
-        public static final int pref_sound_fx_key=0x7f080140;
-        public static final int prompt_player_name=0x7f08009d;
-        public static final int prompt_title_player_name=0x7f08009c;
+        public static final int pref_reset_preferences_key=0x7f080039;
+        public static final int pref_sound_fx=0x7f080147;
+        public static final int pref_sound_fx_key=0x7f080146;
+        public static final int prompt_player_name=0x7f0800a3;
+        public static final int prompt_title_player_name=0x7f0800a2;
         public static final int pull_to_refresh_pull_label=0x7f080009;
         public static final int pull_to_refresh_refreshing_label=0x7f08000b;
         public static final int pull_to_refresh_release_label=0x7f08000a;
-        public static final int rank_unknown=0x7f080105;
-        public static final int rankedLabel=0x7f0800c3;
-        public static final int ranked_game_subtext=0x7f0800c7;
+        public static final int rank_unknown=0x7f08010b;
+        public static final int rankedLabel=0x7f0800c9;
+        public static final int ranked_game_subtext=0x7f0800cd;
         /**  Post page 3 
          */
-        public static final int ranked_games_header=0x7f080164;
-        public static final int ranked_games_text=0x7f080165;
-        public static final int ranks=0x7f08010d;
-        public static final int rate_app=0x7f080045;
-        public static final int rate_no_thanks=0x7f080048;
-        public static final int rate_redirects_to_market=0x7f08004a;
-        public static final int rate_remind_later=0x7f080047;
-        public static final int rate_text=0x7f080046;
-        public static final int rate_unknown_app_title=0x7f080049;
-        public static final int realtime=0x7f0800bc;
-        public static final int received_invite_from=0x7f08009b;
-        public static final int reconnecting=0x7f08011a;
-        public static final int rematch=0x7f0800d6;
-        public static final int rematch_awaiting_move_from=0x7f080119;
-        public static final int rematch_look_for_invite=0x7f080118;
-        public static final int rematch_updated=0x7f080115;
-        public static final int remember_this_choice=0x7f080043;
-        public static final int remove_ads=0x7f0800b4;
+        public static final int ranked_games_header=0x7f08016a;
+        public static final int ranked_games_text=0x7f08016b;
+        public static final int ranks=0x7f080113;
+        public static final int rate_app=0x7f08004b;
+        public static final int rate_no_thanks=0x7f08004e;
+        public static final int rate_redirects_to_market=0x7f080050;
+        public static final int rate_remind_later=0x7f08004d;
+        public static final int rate_text=0x7f08004c;
+        public static final int rate_unknown_app_title=0x7f08004f;
+        public static final int realtime=0x7f0800c2;
+        public static final int received_invite_from=0x7f0800a1;
+        public static final int reconnecting=0x7f080120;
+        public static final int rematch=0x7f0800dc;
+        public static final int rematch_awaiting_move_from=0x7f08011f;
+        public static final int rematch_look_for_invite=0x7f08011e;
+        public static final int rematch_updated=0x7f08011b;
+        public static final int remember_this_choice=0x7f080049;
+        public static final int remove_ads=0x7f0800ba;
         public static final int retry=0x7f080001;
-        public static final int select_opponent=0x7f0800af;
-        public static final int sendMove=0x7f08010a;
-        public static final int sendRealTimeMessage=0x7f080109;
-        public static final int send_move_message=0x7f08011f;
-        public static final int sending_move=0x7f08011c;
-        public static final int settings=0x7f08004e;
-        public static final int share=0x7f08003d;
-        public static final int shareVia=0x7f08003e;
-        public static final int sign_in_to_play_network_game=0x7f080097;
-        public static final int sign_in_to_view_invites=0x7f080098;
-        public static final int sign_in_why=0x7f08008a;
-        public static final int sign_out=0x7f08008c;
-        public static final int signing_in=0x7f08008d;
-        public static final int signing_out=0x7f08008e;
-        public static final int skip=0x7f0800c1;
+        public static final int select_opponent=0x7f0800b5;
+        public static final int sendMove=0x7f080110;
+        public static final int sendRealTimeMessage=0x7f08010f;
+        public static final int send_move_message=0x7f080125;
+        public static final int sending_move=0x7f080122;
+        public static final int settings=0x7f080054;
+        public static final int share=0x7f080043;
+        public static final int shareVia=0x7f080044;
+        public static final int sign_in_to_play_network_game=0x7f08009d;
+        public static final int sign_in_to_view_invites=0x7f08009e;
+        public static final int sign_in_why=0x7f080090;
+        public static final int sign_out=0x7f080092;
+        public static final int signing_in=0x7f080093;
+        public static final int signing_out=0x7f080094;
+        public static final int skip=0x7f0800c7;
         public static final int spb_default_speed=0x7f080008;
         /**   
          */
-        public static final int stack_header=0x7f080150;
-        public static final int stack_text=0x7f080151;
-        public static final int start=0x7f0800a0;
-        public static final int startGame=0x7f0800bf;
-        public static final int start_a_new_match=0x7f080126;
-        public static final int starting_rematch=0x7f080127;
-        public static final int status_multiplayer_error_not_trusted_tester=0x7f080145;
-        public static final int subtext_invited_to_ranked_match=0x7f0800d4;
-        public static final int subtext_invited_to_unranked_match=0x7f0800d5;
-        public static final int title_game=0x7f08013f;
-        public static final int tutor=0x7f08014d;
-        public static final int tutorial=0x7f0800bd;
-        public static final int type=0x7f0800c2;
-        public static final int type_junior=0x7f0800b1;
-        public static final int type_junior_name=0x7f0800b5;
-        public static final int type_junior_short_descr=0x7f0800b9;
-        public static final int type_normal=0x7f0800b2;
-        public static final int type_normal_name=0x7f0800b6;
-        public static final int type_normal_short_descr=0x7f0800ba;
-        public static final int type_strict=0x7f0800b3;
-        public static final int type_strict_name=0x7f0800b7;
-        public static final int type_strict_short_descr=0x7f0800bb;
+        public static final int stack_header=0x7f080156;
+        public static final int stack_text=0x7f080157;
+        public static final int start=0x7f0800a6;
+        public static final int startGame=0x7f0800c5;
+        public static final int start_a_new_match=0x7f08012c;
+        public static final int starting_rematch=0x7f08012d;
+        public static final int status_multiplayer_error_not_trusted_tester=0x7f08014b;
+        public static final int subtext_invited_to_ranked_match=0x7f0800da;
+        public static final int subtext_invited_to_unranked_match=0x7f0800db;
+        public static final int title_game=0x7f080145;
+        public static final int tutor=0x7f080153;
+        public static final int tutorial=0x7f0800c3;
+        public static final int type=0x7f0800c8;
+        public static final int type_junior=0x7f0800b7;
+        public static final int type_junior_name=0x7f0800bb;
+        public static final int type_junior_short_descr=0x7f0800bf;
+        public static final int type_normal=0x7f0800b8;
+        public static final int type_normal_name=0x7f0800bc;
+        public static final int type_normal_short_descr=0x7f0800c0;
+        public static final int type_strict=0x7f0800b9;
+        public static final int type_strict_name=0x7f0800bd;
+        public static final int type_strict_short_descr=0x7f0800c1;
         public static final int undo=0x7f080000;
-        public static final int unexpected_status=0x7f08014a;
-        public static final int unique_error_o_name=0x7f0800ab;
-        public static final int waiting_for_opponent_to_decide_to_play_again=0x7f0800ee;
+        public static final int unexpected_status=0x7f080150;
+        public static final int unique_error_o_name=0x7f0800b1;
+        public static final int waiting_for_opponent_to_decide_to_play_again=0x7f0800f4;
+        /**  Text on a placeholder buy button when Google Play services is not
+         available or up-to-date 
+         */
+        public static final int wallet_buy_button_place_holder=0x7f080038;
         /**  First pages 
          */
-        public static final int welcome_header=0x7f08014e;
-        public static final int welcome_text=0x7f08014f;
-        public static final int wins_stat_label=0x7f080100;
-        public static final int yes=0x7f080041;
-        public static final int you=0x7f0800e1;
-        public static final int you_are_signed_in_as=0x7f08008b;
-        public static final int you_beat_opponent=0x7f0800c5;
-        public static final int you_left_the_game=0x7f0800fa;
-        public static final int you_lost=0x7f0800e3;
-        public static final int you_won=0x7f0800e2;
-        public static final int yourRank=0x7f0800be;
+        public static final int welcome_header=0x7f080154;
+        public static final int welcome_text=0x7f080155;
+        public static final int wins_stat_label=0x7f080106;
+        public static final int yes=0x7f080047;
+        public static final int you=0x7f0800e7;
+        public static final int you_are_signed_in_as=0x7f080091;
+        public static final int you_beat_opponent=0x7f0800cb;
+        public static final int you_left_the_game=0x7f080100;
+        public static final int you_lost=0x7f0800e9;
+        public static final int you_won=0x7f0800e8;
+        public static final int yourRank=0x7f0800c4;
     }
     public static final class style {
         /** 
@@ -2501,7 +2705,7 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f090082;
+        public static final int AppBaseTheme=0x7f090086;
         public static final int Sherlock___TextAppearance_Small=0x7f09005c;
         public static final int Sherlock___Theme=0x7f090067;
         public static final int Sherlock___Theme_DarkActionBar=0x7f090069;
@@ -2553,7 +2757,7 @@ containing a value of this type.
  <item name="android:detailsElementBackground" tools:targetApi="11">@drawable/background</item> 
  Doesn't recognize the keyboardViewStyle     <item name="keyboardViewStyle">@style/Widget.MyTheme.KeyboardView</item> 
          */
-        public static final int Theme_MyTheme=0x7f090074;
+        public static final int Theme_MyTheme=0x7f090078;
         public static final int Theme_Sherlock=0x7f09006a;
         public static final int Theme_Sherlock_Light=0x7f09006b;
         public static final int Theme_Sherlock_Light_DarkActionBar=0x7f09006c;
@@ -2579,13 +2783,22 @@ containing a value of this type.
         public static final int UndoBarMessageKitKat=0x7f090009;
         public static final int UndoBarMessageMaterial=0x7f09000c;
         public static final int UndoBarNoDivider=0x7f09000e;
+        public static final int WalletFragmentDefaultButtonTextAppearance=0x7f090071;
+        public static final int WalletFragmentDefaultDetailsHeaderTextAppearance=0x7f090070;
+        public static final int WalletFragmentDefaultDetailsTextAppearance=0x7f09006f;
+        /** 
+         Default style of the wallet fragment that will be used if not set explicitly
+         when fragment is created
+    
+         */
+        public static final int WalletFragmentDefaultStyle=0x7f090072;
         public static final int Widget=0x7f090016;
         public static final int Widget_FacebookLikeBox=0x7f090011;
         public static final int Widget_FacebookLikeButton=0x7f090010;
         public static final int Widget_FacebookLikeButtonBase=0x7f09000f;
-        public static final int Widget_MyTheme_ActionBar=0x7f090076;
-        public static final int Widget_MyTheme_ActionButton=0x7f090075;
-        public static final int Widget_MyTheme_CompoundButton_CheckBox=0x7f090078;
+        public static final int Widget_MyTheme_ActionBar=0x7f09007a;
+        public static final int Widget_MyTheme_ActionButton=0x7f090079;
+        public static final int Widget_MyTheme_CompoundButton_CheckBox=0x7f09007c;
         /** 
               <item name="android:keyTextSize">22sp</item>
         <item name="android:keyTextColor">#FFFFFFFF</item>
@@ -2601,7 +2814,7 @@ containing a value of this type.
 
         
          */
-        public static final int Widget_MyTheme_KeyboardView=0x7f09007c;
+        public static final int Widget_MyTheme_KeyboardView=0x7f090080;
         public static final int Widget_ProgressBar_PullToRefresh=0x7f090015;
         public static final int Widget_Sherlock_ActionBar=0x7f090018;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f090019;
@@ -2651,7 +2864,7 @@ containing a value of this type.
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f090048;
         /**  Application theme. 
          */
-        public static final int WoodDialog_MyTheme=0x7f090077;
+        public static final int WoodDialog_MyTheme=0x7f09007b;
         /** 
     this doesn't work used as a style on individual spinners in dialogs? 
     <style name="Spinner.MyTheme.Spinner" parent="@android:style/Widget.Spinner">
@@ -2662,8 +2875,8 @@ containing a value of this type.
 
     
          */
-        public static final int dark_button=0x7f09007d;
-        public static final int game_button=0x7f09006f;
+        public static final int dark_button=0x7f090081;
+        public static final int game_button=0x7f090073;
         /** 
               <item name="android:paddingBottom">5dp</item>       
         <item name="android:paddingTop">5dp</item>
@@ -2671,21 +2884,21 @@ containing a value of this type.
 
         
          */
-        public static final int game_piece_inset=0x7f09007a;
+        public static final int game_piece_inset=0x7f09007e;
         /**  <item name="android:textAppearance">?android:attr/textAppearanceLarge</item> 
          */
-        public static final int game_profile_name=0x7f09007f;
-        public static final int game_profile_pic=0x7f09007e;
-        public static final int game_profile_rank=0x7f090080;
-        public static final int game_profile_wins=0x7f090081;
-        public static final int game_stats_dialog_Window=0x7f090079;
-        public static final int menu_button=0x7f090071;
-        public static final int menu_button_filler=0x7f090073;
-        public static final int menu_button_layout=0x7f090070;
-        public static final int menu_button_text=0x7f090072;
+        public static final int game_profile_name=0x7f090083;
+        public static final int game_profile_pic=0x7f090082;
+        public static final int game_profile_rank=0x7f090084;
+        public static final int game_profile_wins=0x7f090085;
+        public static final int game_stats_dialog_Window=0x7f09007d;
+        public static final int menu_button=0x7f090075;
+        public static final int menu_button_filler=0x7f090077;
+        public static final int menu_button_layout=0x7f090074;
+        public static final int menu_button_text=0x7f090076;
         /**  <item name="android:scaleType">fitCenter</item> 
          */
-        public static final int player_stack=0x7f09007b;
+        public static final int player_stack=0x7f09007f;
     }
     public static final class xml {
         public static final int prefs_about=0x7f050000;
@@ -5896,7 +6109,7 @@ containing a value of this type.
            @see #ValueDisplayingEditTextPreference_formattedSummary
          */
         public static final int[] ValueDisplayingEditTextPreference = {
-            0x7f0100a0
+            0x7f0100af
         };
         /**
           <p>This symbol is the offset where the {@link com.oakonell.ticstacktoe.R.attr#formattedSummary}
@@ -5912,5 +6125,328 @@ containing a value of this type.
           @attr name android:formattedSummary
         */
         public static final int ValueDisplayingEditTextPreference_formattedSummary = 0;
+        /**  Attributes for the WalletFragment &lt;fragment&gt; tag 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #WalletFragmentOptions_environment com.oakonell.ticstacktoe:environment}</code></td><td> Google Wallet environment to use </td></tr>
+           <tr><td><code>{@link #WalletFragmentOptions_fragmentMode com.oakonell.ticstacktoe:fragmentMode}</code></td><td> Fragment mode </td></tr>
+           <tr><td><code>{@link #WalletFragmentOptions_fragmentStyle com.oakonell.ticstacktoe:fragmentStyle}</code></td><td> A style resource specifing attributes to customize the look and feel of WalletFragment </td></tr>
+           <tr><td><code>{@link #WalletFragmentOptions_theme com.oakonell.ticstacktoe:theme}</code></td><td> Theme to be used for the Wallet selector </td></tr>
+           </table>
+           @see #WalletFragmentOptions_environment
+           @see #WalletFragmentOptions_fragmentMode
+           @see #WalletFragmentOptions_fragmentStyle
+           @see #WalletFragmentOptions_theme
+         */
+        public static final int[] WalletFragmentOptions = {
+            0x7f0100a0, 0x7f0100a1, 0x7f0100a2, 0x7f0100a3
+        };
+        /**
+          <p>
+          @attr description
+           Google Wallet environment to use 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>production</code></td><td>1</td><td></td></tr>
+<tr><td><code>sandbox</code></td><td>0</td><td></td></tr>
+<tr><td><code>strict_sandbox</code></td><td>2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:environment
+        */
+        public static final int WalletFragmentOptions_environment = 1;
+        /**
+          <p>
+          @attr description
+           Fragment mode 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>buyButton</code></td><td>1</td><td></td></tr>
+<tr><td><code>selectionDetails</code></td><td>2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:fragmentMode
+        */
+        public static final int WalletFragmentOptions_fragmentMode = 3;
+        /**
+          <p>
+          @attr description
+           A style resource specifing attributes to customize the look and feel of WalletFragment 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name android:fragmentStyle
+        */
+        public static final int WalletFragmentOptions_fragmentStyle = 2;
+        /**
+          <p>
+          @attr description
+           Theme to be used for the Wallet selector 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>holo_dark</code></td><td>0</td><td></td></tr>
+<tr><td><code>holo_light</code></td><td>1</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:theme
+        */
+        public static final int WalletFragmentOptions_theme = 0;
+        /**  Attributes that may be specified in a style resource to customize the look and feel of
+         WalletFragment 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_buyButtonAppearance com.oakonell.ticstacktoe:buyButtonAppearance}</code></td><td> Appearance of the buy button.</td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_buyButtonHeight com.oakonell.ticstacktoe:buyButtonHeight}</code></td><td> Height of the buy button.</td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_buyButtonText com.oakonell.ticstacktoe:buyButtonText}</code></td><td> Text on the buy button.</td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_buyButtonWidth com.oakonell.ticstacktoe:buyButtonWidth}</code></td><td> Width of the buy button.</td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsBackground com.oakonell.ticstacktoe:maskedWalletDetailsBackground}</code></td><td> Masked wallet details background </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsButtonBackground com.oakonell.ticstacktoe:maskedWalletDetailsButtonBackground}</code></td><td> "Change" button background in masked wallet details view </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance com.oakonell.ticstacktoe:maskedWalletDetailsButtonTextAppearance}</code></td><td> TextAppearance for the "Change" button in masked wallet details view </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance com.oakonell.ticstacktoe:maskedWalletDetailsHeaderTextAppearance}</code></td><td> TextAppearance for headers describing masked wallet details </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsLogoImageType com.oakonell.ticstacktoe:maskedWalletDetailsLogoImageType}</code></td><td> Type of the wallet logo image in masked wallet details view </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsLogoTextColor com.oakonell.ticstacktoe:maskedWalletDetailsLogoTextColor}</code></td><td> Color of the Google Wallet logo text in masked wallet details view </td></tr>
+           <tr><td><code>{@link #WalletFragmentStyle_maskedWalletDetailsTextAppearance com.oakonell.ticstacktoe:maskedWalletDetailsTextAppearance}</code></td><td> TextAppearance for masked wallet details </td></tr>
+           </table>
+           @see #WalletFragmentStyle_buyButtonAppearance
+           @see #WalletFragmentStyle_buyButtonHeight
+           @see #WalletFragmentStyle_buyButtonText
+           @see #WalletFragmentStyle_buyButtonWidth
+           @see #WalletFragmentStyle_maskedWalletDetailsBackground
+           @see #WalletFragmentStyle_maskedWalletDetailsButtonBackground
+           @see #WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance
+           @see #WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance
+           @see #WalletFragmentStyle_maskedWalletDetailsLogoImageType
+           @see #WalletFragmentStyle_maskedWalletDetailsLogoTextColor
+           @see #WalletFragmentStyle_maskedWalletDetailsTextAppearance
+         */
+        public static final int[] WalletFragmentStyle = {
+            0x7f0100a4, 0x7f0100a5, 0x7f0100a6, 0x7f0100a7,
+            0x7f0100a8, 0x7f0100a9, 0x7f0100aa, 0x7f0100ab,
+            0x7f0100ac, 0x7f0100ad, 0x7f0100ae
+        };
+        /**
+          <p>
+          @attr description
+           Appearance of the buy button. Must be one of "classic", "grayscale" and "monochrome" 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>classic</code></td><td>1</td><td></td></tr>
+<tr><td><code>grayscale</code></td><td>2</td><td></td></tr>
+<tr><td><code>monochrome</code></td><td>3</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:buyButtonAppearance
+        */
+        public static final int WalletFragmentStyle_buyButtonAppearance = 3;
+        /**
+          <p>
+          @attr description
+           Height of the buy button. This includes an 8dp padding (4dp on each side) used for
+             pressed and focused states of the button. The value can be a specific height, e.g.
+             "48dp", or special values "match_parent" and "wrap_content". 
+
+
+          <p>May be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>match_parent</code></td><td>-1</td><td></td></tr>
+<tr><td><code>wrap_content</code></td><td>-2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:buyButtonHeight
+        */
+        public static final int WalletFragmentStyle_buyButtonHeight = 0;
+        /**
+          <p>
+          @attr description
+           Text on the buy button. Must be one of "buy_with_google", "buy_now" and "book_now" 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>buy_with_google</code></td><td>1</td><td></td></tr>
+<tr><td><code>buy_now</code></td><td>2</td><td></td></tr>
+<tr><td><code>book_now</code></td><td>3</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:buyButtonText
+        */
+        public static final int WalletFragmentStyle_buyButtonText = 2;
+        /**
+          <p>
+          @attr description
+           Width of the buy button. This includes an 8dp padding (4dp on each side) used for
+             pressed and focused states of the button. The value can be a specific width, e.g.
+             "300dp", or special values "match_parent" and "wrap_content". 
+
+
+          <p>May be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>match_parent</code></td><td>-1</td><td></td></tr>
+<tr><td><code>wrap_content</code></td><td>-2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:buyButtonWidth
+        */
+        public static final int WalletFragmentStyle_buyButtonWidth = 1;
+        /**
+          <p>
+          @attr description
+           Masked wallet details background 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsBackground
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsBackground = 6;
+        /**
+          <p>
+          @attr description
+           "Change" button background in masked wallet details view 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsButtonBackground
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsButtonBackground = 8;
+        /**
+          <p>
+          @attr description
+           TextAppearance for the "Change" button in masked wallet details view 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsButtonTextAppearance
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance = 7;
+        /**
+          <p>
+          @attr description
+           TextAppearance for headers describing masked wallet details 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsHeaderTextAppearance
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance = 5;
+        /**
+          <p>
+          @attr description
+           Type of the wallet logo image in masked wallet details view 
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>classic</code></td><td>1</td><td></td></tr>
+<tr><td><code>monochrome</code></td><td>2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsLogoImageType
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsLogoImageType = 10;
+        /**
+          <p>
+          @attr description
+           Color of the Google Wallet logo text in masked wallet details view 
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsLogoTextColor
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsLogoTextColor = 9;
+        /**
+          <p>
+          @attr description
+           TextAppearance for masked wallet details 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name android:maskedWalletDetailsTextAppearance
+        */
+        public static final int WalletFragmentStyle_maskedWalletDetailsTextAppearance = 4;
     };
 }

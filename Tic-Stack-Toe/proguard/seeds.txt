@@ -5898,6 +5898,55 @@ com.actionbarsherlock.widget.SuggestionsAdapter$ChildViewCache: android.widget.I
 com.actionbarsherlock.widget.SuggestionsAdapter$ChildViewCache: android.widget.ImageView mIcon2
 com.actionbarsherlock.widget.SuggestionsAdapter$ChildViewCache: android.widget.ImageView mIconRefine
 com.actionbarsherlock.widget.SuggestionsAdapter$ChildViewCache: SuggestionsAdapter$ChildViewCache(android.view.View)
+com.cocosw.undobar.R$color
+com.cocosw.undobar.R$color: int undobar_material_button_text_color
+com.cocosw.undobar.R$dimen
+com.cocosw.undobar.R$dimen: int marginBottom
+com.cocosw.undobar.R$dimen: int marginLeft
+com.cocosw.undobar.R$dimen: int marginRight
+com.cocosw.undobar.R$drawable
+com.cocosw.undobar.R$drawable: int ic_retry
+com.cocosw.undobar.R$drawable: int ic_undobar_undo
+com.cocosw.undobar.R$drawable: int toast_frame_holo
+com.cocosw.undobar.R$drawable: int toast_frame_holo_button
+com.cocosw.undobar.R$drawable: int toast_frame_holo_button_pressed
+com.cocosw.undobar.R$drawable: int undobar
+com.cocosw.undobar.R$drawable: int undobar_background
+com.cocosw.undobar.R$drawable: int undobar_button
+com.cocosw.undobar.R$drawable: int undobar_button_focused
+com.cocosw.undobar.R$drawable: int undobar_button_pressed
+com.cocosw.undobar.R$drawable: int undobar_divider
+com.cocosw.undobar.R$drawable: int undobar_material_button
+com.cocosw.undobar.R$id
+com.cocosw.undobar.R$id: int _undobar
+com.cocosw.undobar.R$id: int undobar_button
+com.cocosw.undobar.R$id: int undobar_divider
+com.cocosw.undobar.R$id: int undobar_message
+com.cocosw.undobar.R$layout
+com.cocosw.undobar.R$layout: int undobar
+com.cocosw.undobar.R$string
+com.cocosw.undobar.R$string: int retry
+com.cocosw.undobar.R$string: int undo
+com.cocosw.undobar.R$style
+com.cocosw.undobar.R$style: int UndoBar
+com.cocosw.undobar.R$style: int UndoBarButton
+com.cocosw.undobar.R$style: int UndoBarButtonClassic
+com.cocosw.undobar.R$style: int UndoBarButtonKitKat
+com.cocosw.undobar.R$style: int UndoBarButtonMaterial
+com.cocosw.undobar.R$style: int UndoBarClassic
+com.cocosw.undobar.R$style: int UndoBarDivider
+com.cocosw.undobar.R$style: int UndoBarDividerClassic
+com.cocosw.undobar.R$style: int UndoBarKitKat
+com.cocosw.undobar.R$style: int UndoBarMaterial
+com.cocosw.undobar.R$style: int UndoBarMessage
+com.cocosw.undobar.R$style: int UndoBarMessageClassic
+com.cocosw.undobar.R$style: int UndoBarMessageKitKat
+com.cocosw.undobar.R$style: int UndoBarMessageMaterial
+com.cocosw.undobar.R$style: int UndoBarNoDivider
+com.cocosw.undobar.UndoBarController: com.cocosw.undobar.UndoBarController$UndoListener getUndoListener()
+com.cocosw.undobar.UndoBarController: void setUndoListener(com.cocosw.undobar.UndoBarController$UndoListener)
+com.cocosw.undobar.UndoBarStyle
+com.cocosw.undobar.UndoBarStyle: android.os.Parcelable$Creator CREATOR
 com.google.ads.AdRequest$ErrorCode: com.google.ads.AdRequest$ErrorCode[] values()
 com.google.ads.AdRequest$ErrorCode: com.google.ads.AdRequest$ErrorCode valueOf(java.lang.String)
 com.google.ads.AdRequest$Gender: com.google.ads.AdRequest$Gender[] values()
@@ -6537,6 +6586,7 @@ com.oakonell.ticstacktoe.R$color: int common_signin_btn_text_light
 com.oakonell.ticstacktoe.R$color: int default_progress_bar_color
 com.oakonell.ticstacktoe.R$color: int holo_blue_light
 com.oakonell.ticstacktoe.R$color: int spb_default_color
+com.oakonell.ticstacktoe.R$color: int undobar_material_button_text_color
 com.oakonell.ticstacktoe.R$dimen
 com.oakonell.ticstacktoe.R$dimen: int abs__action_bar_default_height
 com.oakonell.ticstacktoe.R$dimen: int abs__action_bar_icon_vertical_padding
@@ -6569,6 +6619,9 @@ com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_left
 com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_right
 com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_padding_top
 com.oakonell.ticstacktoe.R$dimen: int com_shamanland_facebook_like_text_size
+com.oakonell.ticstacktoe.R$dimen: int marginBottom
+com.oakonell.ticstacktoe.R$dimen: int marginLeft
+com.oakonell.ticstacktoe.R$dimen: int marginRight
 com.oakonell.ticstacktoe.R$dimen: int menu_button_height
 com.oakonell.ticstacktoe.R$dimen: int menu_button_width
 com.oakonell.ticstacktoe.R$dimen: int player_name_size
@@ -6759,6 +6812,8 @@ com.oakonell.ticstacktoe.R$drawable: int ic_plusone_medium_off_client
 com.oakonell.ticstacktoe.R$drawable: int ic_plusone_small_off_client
 com.oakonell.ticstacktoe.R$drawable: int ic_plusone_standard_off_client
 com.oakonell.ticstacktoe.R$drawable: int ic_plusone_tall_off_client
+com.oakonell.ticstacktoe.R$drawable: int ic_retry
+com.oakonell.ticstacktoe.R$drawable: int ic_undobar_undo
 com.oakonell.ticstacktoe.R$drawable: int icon
 com.oakonell.ticstacktoe.R$drawable: int inactive_player
 com.oakonell.ticstacktoe.R$drawable: int invites_icon_15777
@@ -6795,6 +6850,9 @@ com.oakonell.ticstacktoe.R$drawable: int swap_icon_17858
 com.oakonell.ticstacktoe.R$drawable: int tab
 com.oakonell.ticstacktoe.R$drawable: int text_input
 com.oakonell.ticstacktoe.R$drawable: int text_input_on_wood
+com.oakonell.ticstacktoe.R$drawable: int toast_frame_holo
+com.oakonell.ticstacktoe.R$drawable: int toast_frame_holo_button
+com.oakonell.ticstacktoe.R$drawable: int toast_frame_holo_button_pressed
 com.oakonell.ticstacktoe.R$drawable: int tut_0_board
 com.oakonell.ticstacktoe.R$drawable: int tut_0_move
 com.oakonell.ticstacktoe.R$drawable: int tut_0_point_stacks
@@ -6806,6 +6864,13 @@ com.oakonell.ticstacktoe.R$drawable: int tutor_icon_11937
 com.oakonell.ticstacktoe.R$drawable: int tutorial_1_point_stacks
 com.oakonell.ticstacktoe.R$drawable: int tutorial_slide_up
 com.oakonell.ticstacktoe.R$drawable: int unchecked
+com.oakonell.ticstacktoe.R$drawable: int undobar
+com.oakonell.ticstacktoe.R$drawable: int undobar_background
+com.oakonell.ticstacktoe.R$drawable: int undobar_button
+com.oakonell.ticstacktoe.R$drawable: int undobar_button_focused
+com.oakonell.ticstacktoe.R$drawable: int undobar_button_pressed
+com.oakonell.ticstacktoe.R$drawable: int undobar_divider
+com.oakonell.ticstacktoe.R$drawable: int undobar_material_button
 com.oakonell.ticstacktoe.R$drawable: int white_piece1
 com.oakonell.ticstacktoe.R$drawable: int white_piece2
 com.oakonell.ticstacktoe.R$drawable: int white_piece3
@@ -6818,6 +6883,7 @@ com.oakonell.ticstacktoe.R$drawable: int wooden_check
 com.oakonell.ticstacktoe.R$id
 com.oakonell.ticstacktoe.R$id: int LinearLayout1
 com.oakonell.ticstacktoe.R$id: int RelativeLayout1
+com.oakonell.ticstacktoe.R$id: int _undobar
 com.oakonell.ticstacktoe.R$id: int about_description
 com.oakonell.ticstacktoe.R$id: int abs__action_bar
 com.oakonell.ticstacktoe.R$id: int abs__action_bar_container
@@ -7079,6 +7145,9 @@ com.oakonell.ticstacktoe.R$id: int tutorial_dialog
 com.oakonell.ticstacktoe.R$id: int tutorial_dialog_text
 com.oakonell.ticstacktoe.R$id: int tutorial_dialog_title
 com.oakonell.ticstacktoe.R$id: int tutorial_slideup
+com.oakonell.ticstacktoe.R$id: int undobar_button
+com.oakonell.ticstacktoe.R$id: int undobar_divider
+com.oakonell.ticstacktoe.R$id: int undobar_message
 com.oakonell.ticstacktoe.R$id: int urlId
 com.oakonell.ticstacktoe.R$id: int useLogo
 com.oakonell.ticstacktoe.R$id: int version
@@ -7172,6 +7241,7 @@ com.oakonell.ticstacktoe.R$layout: int simple_game_mode_help_dialog
 com.oakonell.ticstacktoe.R$layout: int turn_play_again_dialog
 com.oakonell.ticstacktoe.R$layout: int turn_send_move_message
 com.oakonell.ticstacktoe.R$layout: int tutorial
+com.oakonell.ticstacktoe.R$layout: int undobar
 com.oakonell.ticstacktoe.R$menu
 com.oakonell.ticstacktoe.R$menu: int match_game
 com.oakonell.ticstacktoe.R$menu: int menu
@@ -7344,7 +7414,11 @@ com.oakonell.ticstacktoe.R$string: int continueLbl
 com.oakonell.ticstacktoe.R$string: int copied_to_clipboard
 com.oakonell.ticstacktoe.R$string: int copySubjectToClipboardAsWorkAroundForFacebookAppBug
 com.oakonell.ticstacktoe.R$string: int decline
+com.oakonell.ticstacktoe.R$string: int declined_invite
 com.oakonell.ticstacktoe.R$string: int dismiss
+com.oakonell.ticstacktoe.R$string: int dismiss_this_and_older
+com.oakonell.ticstacktoe.R$string: int dismissed_completed_matches
+com.oakonell.ticstacktoe.R$string: int dismissed_match
 com.oakonell.ticstacktoe.R$string: int draw
 com.oakonell.ticstacktoe.R$string: int draws_stat_label
 com.oakonell.ticstacktoe.R$string: int error_black_name
@@ -7369,6 +7443,7 @@ com.oakonell.ticstacktoe.R$string: int invalid_move_space_has_bigger_piece
 com.oakonell.ticstacktoe.R$string: int invalid_move_title
 com.oakonell.ticstacktoe.R$string: int invalid_stack_move_in_strict
 com.oakonell.ticstacktoe.R$string: int invite_removed
+com.oakonell.ticstacktoe.R$string: int invite_restored
 com.oakonell.ticstacktoe.R$string: int invited_to_realtime_match
 com.oakonell.ticstacktoe.R$string: int invited_to_turn_match
 com.oakonell.ticstacktoe.R$string: int label_player_black_name
@@ -7390,7 +7465,9 @@ com.oakonell.ticstacktoe.R$string: int match_error_already_rematched
 com.oakonell.ticstacktoe.R$string: int match_error_inactive_match
 com.oakonell.ticstacktoe.R$string: int match_error_locally_modified
 com.oakonell.ticstacktoe.R$string: int match_removed
+com.oakonell.ticstacktoe.R$string: int match_restored
 com.oakonell.ticstacktoe.R$string: int match_updated
+com.oakonell.ticstacktoe.R$string: int matches_restored
 com.oakonell.ticstacktoe.R$string: int message_hint
 com.oakonell.ticstacktoe.R$string: int move_1_hint
 com.oakonell.ticstacktoe.R$string: int move_1a_text
@@ -7495,6 +7572,7 @@ com.oakonell.ticstacktoe.R$string: int rematch_look_for_invite
 com.oakonell.ticstacktoe.R$string: int rematch_updated
 com.oakonell.ticstacktoe.R$string: int remember_this_choice
 com.oakonell.ticstacktoe.R$string: int remove_ads
+com.oakonell.ticstacktoe.R$string: int retry
 com.oakonell.ticstacktoe.R$string: int select_opponent
 com.oakonell.ticstacktoe.R$string: int sendMove
 com.oakonell.ticstacktoe.R$string: int sendRealTimeMessage
@@ -7533,6 +7611,7 @@ com.oakonell.ticstacktoe.R$string: int type_normal_short_descr
 com.oakonell.ticstacktoe.R$string: int type_strict
 com.oakonell.ticstacktoe.R$string: int type_strict_name
 com.oakonell.ticstacktoe.R$string: int type_strict_short_descr
+com.oakonell.ticstacktoe.R$string: int undo
 com.oakonell.ticstacktoe.R$string: int unexpected_status
 com.oakonell.ticstacktoe.R$string: int unique_error_o_name
 com.oakonell.ticstacktoe.R$string: int waiting_for_opponent_to_decide_to_play_again
@@ -7595,6 +7674,21 @@ com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_Light_DarkActionBar
 com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_Light_NoActionBar
 com.oakonell.ticstacktoe.R$style: int Theme_Sherlock_NoActionBar
 com.oakonell.ticstacktoe.R$style: int Theme_SmoothProgressBarDefaults
+com.oakonell.ticstacktoe.R$style: int UndoBar
+com.oakonell.ticstacktoe.R$style: int UndoBarButton
+com.oakonell.ticstacktoe.R$style: int UndoBarButtonClassic
+com.oakonell.ticstacktoe.R$style: int UndoBarButtonKitKat
+com.oakonell.ticstacktoe.R$style: int UndoBarButtonMaterial
+com.oakonell.ticstacktoe.R$style: int UndoBarClassic
+com.oakonell.ticstacktoe.R$style: int UndoBarDivider
+com.oakonell.ticstacktoe.R$style: int UndoBarDividerClassic
+com.oakonell.ticstacktoe.R$style: int UndoBarKitKat
+com.oakonell.ticstacktoe.R$style: int UndoBarMaterial
+com.oakonell.ticstacktoe.R$style: int UndoBarMessage
+com.oakonell.ticstacktoe.R$style: int UndoBarMessageClassic
+com.oakonell.ticstacktoe.R$style: int UndoBarMessageKitKat
+com.oakonell.ticstacktoe.R$style: int UndoBarMessageMaterial
+com.oakonell.ticstacktoe.R$style: int UndoBarNoDivider
 com.oakonell.ticstacktoe.R$style: int Widget
 com.oakonell.ticstacktoe.R$style: int Widget_FacebookLikeBox
 com.oakonell.ticstacktoe.R$style: int Widget_FacebookLikeButton

@@ -6254,6 +6254,137 @@ com.android.vending.billing.IInAppBillingService$Stub$Proxy -> com.a.a.a.c:
     android.os.Bundle getBuyIntent(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
     android.os.Bundle getPurchases(int,java.lang.String,java.lang.String,java.lang.String) -> a
     int consumePurchase(int,java.lang.String,java.lang.String) -> b
+com.cocosw.undobar.R -> com.cocosw.undobar.R:
+com.cocosw.undobar.R$color -> com.cocosw.undobar.R$color:
+    int undobar_material_button_text_color -> undobar_material_button_text_color
+com.cocosw.undobar.R$dimen -> com.cocosw.undobar.R$dimen:
+    int marginBottom -> marginBottom
+    int marginLeft -> marginLeft
+    int marginRight -> marginRight
+com.cocosw.undobar.R$drawable -> com.cocosw.undobar.R$drawable:
+    int ic_retry -> ic_retry
+    int ic_undobar_undo -> ic_undobar_undo
+    int toast_frame_holo -> toast_frame_holo
+    int toast_frame_holo_button -> toast_frame_holo_button
+    int toast_frame_holo_button_pressed -> toast_frame_holo_button_pressed
+    int undobar -> undobar
+    int undobar_background -> undobar_background
+    int undobar_button -> undobar_button
+    int undobar_button_focused -> undobar_button_focused
+    int undobar_button_pressed -> undobar_button_pressed
+    int undobar_divider -> undobar_divider
+    int undobar_material_button -> undobar_material_button
+com.cocosw.undobar.R$id -> com.cocosw.undobar.R$id:
+    int _undobar -> _undobar
+    int undobar_button -> undobar_button
+    int undobar_divider -> undobar_divider
+    int undobar_message -> undobar_message
+com.cocosw.undobar.R$layout -> com.cocosw.undobar.R$layout:
+    int undobar -> undobar
+com.cocosw.undobar.R$string -> com.cocosw.undobar.R$string:
+    int retry -> retry
+    int undo -> undo
+com.cocosw.undobar.R$style -> com.cocosw.undobar.R$style:
+    int UndoBar -> UndoBar
+    int UndoBarButton -> UndoBarButton
+    int UndoBarButtonClassic -> UndoBarButtonClassic
+    int UndoBarButtonKitKat -> UndoBarButtonKitKat
+    int UndoBarButtonMaterial -> UndoBarButtonMaterial
+    int UndoBarClassic -> UndoBarClassic
+    int UndoBarDivider -> UndoBarDivider
+    int UndoBarDividerClassic -> UndoBarDividerClassic
+    int UndoBarKitKat -> UndoBarKitKat
+    int UndoBarMaterial -> UndoBarMaterial
+    int UndoBarMessage -> UndoBarMessage
+    int UndoBarMessageClassic -> UndoBarMessageClassic
+    int UndoBarMessageKitKat -> UndoBarMessageKitKat
+    int UndoBarMessageMaterial -> UndoBarMessageMaterial
+    int UndoBarNoDivider -> UndoBarNoDivider
+com.cocosw.undobar.UndoBarController -> com.cocosw.undobar.a:
+    com.cocosw.undobar.UndoBarStyle UNDOSTYLE -> a
+    com.cocosw.undobar.UndoBarStyle style -> g
+    com.cocosw.undobar.UndoBarStyle RETRYSTYLE -> b
+    com.cocosw.undobar.UndoBarStyle MESSAGESTYLE -> c
+    com.cocosw.undobar.UndoBarStyle MATERIAL_UNDOSTYLE -> d
+    com.cocosw.undobar.UndoBarStyle MATERIAL_RETRYSTYLE -> e
+    android.view.animation.Animation inAnimation -> h
+    android.view.animation.Animation outAnimation -> i
+    android.widget.TextView mMessageView -> j
+    android.widget.TextView mButton -> k
+    android.os.Handler mHideHandler -> l
+    java.lang.Runnable mHideRunnable -> m
+    com.cocosw.undobar.UndoBarController$UndoListener mUndoListener -> n
+    boolean mImmediate -> o
+    android.os.Parcelable mUndoToken -> p
+    java.lang.CharSequence mUndoMessage -> q
+    int translucent -> r
+    boolean mInPortrait -> s
+    java.lang.String sNavBarOverride -> t
+    boolean mNavBarAvailable -> u
+    float mSmallestWidthDp -> v
+    boolean $assertionsDisabled -> f
+    android.view.animation.Animation snackIn() -> a
+    android.view.animation.Animation snackOut() -> b
+    android.view.animation.Animation outToBottomAnimation(android.view.animation.Animation$AnimationListener) -> a
+    android.view.animation.Animation inFromBottomAnimation(android.view.animation.Animation$AnimationListener) -> b
+    com.cocosw.undobar.UndoBarController show(android.app.Activity,java.lang.CharSequence,com.cocosw.undobar.UndoBarController$UndoListener,android.os.Parcelable,boolean,com.cocosw.undobar.UndoBarStyle,int) -> a
+    com.cocosw.undobar.UndoBarController ensureView(android.app.Activity) -> a
+    com.cocosw.undobar.UndoBarController getView(android.app.Activity) -> b
+    float getSmallestWidthDp(android.view.WindowManager) -> a
+    int getNavigationBarHeight(android.content.Context) -> a
+    boolean hasNavBar(android.content.Context) -> b
+    int getInternalDimensionSize(android.content.res.Resources,java.lang.String) -> a
+    boolean isNavigationAtBottom() -> c
+    com.cocosw.undobar.UndoBarController$UndoListener getUndoListener() -> getUndoListener
+    void setUndoListener(com.cocosw.undobar.UndoBarController$UndoListener) -> setUndoListener
+    void hideUndoBar(boolean) -> a
+    android.os.Parcelable onSaveInstanceState() -> onSaveInstanceState
+    void onRestoreInstanceState(android.os.Parcelable) -> onRestoreInstanceState
+    void showUndoBar(boolean,java.lang.CharSequence,android.os.Parcelable) -> a
+    com.cocosw.undobar.UndoBarController$UndoListener access$0(com.cocosw.undobar.UndoBarController) -> a
+    android.os.Parcelable access$1(com.cocosw.undobar.UndoBarController) -> b
+    boolean access$2(com.cocosw.undobar.UndoBarController) -> c
+    void access$3(com.cocosw.undobar.UndoBarController,boolean) -> a
+com.cocosw.undobar.UndoBarController$1 -> com.cocosw.undobar.b:
+    com.cocosw.undobar.UndoBarController this$0 -> a
+    void run() -> run
+com.cocosw.undobar.UndoBarController$2 -> com.cocosw.undobar.c:
+    com.cocosw.undobar.UndoBarController this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.cocosw.undobar.UndoBarController$AdvancedUndoListener -> com.cocosw.undobar.d:
+    void onHide(android.os.Parcelable) -> a
+com.cocosw.undobar.UndoBarController$UndoBar -> com.cocosw.undobar.e:
+    android.app.Activity activity -> a
+    com.cocosw.undobar.UndoBarStyle style -> b
+    java.lang.CharSequence message -> c
+    long duration -> d
+    android.os.Parcelable undoToken -> e
+    com.cocosw.undobar.UndoBarController$UndoListener listener -> f
+    int translucent -> g
+    com.cocosw.undobar.UndoBarController$UndoBar message(java.lang.CharSequence) -> a
+    com.cocosw.undobar.UndoBarController$UndoBar duration(long) -> a
+    com.cocosw.undobar.UndoBarController$UndoBar listener(com.cocosw.undobar.UndoBarController$UndoListener) -> a
+    com.cocosw.undobar.UndoBarController show(boolean) -> a
+com.cocosw.undobar.UndoBarController$UndoListener -> com.cocosw.undobar.f:
+    void onUndo(android.os.Parcelable) -> b
+com.cocosw.undobar.UndoBarStyle -> com.cocosw.undobar.UndoBarStyle:
+    int iconRes -> a
+    int titleRes -> b
+    int bgRes -> c
+    long duration -> d
+    android.view.animation.Animation inAnimation -> e
+    android.view.animation.Animation outAnimation -> f
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    com.cocosw.undobar.UndoBarStyle setAnim(android.view.animation.Animation,android.view.animation.Animation) -> a
+    java.lang.String toString() -> toString
+    boolean equals(java.lang.Object) -> equals
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    int describeContents() -> describeContents
+com.cocosw.undobar.UndoBarStyle$1 -> com.cocosw.undobar.g:
+    com.cocosw.undobar.UndoBarStyle createFromParcel(android.os.Parcel) -> a
+    com.cocosw.undobar.UndoBarStyle[] newArray(int) -> a
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+    java.lang.Object[] newArray(int) -> newArray
 com.commonsware.cwac.merge.MergeAdapter -> com.b.a.a.a:
     com.commonsware.cwac.merge.MergeAdapter$PieceStateRoster pieces -> a
     void addAdapter(android.widget.ListAdapter) -> a
@@ -14569,6 +14700,7 @@ com.oakonell.ticstacktoe.R$color -> com.oakonell.ticstacktoe.R$color:
     int default_progress_bar_color -> default_progress_bar_color
     int holo_blue_light -> holo_blue_light
     int spb_default_color -> spb_default_color
+    int undobar_material_button_text_color -> undobar_material_button_text_color
 com.oakonell.ticstacktoe.R$dimen -> com.oakonell.ticstacktoe.R$dimen:
     int abs__action_bar_default_height -> abs__action_bar_default_height
     int abs__action_bar_icon_vertical_padding -> abs__action_bar_icon_vertical_padding
@@ -14601,6 +14733,9 @@ com.oakonell.ticstacktoe.R$dimen -> com.oakonell.ticstacktoe.R$dimen:
     int com_shamanland_facebook_like_padding_right -> com_shamanland_facebook_like_padding_right
     int com_shamanland_facebook_like_padding_top -> com_shamanland_facebook_like_padding_top
     int com_shamanland_facebook_like_text_size -> com_shamanland_facebook_like_text_size
+    int marginBottom -> marginBottom
+    int marginLeft -> marginLeft
+    int marginRight -> marginRight
     int menu_button_height -> menu_button_height
     int menu_button_width -> menu_button_width
     int player_name_size -> player_name_size
@@ -14791,6 +14926,8 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int ic_plusone_small_off_client -> ic_plusone_small_off_client
     int ic_plusone_standard_off_client -> ic_plusone_standard_off_client
     int ic_plusone_tall_off_client -> ic_plusone_tall_off_client
+    int ic_retry -> ic_retry
+    int ic_undobar_undo -> ic_undobar_undo
     int icon -> icon
     int inactive_player -> inactive_player
     int invites_icon_15777 -> invites_icon_15777
@@ -14827,6 +14964,9 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int tab -> tab
     int text_input -> text_input
     int text_input_on_wood -> text_input_on_wood
+    int toast_frame_holo -> toast_frame_holo
+    int toast_frame_holo_button -> toast_frame_holo_button
+    int toast_frame_holo_button_pressed -> toast_frame_holo_button_pressed
     int tut_0_board -> tut_0_board
     int tut_0_move -> tut_0_move
     int tut_0_point_stacks -> tut_0_point_stacks
@@ -14838,6 +14978,13 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
     int tutorial_1_point_stacks -> tutorial_1_point_stacks
     int tutorial_slide_up -> tutorial_slide_up
     int unchecked -> unchecked
+    int undobar -> undobar
+    int undobar_background -> undobar_background
+    int undobar_button -> undobar_button
+    int undobar_button_focused -> undobar_button_focused
+    int undobar_button_pressed -> undobar_button_pressed
+    int undobar_divider -> undobar_divider
+    int undobar_material_button -> undobar_material_button
     int white_piece1 -> white_piece1
     int white_piece2 -> white_piece2
     int white_piece3 -> white_piece3
@@ -14850,6 +14997,7 @@ com.oakonell.ticstacktoe.R$drawable -> com.oakonell.ticstacktoe.R$drawable:
 com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int LinearLayout1 -> LinearLayout1
     int RelativeLayout1 -> RelativeLayout1
+    int _undobar -> _undobar
     int about_description -> about_description
     int abs__action_bar -> abs__action_bar
     int abs__action_bar_container -> abs__action_bar_container
@@ -15111,6 +15259,9 @@ com.oakonell.ticstacktoe.R$id -> com.oakonell.ticstacktoe.R$id:
     int tutorial_dialog_text -> tutorial_dialog_text
     int tutorial_dialog_title -> tutorial_dialog_title
     int tutorial_slideup -> tutorial_slideup
+    int undobar_button -> undobar_button
+    int undobar_divider -> undobar_divider
+    int undobar_message -> undobar_message
     int urlId -> urlId
     int useLogo -> useLogo
     int version -> version
@@ -15204,6 +15355,7 @@ com.oakonell.ticstacktoe.R$layout -> com.oakonell.ticstacktoe.R$layout:
     int turn_play_again_dialog -> turn_play_again_dialog
     int turn_send_move_message -> turn_send_move_message
     int tutorial -> tutorial
+    int undobar -> undobar
 com.oakonell.ticstacktoe.R$menu -> com.oakonell.ticstacktoe.R$menu:
     int match_game -> match_game
     int menu -> menu
@@ -15376,7 +15528,11 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int copied_to_clipboard -> copied_to_clipboard
     int copySubjectToClipboardAsWorkAroundForFacebookAppBug -> copySubjectToClipboardAsWorkAroundForFacebookAppBug
     int decline -> decline
+    int declined_invite -> declined_invite
     int dismiss -> dismiss
+    int dismiss_this_and_older -> dismiss_this_and_older
+    int dismissed_completed_matches -> dismissed_completed_matches
+    int dismissed_match -> dismissed_match
     int draw -> draw
     int draws_stat_label -> draws_stat_label
     int error_black_name -> error_black_name
@@ -15401,6 +15557,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int invalid_move_title -> invalid_move_title
     int invalid_stack_move_in_strict -> invalid_stack_move_in_strict
     int invite_removed -> invite_removed
+    int invite_restored -> invite_restored
     int invited_to_realtime_match -> invited_to_realtime_match
     int invited_to_turn_match -> invited_to_turn_match
     int label_player_black_name -> label_player_black_name
@@ -15422,7 +15579,9 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int match_error_inactive_match -> match_error_inactive_match
     int match_error_locally_modified -> match_error_locally_modified
     int match_removed -> match_removed
+    int match_restored -> match_restored
     int match_updated -> match_updated
+    int matches_restored -> matches_restored
     int message_hint -> message_hint
     int move_1_hint -> move_1_hint
     int move_1a_text -> move_1a_text
@@ -15527,6 +15686,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int rematch_updated -> rematch_updated
     int remember_this_choice -> remember_this_choice
     int remove_ads -> remove_ads
+    int retry -> retry
     int select_opponent -> select_opponent
     int sendMove -> sendMove
     int sendRealTimeMessage -> sendRealTimeMessage
@@ -15565,6 +15725,7 @@ com.oakonell.ticstacktoe.R$string -> com.oakonell.ticstacktoe.R$string:
     int type_strict -> type_strict
     int type_strict_name -> type_strict_name
     int type_strict_short_descr -> type_strict_short_descr
+    int undo -> undo
     int unexpected_status -> unexpected_status
     int unique_error_o_name -> unique_error_o_name
     int waiting_for_opponent_to_decide_to_play_again -> waiting_for_opponent_to_decide_to_play_again
@@ -15627,6 +15788,21 @@ com.oakonell.ticstacktoe.R$style -> com.oakonell.ticstacktoe.R$style:
     int Theme_Sherlock_Light_NoActionBar -> Theme_Sherlock_Light_NoActionBar
     int Theme_Sherlock_NoActionBar -> Theme_Sherlock_NoActionBar
     int Theme_SmoothProgressBarDefaults -> Theme_SmoothProgressBarDefaults
+    int UndoBar -> UndoBar
+    int UndoBarButton -> UndoBarButton
+    int UndoBarButtonClassic -> UndoBarButtonClassic
+    int UndoBarButtonKitKat -> UndoBarButtonKitKat
+    int UndoBarButtonMaterial -> UndoBarButtonMaterial
+    int UndoBarClassic -> UndoBarClassic
+    int UndoBarDivider -> UndoBarDivider
+    int UndoBarDividerClassic -> UndoBarDividerClassic
+    int UndoBarKitKat -> UndoBarKitKat
+    int UndoBarMaterial -> UndoBarMaterial
+    int UndoBarMessage -> UndoBarMessage
+    int UndoBarMessageClassic -> UndoBarMessageClassic
+    int UndoBarMessageKitKat -> UndoBarMessageKitKat
+    int UndoBarMessageMaterial -> UndoBarMessageMaterial
+    int UndoBarNoDivider -> UndoBarNoDivider
     int Widget -> Widget
     int Widget_FacebookLikeBox -> Widget_FacebookLikeBox
     int Widget_FacebookLikeButton -> Widget_FacebookLikeButton
@@ -16713,22 +16889,65 @@ com.oakonell.ticstacktoe.settings.SettingsActivity -> com.oakonell.ticstacktoe.s
     boolean isValidFragment(java.lang.String) -> isValidFragment
 com.oakonell.ticstacktoe.ui.CustomFontTextView -> com.oakonell.ticstacktoe.ui.CustomFontTextView:
     void init() -> a
-com.oakonell.ticstacktoe.ui.GameTypeDialogFragment -> com.oakonell.ticstacktoe.ui.a:
+com.oakonell.ticstacktoe.ui.DismissHelper -> com.oakonell.ticstacktoe.ui.a:
+    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,com.oakonell.ticstacktoe.ui.menu.MatchInfo,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
+    void dismissWithOlder(com.oakonell.ticstacktoe.ui.menu.MenuFragment,com.oakonell.ticstacktoe.ui.menu.MatchInfo,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> b
+    void decline(com.oakonell.ticstacktoe.ui.menu.MenuFragment,com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
+com.oakonell.ticstacktoe.ui.DismissHelper$1 -> com.oakonell.ticstacktoe.ui.b:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> b
+    com.oakonell.ticstacktoe.ui.menu.MatchAdapter val$adapter -> c
+    java.util.List val$matches -> d
+    int val$index -> e
+    com.oakonell.ticstacktoe.ui.menu.MatchInfo val$matchInfo -> f
+    void onUndo(android.os.Parcelable) -> b
+com.oakonell.ticstacktoe.ui.DismissHelper$2 -> com.oakonell.ticstacktoe.ui.c:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    com.oakonell.ticstacktoe.ui.menu.MatchInfo val$matchInfo -> b
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> c
+    void run() -> run
+com.oakonell.ticstacktoe.ui.DismissHelper$3 -> com.oakonell.ticstacktoe.ui.d:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    java.util.Map val$matchesToDismiss -> b
+    java.util.List val$matches -> c
+    com.oakonell.ticstacktoe.ui.menu.MatchAdapter val$adapter -> d
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> e
+    void onUndo(android.os.Parcelable) -> b
+com.oakonell.ticstacktoe.ui.DismissHelper$4 -> com.oakonell.ticstacktoe.ui.e:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    java.util.Map val$matchesToDismiss -> b
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> c
+    void run() -> run
+com.oakonell.ticstacktoe.ui.DismissHelper$5 -> com.oakonell.ticstacktoe.ui.f:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> b
+    java.util.List val$matches -> c
+    int val$index -> d
+    com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo val$inviteMatchInfo -> e
+    com.oakonell.ticstacktoe.ui.menu.MatchAdapter val$adapter -> f
+    void onUndo(android.os.Parcelable) -> b
+com.oakonell.ticstacktoe.ui.DismissHelper$6 -> com.oakonell.ticstacktoe.ui.g:
+    java.util.concurrent.atomic.AtomicBoolean val$delete -> a
+    com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo val$inviteMatchInfo -> b
+    com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> c
+    java.util.List val$matches -> d
+    void run() -> run
+com.oakonell.ticstacktoe.ui.GameTypeDialogFragment -> com.oakonell.ticstacktoe.ui.h:
     com.oakonell.ticstacktoe.GameContext context -> a
     void initialize(com.oakonell.ticstacktoe.GameContext) -> a
     android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
-com.oakonell.ticstacktoe.ui.GameTypeDialogFragment$1 -> com.oakonell.ticstacktoe.ui.b:
+com.oakonell.ticstacktoe.ui.GameTypeDialogFragment$1 -> com.oakonell.ticstacktoe.ui.i:
     com.oakonell.ticstacktoe.ui.GameTypeDialogFragment this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.ImageHelper -> com.oakonell.ticstacktoe.ui.c:
+com.oakonell.ticstacktoe.ui.ImageHelper -> com.oakonell.ticstacktoe.ui.j:
     void displayImage(com.google.android.gms.common.images.ImageManager,android.widget.ImageView,android.net.Uri,int) -> a
 com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView -> com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView:
     com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent listener -> a
     void onMeasure(int,int) -> onMeasure
     void setOnMeasureDependent(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent) -> setOnMeasureDependent
-com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.d:
+com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView$OnMeasureDependent -> com.oakonell.ticstacktoe.ui.k:
     void onMeasureCalled(com.oakonell.ticstacktoe.ui.SquareRelativeLayoutView,int,int,int) -> a
-com.oakonell.ticstacktoe.ui.WoodenAlertDialog -> com.oakonell.ticstacktoe.ui.e:
+com.oakonell.ticstacktoe.ui.WoodenAlertDialog -> com.oakonell.ticstacktoe.ui.l:
     java.lang.String title -> c
     java.lang.String message -> d
     android.content.DialogInterface$OnClickListener onClickListener -> a
@@ -16741,10 +16960,10 @@ com.oakonell.ticstacktoe.ui.WoodenAlertDialog -> com.oakonell.ticstacktoe.ui.e:
     void setTitle(android.view.View,java.lang.String) -> a
     com.oakonell.ticstacktoe.ui.WoodenAlertDialog show(android.support.v4.app.Fragment,java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener) -> a
     com.oakonell.ticstacktoe.ui.WoodenAlertDialog show(android.support.v4.app.Fragment,java.lang.String,java.lang.String,android.content.DialogInterface$OnClickListener,android.content.DialogInterface$OnCancelListener,boolean) -> a
-com.oakonell.ticstacktoe.ui.WoodenAlertDialog$1 -> com.oakonell.ticstacktoe.ui.f:
+com.oakonell.ticstacktoe.ui.WoodenAlertDialog$1 -> com.oakonell.ticstacktoe.ui.m:
     com.oakonell.ticstacktoe.ui.WoodenAlertDialog this$0 -> a
     void onClick(android.view.View) -> onClick
-com.oakonell.ticstacktoe.ui.WoodenProgressDialog -> com.oakonell.ticstacktoe.ui.g:
+com.oakonell.ticstacktoe.ui.WoodenProgressDialog -> com.oakonell.ticstacktoe.ui.n:
     java.lang.String title -> a
     java.lang.String message -> b
     void initialize(java.lang.String,java.lang.String) -> a
@@ -17340,11 +17559,11 @@ com.oakonell.ticstacktoe.ui.local.LocalMatchInfo -> com.oakonell.ticstacktoe.ui.
     long getRematchId() -> m
     void setWinner(int) -> c
     void setScoreCard(com.oakonell.ticstacktoe.model.ScoreCard) -> a
-    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> b
     boolean isRanked() -> d
 com.oakonell.ticstacktoe.ui.local.LocalMatchInfo$1 -> com.oakonell.ticstacktoe.ui.local.s:
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo this$0 -> a
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
 com.oakonell.ticstacktoe.ui.local.LocalMatchInfo$2 -> com.oakonell.ticstacktoe.ui.local.t:
     com.oakonell.ticstacktoe.ui.local.LocalMatchInfo this$0 -> a
     com.oakonell.ticstacktoe.ui.menu.MenuFragment val$fragment -> b
@@ -17663,7 +17882,7 @@ com.oakonell.ticstacktoe.ui.menu.MatchAdapter$3 -> com.oakonell.ticstacktoe.ui.a
     java.util.List val$menus -> b
     void onSelected(int) -> a
 com.oakonell.ticstacktoe.ui.menu.MatchAdapter$ItemExecute -> com.oakonell.ticstacktoe.ui.a.g:
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
 com.oakonell.ticstacktoe.ui.menu.MatchAdapter$MatchMenuItem -> com.oakonell.ticstacktoe.ui.a.h:
     java.lang.String text -> a
     com.oakonell.ticstacktoe.ui.menu.MatchAdapter$ItemExecute execute -> b
@@ -17680,7 +17899,7 @@ com.oakonell.ticstacktoe.ui.menu.MatchInfo -> com.oakonell.ticstacktoe.ui.a.j:
     android.net.Uri getIconImageUri() -> b
     long getUpdatedTimestamp() -> e
     int getMatchStatus() -> f
-    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> b
     java.util.List getMenuItems(android.content.Context) -> f
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
 com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils -> com.oakonell.ticstacktoe.ui.a.k:
@@ -17690,13 +17909,13 @@ com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils -> com.oakonell.ticstackto
     com.oakonell.ticstacktoe.model.GameType getType(int) -> b
     java.lang.CharSequence getTimeSince(android.content.Context,long) -> a
     java.util.Comparator getComparator() -> a
-    void addDismissThisAndOlder(java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchInfo) -> a
+    void addDismissThisAndOlder(android.content.Context,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchInfo) -> a
 com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils$1 -> com.oakonell.ticstacktoe.ui.a.l:
     int compare(com.oakonell.ticstacktoe.ui.menu.MatchInfo,com.oakonell.ticstacktoe.ui.menu.MatchInfo) -> a
     int compare(java.lang.Object,java.lang.Object) -> compare
 com.oakonell.ticstacktoe.ui.menu.MatchInfo$MatchUtils$2 -> com.oakonell.ticstacktoe.ui.a.m:
     com.oakonell.ticstacktoe.ui.menu.MatchInfo val$info -> a
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
 com.oakonell.ticstacktoe.ui.menu.MenuFragment -> com.oakonell.ticstacktoe.ui.a.n:
     com.oakonell.ticstacktoe.model.db.DatabaseHandler dbHandler -> a
     java.lang.String TAG -> b
@@ -18262,19 +18481,17 @@ com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo -> com.oakonell.ticstac
     android.net.Uri getIconImageUri() -> b
     long getLastUpdatedTimestamp() -> c
     java.util.List getMenuItems(android.content.Context) -> f
+    void decline(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
     void onClick(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> a
     java.lang.CharSequence getSubtext(android.content.Context) -> d
     java.lang.CharSequence getUpdatedText(android.content.Context) -> e
     java.lang.CharSequence getText(android.content.Context) -> c
     long getUpdatedTimestamp() -> e
     int getMatchStatus() -> f
-    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
-    boolean access$0(com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo) -> a
-    com.oakonell.ticstacktoe.googleapi.GameHelper access$1(com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo) -> b
-    java.lang.String access$2(com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo) -> c
+    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> b
 com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo$1 -> com.oakonell.ticstacktoe.ui.b.b.b:
     com.oakonell.ticstacktoe.ui.network.turn.InviteMatchInfo this$0 -> a
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
 com.oakonell.ticstacktoe.ui.network.turn.SendMoveFragment -> com.oakonell.ticstacktoe.ui.b.b.c:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy turnStrategy -> a
     void initialize(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchGameStrategy) -> a
@@ -18524,12 +18741,12 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo -> com.oakonell.tics
     long getUpdatedTimestamp() -> e
     void showAlert(java.lang.String) -> a
     int getMatchStatus() -> f
-    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void dismiss(com.oakonell.ticstacktoe.ui.menu.MenuFragment) -> b
     com.oakonell.ticstacktoe.googleapi.GameHelper access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> a
     java.lang.String access$1(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo) -> b
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1 -> com.oakonell.ticstacktoe.ui.b.b.ad:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo this$0 -> a
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo access$0(com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1) -> a
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1$1 -> com.oakonell.ticstacktoe.ui.b.b.ae:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1 this$1 -> a
@@ -18538,7 +18755,7 @@ com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$1$1 -> com.oakonell.
     void onResult(com.google.android.gms.common.api.Result) -> a
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo$2 -> com.oakonell.ticstacktoe.ui.b.b.af:
     com.oakonell.ticstacktoe.ui.network.turn.TurnBasedMatchInfo this$0 -> a
-    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List) -> a
+    void execute(com.oakonell.ticstacktoe.ui.menu.MenuFragment,java.util.List,com.oakonell.ticstacktoe.ui.menu.MatchAdapter) -> a
 com.oakonell.ticstacktoe.ui.network.turn.TurnBasedPlayAgainFragment -> com.oakonell.ticstacktoe.ui.b.b.ag:
     java.lang.String opponentName -> a
     java.lang.String winnerName -> b

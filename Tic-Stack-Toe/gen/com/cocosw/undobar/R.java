@@ -8,7 +8,7 @@ package com.cocosw.undobar;
 
 public final class R {
 	public static final class color {
-		public static final int undobar_material_button_text_color = 0x7f0a0024;
+		public static final int undobar_material_button_text_color = 0x7f0a0031;
 	}
 	public static final class dimen {
 		public static final int marginBottom = 0x7f070002;
@@ -18,22 +18,22 @@ public final class R {
 	public static final class drawable {
 		public static final int ic_retry = 0x7f0200b5;
 		public static final int ic_undobar_undo = 0x7f0200b6;
-		public static final int toast_frame_holo = 0x7f0200db;
-		public static final int toast_frame_holo_button = 0x7f0200dc;
-		public static final int toast_frame_holo_button_pressed = 0x7f0200dd;
-		public static final int undobar = 0x7f0200e9;
-		public static final int undobar_background = 0x7f0200ea;
-		public static final int undobar_button = 0x7f0200eb;
-		public static final int undobar_button_focused = 0x7f0200ec;
-		public static final int undobar_button_pressed = 0x7f0200ed;
-		public static final int undobar_divider = 0x7f0200ee;
-		public static final int undobar_material_button = 0x7f0200ef;
+		public static final int toast_frame_holo = 0x7f0200dd;
+		public static final int toast_frame_holo_button = 0x7f0200de;
+		public static final int toast_frame_holo_button_pressed = 0x7f0200df;
+		public static final int undobar = 0x7f0200eb;
+		public static final int undobar_background = 0x7f0200ec;
+		public static final int undobar_button = 0x7f0200ed;
+		public static final int undobar_button_focused = 0x7f0200ee;
+		public static final int undobar_button_pressed = 0x7f0200ef;
+		public static final int undobar_divider = 0x7f0200f0;
+		public static final int undobar_material_button = 0x7f0200f1;
 	}
 	public static final class id {
-		public static final int _undobar = 0x7f0b0119;
-		public static final int undobar_button = 0x7f0b011c;
-		public static final int undobar_divider = 0x7f0b011b;
-		public static final int undobar_message = 0x7f0b011a;
+		public static final int _undobar = 0x7f0b0127;
+		public static final int undobar_button = 0x7f0b012a;
+		public static final int undobar_divider = 0x7f0b0129;
+		public static final int undobar_message = 0x7f0b0128;
 	}
 	public static final class layout {
 		public static final int undobar = 0x7f030041;

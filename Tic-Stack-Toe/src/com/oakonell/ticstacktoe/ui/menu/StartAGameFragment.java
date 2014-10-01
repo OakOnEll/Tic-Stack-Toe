@@ -22,7 +22,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
@@ -196,11 +197,11 @@ public class StartAGameFragment extends SherlockFragment {
 		case GameContext.RC_SELECT_PLAYERS: {
 			if (response == Activity.RESULT_OK) {
 				final ArrayList<String> invitees = data
-						.getStringArrayListExtra(GamesClient.EXTRA_PLAYERS);
+						.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 				int minAutoMatchPlayers = data.getIntExtra(
-						GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+						Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 				int maxAutoMatchPlayers = data.getIntExtra(
-						GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+						Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
 				// get the automatch criteria
 				Bundle autoMatchCriteria = null;
@@ -234,7 +235,8 @@ public class StartAGameFragment extends SherlockFragment {
 			if (response == Activity.RESULT_OK) {
 				setInactive();
 				context.backFromRealtimeWaitingRoom();
-				final ActionBar ab = getSherlockActivity().getSupportActionBar();
+				final ActionBar ab = getSherlockActivity()
+						.getSupportActionBar();
 				ab.setTitle(R.string.app_name);
 			} else if (response == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 				// player actively indicated that they want to leave the room
@@ -356,7 +358,7 @@ public class StartAGameFragment extends SherlockFragment {
 							public void onResult(InitiateMatchResult result) {
 								Status status = result.getStatus();
 								TurnBasedMatch match = result.getMatch();
-								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+								if (status.getStatusCode() != GamesStatusCodes.STATUS_OK) {
 									Toast.makeText(context.getContext(),
 											"Error starting match: " + status,
 											Toast.LENGTH_LONG).show();
@@ -466,7 +468,7 @@ public class StartAGameFragment extends SherlockFragment {
 								Status status = result.getStatus();
 								TurnBasedMatch match = result.getMatch();
 
-								if (status.getStatusCode() != GamesClient.STATUS_OK) {
+								if (status.getStatusCode() != GamesStatusCodes.STATUS_OK) {
 									Toast.makeText(
 											getActivity(),
 											"Error starting a match: "

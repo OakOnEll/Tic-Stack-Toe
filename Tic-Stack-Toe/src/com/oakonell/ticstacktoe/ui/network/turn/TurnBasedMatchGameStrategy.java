@@ -28,7 +28,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
@@ -443,9 +443,9 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 	// more cases, and probably report more accurate results.
 	private boolean checkStatusCode(TurnBasedMatch match, int statusCode) {
 		switch (statusCode) {
-		case GamesClient.STATUS_OK:
+		case GamesStatusCodes.STATUS_OK:
 			return true;
-		case GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED:
+		case GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_DEFERRED:
 			// This is OK; the action is stored by Google Play Services and will
 			// be dealt with later.
 			// Toast.makeText(
@@ -455,40 +455,40 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 			// NOTE: This toast is for informative reasons only; please remove
 			// it from your final application.
 			return true;
-		case GamesClient.STATUS_MULTIPLAYER_ERROR_NOT_TRUSTED_TESTER:
+		case GamesStatusCodes.STATUS_MULTIPLAYER_ERROR_NOT_TRUSTED_TESTER:
 			showErrorMessage(match, statusCode,
 					R.string.status_multiplayer_error_not_trusted_tester);
 			break;
-		case GamesClient.STATUS_MATCH_ERROR_ALREADY_REMATCHED:
+		case GamesStatusCodes.STATUS_MATCH_ERROR_ALREADY_REMATCHED:
 			showErrorMessage(match, statusCode,
 					R.string.match_error_already_rematched);
 			return true;
-		case GamesClient.STATUS_NETWORK_ERROR_OPERATION_FAILED:
+		case GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_FAILED:
 			showErrorMessage(match, statusCode,
 					R.string.network_error_operation_failed);
 			break;
-		case GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED:
+		case GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED:
 			showErrorMessage(match, statusCode,
 					R.string.client_reconnect_required);
 			break;
-		case GamesClient.STATUS_INTERNAL_ERROR:
+		case GamesStatusCodes.STATUS_INTERNAL_ERROR:
 			showErrorMessage(match, statusCode, R.string.internal_error);
 			break;
-		case GamesClient.STATUS_MATCH_ERROR_INACTIVE_MATCH:
+		case GamesStatusCodes.STATUS_MATCH_ERROR_INACTIVE_MATCH:
 			showErrorMessage(match, statusCode,
 					R.string.match_error_inactive_match);
 			break;
-		case GamesClient.STATUS_MATCH_ERROR_LOCALLY_MODIFIED:
+		case GamesStatusCodes.STATUS_MATCH_ERROR_LOCALLY_MODIFIED:
 			showErrorMessage(match, statusCode,
 					R.string.match_error_locally_modified);
 			break;
-		case GamesClient.STATUS_MATCH_ERROR_INVALID_PARTICIPANT_STATE:
+		case GamesStatusCodes.STATUS_MATCH_ERROR_INVALID_PARTICIPANT_STATE:
 			showErrorMessage(match, statusCode, "Invalid participant state");
 			break;
-		case GamesClient.STATUS_MATCH_ERROR_OUT_OF_DATE_VERSION:
+		case GamesStatusCodes.STATUS_MATCH_ERROR_OUT_OF_DATE_VERSION:
 			showErrorMessage(match, statusCode, "Match out of date");
 			break;
-		case GamesClient.STATUS_MATCH_NOT_FOUND:
+		case GamesStatusCodes.STATUS_MATCH_NOT_FOUND:
 			showErrorMessage(match, statusCode, "Match not found");
 			// get this for a rematch, where the game has not yet started
 		default:
@@ -1236,10 +1236,10 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 											// get a stale
 											// board on
 											// update from this
-											if (statusCode == GamesClient.STATUS_OK) {
+											if (statusCode == GamesStatusCodes.STATUS_OK) {
 												return;
 											}
-											if (statusCode == GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
+											if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
 												Log.i(TAG,
 														"Deferring message that we saw the opponent's move");
 												return;
@@ -1398,8 +1398,8 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 								public void onResult(UpdateMatchResult result) {
 									int status = result.getStatus()
 											.getStatusCode();
-									if (status != GamesClient.STATUS_OK
-											&& status != GamesClient.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
+									if (status != GamesStatusCodes.STATUS_OK
+											&& status != GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_DEFERRED) {
 										showWarning("Error completing match",
 												"Finish match returned "
 														+ status);
@@ -1508,7 +1508,7 @@ public class TurnBasedMatchGameStrategy extends AbstractNetworkedGameStrategy
 					@Override
 					public void onResult(LoadMatchResult result) {
 						int status = result.getStatus().getStatusCode();
-						if (status == GamesClient.STATUS_MATCH_NOT_FOUND) {
+						if (status == GamesStatusCodes.STATUS_MATCH_NOT_FOUND) {
 							Log.i("TurnListener",
 									"  promptAndGoToRematch match not found");
 							// attempt to find invite for this match?

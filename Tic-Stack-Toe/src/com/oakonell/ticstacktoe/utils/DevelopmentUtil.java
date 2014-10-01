@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -43,7 +44,7 @@ public class DevelopmentUtil {
 	public static class Info {
 		public Info(GameHelper helper) {
 			accountName = Games.getCurrentAccountName(helper.getApiClient());
-			scopes = Games.SCOPE_GAMES.br();
+			scopes = Scopes.GAMES;
 			achievementIntent = Games.Achievements.getAchievementsIntent(helper
 					.getApiClient());
 			allLeaderboardsIntent = Games.Leaderboards
@@ -231,7 +232,7 @@ public class DevelopmentUtil {
 		};
 		GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity,
 				connectionCallbacks, onConnectionFailedListener);
-		builder.addApi(AppStateManager.API, null);
+		builder.addApi(AppStateManager.API);
 		builder.addScope(AppStateManager.SCOPE_APP_STATE);
 		client[0] = builder.build();
 		client[0].connect();

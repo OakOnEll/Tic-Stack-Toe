@@ -34,7 +34,7 @@ import com.commonsware.cwac.merge.MergeAdapter;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
@@ -176,7 +176,7 @@ public class MenuFragment extends SherlockFragment implements
 		setHasOptionsMenu(true);
 
 		context.getMenuFragment().setActive();
-		
+
 		// Listen for changes in the back stack
 		getSherlockActivity().getSupportFragmentManager()
 				.addOnBackStackChangedListener(
@@ -551,7 +551,7 @@ public class MenuFragment extends SherlockFragment implements
 							// and
 							// add back these
 							clearInvites();
-							if (statusCode == GamesClient.STATUS_OK) {
+							if (statusCode == GamesStatusCodes.STATUS_OK) {
 								// update the online invites button with the
 								// count
 								int count = buffer.getCount();
@@ -564,11 +564,11 @@ public class MenuFragment extends SherlockFragment implements
 									}
 								}
 								myTurnsAdapter.notifyDataSetChanged();
-							} else if (statusCode == GamesClient.STATUS_NETWORK_ERROR_STALE_DATA) {
+							} else if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_STALE_DATA) {
 
-							} else if (statusCode == GamesClient.STATUS_CLIENT_RECONNECT_REQUIRED) {
+							} else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
 
-							} else if (statusCode == GamesClient.STATUS_INTERNAL_ERROR) {
+							} else if (statusCode == GamesStatusCodes.STATUS_INTERNAL_ERROR) {
 
 							}
 						} finally {
@@ -672,7 +672,7 @@ public class MenuFragment extends SherlockFragment implements
 							@Override
 							public void onResult(InitiateMatchResult result) {
 								int status = result.getStatus().getStatusCode();
-								if (status != GamesClient.STATUS_OK) {
+								if (status != GamesStatusCodes.STATUS_OK) {
 									showAlert("Error accepting invitation "
 											+ inviteId + ": error=" + status);
 									return;
@@ -696,7 +696,7 @@ public class MenuFragment extends SherlockFragment implements
 
 							@Override
 							public void onResult(LoadMatchResult result) {
-								if (result.getStatus().getStatusCode() != GamesClient.STATUS_OK) {
+								if (result.getStatus().getStatusCode() != GamesStatusCodes.STATUS_OK) {
 									showAlert("Error loading match");
 									setActive();
 									return;
@@ -801,73 +801,79 @@ public class MenuFragment extends SherlockFragment implements
 			}
 		}, false);
 
-		Games.TurnBasedMultiplayer.loadMatchesByStatus(
-				context.getGameHelper().getApiClient(),
-				TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
-				TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN,
-				TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN,
-				TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE).setResultCallback(
-				new ResultCallback<TurnBasedMultiplayer.LoadMatchesResult>() {
+		Games.TurnBasedMultiplayer
+				.loadMatchesByStatus(
+						context.getGameHelper().getApiClient(),
+						new int[] { TurnBasedMatch.MATCH_TURN_STATUS_INVITED,
+								TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN,
+								TurnBasedMatch.MATCH_TURN_STATUS_THEIR_TURN,
+								TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE })
+				.setResultCallback(
+						new ResultCallback<TurnBasedMultiplayer.LoadMatchesResult>() {
 
-					@Override
-					public void onResult(LoadMatchesResult result) {
-						int status = result.getStatus().getStatusCode();
-						if (status != GamesClient.STATUS_OK) {
-							networkRefreshed = true;
-							conditionallyMarkRefreshComplete();
-							// TODO report an error in some way, retry
-							return;
-						}
-						LoadMatchesResponse response = result.getMatches();
-						InvitationBuffer invitations = response
-								.getInvitations();
+							@Override
+							public void onResult(LoadMatchesResult result) {
+								int status = result.getStatus().getStatusCode();
+								if (status != GamesStatusCodes.STATUS_OK) {
+									networkRefreshed = true;
+									conditionallyMarkRefreshComplete();
+									// TODO report an error in some way, retry
+									return;
+								}
+								LoadMatchesResponse response = result
+										.getMatches();
+								InvitationBuffer invitations = response
+										.getInvitations();
 
-						// put invites into my turns
-						clearNonLocalMatches(myTurns);
-						int max = invitations.getCount();
-						for (int i = 0; i < max; i++) {
-							Invitation invitation = invitations.get(i);
-							myTurns.add(new InviteMatchInfo(context
-									.getGameHelper(), invitation));
-						}
-						invitations.close();
+								// put invites into my turns
+								clearNonLocalMatches(myTurns);
+								int max = invitations.getCount();
+								for (int i = 0; i < max; i++) {
+									Invitation invitation = invitations.get(i);
+									myTurns.add(new InviteMatchInfo(context
+											.getGameHelper(), invitation));
+								}
+								invitations.close();
 
-						TurnBasedMatchBuffer myTurnMatches = response
-								.getMyTurnMatches();
-						populateMatches(myTurnMatches, myTurnsAdapter, myTurns);
+								TurnBasedMatchBuffer myTurnMatches = response
+										.getMyTurnMatches();
+								populateMatches(myTurnMatches, myTurnsAdapter,
+										myTurns);
 
-						clearNonLocalMatches(theirTurns);
-						TurnBasedMatchBuffer theirTurnMatches = response
-								.getTheirTurnMatches();
-						populateMatches(theirTurnMatches, theirTurnsAdapter,
-								theirTurns);
+								clearNonLocalMatches(theirTurns);
+								TurnBasedMatchBuffer theirTurnMatches = response
+										.getTheirTurnMatches();
+								populateMatches(theirTurnMatches,
+										theirTurnsAdapter, theirTurns);
 
-						clearNonLocalMatches(completedMatches);
-						TurnBasedMatchBuffer completedMatchesBuffer = response
-								.getCompletedMatches();
-						populateMatches(completedMatchesBuffer,
-								completedMatchesAdapter, completedMatches);
+								clearNonLocalMatches(completedMatches);
+								TurnBasedMatchBuffer completedMatchesBuffer = response
+										.getCompletedMatches();
+								populateMatches(completedMatchesBuffer,
+										completedMatchesAdapter,
+										completedMatches);
 
-						response.close();
-						networkRefreshed = true;
-						conditionallyMarkRefreshComplete();
-					}
+								response.close();
+								networkRefreshed = true;
+								conditionallyMarkRefreshComplete();
+							}
 
-					private void populateMatches(
-							TurnBasedMatchBuffer matchesBuffer,
-							MatchAdapter adapter, List<MatchInfo> matches) {
-						int count = matchesBuffer.getCount();
-						for (int i = 0; i < count; i++) {
-							TurnBasedMatch match = matchesBuffer.get(i);
-							MatchInfo info = new TurnBasedMatchInfo(
-									getActivity(), context.getGameHelper(),
-									match);
-							matches.add(info);
-						}
-						matchesBuffer.close();
-						adapter.notifyDataSetChanged();
-					}
-				});
+							private void populateMatches(
+									TurnBasedMatchBuffer matchesBuffer,
+									MatchAdapter adapter,
+									List<MatchInfo> matches) {
+								int count = matchesBuffer.getCount();
+								for (int i = 0; i < count; i++) {
+									TurnBasedMatch match = matchesBuffer.get(i);
+									MatchInfo info = new TurnBasedMatchInfo(
+											getActivity(), context
+													.getGameHelper(), match);
+									matches.add(info);
+								}
+								matchesBuffer.close();
+								adapter.notifyDataSetChanged();
+							}
+						});
 	}
 
 	private void conditionallyMarkRefreshComplete() {
